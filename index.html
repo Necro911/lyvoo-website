@@ -936,6 +936,7 @@
       background: var(--surface); border: 1.5px solid var(--border);
       border-radius: 20px; padding: 26px;
       display: flex; flex-direction: column; gap: 10px;
+      position: relative;
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.2s;
       cursor: pointer;
     }
@@ -956,6 +957,7 @@
     .mod-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
     .mod-price { display: none; }
     .mod-add { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--teal-light); text-decoration: none; cursor: pointer; }
+    .mod-add::after { content: ''; position: absolute; inset: 0; border-radius: 20px; }
 
     /* ──────────────────────────────────────────
        CTA
