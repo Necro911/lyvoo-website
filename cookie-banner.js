@@ -17,19 +17,19 @@
   style.textContent = `
     /* ── BANNER (primeira visita) ── */
     #lc-banner {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(130%);
+      position: fixed; bottom: 24px; left: 24px;
+      transform: translateY(130%);
       z-index: 9998;
-      width: calc(100% - 32px); max-width: 720px;
+      width: calc(100% - 48px); max-width: 340px;
       background: #0E1417;
       border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 20px; padding: 22px 26px;
-      display: flex; align-items: center; gap: 20px;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+      border-radius: 18px; padding: 20px 22px;
+      display: flex; flex-direction: column; gap: 16px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.55);
       transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
       font-family: 'Inter', sans-serif;
     }
-    #lc-banner.show { transform: translateX(-50%) translateY(0); }
+    #lc-banner.show { transform: translateY(0); }
     #lc-banner-icon {
       flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px;
       background: rgba(61,217,232,0.10); display: flex;
@@ -39,11 +39,11 @@
     #lc-banner-text strong { color: rgba(255,255,255,0.9); font-weight: 600; display: block; margin-bottom: 3px; }
     #lc-banner-text a { color: #3DD9E8; text-decoration: none; }
     #lc-banner-text a:hover { text-decoration: underline; }
-    #lc-banner-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+    #lc-banner-actions { display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; }
     .lc-btn {
       font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
-      padding: 9px 20px; border-radius: 10px; cursor: pointer;
-      white-space: nowrap; min-width: 160px; text-align: center;
+      padding: 8px 16px; border-radius: 9px; cursor: pointer;
+      white-space: nowrap; text-align: center; flex: 1;
       transition: opacity 0.18s, transform 0.15s, background 0.18s;
     }
     .lc-btn:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -155,10 +155,8 @@
     }
     .lc-manage-btn:hover { color: rgba(255,255,255,0.75); }
 
-    @media (max-width: 580px) {
-      #lc-banner { flex-direction: column; align-items: flex-start; bottom: 16px; padding: 20px; gap: 16px; }
-      #lc-banner-actions { flex-direction: row; width: 100%; flex-wrap: wrap; }
-      .lc-btn { flex: 1; }
+    @media (max-width: 480px) {
+      #lc-banner { left: 16px; bottom: 16px; width: calc(100% - 32px); max-width: none; }
       #lc-modal-footer { flex-direction: column-reverse; }
       .lc-modal-btn { text-align: center; }
     }
