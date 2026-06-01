@@ -1022,6 +1022,17 @@
     .layer-dark .module-card {
       background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);
     }
+    .layer-dark .module-card--highlight {
+      border-color: rgba(61,217,232,0.45);
+      box-shadow: 0 0 0 1px rgba(61,217,232,0.15), 0 8px 28px rgba(61,217,232,0.08);
+    }
+    .layer-dark .module-card--highlight:hover {
+      border-color: rgba(61,217,232,0.65);
+      box-shadow: 0 0 0 1px rgba(61,217,232,0.25), 0 12px 36px rgba(61,217,232,0.14);
+    }
+    .layer-dark .module-card--highlight .mod-icon {
+      background: rgba(61,217,232,0.10); border-color: rgba(61,217,232,0.2);
+    }
     .layer-dark .module-card:hover {
       background: rgba(255,255,255,0.07); border-color: rgba(61,217,232,0.25);
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
@@ -1848,14 +1859,14 @@
     </div>
     <div class="modules-grid">
 
-      <div class="module-card fade">
+      <div class="module-card module-card--highlight fade">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.5-1 3-2 4l-2 2-2-2c-1-1-2-2.5-2-4a4 4 0 0 1 4-4z"/><path d="M8 12l-4 4 2 2 4-4"/><path d="M16 12l4 4-2 2-4-4"/><circle cx="12" cy="20" r="2"/></svg></div>
         <div class="mod-name">Genética / Nutrigenética</div>
         <div class="mod-desc">Análise do ADN para perceber como o seu corpo responde a nutrientes, metaboliza gorduras e predisposições cardiometabólicas.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/genetica.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
-      <div class="module-card fade fade-d1">
+      <div class="module-card module-card--highlight fade fade-d1">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M7 7c.5-1 1.5-2 5-2s4.5 1 5 2"/></svg></div>
         <div class="mod-name">Microbioma</div>
         <div class="mod-desc">Análise completa da flora intestinal. Perceba o impacto do seu microbioma na saúde metabólica, imunidade e bem-estar.</div>
