@@ -1012,6 +1012,50 @@
     .layer-dark .mod-desc { color: rgba(255,255,255,0.4); }
     .layer-dark .mod-add  { color: var(--cyan); }
 
+    /* ── Equipa ── */
+    .team-header { text-align: center; margin-bottom: 56px; }
+    .team-sub { font-size: 17px; color: var(--ink-2); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 28px; max-width: 960px; margin: 0 auto;
+    }
+    .team-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 24px; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .team-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(11,82,90,0.10); }
+    .team-photo {
+      width: 100%; aspect-ratio: 1 / 1;
+      background: linear-gradient(145deg, #EEF9F9, #E0F2F4);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .team-photo-placeholder {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 100%; color: rgba(11,82,90,0.25);
+    }
+    .team-info { padding: 22px 24px; }
+    .team-name { font-size: 18px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 10px; }
+    .team-roles { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .team-badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+      padding: 4px 11px; border-radius: 999px; text-transform: uppercase;
+    }
+    .team-badge.founder { background: linear-gradient(135deg, rgba(61,217,232,0.12), rgba(139,92,246,0.12)); color: var(--teal-light); border: 1px solid rgba(61,217,232,0.2); }
+    .team-badge.nutri  { background: rgba(74,222,128,0.10); color: #16A34A; border: 1px solid rgba(74,222,128,0.2); }
+    .team-badge.medico { background: rgba(11,82,90,0.08); color: var(--teal-light); border: 1px solid rgba(11,82,90,0.15); }
+    .team-badge.ux     { background: rgba(139,92,246,0.10); color: var(--violet); border: 1px solid rgba(139,92,246,0.2); }
+    .team-desc { font-size: 13.5px; color: var(--ink-3); line-height: 1.7; }
+
+    @media (max-width: 860px) {
+      .team-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .team-grid { grid-template-columns: 1fr; max-width: 360px; }
+    }
+
     /* ── Testemunhos ── */
     .tst-header { text-align: center; margin-bottom: 60px; }
     .tst-header h2 { font-size: clamp(34px, 5vw, 62px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 14px; color: #fff; }
@@ -2627,6 +2671,70 @@
   </div>
 </section>
 
+
+<!-- ── EQUIPA ── -->
+<section class="step-layer layer-white" id="equipa">
+  <div class="container">
+    <div class="team-header fade">
+      <span class="label">A nossa equipa</span>
+      <h2 class="fade fade-d1">Criado por quem acredita<br/>na <span class="grad-text">prevenção</span></h2>
+      <p class="team-sub fade fade-d2">A Lyvoo nasceu da convicção de que a medicina preventiva deve ser acessível a todos — e que tecnologia e clínica se complementam.</p>
+    </div>
+
+    <div class="team-grid">
+
+      <!-- Ricardo Teixeira -->
+      <div class="team-card fade">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Ricardo Teixeira</div>
+          <div class="team-roles">
+            <span class="team-badge founder">CEO · Co-Founder</span>
+            <span class="team-badge nutri">Nutricionista</span>
+          </div>
+          <p class="team-desc">Nutricionista clínico com experiência em medicina preventiva e saúde metabólica. Fundou a Lyvoo para democratizar o acesso a intervenção nutricional baseada em biomarcadores.</p>
+        </div>
+      </div>
+
+      <!-- Jaime Abreu -->
+      <div class="team-card fade fade-d1">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Jaime Abreu</div>
+          <div class="team-roles">
+            <span class="team-badge medico">Médico</span>
+          </div>
+          <p class="team-desc">Médico especialista em medicina preventiva. Responsável pela supervisão clínica dos programas Lyvoo e pela interpretação médica dos resultados laboratoriais.</p>
+        </div>
+      </div>
+
+      <!-- Lúcia Abreu -->
+      <div class="team-card fade fade-d2">
+        <div class="team-photo">
+          <div class="team-photo-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Lúcia Abreu</div>
+          <div class="team-roles">
+            <span class="team-badge founder">Co-Founder</span>
+            <span class="team-badge ux">UX Researcher</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- ── FAQ ── -->
 <section class="step-layer layer-off" id="faq">
