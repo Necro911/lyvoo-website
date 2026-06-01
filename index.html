@@ -1022,16 +1022,22 @@
     .layer-dark .module-card {
       background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);
     }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 1.5px rgba(61,217,232,0.2), 0 0 18px rgba(61,217,232,0.12), 0 8px 32px rgba(61,217,232,0.10); }
+      50%       { box-shadow: 0 0 0 1.5px rgba(61,217,232,0.35), 0 0 32px rgba(61,217,232,0.22), 0 8px 40px rgba(61,217,232,0.16); }
+    }
     .layer-dark .module-card--highlight {
-      border-color: rgba(61,217,232,0.45);
-      box-shadow: 0 0 0 1px rgba(61,217,232,0.15), 0 8px 28px rgba(61,217,232,0.08);
+      border: 2px solid rgba(61,217,232,0.55);
+      animation: glowPulse 2.8s ease-in-out infinite;
     }
     .layer-dark .module-card--highlight:hover {
-      border-color: rgba(61,217,232,0.65);
-      box-shadow: 0 0 0 1px rgba(61,217,232,0.25), 0 12px 36px rgba(61,217,232,0.14);
+      border-color: rgba(61,217,232,0.85);
+      animation: none;
+      box-shadow: 0 0 0 2px rgba(61,217,232,0.25), 0 0 40px rgba(61,217,232,0.28), 0 12px 40px rgba(61,217,232,0.18);
+      transform: translateY(-4px);
     }
     .layer-dark .module-card--highlight .mod-icon {
-      background: rgba(61,217,232,0.10); border-color: rgba(61,217,232,0.2);
+      background: rgba(61,217,232,0.12); border-color: rgba(61,217,232,0.25);
     }
     .layer-dark .module-card:hover {
       background: rgba(255,255,255,0.07); border-color: rgba(61,217,232,0.25);
