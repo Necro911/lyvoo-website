@@ -300,7 +300,7 @@
           <div class="user-avatar" id="navAvatar">?</div>
           <div class="user-info">
             <div class="user-name" id="navName">—</div>
-            <div class="user-plan">Plano Completo</div>
+            <div class="user-plan" id="navPlan">—</div>
           </div>
           <button class="user-chevron" id="btnLogout" title="Sair" style="background:none;border:none;cursor:pointer;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -511,21 +511,9 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-  import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-
-  const firebaseConfig = {
-    apiKey:            "AIzaSyDdz33PHjwC5vDqSMh9ts1H7Q1tuJG6H38",
-    authDomain:        "lyvoo-9d54b.firebaseapp.com",
-    projectId:         "lyvoo-9d54b",
-    storageBucket:     "lyvoo-9d54b.firebasestorage.app",
-    messagingSenderId: "623275965506",
-    appId:             "1:623275965506:web:f5000cce99b664114381db",
-    measurementId:     "G-0P69XJ0XY6"
-  };
-
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { auth, db } from './lyvoo-firebase.js';
 
   function saudacao() {
     const h = new Date().getHours();
@@ -534,16 +522,37 @@
     return 'Boa noite';
   }
 
-  onAuthStateChanged(auth, (user) => {
+  function iniciaisDe(nome) {
+    return nome.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  }
+
+  onAuthStateChanged(auth, async (user) => {
     if (!user) { window.location.href = 'login.html'; return; }
 
-    const nome = user.displayName || user.email.split('@')[0];
-    const primeiro = nome.split(' ')[0];
-    const iniciais = nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    // Valores imediatos a partir da Auth (rápido)
+    let nome = user.displayName || user.email.split('@')[0];
+    let planoNome = null;
 
+    // Dados do Firestore (perfil + plano)
+    try {
+      const snap = await getDoc(doc(db, 'users', user.uid));
+      if (snap.exists()) {
+        const d = snap.data();
+        const completo = [d.firstName, d.lastName].filter(Boolean).join(' ');
+        if (completo) nome = completo;
+        if (d.planoNome) planoNome = d.planoNome;
+      }
+    } catch (err) {
+      console.warn('Não foi possível carregar o perfil:', err);
+    }
+
+    const primeiro = nome.split(' ')[0];
     document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
     document.getElementById('navName').textContent  = nome;
-    document.getElementById('navAvatar').textContent = iniciais;
+    document.getElementById('navAvatar').textContent = iniciaisDe(nome);
+    document.getElementById('navPlan').textContent = planoNome
+      ? planoNome.replace('Lyvoo ', 'Plano ')
+      : 'Sem plano ativo';
 
     document.getElementById('loadingScreen').classList.add('hidden');
     document.getElementById('shell').style.display = 'grid';

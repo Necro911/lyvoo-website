@@ -187,7 +187,7 @@
           <span class="panel-chip">ALT</span><span class="panel-chip">GGT</span><span class="panel-chip">Creatinina</span>
           <span class="panel-chip">PCR</span><span class="panel-chip">TSH</span><span class="panel-chip">Ferritina</span>
         </div>
-        <a href="registar.html" class="plan-cta">Começar com o Essencial</a>
+        <a href="registar.html?plano=essencial" class="plan-cta" data-plano="essencial">Começar com o Essencial</a>
       </div>
 
       <!-- COMPLETO -->
@@ -221,7 +221,7 @@
           <span class="panel-chip">Ferritina</span><span class="panel-chip">TSH</span><span class="panel-chip">FT4</span>
           <span class="panel-chip">Vitamina B12</span><span class="panel-chip">PCR</span><span class="panel-chip">Magnésio</span>
         </div>
-        <a href="registar.html" class="plan-cta">Começar com o Completo</a>
+        <a href="registar.html?plano=completo" class="plan-cta" data-plano="completo">Começar com o Completo</a>
       </div>
 
     </div>
@@ -310,6 +310,42 @@
 <div class="footer-mini">
   <p>© 2026 Lyvoo · <a href="index.html">Voltar ao início</a></p>
 </div>
+
+<script type="module">
+  import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { auth, db, PLANOS } from './lyvoo-firebase.js';
+
+  let utilizador = null;
+  onAuthStateChanged(auth, (u) => { utilizador = u; });
+
+  document.querySelectorAll('.plan-cta[data-plano]').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const plano = btn.dataset.plano;
+      if (!utilizador) {
+        // Não autenticado — segue o href normal (registar.html?plano=...)
+        return;
+      }
+      // Autenticado — grava o plano e vai ao dashboard
+      e.preventDefault();
+      btn.style.opacity = '0.6';
+      btn.style.pointerEvents = 'none';
+      try {
+        await setDoc(doc(db, 'users', utilizador.uid), {
+          plano,
+          planoNome: PLANOS[plano].nome,
+          atualizadoEm: serverTimestamp()
+        }, { merge: true });
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = '';
+        alert('Não foi possível guardar o plano. Tente novamente.');
+      }
+    });
+  });
+</script>
 
 </body>
 </html>

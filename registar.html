@@ -285,33 +285,40 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
   import {
-    getAuth,
     createUserWithEmailAndPassword,
     signInWithPopup,
     GoogleAuthProvider,
     updateProfile
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { auth, db, PLANOS } from './lyvoo-firebase.js';
 
-  // ─────────────────────────────────────────────────────────────
-  // CONFIGURAÇÃO FIREBASE
-  // Substituir pelos valores do Firebase Console:
-  // Console → Project Settings → Your apps → Web app → Config
-  // ─────────────────────────────────────────────────────────────
-  const firebaseConfig = {
-    apiKey:            "AIzaSyDdz33PHjwC5vDqSMh9ts1H7Q1tuJG6H38",
-    authDomain:        "lyvoo-9d54b.firebaseapp.com",
-    projectId:         "lyvoo-9d54b",
-    storageBucket:     "lyvoo-9d54b.firebasestorage.app",
-    messagingSenderId: "623275965506",
-    appId:             "1:623275965506:web:f5000cce99b664114381db",
-    measurementId:     "G-0P69XJ0XY6"
-  };
+  // Plano escolhido (passado via ?plano=essencial|completo a partir de planos.html)
+  const planoParam = new URLSearchParams(location.search).get('plano');
+  const planoEscolhido = PLANOS[planoParam] ? planoParam : null;
 
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  auth.languageCode = 'pt';
+  // Cria/atualiza o documento do utilizador no Firestore
+  async function guardarPerfil(user, { firstName = '', lastName = '' } = {}) {
+    const dados = {
+      email: user.email,
+      atualizadoEm: serverTimestamp()
+    };
+    if (firstName || lastName) {
+      dados.firstName = firstName;
+      dados.lastName  = lastName;
+    }
+    if (planoEscolhido) {
+      dados.plano = planoEscolhido;
+      dados.planoNome = PLANOS[planoEscolhido].nome;
+    }
+    // merge:true — não apaga campos existentes (ex.: se já tinha plano)
+    await setDoc(doc(db, 'users', user.uid), {
+      criadoEm: serverTimestamp(),
+      ...dados
+    }, { merge: true });
+  }
 
   // ── Mensagens de erro em PT-PT ──
   const erros = {
@@ -359,9 +366,9 @@
     btn.style.pointerEvents = loading ? 'none' : '';
   }
 
-  function aoAutenticar(user) {
-    // Redireciona após login/registo bem-sucedido
-    window.location.href = 'planos.html';
+  function aoAutenticar() {
+    // Após registo: se já escolheu plano vai ao dashboard, senão escolhe plano
+    window.location.href = planoEscolhido ? 'dashboard.html' : 'planos.html';
   }
 
   // ── Toggle palavra-passe ──
@@ -412,12 +419,12 @@
     setBtnLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, emailVal, pwInput.value);
-      const nome = [
-        document.getElementById('firstName').value.trim(),
-        document.getElementById('lastName').value.trim()
-      ].filter(Boolean).join(' ');
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const nome = [firstName, lastName].filter(Boolean).join(' ');
       if (nome) await updateProfile(cred.user, { displayName: nome });
-      aoAutenticar(cred.user);
+      await guardarPerfil(cred.user, { firstName, lastName });
+      aoAutenticar();
     } catch (err) {
       setBtnLoading(false);
       mostrarErroGlobal(mensagemErro(err.code));
@@ -444,7 +451,13 @@
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      aoAutenticar(result.user);
+      // Google fornece displayName; separa primeiro/último nome
+      const partes = (result.user.displayName || '').trim().split(' ');
+      await guardarPerfil(result.user, {
+        firstName: partes[0] || '',
+        lastName:  partes.slice(1).join(' ')
+      });
+      aoAutenticar();
     } catch (err) {
       setGoogleLoading(false);
       if (err.code !== 'auth/popup-closed-by-user') {
