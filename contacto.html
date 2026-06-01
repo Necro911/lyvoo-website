@@ -28,8 +28,10 @@
     .nav { background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
     .nav-logo { text-decoration: none; }
-    .nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
-    .nav-back:hover { color: rgba(255,255,255,0.8); }
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
 
     /* HERO */
     .hero { background: linear-gradient(160deg, #030D10 0%, #060F16 55%, #04080E 100%); padding: 110px 0 72px; text-align: center; }
@@ -107,12 +109,22 @@
     .promise li svg { flex-shrink: 0; }
 
     /* FOOTER */
-    .footer { background: var(--dark-bg); padding: 28px 0; border-top: 1px solid rgba(255,255,255,0.06); }
-    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-    .footer-logo { font-size: 17px; font-weight: 900; letter-spacing: -0.04em; color: #fff; }
-    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
-    .footer-link { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; }
-    .footer-link:hover { color: rgba(255,255,255,0.7); }
+    .footer { background: #07090B; padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .lf-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 16px; }
+    .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+    .lf-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .lf-col a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .lf-col a:hover { color: #fff; }
+    .lf-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding: 24px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .lf-bottom > span { font-size: 13px; color: rgba(255,255,255,0.25); }
+    .lf-links { display: flex; align-items: center; gap: 20px; }
+    .lf-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
+    .lf-links a:hover { color: rgba(255,255,255,0.7); }
+    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+    .lf-cookies:hover { color: rgba(255,255,255,0.7); }
+    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
+    @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { animation: spin 0.8s linear infinite; }
@@ -131,10 +143,12 @@
     <a href="index.html" class="nav-logo">
       <img src="images/logo.png" alt="Lyvoo" style="height:46px;width:auto;display:block;" />
     </a>
-    <a href="index.html" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      Voltar ao início
-    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#como-funciona">Como funciona</a></li>
+      <li><a href="planos.html">Planos</a></li>
+      <li><a href="contacto.html" style="color:#fff;">Contacto</a></li>
+      <li><a href="registar.html" class="nav-cta">Começar agora</a></li>
+    </ul>
   </div>
 </nav>
 
@@ -265,13 +279,32 @@
 
 <footer class="footer">
   <div class="container">
-    <div class="footer-inner">
-      <span class="footer-logo">lyvoo</span>
-      <span class="footer-copy">© 2026 Lyvoo Health, Lda.</span>
-      <div style="display:flex;gap:20px;">
-        <a href="privacidade.html" class="footer-link">Privacidade</a>
-        <a href="termos.html" class="footer-link">Termos</a>
-        <a href="index.html" class="footer-link">Início</a>
+    <div class="lf-grid">
+      <div>
+        <a href="index.html"><img src="images/logo.png" alt="Lyvoo" style="height:38px;width:auto;display:block;" /></a>
+        <p class="lf-brand">Prevenção personalizada em saúde.<br/>Sem sair de casa. Feito em Portugal.</p>
+      </div>
+      <div class="lf-col"><h5>Produto</h5><ul>
+        <li><a href="index.html#como-funciona">Como funciona</a></li>
+        <li><a href="planos.html">Planos</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Empresa</h5><ul>
+        <li><a href="index.html#equipa">Sobre nós</a></li>
+        <li><a href="index.html#equipa">Equipa clínica</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Suporte</h5><ul>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="privacidade.html">Privacidade</a></li>
+        <li><a href="termos.html">Termos</a></li>
+      </ul></div>
+    </div>
+    <div class="lf-bottom">
+      <span>© 2026 Lyvoo. Todos os direitos reservados.</span>
+      <div class="lf-links">
+        <a href="privacidade.html">Política de privacidade</a>
+        <a href="termos.html">Termos de serviço</a>
+        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Gerir cookies</button>
       </div>
     </div>
   </div>
