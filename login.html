@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sessão — Lyvoo</title>
+  <meta name="description" content="Aceda à sua conta Lyvoo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
+      --violet: #8B5CF6; --bg: #FFFFFF; --surface: #F6F8F9;
+      --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50;
+      --ink-3: #7A8F96; --dark-bg: #080C0E;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(160deg, #030D10 0%, #060F16 60%, #04080E 100%);
+      min-height: 100vh; color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      display: flex; flex-direction: column;
+    }
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(6,12,14,0.7); backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; max-width: 1140px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo { text-decoration: none; }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-back:hover { color: rgba(255,255,255,0.8); }
+    .page {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 100px 24px 60px;
+    }
+    .card {
+      background: #fff; border-radius: 28px;
+      padding: 48px 44px; width: 100%; max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.35);
+    }
+    .card-header { text-align: center; margin-bottom: 36px; }
+    .card-label {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal-light); margin-bottom: 14px;
+    }
+    .card-title { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); line-height: 1.15; margin-bottom: 8px; }
+    .card-sub { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+    .btn-google {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px 20px; border-radius: 12px;
+      border: 1.5px solid var(--border); background: #fff;
+      font-size: 14px; font-weight: 600; color: var(--ink);
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .btn-google:hover { background: var(--surface); border-color: #C8D0D3; }
+    .divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 24px 0; color: var(--ink-3); font-size: 12px; font-weight: 500;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .form { display: flex; flex-direction: column; gap: 14px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+    .field input {
+      padding: 12px 14px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--ink);
+      outline: none; transition: border-color 0.2s, background 0.2s; width: 100%;
+    }
+    .field input::placeholder { color: var(--ink-3); }
+    .field input:focus { border-color: var(--teal-light); background: #fff; }
+    .field input.error { border-color: #EF4444; }
+    .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
+    .input-wrap { position: relative; }
+    .input-wrap input { padding-right: 42px; }
+    .toggle-pw {
+      position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--ink-3);
+      padding: 0; display: flex; align-items: center;
+    }
+    .toggle-pw:hover { color: var(--ink-2); }
+    .forgot { text-align: right; }
+    .forgot a { font-size: 12px; color: var(--teal-light); text-decoration: none; font-weight: 500; }
+    .forgot a:hover { text-decoration: underline; }
+    .btn-submit {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px 20px; border-radius: 12px;
+      background: var(--teal); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+      border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+      margin-top: 6px;
+    }
+    .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+    .register-link { text-align: center; font-size: 13px; color: var(--ink-3); margin-top: 22px; }
+    .register-link a { color: var(--teal-light); font-weight: 600; text-decoration: none; }
+    .register-link a:hover { text-decoration: underline; }
+    .global-error {
+      color: #EF4444; font-size: 13px; text-align: center;
+      margin-top: 12px; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.8s linear infinite; }
+    @media (max-width: 520px) {
+      .card { padding: 36px 24px; border-radius: 20px; }
+      .card-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.png" alt="Lyvoo" style="height:46px;width:auto;display:block;" />
+    </a>
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+      Voltar ao início
+    </a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="card">
+
+    <div class="card-header">
+      <div class="card-label">A sua conta</div>
+      <h1 class="card-title">Bem-vindo de volta</h1>
+      <p class="card-sub">Inicie sessão para aceder ao seu programa Lyvoo.</p>
+    </div>
+
+    <a href="#" class="btn-google" id="btnGoogle">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      Continuar com Google
+    </a>
+
+    <div class="divider">ou inicie sessão com email</div>
+
+    <form class="form" id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="o.seu@email.pt" autocomplete="email" />
+        <span class="field-error" id="emailError">Introduza um email válido.</span>
+      </div>
+
+      <div class="field">
+        <label for="password">Palavra-passe</label>
+        <div class="input-wrap">
+          <input type="password" id="password" placeholder="A sua palavra-passe" autocomplete="current-password" />
+          <button type="button" class="toggle-pw" id="togglePw" aria-label="Mostrar palavra-passe">
+            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <span class="field-error" id="passwordError">Introduza a sua palavra-passe.</span>
+      </div>
+
+      <div class="forgot">
+        <a href="#" id="btnForgot">Esqueceu a palavra-passe?</a>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        Iniciar sessão
+      </button>
+
+      <p class="global-error" id="globalError"></p>
+    </form>
+
+    <p class="register-link">Não tem conta? <a href="registar.html">Criar conta</a></p>
+
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    sendPasswordResetEmail,
+    GoogleAuthProvider
+  } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyDdz33PHjwC5vDqSMh9ts1H7Q1tuJG6H38",
+    authDomain:        "lyvoo-9d54b.firebaseapp.com",
+    projectId:         "lyvoo-9d54b",
+    storageBucket:     "lyvoo-9d54b.firebasestorage.app",
+    messagingSenderId: "623275965506",
+    appId:             "1:623275965506:web:f5000cce99b664114381db",
+    measurementId:     "G-0P69XJ0XY6"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  auth.languageCode = 'pt';
+
+  const erros = {
+    'auth/invalid-credential':      'Email ou palavra-passe incorretos.',
+    'auth/user-not-found':          'Não existe conta com este email.',
+    'auth/wrong-password':          'Palavra-passe incorreta.',
+    'auth/invalid-email':           'O endereço de email não é válido.',
+    'auth/user-disabled':           'Esta conta foi desativada.',
+    'auth/too-many-requests':       'Demasiadas tentativas. Aguarde um momento.',
+    'auth/popup-closed-by-user':    'A autenticação foi cancelada.',
+    'auth/network-request-failed':  'Erro de ligação. Verifique a sua internet.',
+  };
+
+  function mensagemErro(code) {
+    return erros[code] || 'Ocorreu um erro inesperado. Tente novamente.';
+  }
+
+  function mostrarErro(msg) {
+    const el = document.getElementById('globalError');
+    el.textContent = msg; el.style.display = 'block';
+  }
+
+  function limparErro() {
+    const el = document.getElementById('globalError');
+    el.style.display = 'none';
+  }
+
+  function setBtnLoading(loading) {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = loading;
+    btn.innerHTML = loading
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> A entrar…'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg> Iniciar sessão';
+  }
+
+  function aoAutenticar() {
+    window.location.href = 'dashboard.html';
+  }
+
+  // Toggle palavra-passe
+  const togglePw = document.getElementById('togglePw');
+  const pwInput  = document.getElementById('password');
+  const eyeIcon  = document.getElementById('eyeIcon');
+  togglePw.addEventListener('click', () => {
+    const oculto = pwInput.type === 'password';
+    pwInput.type = oculto ? 'text' : 'password';
+    eyeIcon.innerHTML = oculto
+      ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+      : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  });
+
+  // Login por email
+  const form       = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const emailErr   = document.getElementById('emailError');
+  const pwErr      = document.getElementById('passwordError');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    limparErro();
+    let valido = true;
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+      emailInput.classList.add('error'); emailErr.style.display = 'block'; valido = false;
+    } else {
+      emailInput.classList.remove('error'); emailErr.style.display = 'none';
+    }
+    if (!pwInput.value) {
+      pwInput.classList.add('error'); pwErr.style.display = 'block'; valido = false;
+    } else {
+      pwInput.classList.remove('error'); pwErr.style.display = 'none';
+    }
+    if (!valido) return;
+
+    setBtnLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, emailInput.value.trim(), pwInput.value);
+      aoAutenticar();
+    } catch (err) {
+      setBtnLoading(false);
+      mostrarErro(mensagemErro(err.code));
+    }
+  });
+
+  emailInput.addEventListener('input', () => { emailInput.classList.remove('error'); emailErr.style.display = 'none'; limparErro(); });
+  pwInput.addEventListener('input',    () => { pwInput.classList.remove('error');    pwErr.style.display = 'none';    limparErro(); });
+
+  // Google
+  document.getElementById('btnGoogle').addEventListener('click', async (e) => {
+    e.preventDefault();
+    limparErro();
+    try {
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      aoAutenticar();
+    } catch (err) {
+      if (err.code !== 'auth/popup-closed-by-user') mostrarErro(mensagemErro(err.code));
+    }
+  });
+
+  // Recuperar palavra-passe
+  document.getElementById('btnForgot').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    if (!email) { emailInput.focus(); mostrarErro('Introduza o seu email para recuperar a palavra-passe.'); return; }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      mostrarErro('');
+      const el = document.getElementById('globalError');
+      el.style.color = '#0D7A87';
+      el.textContent = 'Email de recuperação enviado. Verifique a sua caixa de entrada.';
+      el.style.display = 'block';
+    } catch (err) {
+      mostrarErro(mensagemErro(err.code));
+    }
+  });
+</script>
+
+</body>
+</html>
