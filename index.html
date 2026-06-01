@@ -1076,6 +1076,47 @@
       .team-grid { grid-template-columns: 1fr; max-width: 360px; }
     }
 
+    /* ── Waitlist ── */
+    .waitlist-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: center;
+      padding: 16px 0;
+    }
+    .waitlist-text .label { color: var(--cyan); border-color: rgba(61,217,232,0.25); }
+    .waitlist-text h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin: 14px 0 14px; line-height: 1.15; }
+    .waitlist-text p { font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+    .waitlist-fields { display: flex; gap: 10px; margin-bottom: 10px; }
+    .waitlist-fields input {
+      flex: 1; padding: 13px 16px; border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-family: 'Inter', sans-serif; font-size: 14px; color: #fff;
+      outline: none; transition: border-color 0.2s;
+    }
+    .waitlist-fields input::placeholder { color: rgba(255,255,255,0.3); }
+    .waitlist-fields input:focus { border-color: var(--cyan); }
+    .waitlist-fields button {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+      padding: 13px 22px; border-radius: 12px;
+      background: var(--teal); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+      border: none; cursor: pointer; white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .waitlist-fields button:hover { opacity: 0.88; transform: translateY(-1px); }
+    .waitlist-fields button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .waitlist-error { font-size: 12.5px; color: #FCA5A5; min-height: 18px; }
+    .waitlist-ok { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #4ADE80; }
+    .waitlist-note { font-size: 11.5px; color: rgba(255,255,255,0.25); margin-top: 10px; }
+    .waitlist-note a { color: rgba(255,255,255,0.4); }
+    .waitlist-more { display: inline-block; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; grid-column: 1 / -1; transition: color 0.2s; }
+    .waitlist-more:hover { color: rgba(255,255,255,0.75); }
+    @media (max-width: 760px) {
+      .waitlist-wrap { grid-template-columns: 1fr; gap: 28px; }
+      .waitlist-fields { flex-direction: column; }
+      .waitlist-fields button { width: 100%; justify-content: center; }
+    }
+
     /* ── Testemunhos ── */
     .tst-header { text-align: center; margin-bottom: 60px; }
     .tst-header h2 { font-size: clamp(34px, 5vw, 62px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 14px; color: #fff; }
@@ -1376,6 +1417,7 @@
       <li><a href="#app">A app</a></li>
       <li><a href="#equipa">A equipa</a></li>
       <li><a href="planos.html">Planos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
       <li><a href="registar.html" class="nav-cta">Começar agora</a></li>
     </ul>
     <button class="nav-mob" id="mobBtn" aria-label="Menu">
@@ -2759,6 +2801,35 @@
   </div>
 </section>
 
+<!-- ── WAITLIST ── -->
+<section class="step-layer layer-dark" id="waitlist">
+  <div class="container">
+    <div class="waitlist-wrap fade">
+      <div class="waitlist-text">
+        <span class="label">Lista de espera</span>
+        <h2>Ainda não está pronto<br/>para começar?</h2>
+        <p>Deixe o seu email e avisamos quando tivermos disponibilidade — sem spam, sem compromisso.</p>
+      </div>
+      <form class="waitlist-form fade fade-d2" id="waitlistForm" novalidate>
+        <div class="waitlist-fields">
+          <input type="email" id="wEmail" placeholder="o.seu@email.pt" autocomplete="email" />
+          <button type="submit" id="wBtn">
+            <span id="wBtnText">Entrar na lista</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <p class="waitlist-error" id="wError"></p>
+        <p class="waitlist-ok" id="wOk" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4ADE80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Adicionado com sucesso! Entraremos em contacto em breve.
+        </p>
+        <p class="waitlist-note">Ao submeter aceita a nossa <a href="privacidade.html">Política de Privacidade</a>.</p>
+      </form>
+      <a href="contacto.html" class="waitlist-more">Tem uma questão específica? Fale connosco →</a>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section class="step-layer layer-off" id="faq">
   <div class="container">
@@ -3069,6 +3140,41 @@
       const t = document.querySelector(a.getAttribute('href'));
       if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 78, behavior: 'smooth' }); }
     });
+  });
+</script>
+
+<script type="module">
+  import { doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { db } from './lyvoo-firebase.js';
+
+  const form  = document.getElementById('waitlistForm');
+  const input = document.getElementById('wEmail');
+  const btn   = document.getElementById('wBtn');
+  const errEl = document.getElementById('wError');
+  const okEl  = document.getElementById('wOk');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.textContent = ''; okEl.style.display = 'none';
+    const email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Introduza um email válido.'; return;
+    }
+    btn.disabled = true;
+    document.getElementById('wBtnText').textContent = 'A guardar…';
+    try {
+      await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
+        email, criadoEm: serverTimestamp(), fonte: 'index.html'
+      }, { merge: true });
+      input.value = '';
+      form.querySelector('.waitlist-fields').style.display = 'none';
+      okEl.style.display = 'flex';
+    } catch {
+      btn.disabled = false;
+      document.getElementById('wBtnText').textContent = 'Entrar na lista';
+      errEl.textContent = 'Erro ao guardar. Tente novamente.';
+    }
   });
 </script>
 </body>

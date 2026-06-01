@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto &amp; Waitlist — Lyvoo</title>
+  <meta name="description" content="Fique a saber quando a Lyvoo abre na sua zona. Deixe o seu contacto e entraremos em breve." />
+  <meta property="og:title" content="Contacto — Lyvoo" />
+  <meta property="og:description" content="Fique a saber quando a Lyvoo abre na sua zona." />
+  <meta property="og:image" content="https://necro911.github.io/lyvoo-website/images/og-image.jpg" />
+  <meta property="og:site_name" content="Lyvoo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="cookie-banner.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
+      --violet: #8B5CF6; --bg: #FFFFFF; --surface: #F6F8F9;
+      --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50;
+      --ink-3: #7A8F96; --dark-bg: #080C0E;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* NAV */
+    .nav { background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { text-decoration: none; }
+    .nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: rgba(255,255,255,0.8); }
+
+    /* HERO */
+    .hero { background: linear-gradient(160deg, #030D10 0%, #060F16 55%, #04080E 100%); padding: 110px 0 72px; text-align: center; }
+    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(30px, 5vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 16px; line-height: 1.1; }
+    .hero p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* CONTENT */
+    .content { flex: 1; padding: 72px 0 80px; }
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+
+    /* FORM CARD */
+    .form-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 24px; padding: 36px; }
+    .form-card h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 6px; }
+    .form-card .sub { font-size: 14px; color: var(--ink-3); margin-bottom: 28px; line-height: 1.6; }
+
+    .form { display: flex; flex-direction: column; gap: 14px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+    .field input, .field select, .field textarea {
+      padding: 11px 14px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: #fff;
+      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--ink);
+      outline: none; transition: border-color 0.2s;
+      width: 100%;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--ink-3); }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--teal-light); }
+    .field textarea { resize: vertical; min-height: 100px; }
+    .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A8F96' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .btn-submit {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px; border-radius: 12px;
+      background: var(--teal); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+      border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+      margin-top: 4px;
+    }
+    .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .form-success {
+      display: none; text-align: center; padding: 32px 0;
+    }
+    .form-success .check {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(74,222,128,0.12); display: flex;
+      align-items: center; justify-content: center;
+      margin: 0 auto 16px; color: #16A34A;
+    }
+    .form-success h3 { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+    .form-success p { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+
+    .form-error { font-size: 13px; color: #EF4444; text-align: center; margin-top: 8px; display: none; }
+
+    /* INFO SIDE */
+    .info-side { display: flex; flex-direction: column; gap: 24px; }
+    .info-block { display: flex; gap: 16px; }
+    .info-icon { width: 44px; height: 44px; border-radius: 12px; background: #EEF9F9; display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+    .info-text h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .info-text p { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+    .info-text a { color: var(--teal-light); text-decoration: none; }
+    .info-text a:hover { text-decoration: underline; }
+
+    .divider-info { height: 1px; background: var(--border); }
+
+    .promise { background: #EEF9F9; border: 1px solid rgba(11,82,90,0.12); border-radius: 16px; padding: 20px 22px; }
+    .promise h3 { font-size: 14px; font-weight: 700; color: var(--teal); margin-bottom: 10px; }
+    .promise ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .promise li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--teal); }
+    .promise li svg { flex-shrink: 0; }
+
+    /* FOOTER */
+    .footer { background: var(--dark-bg); padding: 28px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .footer-logo { font-size: 17px; font-weight: 900; letter-spacing: -0.04em; color: #fff; }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+    .footer-link { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-link:hover { color: rgba(255,255,255,0.7); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.8s linear infinite; }
+
+    @media (max-width: 768px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .info-side { order: -1; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.png" alt="Lyvoo" style="height:46px;width:auto;display:block;" />
+    </a>
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+      Voltar ao início
+    </a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="label">Fique a par</div>
+    <h1>Interessado na Lyvoo?<br/>Entre em contacto.</h1>
+    <p>Deixe o seu email para receber novidades, ou envie-nos uma mensagem diretamente.</p>
+  </div>
+</section>
+
+<div class="content">
+  <div class="container">
+    <div class="content-grid">
+
+      <!-- FORM -->
+      <div class="form-card">
+        <h2>Junte-se à lista de espera</h2>
+        <p class="sub">Preencha o formulário e entraremos em contacto assim que tivermos disponibilidade na sua zona.</p>
+
+        <form class="form" id="contactForm" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="firstName">Nome</label>
+              <input type="text" id="firstName" placeholder="Ricardo" autocomplete="given-name" />
+            </div>
+            <div class="field">
+              <label for="lastName">Apelido</label>
+              <input type="text" id="lastName" placeholder="Silva" autocomplete="family-name" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span style="color:#EF4444">*</span></label>
+            <input type="email" id="email" placeholder="o.seu@email.pt" autocomplete="email" required />
+          </div>
+
+          <div class="field">
+            <label for="interesse">Interesse principal</label>
+            <select id="interesse">
+              <option value="">Selecionar…</option>
+              <option value="essencial">Plano Essencial (€320/ano)</option>
+              <option value="completo">Plano Completo (€640/ano)</option>
+              <option value="modulo">Módulo específico</option>
+              <option value="empresa">Saúde corporativa</option>
+              <option value="outro">Outro / só curiosidade</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="mensagem">Mensagem <span style="color:var(--ink-3);font-weight:400">(opcional)</span></label>
+            <textarea id="mensagem" placeholder="Alguma questão específica ou contexto que queira partilhar…"></textarea>
+          </div>
+
+          <div style="font-size:12px;color:var(--ink-3);line-height:1.5;">
+            Ao submeter, aceita a nossa <a href="privacidade.html" target="_blank" style="color:var(--teal-light)">Política de Privacidade</a>.
+            Os seus dados são utilizados exclusivamente para responder ao seu pedido.
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            Entrar na lista de espera
+          </button>
+
+          <p class="form-error" id="formError"></p>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <div class="check">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Recebemos o seu pedido!</h3>
+          <p>Entraremos em contacto brevemente. Fique atento à sua caixa de entrada.</p>
+        </div>
+      </div>
+
+      <!-- INFO -->
+      <div class="info-side">
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="info-text">
+            <h3>Email</h3>
+            <p><a href="mailto:hello@lyvoo.pt">hello@lyvoo.pt</a><br/>Respondemos em 1–2 dias úteis.</p>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="info-text">
+            <h3>Disponibilidade</h3>
+            <p>Atualmente a operar em Portugal continental. Ilhas em breve.</p>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="info-text">
+            <h3>Tempo de resposta</h3>
+            <p>Habitualmente contactamos os leads da lista de espera dentro de 48 horas.</p>
+          </div>
+        </div>
+
+        <div class="divider-info"></div>
+
+        <div class="promise">
+          <h3>O que prometemos</h3>
+          <ul>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Sem spam — só informação relevante
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Dados tratados conforme o RGPD
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Pode remover-se a qualquer momento
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Acesso prioritário ao lançamento
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-logo">lyvoo</span>
+      <span class="footer-copy">© 2026 Lyvoo Health, Lda.</span>
+      <div style="display:flex;gap:20px;">
+        <a href="privacidade.html" class="footer-link">Privacidade</a>
+        <a href="termos.html" class="footer-link">Termos</a>
+        <a href="index.html" class="footer-link">Início</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+  import { doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { db } from './lyvoo-firebase.js';
+
+  const form    = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  const errEl   = document.getElementById('formError');
+  const btn     = document.getElementById('submitBtn');
+
+  function setLoading(v) {
+    btn.disabled = v;
+    btn.innerHTML = v
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> A enviar…'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg> Entrar na lista de espera';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.style.display = 'none';
+
+    const email = document.getElementById('email').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Introduza um email válido.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Grava no Firestore — colecção "waitlist", doc com ID = email
+      await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
+        firstName:  document.getElementById('firstName').value.trim(),
+        lastName:   document.getElementById('lastName').value.trim(),
+        email,
+        interesse:  document.getElementById('interesse').value,
+        mensagem:   document.getElementById('mensagem').value.trim(),
+        criadoEm:   serverTimestamp(),
+        fonte:      'contacto.html'
+      });
+      form.style.display = 'none';
+      success.style.display = 'block';
+    } catch (err) {
+      setLoading(false);
+      errEl.textContent = 'Não foi possível enviar. Tente novamente ou contacte hello@lyvoo.pt';
+      errEl.style.display = 'block';
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>
