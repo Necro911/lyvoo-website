@@ -77,35 +77,35 @@
     #lc-modal-overlay.show { opacity: 1; }
     #lc-modal {
       background: #0E1417; border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 24px; padding: 32px; width: 100%; max-width: 520px;
+      border-radius: 18px; padding: 22px 24px; width: 100%; max-width: 420px;
       font-family: 'Inter', sans-serif;
-      transform: translateY(20px); transition: transform 0.25s;
+      transform: translateY(16px); transition: transform 0.25s;
     }
     #lc-modal-overlay.show #lc-modal { transform: translateY(0); }
     #lc-modal-header {
       display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
-    #lc-modal-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-    #lc-modal-sub { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    #lc-modal-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+    #lc-modal-sub { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
     #lc-modal-close {
-      background: none; border: none; color: rgba(255,255,255,0.35);
-      cursor: pointer; padding: 4px; flex-shrink: 0; margin-left: 12px;
+      background: none; border: none; color: rgba(255,255,255,0.3);
+      cursor: pointer; padding: 2px; flex-shrink: 0; margin-left: 10px;
       transition: color 0.2s;
     }
-    #lc-modal-close:hover { color: rgba(255,255,255,0.75); }
+    #lc-modal-close:hover { color: rgba(255,255,255,0.7); }
 
     /* Categorias */
     .lc-category {
       background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 14px; padding: 18px 20px; margin-bottom: 12px;
+      border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
     }
-    .lc-cat-header { display: flex; align-items: center; justify-content: space-between; }
-    .lc-cat-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
-    .lc-cat-desc { font-size: 12.5px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+    .lc-cat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .lc-cat-name { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+    .lc-cat-desc { font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.5; }
 
     /* Toggle switch */
-    .lc-toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .lc-toggle { position: relative; width: 38px; height: 21px; flex-shrink: 0; }
     .lc-toggle input { opacity: 0; width: 0; height: 0; }
     .lc-slider {
       position: absolute; inset: 0; border-radius: 999px;
@@ -114,25 +114,25 @@
     }
     .lc-slider::before {
       content: ''; position: absolute;
-      width: 18px; height: 18px; border-radius: 50%; background: #fff;
+      width: 15px; height: 15px; border-radius: 50%; background: #fff;
       left: 3px; top: 3px; transition: transform 0.2s;
     }
     .lc-toggle input:checked + .lc-slider { background: #0B525A; border: 1px solid rgba(61,217,232,0.35); }
-    .lc-toggle input:checked + .lc-slider::before { transform: translateX(20px); }
+    .lc-toggle input:checked + .lc-slider::before { transform: translateX(17px); }
     .lc-toggle input:disabled + .lc-slider { opacity: 0.55; cursor: not-allowed; }
     .lc-always-on {
-      font-size: 11px; font-weight: 600; color: #3DD9E8;
+      font-size: 10px; font-weight: 700; color: #3DD9E8;
       background: rgba(61,217,232,0.10); border: 1px solid rgba(61,217,232,0.2);
-      border-radius: 999px; padding: 3px 10px; flex-shrink: 0;
+      border-radius: 999px; padding: 2px 8px; flex-shrink: 0; white-space: nowrap;
     }
 
     /* Footer do modal */
     #lc-modal-footer {
-      display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end;
+      display: flex; gap: 8px; margin-top: 18px; justify-content: flex-end;
     }
     .lc-modal-btn {
-      font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
-      padding: 11px 22px; border-radius: 10px; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+      padding: 9px 18px; border-radius: 9px; cursor: pointer;
       transition: opacity 0.18s, transform 0.15s;
     }
     .lc-modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
@@ -141,7 +141,7 @@
       border: 1px solid rgba(61,217,232,0.25);
     }
     #lc-modal-reject {
-      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5);
       border: 1px solid rgba(255,255,255,0.12);
     }
     #lc-modal-reject:hover { color: rgba(255,255,255,0.85); }
