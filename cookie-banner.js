@@ -174,10 +174,11 @@
 
     // Tenta encontrar elementos de rodapé comuns
     const alvos = [
-      document.querySelector('.footer-copy'),
+      document.querySelector('.footer-bottom-links'),
+      document.querySelector('.footer-bottom'),
       document.querySelector('.footer-mini p'),
-      document.querySelector('footer'),
-      document.querySelector('.footer')
+      document.querySelector('.footer-copy'),
+      document.querySelector('footer')
     ].filter(Boolean);
 
     if (!alvos.length) return;
@@ -192,8 +193,12 @@
       construirBanner();
     });
 
-    // Insere a seguir ao elemento alvo
-    alvo.insertAdjacentElement('afterend', btn);
+    // Insere dentro do container ou a seguir
+    if (alvo.classList.contains('footer-bottom-links') || alvo.classList.contains('footer-bottom')) {
+      alvo.appendChild(btn);
+    } else {
+      alvo.insertAdjacentElement('afterend', btn);
+    }
   }
 
   /* ── API pública ── */
