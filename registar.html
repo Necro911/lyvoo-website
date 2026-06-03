@@ -253,7 +253,14 @@
       <div class="terms">
         <input type="checkbox" id="terms" name="terms" />
         <label for="terms">
-          Ao criar conta, aceito os <a href="termos.html" target="_blank">Termos de Serviço</a> e a <a href="privacidade.html" target="_blank">Política de Privacidade</a> da Lyvoo.
+          Aceito os <a href="termos.html" target="_blank">Termos de Serviço</a> e a <a href="privacidade.html" target="_blank">Política de Privacidade</a> da Lyvoo.
+        </label>
+      </div>
+
+      <div class="terms" style="margin-top:-4px;">
+        <input type="checkbox" id="serviceStart" name="serviceStart" />
+        <label for="serviceStart">
+          Compreendo que ao confirmar a subscrição, o envio do kit inicia imediatamente e que, após utilização do kit, abdico do direito de arrependimento nos termos do <a href="termos.html#cancelamento" target="_blank">art. 17.º do DL 24/2014</a>.
         </label>
       </div>
 
@@ -413,6 +420,16 @@
     } else {
       pwInput.classList.remove('error');
       pwErr.style.display = 'none';
+    }
+
+    // Validar checkboxes obrigatórias
+    if (!document.getElementById('terms').checked) {
+      mostrarErroGlobal('Deve aceitar os Termos de Serviço para continuar.');
+      valido = false;
+    }
+    if (!document.getElementById('serviceStart').checked) {
+      mostrarErroGlobal('Deve confirmar a política de início imediato do serviço para continuar.');
+      valido = false;
     }
 
     if (!valido) return;
