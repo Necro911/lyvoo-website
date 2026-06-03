@@ -107,6 +107,10 @@
       .ob-preview-grid { grid-template-columns: 1fr; }
     }
 
+    /* ── Novo badge em feature cards ── */
+    .feature-new { position: absolute; top: 12px; right: 12px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: var(--green); color: #0A1F0A; padding: 3px 8px; border-radius: 999px; }
+    .feature { position: relative; }
+
     /* ── Estado badge ── */
     .estado-badge {
       display: inline-flex; align-items: center; gap: 6px;
@@ -442,6 +446,16 @@
     <!-- ══ VISTA RESULTADOS (estado >= 4) ══ -->
     <div id="view-resultados">
 
+    <!-- Banner resultados (estado 4 — primeira vez) -->
+    <div id="results-banner" style="display:none; margin:0 32px 0; padding:18px 24px; background:linear-gradient(135deg,rgba(74,222,128,0.09),rgba(61,217,232,0.06)); border:1px solid rgba(74,222,128,0.22); border-radius:16px; display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+      <div style="font-size:26px; line-height:1;">🎉</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;">Os seus resultados estão prontos!</div>
+        <div style="font-size:13px;color:var(--txt-2);">O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.</div>
+      </div>
+      <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
+    </div>
+
     <!-- ROW 1: Program + Score -->
     <div class="grid row-main mb">
 
@@ -455,9 +469,9 @@
               <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="204.1"/>
               <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#0D7A87"/></linearGradient></defs>
             </svg>
-            <div class="ring-center"><div class="ring-val">42<small>%</small></div><div class="ring-sub">progresso 6 meses</div></div>
+            <div class="ring-center"><div class="ring-val" id="prog-pct">42<small>%</small></div><div class="ring-sub">progresso 6 meses</div></div>
           </div>
-          <div class="checklist">
+          <div class="checklist" id="prog-checklist">
             <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
             <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Consultas iniciais</div><div class="check-state">Concluídas</div></div></div>
             <div class="check-item"><div class="check-mark prog"></div><div class="check-body"><div class="check-title">Plano personalizado</div><div class="check-state">Em curso</div></div></div>
@@ -494,7 +508,7 @@
     <!-- ROW 2: feature cards -->
     <div class="grid row-4 mb">
 
-      <a href="#" class="feature">
+      <a href="#" class="feature" id="fc-plano">
         <div class="feature-head">Plano alimentar</div>
         <div class="feature-img" style="background:linear-gradient(135deg,#1B6B3A,#0E3D24);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21V11M12 11a5 5 0 0 0 5-5 5 5 0 0 0-10 0 5 5 0 0 0 5 5Z"/><path d="M3 11h18a9 9 0 0 1-9 9 9 9 0 0 1-9-9Z"/></svg>
@@ -516,7 +530,7 @@
         </div>
       </a>
 
-      <a href="#" class="feature">
+      <a href="#" class="feature" id="fc-bio">
         <div class="feature-head">Biomarcadores</div>
         <div class="feature-img" style="background:linear-gradient(135deg,#0E5A63,#08323A);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg>
@@ -784,11 +798,47 @@
       // Mostrar dashboard completo
       viewOn.style.display  = 'none';
       viewRes.style.display = 'block';
+
       // Desbloquear sidebar
       ['sb-plano-alimentar', 'sb-suplementacao', 'sb-biomarcadores'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.classList.remove('sb-locked'); el.querySelector('.sb-lock-icon')?.remove(); }
       });
+
+      // Banner "resultados prontos" (estado 4 inicial)
+      if (estadoNum === 4) {
+        const banner = document.getElementById('results-banner');
+        if (banner) banner.style.display = 'flex';
+
+        // Progress: 80% + checklist actualizado
+        const pctEl = document.getElementById('prog-pct');
+        if (pctEl) pctEl.innerHTML = '80<small>%</small>';
+
+        const checklist = document.getElementById('prog-checklist');
+        if (checklist) checklist.innerHTML = `
+          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
+          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Análise laboratorial</div><div class="check-state">Concluída</div></div></div>
+          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Relatório e plano entregues</div><div class="check-state">Disponível agora</div></div></div>
+          <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Reavaliação</div><div class="check-state">Em breve · 6 meses</div></div></div>`;
+
+        // Badges "Novo" nos feature cards
+        ['fc-plano', 'fc-bio'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el && !el.querySelector('.feature-new')) {
+            const badge = document.createElement('span');
+            badge.className = 'feature-new';
+            badge.textContent = 'Novo';
+            el.appendChild(badge);
+          }
+        });
+      }
+
+      // Estado 5: reavaliação — 90%
+      if (estadoNum === 5) {
+        const pctEl = document.getElementById('prog-pct');
+        if (pctEl) pctEl.innerHTML = '90<small>%</small>';
+      }
+
     } else {
       // Mostrar onboarding
       viewOn.style.display  = 'block';
