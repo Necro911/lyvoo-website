@@ -1200,6 +1200,20 @@
     }
 
     /* ── GLP-Friendly ── */
+    /* ── Gradiente contínuo: App + Evidência + GLP ── */
+    .dark-continuum {
+      background: linear-gradient(to bottom,
+        #060F16 0%,
+        #050D15 28%,
+        #04090E 52%,
+        #050F0D 76%,
+        #061310 100%
+      );
+    }
+    .dark-continuum .app-section  { background: transparent; }
+    .dark-continuum #evidencia    { background: transparent !important; }
+    .dark-continuum .glp-section  { background: transparent; }
+
     .glp-section {
       background: var(--dark-bg);
       padding: 120px 0;
@@ -2557,6 +2571,9 @@
 </section>
 
 
+<!-- ── GRADIENTE CONTÍNUO: App + Evidência + GLP ── -->
+<div class="dark-continuum">
+
 <!-- ── APP SECTION ── -->
 <section class="app-section" id="app">
   <div class="app-bg-glow"></div>
@@ -3038,6 +3055,8 @@
     </div><!-- /glp-inner -->
   </div>
 </section>
+
+</div><!-- /dark-continuum -->
 
 <!-- ── TESTEMUNHOS ── -->
 <section class="step-layer layer-white" id="testemunhos">
