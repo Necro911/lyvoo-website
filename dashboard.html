@@ -622,11 +622,15 @@
   </main>
 </div>
 
-<script type="module">
-  // Timeout de segurança: se Firebase não resolver em 8s, vai para login
-  const _authTimeout = setTimeout(() => {
+<script>
+  // Fallback independente — redireciona para login se o módulo falhar
+  window._authFallback = setTimeout(function() {
     window.location.href = 'login.html';
-  }, 8000);
+  }, 6000);
+</script>
+
+<script type="module">
+  clearTimeout(window._authFallback);
 
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
@@ -722,7 +726,7 @@
   }
 
   onAuthStateChanged(auth, async (user) => {
-    clearTimeout(_authTimeout);
+    clearTimeout(window._authFallback);
     if (!user) { window.location.href = 'login.html'; return; }
 
     // Valores imediatos a partir da Auth (rápido)
