@@ -131,6 +131,8 @@
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; }
     .nav-cta:hover { opacity: 0.88; background: #fff !important; }
+    .nav-login { border: 1.5px solid rgba(255,255,255,0.22) !important; border-radius: 999px !important; padding: 8px 18px !important; color: rgba(255,255,255,0.75) !important; font-weight: 600 !important; transition: border-color 0.2s, color 0.2s !important; }
+    .nav-login:hover { border-color: rgba(255,255,255,0.5) !important; color: #fff !important; background: transparent !important; }
     .nav-mob { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 6px; }
 
     /* ──────────────────────────────────────────
@@ -1718,6 +1720,7 @@
       <li><a href="#como-funciona">Como funciona</a></li>
       <li><a href="#planos">Plano</a></li>
       <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="login.html" class="nav-login">Entrar</a></li>
       <li><a href="registar.html" class="nav-cta">Começar agora</a></li>
     </ul>
     <button class="nav-mob" id="mobBtn" aria-label="Menu">
@@ -1730,6 +1733,7 @@
 <div class="mob-menu" id="mobMenu">
   <a href="#como-funciona" onclick="closeMob()">Como funciona</a>
   <a href="#planos" onclick="closeMob()">Plano</a>
+  <a href="login.html" onclick="closeMob()" style="text-align:center;color:rgba(255,255,255,0.65);">Entrar</a>
   <a href="registar.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;margin-top:6px">Começar agora</a>
 </div>
 
@@ -1999,7 +2003,7 @@
     <div class="problem-intro fade">
       <span class="label">O problema</span>
       <h2>Conhece os seus valores.<br/>Mas sabe o que <span class="grad-text" style="white-space:nowrap;">significam?</span></h2>
-      <p>A maioria das pessoas faz análises uma vez por ano, recebe os resultados e fica<br/>à espera de uma consulta que pode demorar meses.<br/>Sem contexto. Sem plano. Sem continuidade.</p>
+      <p>A maioria das pessoas faz análises uma vez por ano, recebe os resultados e fica à espera de uma consulta que pode demorar meses.<br/>Sem contexto. Sem plano. Sem continuidade.</p>
     </div>
 
     <!-- Editorial comparison -->
@@ -2556,19 +2560,19 @@
             <div class="siphox-check-icon">
               <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <span><strong>Macros personalizados</strong> — proteína, gordura e hidratos calculados sobre os seus resultados, não sobre médias populacionais</span>
+            <span><strong>Macros personalizados</strong> - Macronutrientes calculados sobre os seus resultados, não sobre médias populacionais</span>
           </div>
           <div class="step-detail-item siphox-check">
             <div class="siphox-check-icon">
               <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <span><strong>Alimentos a priorizar e a reduzir</strong> — lista gerada pelo nutricionista com base na sua inflamação, hormônios e metabolismo</span>
+            <span><strong>Adaptado a si e não o contrário</strong> - A Lyvoo respeita os seus gostos e preferências</span>
           </div>
           <div class="step-detail-item siphox-check">
             <div class="siphox-check-icon">
               <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <span><strong>Consulta de acompanhamento incluída</strong> — o plano actualiza-se na reavaliação dos 6 meses com os novos resultados</span>
+            <span><strong>Acompanhamento contínuo</strong> - Não tem de esperar pelos 6 meses. Mantemos contacto ao longo do progresso</span>
           </div>
         </div>
       </div>
@@ -2670,7 +2674,7 @@
       <div class="app-text">
         <span class="label label-light fade">A app Lyvoo</span>
         <h2 class="fade fade-d1">O seu painel de<br/><span class="grad-text">saúde no bolso.</span></h2>
-        <p class="fade fade-d2">A Lyvoo centraliza tudo: Os seus resultados, o plano nutricional, as consultas, os lembretes e a comunicação com a equipa clínica. Desenhada para ser simples de usar e impossível de ignorar.</p>
+        <p class="fade fade-d2">A Lyvoo centraliza tudo: Os resultados, o plano nutricional, as consultas, os lembretes e a comunicação com a equipa clínica. Desenhada para ser simples de usar e impossível de ignorar.</p>
         <div class="app-features fade fade-d2">
           <div class="app-feature">
             <div class="app-feature-icon">
@@ -2940,7 +2944,7 @@
     <div style="text-align:center;margin-bottom:64px">
       <span class="glp-badge fade"><span class="glp-badge-dot"></span>We are GLP-Friendly</span>
       <h2 class="fade fade-d1" style="font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;color:#fff;max-width:720px;margin:0 auto 16px;line-height:1.15">
-        Está em GLP-1?<br/>Estamos consigo.
+        Está em GLPs?<br/>Estamos consigo.
       </h2>
       <p class="fade fade-d2" style="font-size:17px;color:rgba(255,255,255,0.45);max-width:640px;margin:0 auto;line-height:1.75">
         Sabemos como estes fármacos transformam o metabolismo.<br/>E sabemos o que monitorizar para que a sua saúde acompanhe a mudança.
@@ -3152,7 +3156,7 @@
     <div class="tst-header">
       <span class="label fade">Histórias reais</span>
       <h2 class="fade fade-d1">Prevenção que <span class="grad-text">muda vidas</span></h2>
-      <p class="fade fade-d2">Pessoas como você que decidiram perceber a sua saúde antes de ser tarde.</p>
+      <p class="fade fade-d2">Pessoas como você, que decidiram conhecer a sua saúde antes de ser tarde.</p>
     </div>
 
     <div class="tst-grid">
@@ -3485,11 +3489,11 @@
         </div>
         <div class="faq-item">
           <button class="faq-q">O que acontece se algum valor estiver alterado?<span class="faq-icon"></span></button>
-          <div class="faq-a"><div class="faq-a-inner">No plano Completo, qualquer marcador fora do ideal é analisado pela equipa médica, que o contextualiza no relatório e define um plano de ação. Em ambos os planos recebe recomendações nutricionais alinhadas com os seus resultados. Nunca fica sozinho com um número que não entende.</div></div>
+          <div class="faq-a"><div class="faq-a-inner">Qualquer marcador fora do ideal é analisado pela equipa médica, que o contextualiza no relatório e define um plano de ação. Recebe também recomendações nutricionais alinhadas com os seus resultados. Nunca fica sozinho com um número que não entende.</div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-q">Qual a diferença entre o Essencial e o Completo?<span class="faq-icon"></span></button>
-          <div class="faq-a"><div class="faq-a-inner">O Essencial (€320/ano) foca-se na prevenção cardiometabólica com 11 biomarcadores e acompanhamento nutricional. O Completo (€640/ano) inclui supervisão médica, um painel expandido de 15 biomarcadores, relatório integrado médico + nutrição e acesso preferencial aos módulos avançados.</div></div>
+          <button class="faq-q">O que está incluído no programa?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">O programa Lyvoo (€359/ano) inclui tudo numa só subscrição: +40 biomarcadores analisados, kit enviado para casa, laboratório certificado ISO 15189, relatório integrado médico e nutricional, plano alimentar personalizado, reavaliação completa aos 6 meses e acesso à app com suporte contínuo da equipa. Sem custos escondidos, sem extras obrigatórios.</div></div>
         </div>
         <div class="faq-item">
           <button class="faq-q">Isto substitui o meu médico de família?<span class="faq-icon"></span></button>

@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iniciar sessão — Lyvoo</title>
-  <meta name="description" content="Aceda à sua conta Lyvoo." />
+  <meta name="description" content="Aceda à sua dashboard Lyvoo e acompanhe a sua saúde preventiva." />
+  <meta name="robots" content="noindex" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -19,10 +20,13 @@
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(160deg, #030D10 0%, #060F16 60%, #04080E 100%);
-      min-height: 100vh; color: var(--ink);
+      min-height: 100vh;
+      color: var(--ink);
       -webkit-font-smoothing: antialiased;
       display: flex; flex-direction: column;
     }
+
+    /* NAV */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(6,12,14,0.7); backdrop-filter: blur(24px);
@@ -39,23 +43,37 @@
       text-decoration: none; transition: color 0.2s;
     }
     .nav-back:hover { color: rgba(255,255,255,0.8); }
+
+    /* PAGE */
     .page {
       flex: 1; display: flex; align-items: center; justify-content: center;
       padding: 100px 24px 60px;
     }
+
+    /* CARD */
     .card {
       background: #fff; border-radius: 28px;
       padding: 48px 44px; width: 100%; max-width: 420px;
       box-shadow: 0 32px 80px rgba(0,0,0,0.35);
     }
+
     .card-header { text-align: center; margin-bottom: 36px; }
     .card-label {
       display: inline-block; font-size: 11px; font-weight: 700;
       letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--teal-light); margin-bottom: 14px;
     }
-    .card-title { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); line-height: 1.15; margin-bottom: 8px; }
+    .card-title {
+      font-size: 28px; font-weight: 800; letter-spacing: -0.04em;
+      color: var(--ink); line-height: 1.15; margin-bottom: 8px;
+    }
+    .card-title span {
+      background: linear-gradient(135deg, #3DD9E8, #8B5CF6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
     .card-sub { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+
+    /* GOOGLE BTN */
     .btn-google {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; padding: 13px 20px; border-radius: 12px;
@@ -64,35 +82,52 @@
       cursor: pointer; transition: all 0.2s; text-decoration: none;
     }
     .btn-google:hover { background: var(--surface); border-color: #C8D0D3; }
+    .btn-google svg { flex-shrink: 0; }
+
+    /* DIVIDER */
     .divider {
       display: flex; align-items: center; gap: 14px;
       margin: 24px 0; color: var(--ink-3); font-size: 12px; font-weight: 500;
     }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* FORM */
     .form { display: flex; flex-direction: column; gap: 14px; }
+
     .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
     .field input {
-      padding: 12px 14px; border-radius: 10px;
+      width: 100%; padding: 12px 14px; border-radius: 10px;
       border: 1.5px solid var(--border); background: var(--surface);
       font-family: 'Inter', sans-serif; font-size: 14px; color: var(--ink);
-      outline: none; transition: border-color 0.2s, background 0.2s; width: 100%;
+      outline: none; transition: border-color 0.2s, background 0.2s;
     }
     .field input::placeholder { color: var(--ink-3); }
     .field input:focus { border-color: var(--teal-light); background: #fff; }
-    .field input.error { border-color: #EF4444; }
-    .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
+
+    .field-label-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .field-label-row label,
+    .field label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+    .forgot-link {
+      font-size: 12px; font-weight: 500; color: var(--teal-light);
+      text-decoration: none;
+    }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* PASSWORD TOGGLE */
     .input-wrap { position: relative; }
-    .input-wrap input { padding-right: 42px; }
+    .input-wrap input { width: 100%; padding-right: 42px; }
     .toggle-pw {
       position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
       background: none; border: none; cursor: pointer; color: var(--ink-3);
       padding: 0; display: flex; align-items: center;
     }
     .toggle-pw:hover { color: var(--ink-2); }
-    .forgot { text-align: right; }
-    .forgot a { font-size: 12px; color: var(--teal-light); text-decoration: none; font-weight: 500; }
-    .forgot a:hover { text-decoration: underline; }
+
+    /* SUBMIT */
     .btn-submit {
       display: flex; align-items: center; justify-content: center; gap: 8px;
       width: 100%; padding: 14px 20px; border-radius: 12px;
@@ -103,24 +138,46 @@
     }
     .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
     .btn-submit:active { transform: translateY(0); }
-    .register-link { text-align: center; font-size: 13px; color: var(--ink-3); margin-top: 22px; }
+
+    /* REGISTER LINK */
+    .register-link {
+      text-align: center; font-size: 13px; color: var(--ink-3);
+      margin-top: 22px;
+    }
     .register-link a { color: var(--teal-light); font-weight: 600; text-decoration: none; }
     .register-link a:hover { text-decoration: underline; }
-    .global-error {
-      color: #EF4444; font-size: 13px; text-align: center;
-      margin-top: 12px; display: none;
+
+    /* TRUST BADGES */
+    .trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; margin-top: 28px; padding-top: 24px;
+      border-top: 1px solid var(--border);
     }
+    .trust-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 500; color: var(--ink-3);
+    }
+    .trust-item svg { color: var(--teal-light); flex-shrink: 0; }
+
+    /* ERROR/SUCCESS */
+    .field input.error { border-color: #EF4444; }
+    .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
+
+    /* SPINNER */
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { animation: spin 0.8s linear infinite; }
-    @media (max-width: 520px) {
+
+    @media (max-width: 480px) {
       .card { padding: 36px 24px; border-radius: 20px; }
       .card-title { font-size: 24px; }
+      .trust { flex-direction: column; gap: 10px; }
     }
   </style>
   <script src="cookie-banner.js" defer></script>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
@@ -133,60 +190,79 @@
   </div>
 </nav>
 
+<!-- PAGE -->
 <div class="page">
   <div class="card">
 
     <div class="card-header">
-      <div class="card-label">A sua conta</div>
-      <h1 class="card-title">Bem-vindo de volta</h1>
-      <p class="card-sub">Inicie sessão para aceder ao seu programa Lyvoo.</p>
+      <div class="card-label">Bem-vindo de volta</div>
+      <h1 class="card-title">Aceda à sua<br/><span>dashboard Lyvoo</span></h1>
+      <p class="card-sub">Acompanhe os seus biomarcadores e o progresso do programa.</p>
     </div>
 
-    <a href="#" class="btn-google" id="btnGoogle">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+    <!-- GOOGLE -->
+    <button class="btn-google" id="btnGoogle" type="button">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
         <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
         <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
         <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
       </svg>
       Continuar com Google
-    </a>
+    </button>
 
-    <div class="divider">ou inicie sessão com email</div>
+    <div class="divider">ou entre com email</div>
 
+    <!-- FORM -->
     <form class="form" id="loginForm" novalidate>
+
       <div class="field">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="o.seu@email.pt" autocomplete="email" />
+        <input type="email" id="email" name="email" placeholder="o.seu@email.pt" autocomplete="email" />
         <span class="field-error" id="emailError">Introduza um email válido.</span>
       </div>
 
       <div class="field">
-        <label for="password">Palavra-passe</label>
+        <div class="field-label-row">
+          <label for="password">Palavra-passe</label>
+          <a href="#" class="forgot-link" id="forgotLink">Esqueceu-se?</a>
+        </div>
         <div class="input-wrap">
-          <input type="password" id="password" placeholder="A sua palavra-passe" autocomplete="current-password" />
+          <input type="password" id="password" name="password" placeholder="A sua palavra-passe" autocomplete="current-password" />
           <button type="button" class="toggle-pw" id="togglePw" aria-label="Mostrar palavra-passe">
             <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
             </svg>
           </button>
         </div>
         <span class="field-error" id="passwordError">Introduza a sua palavra-passe.</span>
       </div>
 
-      <div class="forgot">
-        <a href="#" id="btnForgot">Esqueceu a palavra-passe?</a>
-      </div>
-
       <button type="submit" class="btn-submit" id="submitBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-        Iniciar sessão
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Entrar
       </button>
 
-      <p class="global-error" id="globalError"></p>
     </form>
 
-    <p class="register-link">Não tem conta? <a href="registar.html">Criar conta</a></p>
+    <p class="register-link">Ainda não tem conta? <a href="registar.html">Criar conta</a></p>
+
+    <!-- TRUST -->
+    <div class="trust">
+      <div class="trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Dados encriptados
+      </div>
+      <div class="trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Conforme RGPD
+      </div>
+      <div class="trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+        Acesso seguro
+      </div>
+    </div>
 
   </div>
 </div>
@@ -201,14 +277,21 @@
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { auth } from './lyvoo-firebase.js';
 
+  // Se já estiver autenticado, redirecionar para dashboard
+  onAuthStateChanged(auth, user => {
+    if (user) window.location.replace('dashboard.html');
+  });
+
+  // ── Mensagens de erro em PT-PT ──
   const erros = {
+    'auth/user-not-found':          'Não existe nenhuma conta com este email.',
+    'auth/wrong-password':          'Palavra-passe incorreta. Tente novamente.',
     'auth/invalid-credential':      'Email ou palavra-passe incorretos.',
-    'auth/user-not-found':          'Não existe conta com este email.',
-    'auth/wrong-password':          'Palavra-passe incorreta.',
     'auth/invalid-email':           'O endereço de email não é válido.',
-    'auth/user-disabled':           'Esta conta foi desativada.',
-    'auth/too-many-requests':       'Demasiadas tentativas. Aguarde um momento.',
+    'auth/user-disabled':           'Esta conta foi suspensa. Contacte o suporte.',
+    'auth/too-many-requests':       'Demasiadas tentativas. Aguarde um momento e tente novamente.',
     'auth/popup-closed-by-user':    'A autenticação foi cancelada.',
+    'auth/popup-blocked':           'O pop-up foi bloqueado pelo browser. Permita pop-ups para este site.',
     'auth/network-request-failed':  'Erro de ligação. Verifique a sua internet.',
   };
 
@@ -216,15 +299,22 @@
     return erros[code] || 'Ocorreu um erro inesperado. Tente novamente.';
   }
 
-  function mostrarErro(msg) {
-    const el = document.getElementById('globalError');
-    el.style.color = '#EF4444'; // reset para vermelho sempre
-    el.textContent = msg; el.style.display = 'block';
+  function mostrarMensagem(msg, tipo = 'erro') {
+    let el = document.getElementById('globalMsg');
+    if (!el) {
+      el = document.createElement('p');
+      el.id = 'globalMsg';
+      el.style.cssText = 'font-size:13px;text-align:center;margin-top:12px;';
+      document.getElementById('loginForm').appendChild(el);
+    }
+    el.style.color = tipo === 'sucesso' ? '#059669' : '#EF4444';
+    el.textContent = msg;
+    el.style.display = 'block';
   }
 
-  function limparErro() {
-    const el = document.getElementById('globalError');
-    el.style.display = 'none';
+  function limparMensagem() {
+    const el = document.getElementById('globalMsg');
+    if (el) el.style.display = 'none';
   }
 
   function setBtnLoading(loading) {
@@ -232,29 +322,20 @@
     btn.disabled = loading;
     btn.innerHTML = loading
       ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> A entrar…'
-      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg> Iniciar sessão';
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Entrar';
   }
 
-  function aoAutenticar() {
-    const params = new URLSearchParams(window.location.search);
-    const next = params.get('next');
-    // Validar que next é um caminho local seguro (sem http//)
-    if (next && !next.startsWith('http') && !next.startsWith('//')) {
-      window.location.href = next;
-    } else {
-      window.location.href = 'dashboard.html';
-    }
+  function setGoogleLoading(loading) {
+    const btn = document.getElementById('btnGoogle');
+    btn.style.opacity = loading ? '0.6' : '1';
+    btn.style.pointerEvents = loading ? 'none' : '';
   }
 
-  // Se já tem sessão activa, redirecionar imediatamente
-  onAuthStateChanged(auth, (user) => {
-    if (user) aoAutenticar();
-  });
-
-  // Toggle palavra-passe
+  // ── Toggle palavra-passe ──
   const togglePw = document.getElementById('togglePw');
   const pwInput  = document.getElementById('password');
   const eyeIcon  = document.getElementById('eyeIcon');
+
   togglePw.addEventListener('click', () => {
     const oculto = pwInput.type === 'password';
     pwInput.type = oculto ? 'text' : 'password';
@@ -263,67 +344,72 @@
       : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
   });
 
-  // Login por email
-  const form       = document.getElementById('loginForm');
-  const emailInput = document.getElementById('email');
-  const emailErr   = document.getElementById('emailError');
-  const pwErr      = document.getElementById('passwordError');
-
-  form.addEventListener('submit', async (e) => {
+  // ── Login com email ──
+  document.getElementById('loginForm').addEventListener('submit', async e => {
     e.preventDefault();
-    limparErro();
-    let valido = true;
+    limparMensagem();
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
-      emailInput.classList.add('error'); emailErr.style.display = 'block'; valido = false;
+    const emailVal = document.getElementById('email').value.trim();
+    const pwVal    = document.getElementById('password').value;
+
+    let valido = true;
+    if (!emailVal || !/\S+@\S+\.\S+/.test(emailVal)) {
+      document.getElementById('emailError').style.display = 'block';
+      document.getElementById('email').classList.add('error');
+      valido = false;
     } else {
-      emailInput.classList.remove('error'); emailErr.style.display = 'none';
+      document.getElementById('emailError').style.display = 'none';
+      document.getElementById('email').classList.remove('error');
     }
-    if (!pwInput.value) {
-      pwInput.classList.add('error'); pwErr.style.display = 'block'; valido = false;
+    if (!pwVal) {
+      document.getElementById('passwordError').style.display = 'block';
+      document.getElementById('password').classList.add('error');
+      valido = false;
     } else {
-      pwInput.classList.remove('error'); pwErr.style.display = 'none';
+      document.getElementById('passwordError').style.display = 'none';
+      document.getElementById('password').classList.remove('error');
     }
     if (!valido) return;
 
     setBtnLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, emailInput.value.trim(), pwInput.value);
-      aoAutenticar();
+      await signInWithEmailAndPassword(auth, emailVal, pwVal);
+      window.location.href = 'dashboard.html';
     } catch (err) {
+      mostrarMensagem(mensagemErro(err.code));
       setBtnLoading(false);
-      mostrarErro(mensagemErro(err.code));
     }
   });
 
-  emailInput.addEventListener('input', () => { emailInput.classList.remove('error'); emailErr.style.display = 'none'; limparErro(); });
-  pwInput.addEventListener('input',    () => { pwInput.classList.remove('error');    pwErr.style.display = 'none';    limparErro(); });
-
-  // Google
-  document.getElementById('btnGoogle').addEventListener('click', async (e) => {
-    e.preventDefault();
-    limparErro();
+  // ── Login com Google ──
+  document.getElementById('btnGoogle').addEventListener('click', async () => {
+    limparMensagem();
+    setGoogleLoading(true);
     try {
-      const result = await signInWithPopup(auth, new GoogleAuthProvider());
-      aoAutenticar();
+      await signInWithPopup(auth, new GoogleAuthProvider());
+      window.location.href = 'dashboard.html';
     } catch (err) {
-      if (err.code !== 'auth/popup-closed-by-user') mostrarErro(mensagemErro(err.code));
+      if (err.code !== 'auth/popup-closed-by-user') {
+        mostrarMensagem(mensagemErro(err.code));
+      }
+      setGoogleLoading(false);
     }
   });
 
-  // Recuperar palavra-passe
-  document.getElementById('btnForgot').addEventListener('click', async (e) => {
+  // ── Recuperação de palavra-passe ──
+  document.getElementById('forgotLink').addEventListener('click', async e => {
     e.preventDefault();
-    const email = emailInput.value.trim();
-    if (!email) { emailInput.focus(); mostrarErro('Introduza o seu email para recuperar a palavra-passe.'); return; }
+    const emailVal = document.getElementById('email').value.trim();
+    if (!emailVal || !/\S+@\S+\.\S+/.test(emailVal)) {
+      mostrarMensagem('Introduza o seu email no campo acima e clique em "Esqueceu-se?".');
+      document.getElementById('email').focus();
+      return;
+    }
     try {
-      await sendPasswordResetEmail(auth, email);
-      const el = document.getElementById('globalError');
-      el.style.color = '#0D7A87';
-      el.textContent = 'Email de recuperação enviado. Verifique a sua caixa de entrada.';
-      el.style.display = 'block';
+      await sendPasswordResetEmail(auth, emailVal);
+      mostrarMensagem('Email de recuperação enviado. Verifique a sua caixa de entrada.', 'sucesso');
     } catch (err) {
-      mostrarErro(mensagemErro(err.code));
+      mostrarMensagem(mensagemErro(err.code));
     }
   });
 </script>
