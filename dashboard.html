@@ -53,6 +53,107 @@
     .sb-lock-icon { margin-left: auto; width: 13px; height: 13px; flex-shrink: 0; opacity: 0.6; }
 
     /* Estado badge no topbar */
+    /* ── Secções internas ── */
+    .sec-wrap { padding: 32px 32px 64px; max-width: 920px; }
+    .sec-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 20px; }
+    .sec-title { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--txt); margin-bottom: 4px; }
+    .sec-sub { font-size: 13px; color: var(--txt-3); }
+    .sec-legend { display: flex; align-items: center; font-size: 12px; color: var(--txt-3); flex-shrink: 0; }
+    .sec-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+    .sec-btn { font-size: 13px; font-weight: 600; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); background: rgba(61,217,232,0.06); padding: 8px 16px; border-radius: 9px; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .sec-btn:hover { background: rgba(61,217,232,0.12); }
+
+    /* Biomarcadores */
+    .bio-section { margin-bottom: 24px; }
+    .bio-sec-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 12px; }
+    .bio-table { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    .bio-row { display: grid; grid-template-columns: 180px 110px 130px 1fr 80px 60px; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .bio-row:last-child { border-bottom: none; }
+    .bio-name { font-weight: 600; color: var(--txt); }
+    .bio-val { font-weight: 700; color: var(--txt); }
+    .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 400; }
+    .bio-range { font-size: 11.5px; color: var(--txt-3); }
+    .bio-bar-wrap { height: 5px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+    .bio-bar-fill { height: 100%; border-radius: 999px; }
+    .bio-tag { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-align: center; }
+    .bio-tag.good { background: rgba(74,222,128,0.1); color: var(--green); }
+    .bio-tag.warn { background: rgba(251,191,36,0.1); color: var(--amber); }
+    .bio-tag.crit { background: rgba(248,113,113,0.1); color: var(--red); }
+    .bio-delta { font-size: 12px; font-weight: 600; text-align: right; }
+    .bio-delta.up { color: var(--green); }
+    .bio-delta.down { color: var(--cyan); }
+
+    /* Plano alimentar */
+    .sec-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .sec-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
+    .sec-card-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .sec-card-title { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 8px; }
+    .sec-card-desc { font-size: 13px; color: var(--txt-2); line-height: 1.6; }
+    .sec-macro-bars { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .sec-macro { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--txt-2); }
+    .sec-macro span:first-child { width: 70px; flex-shrink: 0; }
+    .sec-macro span:last-child { width: 35px; text-align: right; flex-shrink: 0; color: var(--txt-3); }
+    .sec-macro-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+    .sec-macro-bar div { height: 100%; border-radius: 999px; }
+    .sec-list-section { margin-bottom: 20px; }
+    .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+    .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
+
+    /* Suplementação */
+    .supp-grid { display: flex; flex-direction: column; gap: 12px; }
+    .supp-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; display: flex; align-items: flex-start; gap: 18px; }
+    .supp-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 900; flex-shrink: 0; }
+    .supp-body { flex: 1; }
+    .supp-name { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 4px; }
+    .supp-dose { font-size: 12.5px; color: var(--cyan); font-weight: 600; margin-bottom: 6px; }
+    .supp-reason { font-size: 13px; color: var(--txt-2); line-height: 1.6; }
+    .supp-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; flex-shrink: 0; margin-top: 4px; white-space: nowrap; }
+
+    /* Consultas */
+    .consult-list { display: flex; flex-direction: column; gap: 8px; }
+    .consult-row { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: flex; align-items: center; gap: 18px; }
+    .consult-row.upcoming { border-color: rgba(61,217,232,0.15); }
+    .consult-date { text-align: center; width: 44px; flex-shrink: 0; }
+    .consult-day { font-size: 22px; font-weight: 900; color: var(--txt); line-height: 1; }
+    .consult-month { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--txt-3); }
+    .consult-info { flex: 1; }
+    .consult-title { font-size: 14px; font-weight: 600; color: var(--txt); margin-bottom: 3px; }
+    .consult-meta { font-size: 12.5px; color: var(--txt-3); }
+    .consult-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; flex-shrink: 0; background: rgba(255,255,255,0.05); color: var(--txt-3); }
+    .upcoming-tag { background: rgba(61,217,232,0.08); color: var(--cyan); }
+
+    /* Perfil */
+    .profile-card { display: flex; align-items: center; gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; margin-bottom: 24px; }
+    .profile-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #3DD9E8, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .profile-name { font-size: 17px; font-weight: 700; color: var(--txt); margin-bottom: 3px; }
+    .profile-email { font-size: 13px; color: var(--txt-3); }
+    .profile-form { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .pf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .pf-field { display: flex; flex-direction: column; gap: 6px; }
+    .pf-field label { font-size: 12px; font-weight: 600; color: var(--txt-3); text-transform: uppercase; letter-spacing: 0.06em; }
+    .pf-field input { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--panel-2); font-family: 'Inter', sans-serif; font-size: 14px; color: var(--txt); outline: none; transition: border-color 0.2s; }
+    .pf-field input:focus { border-color: var(--cyan); }
+    .pf-save { background: var(--teal); color: #fff; border: none; padding: 12px; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; margin-top: 4px; }
+    .pf-save:hover { opacity: 0.88; }
+    .pf-msg { font-size: 13px; color: var(--green); text-align: center; }
+
+    /* Conta */
+    .account-section { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    .account-item { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
+    .account-item:last-child { border-bottom: none; }
+    .account-item-title { font-size: 14px; font-weight: 600; color: var(--txt); margin-bottom: 3px; }
+    .account-item-desc { font-size: 12.5px; color: var(--txt-3); }
+    .account-item.danger .account-item-title { color: var(--red); }
+    .danger-btn { background: rgba(248,113,113,0.08) !important; color: var(--red) !important; border-color: rgba(248,113,113,0.2) !important; cursor: pointer; }
+
+    @media (max-width: 860px) {
+      .bio-row { grid-template-columns: 1fr 80px 70px; }
+      .bio-row .bio-range, .bio-row .bio-bar-wrap { display: none; }
+      .sec-cards-grid { grid-template-columns: 1fr; }
+      .pf-row { grid-template-columns: 1fr; }
+    }
+
     /* ── Onboarding ── */
     .ob-welcome { margin-bottom: 28px; }
     .ob-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
@@ -279,46 +380,34 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
         Painel
       </a>
-      <a href="#" class="sb-link sb-locked" id="sb-plano-alimentar">
+      <a href="#" class="sb-link sb-locked" id="sb-plano-alimentar" onclick="navSection('plano-alimentar')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
         Plano alimentar
         <svg class="sb-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </a>
-      <a href="#" class="sb-link sb-locked" id="sb-suplementacao">
+      <a href="#" class="sb-link sb-locked" id="sb-suplementacao" onclick="navSection('suplementacao')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
         Suplementação
         <svg class="sb-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </a>
-      <a href="#" class="sb-link sb-locked" id="sb-biomarcadores">
+      <a href="#" class="sb-link sb-locked" id="sb-biomarcadores" onclick="navSection('biomarcadores')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
         Biomarcadores
         <svg class="sb-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </a>
-      <a href="#" class="sb-link">
+      <a href="#" class="sb-link" onclick="navSection('consultas')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Consultas
       </a>
 
       <div class="sb-section">Dados pessoais</div>
-      <a href="#" class="sb-link">
+      <a href="#" class="sb-link" onclick="navSection('perfil')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Dados pessoais
+        Perfil
       </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        Dados de saúde
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        Estilo de vida
-      </a>
-      <a href="#" class="sb-link">
+      <a href="#" class="sb-link" onclick="navSection('conta')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         Conta e segurança
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Privacidade
       </a>
     </nav>
 
@@ -344,6 +433,7 @@
     <div class="topbar">
       <div class="greeting">
         <h1 id="greeting">Olá 👋</h1>
+        <span id="pageTitle" style="display:none"></span>
         <p>Acompanhe a sua saúde. Melhore o seu futuro.</p>
       </div>
       <div class="topbar-right">
@@ -612,6 +702,207 @@
 
     </div><!-- /view-resultados -->
 
+    <!-- ══ SECÇÕES INTERNAS ══ -->
+
+    <!-- BIOMARCADORES -->
+    <div id="sec-biomarcadores" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div>
+          <h2 class="sec-title">Biomarcadores</h2>
+          <p class="sec-sub">Resultados da sua análise · Janeiro 2026</p>
+        </div>
+        <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Crítico</div>
+      </div>
+      <div class="bio-section">
+        <div class="bio-sec-title">Cardiovascular</div>
+        <div class="bio-table">
+          <div class="bio-row"><span class="bio-name">Colesterol LDL</span><span class="bio-val">85 <small>mg/dL</small></span><span class="bio-range">< 100 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:55%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 15</span></div>
+          <div class="bio-row"><span class="bio-name">Colesterol HDL</span><span class="bio-val">62 <small>mg/dL</small></span><span class="bio-range">> 50 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:75%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 4</span></div>
+          <div class="bio-row"><span class="bio-name">ApoB</span><span class="bio-val">72 <small>mg/dL</small></span><span class="bio-range">< 90 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:60%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 8</span></div>
+          <div class="bio-row"><span class="bio-name">Triglicéridos</span><span class="bio-val">118 <small>mg/dL</small></span><span class="bio-range">< 150 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:70%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 22</span></div>
+          <div class="bio-row"><span class="bio-name">PCR ultra-sensível</span><span class="bio-val">0.8 <small>mg/L</small></span><span class="bio-range">< 1.0 mg/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:80%;background:var(--amber)"></div></div><span class="bio-tag warn">Atenção</span><span class="bio-delta down">↓ 0.6</span></div>
+        </div>
+      </div>
+      <div class="bio-section">
+        <div class="bio-sec-title">Metabólico</div>
+        <div class="bio-table">
+          <div class="bio-row"><span class="bio-name">HbA1c</span><span class="bio-val">5.2 <small>%</small></span><span class="bio-range">< 5.7%</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:45%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 0.3</span></div>
+          <div class="bio-row"><span class="bio-name">Glicose em jejum</span><span class="bio-val">88 <small>mg/dL</small></span><span class="bio-range">70–99 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:62%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 5</span></div>
+          <div class="bio-row"><span class="bio-name">Insulina jejum</span><span class="bio-val">6.2 <small>µU/mL</small></span><span class="bio-range">< 10 µU/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:40%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
+        </div>
+      </div>
+      <div class="bio-section">
+        <div class="bio-sec-title">Nutricional</div>
+        <div class="bio-table">
+          <div class="bio-row"><span class="bio-name">Vitamina D</span><span class="bio-val">52 <small>ng/mL</small></span><span class="bio-range">40–80 ng/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:55%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 18</span></div>
+          <div class="bio-row"><span class="bio-name">Vitamina B12</span><span class="bio-val">612 <small>pg/mL</small></span><span class="bio-range">200–900 pg/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:70%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 96</span></div>
+          <div class="bio-row"><span class="bio-name">Ferritina</span><span class="bio-val">68 <small>ng/mL</small></span><span class="bio-range">30–200 ng/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:35%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 8</span></div>
+          <div class="bio-row"><span class="bio-name">Magnésio</span><span class="bio-val">0.82 <small>mmol/L</small></span><span class="bio-range">0.74–0.99 mmol/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:48%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
+        </div>
+      </div>
+      <div class="bio-section">
+        <div class="bio-sec-title">Tiróide</div>
+        <div class="bio-table">
+          <div class="bio-row"><span class="bio-name">TSH</span><span class="bio-val">1.8 <small>mUI/L</small></span><span class="bio-range">0.5–4.0 mUI/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:35%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
+          <div class="bio-row"><span class="bio-name">FT4</span><span class="bio-val">14.2 <small>pmol/L</small></span><span class="bio-range">12–22 pmol/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:22%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANO ALIMENTAR -->
+    <div id="sec-plano-alimentar" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Plano alimentar</h2><p class="sec-sub">Personalizado com base nos seus biomarcadores · Janeiro 2026</p></div>
+      </div>
+      <div class="sec-cards-grid">
+        <div class="sec-card">
+          <div class="sec-card-label" style="color:var(--cyan)">Objectivo principal</div>
+          <div class="sec-card-title">Reduzir inflamação sistémica</div>
+          <div class="sec-card-desc">O seu PCR ultra-sensível está ligeiramente elevado (0.8 mg/L). A dieta anti-inflamatória é a intervenção mais eficaz para o normalizar.</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-label" style="color:var(--green)">Macros diários</div>
+          <div class="sec-card-title">Proteína · Gordura · Hidratos</div>
+          <div class="sec-macro-bars">
+            <div class="sec-macro"><span>Proteína</span><div class="sec-macro-bar"><div style="width:30%;background:var(--cyan)"></div></div><span>30%</span></div>
+            <div class="sec-macro"><span>Gorduras</span><div class="sec-macro-bar"><div style="width:35%;background:var(--violet)"></div></div><span>35%</span></div>
+            <div class="sec-macro"><span>Hidratos</span><div class="sec-macro-bar"><div style="width:35%;background:var(--green)"></div></div><span>35%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-list-section">
+        <div class="sec-list-title" style="color:var(--green)">✓ Priorizar</div>
+        <div class="sec-tags"><span>Peixe gordo (salmão, sardinha)</span><span>Azeite virgem extra</span><span>Vegetais crucíferos</span><span>Frutos vermelhos</span><span>Nozes e amêndoas</span><span>Leguminosas</span><span>Cúrcuma e gengibre</span></div>
+      </div>
+      <div class="sec-list-section">
+        <div class="sec-list-title" style="color:var(--red)">✗ Reduzir</div>
+        <div class="sec-tags"><span>Açúcar refinado</span><span>Óleos vegetais processados</span><span>Álcool (> 1 copo/dia)</span><span>Carnes processadas</span><span>Farinhas refinadas</span></div>
+      </div>
+    </div>
+
+    <!-- SUPLEMENTAÇÃO -->
+    <div id="sec-suplementacao" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Suplementação</h2><p class="sec-sub">Prescrita com base nos seus resultados · Janeiro 2026</p></div>
+      </div>
+      <div class="supp-grid">
+        <div class="supp-card">
+          <div class="supp-icon" style="background:rgba(61,217,232,0.08);color:var(--cyan)">D3</div>
+          <div class="supp-body">
+            <div class="supp-name">Vitamina D3 + K2</div>
+            <div class="supp-dose">2000 UI/dia · Com a refeição principal</div>
+            <div class="supp-reason">Manutenção dos níveis óptimos de Vitamina D (52 ng/mL). A K2 assegura a correcta direcção do cálcio.</div>
+          </div>
+          <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
+        </div>
+        <div class="supp-card">
+          <div class="supp-icon" style="background:rgba(139,92,246,0.08);color:var(--violet)">Ω3</div>
+          <div class="supp-body">
+            <div class="supp-name">Ómega-3 (EPA+DHA)</div>
+            <div class="supp-dose">2g/dia · Com o jantar</div>
+            <div class="supp-reason">Redução da inflamação sistémica (PCR 0.8 mg/L). Benefício cardiovascular adicional para o LDL.</div>
+          </div>
+          <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
+        </div>
+        <div class="supp-card">
+          <div class="supp-icon" style="background:rgba(251,191,36,0.08);color:var(--amber)">Mg</div>
+          <div class="supp-body">
+            <div class="supp-name">Magnésio (glicinato)</div>
+            <div class="supp-dose">300 mg/dia · Ao deitar</div>
+            <div class="supp-reason">Suporte metabólico e melhoria da qualidade do sono. Forma glicinato para melhor absorção.</div>
+          </div>
+          <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONSULTAS -->
+    <div id="sec-consultas" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Consultas</h2><p class="sec-sub">Próximas e passadas</p></div>
+        <a href="contacto.html" class="sec-btn">+ Agendar</a>
+      </div>
+      <div class="consult-list">
+        <div class="consult-row upcoming">
+          <div class="consult-date"><div class="consult-day">24</div><div class="consult-month">Jun</div></div>
+          <div class="consult-info">
+            <div class="consult-title">Follow-up de nutrição</div>
+            <div class="consult-meta">11:00 · Videochamada · Mariana Silva, Nutricionista</div>
+          </div>
+          <span class="consult-tag upcoming-tag">Em breve</span>
+          <a href="#" class="appt-btn">Remarcar</a>
+        </div>
+        <div class="consult-row upcoming">
+          <div class="consult-date"><div class="consult-day">7</div><div class="consult-month">Jul</div></div>
+          <div class="consult-info">
+            <div class="consult-title">Consulta de medicina preventiva</div>
+            <div class="consult-meta">10:00 · Videochamada · Dr. André Martins, Medicina Preventiva</div>
+          </div>
+          <span class="consult-tag upcoming-tag">Agendada</span>
+          <a href="#" class="appt-btn">Remarcar</a>
+        </div>
+        <div class="consult-row upcoming">
+          <div class="consult-date"><div class="consult-day">21</div><div class="consult-month">Jul</div></div>
+          <div class="consult-info">
+            <div class="consult-title">Reavaliação — análise ao sangue</div>
+            <div class="consult-meta">Kit enviado para casa · Recolha em domicílio</div>
+          </div>
+          <span class="consult-tag">Pendente</span>
+          <a href="#" class="appt-btn">Ver instruções</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div id="sec-perfil" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Perfil</h2><p class="sec-sub">Os seus dados pessoais</p></div>
+      </div>
+      <div class="profile-card">
+        <div class="profile-avatar" id="profileAvatar">?</div>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">—</div>
+          <div class="profile-email" id="profileEmail">—</div>
+        </div>
+      </div>
+      <div class="profile-form">
+        <div class="pf-row">
+          <div class="pf-field"><label>Nome</label><input type="text" id="pf-first" placeholder="Nome"/></div>
+          <div class="pf-field"><label>Apelido</label><input type="text" id="pf-last" placeholder="Apelido"/></div>
+        </div>
+        <div class="pf-field"><label>Email</label><input type="email" id="pf-email" placeholder="Email" disabled style="opacity:0.5;cursor:not-allowed"/></div>
+        <div class="pf-field"><label>Telemóvel</label><input type="tel" id="pf-phone" placeholder="+351 9xx xxx xxx"/></div>
+        <div class="pf-field"><label>Data de nascimento</label><input type="date" id="pf-dob"/></div>
+        <button class="pf-save" id="pf-save-btn">Guardar alterações</button>
+        <p class="pf-msg" id="pf-msg"></p>
+      </div>
+    </div>
+
+    <!-- CONTA -->
+    <div id="sec-conta" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Conta e segurança</h2><p class="sec-sub">Gerir acesso e dados</p></div>
+      </div>
+      <div class="account-section">
+        <div class="account-item">
+          <div><div class="account-item-title">Palavra-passe</div><div class="account-item-desc">Alterar a sua palavra-passe de acesso</div></div>
+          <a href="login.html" class="sec-btn">Alterar</a>
+        </div>
+        <div class="account-item">
+          <div><div class="account-item-title">Política de Privacidade</div><div class="account-item-desc">Como tratamos os seus dados de saúde</div></div>
+          <a href="privacidade.html" class="sec-btn">Ver</a>
+        </div>
+        <div class="account-item">
+          <div><div class="account-item-title">Termos de Serviço</div><div class="account-item-desc">Condições do programa Lyvoo</div></div>
+          <a href="termos.html" class="sec-btn">Ver</a>
+        </div>
+        <div class="account-item danger">
+          <div><div class="account-item-title">Eliminar conta</div><div class="account-item-desc">Apagar permanentemente todos os seus dados</div></div>
+          <button class="sec-btn danger-btn" onclick="alert('Para eliminar a conta, contacte hello@lyvoo.pt')">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -627,6 +918,48 @@
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
+
+  // ── Navegação entre secções ──────────────────────────────────────────
+  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','consultas','perfil','conta'];
+  const SECTION_TITLES = {
+    'biomarcadores': 'Biomarcadores',
+    'plano-alimentar': 'Plano alimentar',
+    'suplementacao': 'Suplementação',
+    'consultas': 'Consultas',
+    'perfil': 'Perfil',
+    'conta': 'Conta e segurança',
+    'painel': 'Painel'
+  };
+
+  window.navSection = function(name) {
+    // Esconder todas as vistas e secções
+    ['view-onboarding','view-resultados'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    SECTIONS.forEach(s => {
+      const el = document.getElementById('sec-' + s);
+      if (el) el.style.display = 'none';
+    });
+
+    // Mostrar secção pedida
+    if (name === 'painel') {
+      // Voltar ao painel principal
+      const estado = window._estadoActual || 1;
+      const viewOn  = document.getElementById('view-onboarding');
+      const viewRes = document.getElementById('view-resultados');
+      if (estado >= 4) { viewRes.style.display = 'block'; }
+      else { viewOn.style.display = 'block'; }
+    } else {
+      const el = document.getElementById('sec-' + name);
+      if (el) el.style.display = 'block';
+    }
+
+    // Actualizar sidebar activo
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+    // Actualizar título
+    document.getElementById('pageTitle').textContent = SECTION_TITLES[name] || name;
+  };
 
   // ── Dados de onboarding por estado ──────────────────────────────────
   const OB_ESTADOS = {
@@ -813,6 +1146,7 @@
       renderOnboarding(estadoNum, primeiro);
     }
 
+    window._estadoActual = estadoNum;
     document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
     document.getElementById('navName').textContent  = nome;
     document.getElementById('navAvatar').textContent = iniciaisDe(nome);
@@ -820,7 +1154,42 @@
       ? planoNome.replace('Lyvoo ', 'Plano ')
       : 'Sem plano ativo';
 
-    // shell já visível
+    // Preencher perfil
+    document.getElementById('profileAvatar').textContent = iniciaisDe(nome);
+    document.getElementById('profileName').textContent   = nome;
+    document.getElementById('profileEmail').textContent  = user.email;
+    document.getElementById('pf-email').value = user.email;
+    // Preencher campos com dados do Firestore se existirem
+    try {
+      const snap2 = await getDoc(doc(db, 'users', user.uid));
+      if (snap2.exists()) {
+        const d = snap2.data();
+        if (d.firstName) document.getElementById('pf-first').value = d.firstName;
+        if (d.lastName)  document.getElementById('pf-last').value  = d.lastName;
+        if (d.phone)     document.getElementById('pf-phone').value = d.phone;
+        if (d.dob)       document.getElementById('pf-dob').value   = d.dob;
+      }
+    } catch(e) {}
+
+    // Guardar perfil
+    document.getElementById('pf-save-btn').addEventListener('click', async () => {
+      const { setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+      try {
+        await setDoc(doc(db, 'users', user.uid), {
+          firstName: document.getElementById('pf-first').value.trim(),
+          lastName:  document.getElementById('pf-last').value.trim(),
+          phone:     document.getElementById('pf-phone').value.trim(),
+          dob:       document.getElementById('pf-dob').value,
+          atualizadoEm: serverTimestamp()
+        }, { merge: true });
+        const msg = document.getElementById('pf-msg');
+        msg.textContent = '✓ Guardado com sucesso';
+        setTimeout(() => msg.textContent = '', 3000);
+      } catch(e) {
+        document.getElementById('pf-msg').textContent = 'Erro ao guardar. Tente novamente.';
+      }
+    });
+
   });
 
   document.getElementById('btnLogout').addEventListener('click', async () => {
