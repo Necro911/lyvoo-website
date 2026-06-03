@@ -218,6 +218,7 @@
 
   function mostrarErro(msg) {
     const el = document.getElementById('globalError');
+    el.style.color = '#EF4444'; // reset para vermelho sempre
     el.textContent = msg; el.style.display = 'block';
   }
 
@@ -317,7 +318,6 @@
     if (!email) { emailInput.focus(); mostrarErro('Introduza o seu email para recuperar a palavra-passe.'); return; }
     try {
       await sendPasswordResetEmail(auth, email);
-      mostrarErro('');
       const el = document.getElementById('globalError');
       el.style.color = '#0D7A87';
       el.textContent = 'Email de recuperação enviado. Verifique a sua caixa de entrada.';

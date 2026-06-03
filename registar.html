@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script type="module" src="Untitled-1.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -417,7 +416,7 @@
       emailErr.style.display = 'none';
     }
 
-    if (pwInput.value.length < 6) {
+    if (pwInput.value.length < 8) {
       pwInput.classList.add('error');
       pwErr.style.display = 'block';
       valido = false;

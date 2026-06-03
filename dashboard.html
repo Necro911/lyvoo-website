@@ -11,7 +11,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
-      --violet: #8B5CF6; --green: #4ADE80;
+      --violet: #8B5CF6; --green: #4ADE80; --amber: #FBBF24; --red: #F87171;
       --bg: #070B0D; --panel: #0E1417; --panel-2: #121A1E;
       --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.10);
       --txt: #E8EDEF; --txt-2: #9DAAB0; --txt-3: #5E6C72;
@@ -479,7 +479,7 @@
       </div>
 
       <!-- Card rastreio (estado 2 — kit enviado) -->
-      <div id="kit-tracking-card" style="display:none; background:var(--panel); border:1px solid var(--line-2); border-radius:16px; padding:20px 24px; margin-bottom:28px; display:none;">
+      <div id="kit-tracking-card" style="display:none; background:var(--panel); border:1px solid var(--line-2); border-radius:16px; padding:20px 24px; margin-bottom:28px;">
         <div style="display:flex; align-items:center; gap:14px;">
           <div style="width:40px;height:40px;border-radius:12px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="1"/><path d="M5 17v4"/><path d="M9 21h6"/></svg>
@@ -1114,7 +1114,7 @@
     grid.innerHTML = highlights.map(r => {
       const tagCls = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
       const tagLbl = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
-      const deltaDir = r.delta && (r.delta.startsWith('-')||r.delta.startsWith('↓')) ? 'up' : 'up';
+      const deltaDir = r.delta && (r.delta.startsWith('-')||r.delta.startsWith('↓')) ? 'down' : 'up';
       return `<div class="bio-card">
         <div class="bio-top"><span class="bio-name">${r.nome}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'—'}</span></div>
         <div class="bio-val">${r.valor} <small>${r.unidade||''}</small></div>
