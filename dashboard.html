@@ -623,6 +623,11 @@
 </div>
 
 <script type="module">
+  // Timeout de segurança: se Firebase não resolver em 8s, vai para login
+  const _authTimeout = setTimeout(() => {
+    window.location.href = 'login.html';
+  }, 8000);
+
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
@@ -717,6 +722,7 @@
   }
 
   onAuthStateChanged(auth, async (user) => {
+    clearTimeout(_authTimeout);
     if (!user) { window.location.href = 'login.html'; return; }
 
     // Valores imediatos a partir da Auth (rápido)
