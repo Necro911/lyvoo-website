@@ -437,7 +437,14 @@
     clearTimeout(window._authFallback);
     document.getElementById('loading-state').style.display = 'none';
 
-    if (!user || !ADMIN_EMAILS.includes(user.email)) {
+    if (!user) {
+      // Não autenticado → redirecionar para login
+      window.location.href = 'login.html?next=admin.html';
+      return;
+    }
+
+    if (!ADMIN_EMAILS.includes(user.email)) {
+      // Autenticado mas não é admin
       document.getElementById('access-denied').style.display = 'block';
       return;
     }

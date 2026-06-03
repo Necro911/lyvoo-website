@@ -234,7 +234,9 @@
   }
 
   function aoAutenticar() {
-    window.location.href = 'dashboard.html';
+    const params = new URLSearchParams(window.location.search);
+    const next = params.get('next');
+    window.location.href = next || 'dashboard.html';
   }
 
   // Toggle palavra-passe
