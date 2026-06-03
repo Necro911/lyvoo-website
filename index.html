@@ -1307,6 +1307,14 @@
       text-transform: uppercase; color: var(--cyan);
     }
     .glp-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); animation: blink 2.2s infinite; }
+    .glp-intro-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center; margin-bottom: 48px;
+    }
+    .glp-intro-row > p {
+      font-size: 15.5px; color: rgba(255,255,255,0.48); line-height: 1.8; margin: 0;
+    }
+    .glp-intro-row .glp-meds { margin-bottom: 0; }
     .glp-inner {
       display: grid; grid-template-columns: 1fr 1fr;
       gap: 72px; align-items: start;
@@ -1410,6 +1418,7 @@
     }
     .glp-cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
     @media (max-width: 960px) {
+      .glp-intro-row { grid-template-columns: 1fr; gap: 28px; }
       .glp-inner { grid-template-columns: 1fr; gap: 48px; }
       .glp-panel { position: static; }
     }
@@ -2941,36 +2950,34 @@
   <div class="glp-glow"></div>
   <div class="container" style="position:relative">
 
-    <div style="text-align:center;margin-bottom:64px">
+    <div style="text-align:center;margin-bottom:40px">
       <span class="glp-badge fade"><span class="glp-badge-dot"></span>We are GLP-Friendly</span>
-      <h2 class="fade fade-d1" style="font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;color:#fff;max-width:720px;margin:0 auto 16px;line-height:1.15">
+      <h2 class="fade fade-d1" style="font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;color:#fff;max-width:720px;margin:0 auto 0;line-height:1.15">
         Está em GLPs?<br/>Estamos consigo.
       </h2>
-      <p class="fade fade-d2" style="font-size:17px;color:rgba(255,255,255,0.45);max-width:640px;margin:0 auto;line-height:1.75">
-        Sabemos como estes fármacos transformam o metabolismo.<br/>E sabemos o que monitorizar para que a sua saúde acompanhe a mudança.
+    </div>
+
+    <!-- Parágrafo + pills em linha -->
+    <div class="glp-intro-row fade fade-d2">
+      <p>
+        Os agonistas GLP-1/GIP/glucagon são uma revolução, mas a perda de peso rápida traz desafios que muitos profissionais de saúde ainda não acompanham de perto: <strong style="color:rgba(255,255,255,0.72)">massa muscular perdida, deficiências nutricionais, alterações renais e tiróide</strong>. A Lyvoo foi concebida para isso.
       </p>
+      <div class="glp-meds">
+        <span class="glp-med">Ozempic</span>
+        <span class="glp-med">Wegovy</span>
+        <span class="glp-med">Mounjaro</span>
+        <span class="glp-med">Rybelsus</span>
+        <span class="glp-med">Saxenda</span>
+        <span class="glp-med">Victoza</span>
+        <span class="glp-med">Trulicity</span>
+        <span class="glp-med">Retatrutida</span>
+      </div>
     </div>
 
     <div class="glp-inner">
 
-      <!-- ── Coluna esquerda: contexto + concerns ── -->
+      <!-- ── Coluna esquerda: concerns ── -->
       <div class="glp-left fade fade-d1">
-
-        <!-- Medicações -->
-        <div class="glp-meds">
-          <span class="glp-med">Ozempic</span>
-          <span class="glp-med">Wegovy</span>
-          <span class="glp-med">Mounjaro</span>
-          <span class="glp-med">Rybelsus</span>
-          <span class="glp-med">Saxenda</span>
-          <span class="glp-med">Victoza</span>
-          <span class="glp-med">Trulicity</span>
-          <span class="glp-med">Retatrutida</span>
-        </div>
-
-        <p style="font-size:15.5px;color:rgba(255,255,255,0.48);line-height:1.8;margin-bottom:32px">
-          Os agonistas GLP-1/GIP/glucagon são uma revolução, mas a perda de peso rápida traz desafios que muitos profissionais de saúde ainda não acompanham de perto: <strong style="color:rgba(255,255,255,0.72)">massa muscular perdida, deficiências nutricionais, alterações renais e tiróide</strong>. A Lyvoo foi concebida para isso.
-        </p>
 
         <!-- 4 áreas de monitorização -->
         <div class="glp-concerns">
