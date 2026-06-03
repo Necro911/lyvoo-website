@@ -23,10 +23,7 @@
     a { text-decoration: none; color: inherit; }
 
     /* LOADING */
-    .loading-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
-    .loading-screen.hidden { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner { width: 36px; height: 36px; border: 3px solid rgba(61,217,232,0.2); border-top-color: var(--cyan); border-radius: 50%; animation: spin 0.7s linear infinite; }
 
     /* SHELL */
     .shell { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
@@ -272,14 +269,7 @@
 </head>
 <body>
 
-<!-- LOADING -->
-<div class="loading-screen" id="loadingScreen"><div class="spinner"></div></div>
-
-<!-- Fallback absoluto: se JS não correr em 5s, redireciona para login -->
-<noscript><meta http-equiv="refresh" content="0;url=login.html"/></noscript>
-<script>setTimeout(function(){if(document.getElementById('shell').style.display==='none')window.location.replace('login.html');},5000);</script>
-
-<div class="shell" id="shell" style="display:none">
+<div class="shell" id="shell">
 
   <!-- ── SIDEBAR ── -->
   <aside class="sidebar">
@@ -830,8 +820,7 @@
       ? planoNome.replace('Lyvoo ', 'Plano ')
       : 'Sem plano ativo';
 
-    document.getElementById('loadingScreen').classList.add('hidden');
-    document.getElementById('shell').style.display = 'grid';
+    // shell já visível
   });
 
   document.getElementById('btnLogout').addEventListener('click', async () => {
