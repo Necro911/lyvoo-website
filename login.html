@@ -196,7 +196,8 @@
     signInWithEmailAndPassword,
     signInWithPopup,
     sendPasswordResetEmail,
-    GoogleAuthProvider
+    GoogleAuthProvider,
+    onAuthStateChanged
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { auth } from './lyvoo-firebase.js';
 
@@ -236,8 +237,18 @@
   function aoAutenticar() {
     const params = new URLSearchParams(window.location.search);
     const next = params.get('next');
-    window.location.href = next || 'dashboard.html';
+    // Validar que next é um caminho local seguro (sem http//)
+    if (next && !next.startsWith('http') && !next.startsWith('//')) {
+      window.location.href = next;
+    } else {
+      window.location.href = 'dashboard.html';
+    }
   }
+
+  // Se já tem sessão activa, redirecionar imediatamente
+  onAuthStateChanged(auth, (user) => {
+    if (user) aoAutenticar();
+  });
 
   // Toggle palavra-passe
   const togglePw = document.getElementById('togglePw');
