@@ -208,6 +208,7 @@
       .form-row, .form-row-3 { grid-template-columns: 1fr; }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -778,38 +779,53 @@
     }
   };
 
+  // ── EmailJS ───────────────────────────────────────────────────────────
+  const EJS = { svc: 'service_x9g66zr', tpl: 'template_19qxcxg', key: 'P0ArQ2tRYDeYkPZuR' };
+  emailjs.init({ publicKey: EJS.key });
+
   // ── Notificar cliente ─────────────────────────────────────────────────
-  window.notificarCliente = function() {
+  window.notificarCliente = async function() {
     const u = allUsers.find(x => x.uid === currentUID);
     if (!u) return;
-    const nome = [u.firstName,u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '';
+    const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '';
     const primeiro = nome.split(' ')[0] || 'Cliente';
-    const email = u.email || '';
-    const assunto = encodeURIComponent('Os seus resultados Lyvoo estão prontos');
-    const corpo = encodeURIComponent(
-`Olá ${primeiro},
-
-Os seus resultados estão disponíveis na sua área de membro Lyvoo.
-
-Pode aceder agora em: https://necro911.github.io/lyvoo-website/dashboard.html
-
-Encontrará:
-• Os seus biomarcadores detalhados
-• O relatório médico personalizado
-• O seu plano alimentar
-• As recomendações de suplementação
-
-Qualquer questão, estamos disponíveis em hello@lyvoo.pt
-
-Com os melhores cumprimentos,
-A equipa Lyvoo`
-    );
-    window.open(`mailto:${email}?subject=${assunto}&body=${corpo}`);
-    // Marcar como notificado
     const btn = document.getElementById('btn-notify');
-    btn.textContent = '✓ Email aberto';
-    btn.style.opacity = '0.5';
+
+    btn.textContent = 'A enviar…';
     btn.disabled = true;
+
+    try {
+      await emailjs.send(EJS.svc, EJS.tpl, {
+        to_email:      u.email,
+        to_name:       nome,
+        name:          nome,
+        email:         u.email,
+        primeiro_nome: primeiro,
+        dashboard_url: 'https://necro911.github.io/lyvoo-website/dashboard.html',
+      });
+
+      // Guardar registo no Firestore
+      await setDoc(doc(db, 'users', currentUID), {
+        notificadoEm: serverTimestamp(),
+        notificadoPor: 'admin',
+      }, { merge: true });
+
+      btn.textContent = '✓ Email enviado';
+      btn.style.background = 'rgba(74,222,128,0.15)';
+      btn.style.borderColor = 'rgba(74,222,128,0.4)';
+
+      // Atualizar cache local
+      const idx = allUsers.findIndex(x => x.uid === currentUID);
+      if (idx !== -1) allUsers[idx].notificadoEm = new Date();
+
+    } catch(err) {
+      console.error('EmailJS error:', err);
+      btn.textContent = '✗ Erro — tentar novamente';
+      btn.disabled = false;
+      btn.style.background = 'rgba(248,113,113,0.08)';
+      btn.style.borderColor = 'rgba(248,113,113,0.3)';
+      btn.style.color = 'var(--red)';
+    }
   };
 
   // Mostrar/esconder notify box conforme estado
@@ -817,10 +833,24 @@ A equipa Lyvoo`
     selectedEstado = n;
     document.querySelectorAll('.estado-card').forEach(c => c.classList.toggle('selected', +c.dataset.e === n));
     const box = document.getElementById('notify-box');
-    if (box) box.style.display = n === 4 ? 'flex' : 'none';
-    // Reset botão notificação
-    const btn = document.getElementById('btn-notify');
-    if (btn) { btn.textContent = '✉ Enviar email'; btn.style.opacity = '1'; btn.disabled = false; }
+    if (!box) return;
+    if (n === 4) {
+      box.style.display = 'flex';
+      // Verificar se já foi notificado
+      const u = allUsers.find(x => x.uid === currentUID);
+      const btn = document.getElementById('btn-notify');
+      const sub = box.querySelector('.notify-box-sub');
+      if (u?.notificadoEm) {
+        const d = u.notificadoEm.toDate ? u.notificadoEm.toDate() : new Date(u.notificadoEm);
+        if (sub) sub.textContent = `✓ Notificado em ${d.toLocaleString('pt-PT', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}`;
+        if (btn) { btn.textContent = 'Reenviar'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
+      } else {
+        if (sub) sub.textContent = 'O estado foi definido como 4. O cliente ainda não foi notificado por email.';
+        if (btn) { btn.textContent = '✉ Enviar email'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
+      }
+    } else {
+      box.style.display = 'none';
+    }
   };
 
 
