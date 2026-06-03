@@ -1199,6 +1199,135 @@
       .waitlist-fields button { width: 100%; justify-content: center; }
     }
 
+    /* ── GLP-Friendly ── */
+    .glp-section {
+      background: #03090D;
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .glp-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 60% at 0% 50%, rgba(61,217,232,0.05) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 50% at 100% 20%, rgba(139,92,246,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 90%, rgba(74,222,128,0.04) 0%, transparent 55%);
+    }
+    .glp-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.22);
+      border-radius: 999px; padding: 6px 16px; margin-bottom: 28px;
+      font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #4ADE80;
+    }
+    .glp-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ADE80; animation: blink 2.2s infinite; }
+    .glp-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: start;
+    }
+    .glp-left h2 {
+      font-size: clamp(30px, 3.8vw, 52px); font-weight: 850;
+      letter-spacing: -0.045em; line-height: 1.12; color: #fff; margin-bottom: 18px;
+    }
+    .glp-left > p {
+      font-size: 16px; color: rgba(255,255,255,0.48); line-height: 1.8; margin-bottom: 28px;
+    }
+    /* Medication pills strip */
+    .glp-meds {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px;
+    }
+    .glp-med {
+      font-size: 12.5px; font-weight: 600; padding: 6px 14px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.04); letter-spacing: 0.01em;
+      transition: all 0.2s;
+    }
+    .glp-med:hover { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.2); }
+    /* Concern items */
+    .glp-concerns { display: flex; flex-direction: column; gap: 18px; margin-bottom: 40px; }
+    .glp-concern {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; transition: border-color 0.2s, background 0.2s;
+    }
+    .glp-concern:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); }
+    .glp-concern-icon {
+      width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .glp-concern-icon svg { width: 18px; height: 18px; }
+    .glp-concern-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+    .glp-concern-sub { font-size: 12.5px; color: rgba(255,255,255,0.38); line-height: 1.55; }
+    /* Right panel: GLP Monitor */
+    .glp-panel {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      position: sticky; top: 100px;
+    }
+    .glp-panel-hdr {
+      padding: 20px 22px;
+      background: linear-gradient(135deg, rgba(74,222,128,0.08), rgba(61,217,232,0.05));
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .glp-panel-title { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+    .glp-panel-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+      background: rgba(74,222,128,0.12); color: #4ADE80;
+      border: 1px solid rgba(74,222,128,0.25);
+    }
+    .glp-panel-body { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .glp-bio-row {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 11px; padding: 11px 13px;
+    }
+    .glp-bio-icon { font-size: 15px; flex-shrink: 0; width: 24px; text-align: center; }
+    .glp-bio-info { flex: 1; min-width: 0; }
+    .glp-bio-name { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 500; margin-bottom: 1px; }
+    .glp-bio-val { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+    .glp-bio-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; flex-shrink: 0; }
+    .glp-bio-tag.ok   { background: rgba(74,222,128,0.1);  color: #4ADE80;  border: 1px solid rgba(74,222,128,0.2); }
+    .glp-bio-tag.warn { background: rgba(251,191,36,0.1);  color: #FBBF24;  border: 1px solid rgba(251,191,36,0.2); }
+    .glp-bio-tag.low  { background: rgba(248,113,113,0.08); color: #F87171;  border: 1px solid rgba(248,113,113,0.2); }
+    .glp-bio-bar { width: 52px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+    .glp-bio-bar-fill { height: 100%; border-radius: 999px; }
+    .glp-panel-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .glp-panel-footer-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #0D7A87, #4ADE80);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0;
+    }
+    .glp-panel-footer-text { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+    .glp-panel-footer-text strong { color: rgba(255,255,255,0.75); }
+    /* CTA strip no fundo */
+    .glp-cta-strip {
+      margin-top: 20px; padding: 16px 20px;
+      background: rgba(74,222,128,0.05); border: 1px solid rgba(74,222,128,0.15);
+      border-radius: 14px; display: flex; align-items: center; gap: 14px;
+    }
+    .glp-cta-strip p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; flex: 1; margin: 0; }
+    .glp-cta-strip p strong { color: #fff; }
+    .glp-cta-btn {
+      flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: 999px;
+      background: #4ADE80; color: #03170A; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .glp-cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    @media (max-width: 960px) {
+      .glp-inner { grid-template-columns: 1fr; gap: 48px; }
+      .glp-panel { position: static; }
+    }
+
     /* ── Testemunhos ── */
     .tst-header { text-align: center; margin-bottom: 60px; }
     .tst-header h2 { font-size: clamp(34px, 5vw, 62px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 14px; color: #fff; }
@@ -1496,6 +1625,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#glp-friendly">GLP-1</a></li>
       <li><a href="#app">A app</a></li>
       <li><a href="#equipa">A equipa</a></li>
       <li><a href="#planos">Plano</a></li>
@@ -1511,6 +1641,7 @@
 </nav>
 <div class="mob-menu" id="mobMenu">
   <a href="#como-funciona" onclick="closeMob()">Como funciona</a>
+  <a href="#glp-friendly" onclick="closeMob()">GLP-1</a>
   <a href="#app" onclick="closeMob()">A app</a>
   <a href="#equipa" onclick="closeMob()">A equipa</a>
   <a href="#planos" onclick="closeMob()">Planos</a>
@@ -2693,6 +2824,225 @@
         <p>Genética, microbioma, hormonas — adicione apenas o que faz sentido para o seu perfil.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── GLP-FRIENDLY ── -->
+<section class="glp-section" id="glp-friendly">
+  <div class="glp-glow"></div>
+  <div class="container" style="position:relative">
+
+    <div style="text-align:center;margin-bottom:64px">
+      <span class="glp-badge fade"><span class="glp-badge-dot"></span>GLP-Friendly</span>
+      <h2 class="fade fade-d1" style="font-size:clamp(32px,5vw,62px);font-weight:850;letter-spacing:-0.045em;color:#fff;max-width:720px;margin:0 auto 16px;line-height:1.1">
+        Está em GLP-1.<br/>A ciência não para aqui.
+      </h2>
+      <p class="fade fade-d2" style="font-size:17px;color:rgba(255,255,255,0.45);max-width:540px;margin:0 auto">
+        Ozempic, Wegovy, Mounjaro, Rybelsus, Saxenda — sabemos como estes fármacos transformam o metabolismo. E sabemos o que monitorizar para que a sua saúde acompanhe a mudança.
+      </p>
+    </div>
+
+    <div class="glp-inner">
+
+      <!-- ── Coluna esquerda: contexto + concerns ── -->
+      <div class="glp-left fade fade-d1">
+
+        <!-- Medicações -->
+        <div class="glp-meds">
+          <span class="glp-med">Ozempic</span>
+          <span class="glp-med">Wegovy</span>
+          <span class="glp-med">Mounjaro</span>
+          <span class="glp-med">Rybelsus</span>
+          <span class="glp-med">Saxenda</span>
+          <span class="glp-med">Victoza</span>
+          <span class="glp-med">Trulicity</span>
+        </div>
+
+        <p style="font-size:15.5px;color:rgba(255,255,255,0.48);line-height:1.8;margin-bottom:32px">
+          Os agonistas GLP-1 são uma revolução — mas a perda de peso rápida traz desafios que muitos profissionais de saúde ainda não acompanham de perto: <strong style="color:rgba(255,255,255,0.72)">massa muscular perdida, deficiências nutricionais, alterações renais e tiróide</strong>. A Lyvoo foi concebida para isso.
+        </p>
+
+        <!-- 4 áreas de monitorização -->
+        <div class="glp-concerns">
+
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(248,113,113,0.1)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6.5 6.5a6 6 0 0 1 9.17 7.6M17.5 17.5a6 6 0 0 1-9.17-7.6M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+            </div>
+            <div>
+              <div class="glp-concern-title">Preservação de massa muscular</div>
+              <div class="glp-concern-sub">Os GLPs reduzem o apetite — mas sem suporte proteico e nutricional adequado, o músculo vai antes que a gordura. Monitorizamos creatinina, ureia e marcadores de composição corporal.</div>
+            </div>
+          </div>
+
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(251,191,36,0.1)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="glp-concern-title">Deficiências nutricionais silenciosas</div>
+              <div class="glp-concern-sub">Com menor ingestão alimentar, Vitamina B12, D, Ferro, Zinco e Folato caem rapidamente. O painel Lyvoo detecta antes que os sintomas apareçam.</div>
+            </div>
+          </div>
+
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(61,217,232,0.1)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#3DD9E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="12" rx="10" ry="6"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a14 14 0 0 1 4 10 14 14 0 0 1-4 10 14 14 0 0 1-4-10 14 14 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="glp-concern-title">Função renal e hepática em foco</div>
+              <div class="glp-concern-sub">Desidratação frequente e impacto directo do fármaco exigem monitorização renal periódica. Creatinina, TFG, ALT e AST fazem parte do nosso protocolo GLP.</div>
+            </div>
+          </div>
+
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(74,222,128,0.1)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div>
+              <div class="glp-concern-title">Perfil metabólico em tempo real</div>
+              <div class="glp-concern-sub">HbA1c, insulina em jejum, HOMA-IR e glicose — acompanhamos a resposta metabólica ao tratamento para ajustar o plano alimentar com rigor clínico.</div>
+            </div>
+          </div>
+
+        </div><!-- /concerns -->
+
+        <!-- CTA strip -->
+        <div class="glp-cta-strip">
+          <p><strong>Já está em GLP-1 ou vai começar?</strong><br/>Junte-se à Lyvoo e tenha um médico e nutricionista a acompanhar a sua evolução com dados reais.</p>
+          <a href="#waitlist" class="glp-cta-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Começar
+          </a>
+        </div>
+
+      </div><!-- /glp-left -->
+
+      <!-- ── Coluna direita: painel de monitorização ── -->
+      <div class="glp-right fade fade-d2">
+        <div class="glp-panel">
+          <div class="glp-panel-hdr">
+            <div>
+              <div class="glp-panel-title">Painel GLP — Monitorização dedicada</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px">Análise Janeiro 2026 · Ricardo S.</div>
+            </div>
+            <span class="glp-panel-badge">Em tratamento</span>
+          </div>
+          <div class="glp-panel-body">
+
+            <!-- Biomarker rows -->
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">💪</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">Creatinina (músculo)</div>
+                <div class="glp-bio-val" style="color:#4ADE80">0.92 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">mg/dL</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:78%;background:#4ADE80"></div></div>
+              <span class="glp-bio-tag ok">Ótimo</span>
+            </div>
+
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">⚡</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">Vitamina B12</div>
+                <div class="glp-bio-val" style="color:#FBBF24">218 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">pg/mL</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:28%;background:#FBBF24"></div></div>
+              <span class="glp-bio-tag warn">Atenção</span>
+            </div>
+
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">🌞</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">Vitamina D</div>
+                <div class="glp-bio-val" style="color:#F87171">18 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">ng/mL</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:22%;background:#F87171"></div></div>
+              <span class="glp-bio-tag low">Baixo</span>
+            </div>
+
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">🩸</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">HbA1c (glicemia 3m)</div>
+                <div class="glp-bio-val" style="color:#4ADE80">5.4 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">%</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:86%;background:#4ADE80"></div></div>
+              <span class="glp-bio-tag ok">Ótimo</span>
+            </div>
+
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">🫘</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">TFG estimada (renal)</div>
+                <div class="glp-bio-val" style="color:#4ADE80">97 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">mL/min</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:92%;background:#4ADE80"></div></div>
+              <span class="glp-bio-tag ok">Ótimo</span>
+            </div>
+
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">🔩</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">Ferritina</div>
+                <div class="glp-bio-val" style="color:#FBBF24">24 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">ng/mL</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:18%;background:#FBBF24"></div></div>
+              <span class="glp-bio-tag warn">Atenção</span>
+            </div>
+
+            <div class="glp-bio-row">
+              <div class="glp-bio-icon">🦋</div>
+              <div class="glp-bio-info">
+                <div class="glp-bio-name">TSH (tiróide)</div>
+                <div class="glp-bio-val" style="color:#4ADE80">2.1 <span style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.3)">mUI/L</span></div>
+              </div>
+              <div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:70%;background:#4ADE80"></div></div>
+              <span class="glp-bio-tag ok">Ótimo</span>
+            </div>
+
+          </div><!-- /body -->
+
+          <!-- Nota do médico -->
+          <div class="glp-panel-footer">
+            <div class="glp-panel-footer-icon">👩‍⚕️</div>
+            <div class="glp-panel-footer-text">
+              <strong>Dra. Lúcia Abreu recomenda:</strong> suplementação urgente de B12 e Vit. D. Ferritina a vigiar na reavaliação de Julho.
+            </div>
+          </div>
+
+          <!-- Linha de progresso GLP -->
+          <div style="padding:14px 18px;border-top:1px solid rgba(255,255,255,0.07)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em">Progresso GLP · 3 meses</span>
+              <span style="font-size:12px;font-weight:800;color:#4ADE80">−8.4 kg</span>
+            </div>
+            <div style="height:5px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden">
+              <div style="height:100%;width:52%;background:linear-gradient(90deg,#3DD9E8,#4ADE80);border-radius:999px"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:10px;color:rgba(255,255,255,0.2)">Início</span>
+              <span style="font-size:10px;color:rgba(255,255,255,0.2)">Objectivo 6m</span>
+            </div>
+          </div>
+
+        </div><!-- /glp-panel -->
+
+        <!-- Disclaimer -->
+        <p style="font-size:11px;color:rgba(255,255,255,0.18);margin-top:14px;text-align:center;line-height:1.6">
+          Dados ilustrativos. A Lyvoo não prescreve nem substitui o médico assistente.<br/>Trabalhamos em complementaridade com a equipa de saúde do cliente.
+        </p>
+      </div><!-- /glp-right -->
+
+    </div><!-- /glp-inner -->
   </div>
 </section>
 
