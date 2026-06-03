@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Lyvoo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
+      --green: #4ADE80; --amber: #FBBF24; --red: #F87171; --violet: #8B5CF6;
+      --bg: #070B0D; --panel: #0E1417; --panel-2: #121A1E;
+      --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.10);
+      --txt: #E8EDEF; --txt-2: #9DAAB0; --txt-3: #5E6C72;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--txt); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--panel); border-bottom: 1px solid var(--line);
+      padding: 0 32px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-logo { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700; color: var(--txt); }
+    .header-logo img { height: 32px; }
+    .admin-badge { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.2); padding: 3px 10px; border-radius: 999px; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .btn-sm { font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: 9px; border: 1px solid var(--line-2); color: var(--txt-2); transition: all 0.18s; cursor: pointer; background: none; font-family: inherit; }
+    .btn-sm:hover { color: var(--txt); border-color: rgba(255,255,255,0.2); }
+
+    /* ── MAIN ── */
+    .main { max-width: 1200px; margin: 0 auto; padding: 36px 32px 80px; }
+
+    /* Access denied state */
+    #access-denied { display: none; text-align: center; padding: 80px 20px; }
+    #access-denied h2 { font-size: 22px; font-weight: 800; color: var(--red); margin-bottom: 12px; }
+    #access-denied p { font-size: 14px; color: var(--txt-3); }
+
+    /* Loading state */
+    #loading-state { text-align: center; padding: 80px 20px; color: var(--txt-3); font-size: 14px; }
+
+    /* ── STATS ROW ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
+    .stat-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 8px; }
+    .stat-val { font-size: 28px; font-weight: 900; letter-spacing: -0.04em; color: var(--txt); line-height: 1; }
+    .stat-sub { font-size: 12px; color: var(--txt-3); margin-top: 5px; }
+
+    /* ── TOOLBAR ── */
+    .toolbar { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-wrap { flex: 1; min-width: 200px; position: relative; }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--txt-3); }
+    .search-input { width: 100%; padding: 10px 14px 10px 38px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--panel); font-family: inherit; font-size: 13.5px; color: var(--txt); outline: none; transition: border-color 0.2s; }
+    .search-input:focus { border-color: var(--cyan); }
+    .search-input::placeholder { color: var(--txt-3); }
+    .filter-select { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--panel); font-family: inherit; font-size: 13.5px; color: var(--txt-2); outline: none; cursor: pointer; }
+    .filter-select:focus { border-color: var(--cyan); }
+
+    /* ── USER TABLE ── */
+    .table-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .table-header { display: grid; grid-template-columns: 1fr 200px 160px 160px 120px 80px; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+    .th { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt-3); }
+    .user-row { display: grid; grid-template-columns: 1fr 200px 160px 160px 120px 80px; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--line); transition: background 0.15s; }
+    .user-row:last-child { border-bottom: none; }
+    .user-row:hover { background: rgba(255,255,255,0.02); }
+
+    .u-info { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .u-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #3DD9E8, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .u-name { font-size: 13.5px; font-weight: 600; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .u-email { font-size: 12px; color: var(--txt-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .u-email-cell { font-size: 13px; color: var(--txt-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .u-date { font-size: 12.5px; color: var(--txt-2); }
+    .u-plano { font-size: 12.5px; color: var(--txt-2); }
+
+    /* Estado badge */
+    .estado-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+      white-space: nowrap;
+    }
+    .e1 { background: rgba(255,255,255,0.05); color: var(--txt-3); }
+    .e2 { background: rgba(251,191,36,0.08); color: var(--amber); }
+    .e3 { background: rgba(61,217,232,0.08); color: var(--cyan); }
+    .e4 { background: rgba(74,222,128,0.08); color: var(--green); }
+    .e5 { background: rgba(139,92,246,0.08); color: var(--violet); }
+
+    /* Inline estado selector */
+    .estado-select {
+      padding: 6px 10px; border-radius: 9px; border: 1px solid var(--line-2);
+      background: var(--panel-2); font-family: inherit; font-size: 12px;
+      color: var(--txt); outline: none; cursor: pointer; width: 100%;
+    }
+    .estado-select:focus { border-color: var(--cyan); }
+
+    /* Action button */
+    .u-btn { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(61,217,232,0.2); background: rgba(61,217,232,0.05); color: var(--cyan); cursor: pointer; font-family: inherit; transition: all 0.18s; white-space: nowrap; }
+    .u-btn:hover { background: rgba(61,217,232,0.12); }
+    .u-btn.saving { opacity: 0.5; cursor: not-allowed; }
+    .u-btn.saved { border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.05); color: var(--green); }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 60px 20px; color: var(--txt-3); font-size: 14px; }
+
+    /* User detail modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--panel); border: 1px solid var(--line-2); border-radius: 20px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 24px 24px 0; margin-bottom: 20px; }
+    .modal-title { font-size: 17px; font-weight: 800; color: var(--txt); }
+    .modal-close { background: none; border: none; color: var(--txt-3); cursor: pointer; font-size: 20px; line-height: 1; padding: 4px; transition: color 0.2s; }
+    .modal-close:hover { color: var(--txt); }
+    .modal-body { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .modal-field { display: flex; flex-direction: column; gap: 5px; }
+    .modal-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt-3); }
+    .modal-val { font-size: 14px; color: var(--txt); }
+    .modal-sep { height: 1px; background: var(--line); }
+    .modal-select { padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--panel-2); font-family: inherit; font-size: 14px; color: var(--txt); outline: none; width: 100%; }
+    .modal-select:focus { border-color: var(--cyan); }
+    .modal-save { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--teal); color: #fff; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; }
+    .modal-save:hover { opacity: 0.88; }
+    .modal-msg { font-size: 13px; text-align: center; min-height: 20px; }
+    .modal-msg.ok { color: var(--green); }
+    .modal-msg.err { color: var(--red); }
+
+    @media (max-width: 860px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .table-header { display: none; }
+      .user-row { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-logo">
+    <img src="images/logo.png" alt="Lyvoo" />
+    <span class="admin-badge">Admin</span>
+  </div>
+  <div class="header-right">
+    <span id="admin-email" style="font-size:13px;color:var(--txt-3)"></span>
+    <button class="btn-sm" id="btn-logout">Sair</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main" id="main-content" style="display:none">
+
+  <!-- Stats -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card"><div class="stat-label">Total membros</div><div class="stat-val" id="stat-total">—</div><div class="stat-sub">contas registadas</div></div>
+    <div class="stat-card"><div class="stat-label">Resultados prontos</div><div class="stat-val" id="stat-e4" style="color:var(--green)">—</div><div class="stat-sub">estado 4 ou 5</div></div>
+    <div class="stat-card"><div class="stat-label">Em processamento</div><div class="stat-val" id="stat-e3" style="color:var(--cyan)">—</div><div class="stat-sub">laboratório</div></div>
+    <div class="stat-card"><div class="stat-label">Kit pendente/enviado</div><div class="stat-val" id="stat-e12" style="color:var(--amber)">—</div><div class="stat-sub">estados 1 e 2</div></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="search-input" placeholder="Pesquisar por nome ou email…" />
+    </div>
+    <select class="filter-select" id="filter-estado">
+      <option value="">Todos os estados</option>
+      <option value="1">1 — Kit a ser preparado</option>
+      <option value="2">2 — Kit enviado</option>
+      <option value="3">3 — Laboratório a processar</option>
+      <option value="4">4 — Resultados disponíveis</option>
+      <option value="5">5 — Reavaliação</option>
+    </select>
+    <button class="btn-sm" id="btn-refresh" style="white-space:nowrap">↻ Atualizar</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="th">Utilizador</div>
+      <div class="th">Email</div>
+      <div class="th">Plano</div>
+      <div class="th">Registado em</div>
+      <div class="th">Estado</div>
+      <div class="th"></div>
+    </div>
+    <div id="users-list"></div>
+  </div>
+
+</div>
+
+<!-- Access denied -->
+<div id="access-denied">
+  <h2>Acesso negado</h2>
+  <p>Esta área é exclusiva para administradores da Lyvoo.</p>
+  <a href="index.html" style="display:inline-block;margin-top:20px;font-size:14px;color:var(--cyan)">← Voltar ao site</a>
+</div>
+
+<!-- Loading -->
+<div id="loading-state">A carregar…</div>
+
+<!-- User detail modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-name">—</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field"><div class="modal-label">Email</div><div class="modal-val" id="modal-email">—</div></div>
+      <div class="modal-field"><div class="modal-label">UID Firebase</div><div class="modal-val" id="modal-uid" style="font-size:12px;color:var(--txt-3);font-family:monospace;word-break:break-all">—</div></div>
+      <div class="modal-field"><div class="modal-label">Registado em</div><div class="modal-val" id="modal-date">—</div></div>
+      <div class="modal-field"><div class="modal-label">Plano</div><div class="modal-val" id="modal-plano">—</div></div>
+      <div class="modal-field"><div class="modal-label">Telefone</div><div class="modal-val" id="modal-phone">—</div></div>
+      <div class="modal-field"><div class="modal-label">Data de nascimento</div><div class="modal-val" id="modal-dob">—</div></div>
+      <div class="modal-sep"></div>
+      <div class="modal-field">
+        <div class="modal-label">Estado do programa</div>
+        <select class="modal-select" id="modal-estado">
+          <option value="1">1 — Kit a ser preparado</option>
+          <option value="2">2 — Kit enviado</option>
+          <option value="3">3 — Laboratório a processar</option>
+          <option value="4">4 — Resultados disponíveis</option>
+          <option value="5">5 — Reavaliação</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Notas internas (opcional)</div>
+        <textarea id="modal-notes" style="padding:10px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel-2);font-family:inherit;font-size:13px;color:var(--txt);outline:none;resize:vertical;min-height:80px;width:100%;" placeholder="Ex: Kit enviado em 03/06/2026 via CTT Expresso…"></textarea>
+      </div>
+      <button class="modal-save" id="modal-save-btn">Guardar alterações</button>
+      <div class="modal-msg" id="modal-msg"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window._authFallback = setTimeout(function() {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('access-denied').style.display = 'block';
+  }, 8000);
+</script>
+
+<script type="module">
+  import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { auth, db } from './lyvoo-firebase.js';
+
+  // ── Admins autorizados ─────────────────────────────────────────────────
+  const ADMIN_EMAILS = [
+    'ricardo.lyvoo@gmail.com',
+    'hello@lyvoo.pt',
+  ];
+
+  const ESTADO_LABELS = {
+    1: 'Kit a ser preparado',
+    2: 'Kit enviado',
+    3: 'Laboratório a processar',
+    4: 'Resultados disponíveis',
+    5: 'Reavaliação'
+  };
+  const ESTADO_CLASS = { 1:'e1', 2:'e2', 3:'e3', 4:'e4', 5:'e5' };
+
+  let allUsers = [];
+  let currentUid = null; // uid do utilizador no modal
+
+  // ── Iniciais ──────────────────────────────────────────────────────────
+  function iniciais(nome) {
+    return (nome || '?').split(' ').filter(Boolean).map(n => n[0]).join('').substring(0,2).toUpperCase();
+  }
+
+  // ── Formatar data ─────────────────────────────────────────────────────
+  function fmtDate(ts) {
+    if (!ts) return '—';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('pt-PT', { day:'2-digit', month:'short', year:'numeric' });
+  }
+
+  // ── Carregar utilizadores ─────────────────────────────────────────────
+  async function loadUsers() {
+    const list = document.getElementById('users-list');
+    list.innerHTML = '<div class="empty">A carregar utilizadores…</div>';
+    try {
+      const snap = await getDocs(collection(db, 'users'));
+      allUsers = [];
+      snap.forEach(d => allUsers.push({ uid: d.id, ...d.data() }));
+      allUsers.sort((a,b) => {
+        const ta = a.criadoEm?.toMillis?.() || 0;
+        const tb = b.criadoEm?.toMillis?.() || 0;
+        return tb - ta; // mais recente primeiro
+      });
+      updateStats();
+      renderUsers(allUsers);
+    } catch(e) {
+      list.innerHTML = `<div class="empty">Erro ao carregar: ${e.message}</div>`;
+    }
+  }
+
+  // ── Estatísticas ──────────────────────────────────────────────────────
+  function updateStats() {
+    document.getElementById('stat-total').textContent = allUsers.length;
+    document.getElementById('stat-e4').textContent = allUsers.filter(u => u.estado >= 4).length;
+    document.getElementById('stat-e3').textContent = allUsers.filter(u => u.estado === 3).length;
+    document.getElementById('stat-e12').textContent = allUsers.filter(u => u.estado <= 2 || !u.estado).length;
+  }
+
+  // ── Render utilizadores ───────────────────────────────────────────────
+  function renderUsers(users) {
+    const list = document.getElementById('users-list');
+    if (!users.length) {
+      list.innerHTML = '<div class="empty">Nenhum utilizador encontrado.</div>';
+      return;
+    }
+    list.innerHTML = users.map(u => {
+      const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '—';
+      const estado = u.estado || 1;
+      const cls = ESTADO_CLASS[estado] || 'e1';
+      const label = ESTADO_LABELS[estado] || '—';
+      const data = fmtDate(u.criadoEm);
+      const plano = u.planoNome || u.plano || '—';
+      return `
+      <div class="user-row" data-uid="${u.uid}">
+        <div class="u-info">
+          <div class="u-avatar">${iniciais(nome)}</div>
+          <div>
+            <div class="u-name">${nome}</div>
+            <div class="u-email">${u.email || '—'}</div>
+          </div>
+        </div>
+        <div class="u-email-cell">${u.email || '—'}</div>
+        <div class="u-plano">${plano}</div>
+        <div class="u-date">${data}</div>
+        <div>
+          <span class="estado-pill ${cls}">${estado}. ${label}</span>
+        </div>
+        <div>
+          <button class="u-btn" onclick="openModal('${u.uid}')">Editar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Filtrar ───────────────────────────────────────────────────────────
+  function applyFilters() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const eFilter = document.getElementById('filter-estado').value;
+    const filtered = allUsers.filter(u => {
+      const nome = [u.firstName, u.lastName].filter(Boolean).join(' ').toLowerCase();
+      const email = (u.email || '').toLowerCase();
+      const matchQ = !q || nome.includes(q) || email.includes(q);
+      const matchE = !eFilter || String(u.estado || 1) === eFilter;
+      return matchQ && matchE;
+    });
+    renderUsers(filtered);
+  }
+
+  document.getElementById('search-input').addEventListener('input', applyFilters);
+  document.getElementById('filter-estado').addEventListener('change', applyFilters);
+  document.getElementById('btn-refresh').addEventListener('click', loadUsers);
+
+  // ── Modal ─────────────────────────────────────────────────────────────
+  window.openModal = function(uid) {
+    const u = allUsers.find(x => x.uid === uid);
+    if (!u) return;
+    currentUid = uid;
+    const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '—';
+    document.getElementById('modal-name').textContent = nome;
+    document.getElementById('modal-email').textContent = u.email || '—';
+    document.getElementById('modal-uid').textContent = u.uid;
+    document.getElementById('modal-date').textContent = fmtDate(u.criadoEm);
+    document.getElementById('modal-plano').textContent = u.planoNome || u.plano || '—';
+    document.getElementById('modal-phone').textContent = u.phone || '—';
+    document.getElementById('modal-dob').textContent = u.dob || '—';
+    document.getElementById('modal-estado').value = u.estado || 1;
+    document.getElementById('modal-notes').value = u.notasAdmin || '';
+    document.getElementById('modal-msg').textContent = '';
+    document.getElementById('modal-overlay').classList.add('open');
+  };
+
+  window.closeModal = function(e) {
+    if (e && e.target !== document.getElementById('modal-overlay') && e.type !== 'click') return;
+    document.getElementById('modal-overlay').classList.remove('open');
+    currentUid = null;
+  };
+
+  document.getElementById('modal-save-btn').addEventListener('click', async () => {
+    if (!currentUid) return;
+    const btn = document.getElementById('modal-save-btn');
+    const msg = document.getElementById('modal-msg');
+    const novoEstado = parseInt(document.getElementById('modal-estado').value);
+    const notas = document.getElementById('modal-notes').value.trim();
+
+    btn.disabled = true;
+    btn.textContent = 'A guardar…';
+    msg.textContent = '';
+    msg.className = 'modal-msg';
+
+    try {
+      await setDoc(doc(db, 'users', currentUid), {
+        estado: novoEstado,
+        estadoLabel: ESTADO_LABELS[novoEstado],
+        notasAdmin: notas,
+        atualizadoEm: serverTimestamp()
+      }, { merge: true });
+
+      // Actualizar lista local
+      const idx = allUsers.findIndex(u => u.uid === currentUid);
+      if (idx !== -1) {
+        allUsers[idx].estado = novoEstado;
+        allUsers[idx].estadoLabel = ESTADO_LABELS[novoEstado];
+        allUsers[idx].notasAdmin = notas;
+      }
+      applyFilters();
+      updateStats();
+
+      msg.textContent = '✓ Guardado com sucesso';
+      msg.className = 'modal-msg ok';
+      btn.textContent = 'Guardar alterações';
+      btn.disabled = false;
+    } catch(e) {
+      msg.textContent = 'Erro: ' + e.message;
+      msg.className = 'modal-msg err';
+      btn.textContent = 'Guardar alterações';
+      btn.disabled = false;
+    }
+  });
+
+  // Fechar modal com ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal({});
+  });
+
+  // ── Auth ──────────────────────────────────────────────────────────────
+  onAuthStateChanged(auth, async (user) => {
+    clearTimeout(window._authFallback);
+    document.getElementById('loading-state').style.display = 'none';
+
+    if (!user || !ADMIN_EMAILS.includes(user.email)) {
+      document.getElementById('access-denied').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('admin-email').textContent = user.email;
+    document.getElementById('main-content').style.display = 'block';
+    await loadUsers();
+  });
+
+  document.getElementById('btn-logout').addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = 'login.html';
+  });
+</script>
+
+</body>
+</html>
