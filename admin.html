@@ -294,6 +294,47 @@
           </div>
         </div>
         <div class="form-section">
+          <div class="form-section-title">Logística do kit</div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label">Transportadora</label>
+              <select class="form-select" id="g-transportadora">
+                <option value="">— Selecionar —</option>
+                <option value="CTT">CTT</option>
+                <option value="CTT Expresso">CTT Expresso</option>
+                <option value="DHL">DHL</option>
+                <option value="DPD">DPD</option>
+                <option value="GLS">GLS</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Número de seguimento</label>
+              <input class="form-input" id="g-tracking" type="text" placeholder="Ex: CT123456789PT" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label">Data de envio</label>
+              <input class="form-input" id="g-data-envio" type="date" />
+            </div>
+            <div class="form-field">
+              <label class="form-label">Data de entrega prevista</label>
+              <input class="form-input" id="g-data-entrega" type="date" />
+            </div>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Morada de entrega</label>
+            <input class="form-input" id="g-morada" type="text" placeholder="Rua, nº, código postal, cidade" />
+          </div>
+          <div id="g-tracking-link-wrap" style="display:none;margin-top:4px;">
+            <a id="g-tracking-link" href="#" target="_blank" rel="noopener"
+               style="font-size:12.5px;color:var(--cyan);text-decoration:underline;">
+              Ver rastreio →
+            </a>
+          </div>
+        </div>
+        <div class="form-section">
           <div class="form-section-title">Notas internas</div>
           <div class="form-field">
             <textarea class="form-textarea" id="g-notas" placeholder="Ex: Kit enviado em 03/06/2026 via CTT. Aguarda recolha..."></textarea>
@@ -747,13 +788,23 @@
 
     // Geral
     selectEstado(d.estado||1);
-    document.getElementById('g-first').value  = d.firstName||'';
-    document.getElementById('g-last').value   = d.lastName||'';
-    document.getElementById('g-email').value  = d.email||'';
-    document.getElementById('g-phone').value  = d.phone||'';
-    document.getElementById('g-dob').value    = d.dob||'';
-    document.getElementById('g-plano').value  = d.planoNome||d.plano||'';
-    document.getElementById('g-notas').value  = d.notasAdmin||'';
+    document.getElementById('g-first').value          = d.firstName||'';
+    document.getElementById('g-last').value           = d.lastName||'';
+    document.getElementById('g-email').value          = d.email||'';
+    document.getElementById('g-phone').value          = d.phone||'';
+    document.getElementById('g-dob').value            = d.dob||'';
+    document.getElementById('g-plano').value          = d.planoNome||d.plano||'';
+    document.getElementById('g-notas').value          = d.notasAdmin||'';
+    // Logística
+    const kit = d.kit || {};
+    document.getElementById('g-transportadora').value = kit.transportadora||'';
+    document.getElementById('g-tracking').value       = kit.tracking||'';
+    document.getElementById('g-data-envio').value     = kit.dataEnvio||'';
+    document.getElementById('g-data-entrega').value   = kit.dataEntrega||'';
+    document.getElementById('g-morada').value         = kit.morada||d.morada||'';
+    updateTrackingLink();
+    document.getElementById('g-tracking').addEventListener('input', updateTrackingLink);
+    document.getElementById('g-transportadora').addEventListener('change', updateTrackingLink);
 
     // Biomarcadores
     document.getElementById('bio-data').value = d.resultados?.dataAnalise || '';
@@ -1014,6 +1065,26 @@
     btn.disabled = false; btn.textContent = 'Guardar' + (msgId.includes('bio')?'  biomarcadores':msgId.includes('plano')?' plano':msgId.includes('supp')?' suplementação':msgId.includes('consult')?' consultas':msgId.includes('rel')?' relatório':'');
   }
 
+  // ── Link de rastreio dinâmico ─────────────────────────────────────────
+  function updateTrackingLink() {
+    const tracking = document.getElementById('g-tracking').value.trim();
+    const trans    = document.getElementById('g-transportadora').value;
+    const wrap     = document.getElementById('g-tracking-link-wrap');
+    const link     = document.getElementById('g-tracking-link');
+    if (!tracking) { wrap.style.display = 'none'; return; }
+    const urls = {
+      'CTT':         `https://www.ctt.pt/feapl_2/app/open/objectSearch/objectSearch.jspx?objects=${tracking}`,
+      'CTT Expresso':`https://www.ctt.pt/feapl_2/app/open/objectSearch/objectSearch.jspx?objects=${tracking}`,
+      'DHL':         `https://www.dhl.com/pt-pt/home/tracking.html?tracking-id=${tracking}`,
+      'DPD':         `https://tracking.dpd.de/status/pt_PT/parcel/${tracking}`,
+      'GLS':         `https://gls-group.eu/PT/pt/seguimento-de-encomendas?match=${tracking}`,
+    };
+    const url = urls[trans] || `https://www.google.com/search?q=${encodeURIComponent(tracking+' '+trans+' rastreio')}`;
+    link.href = url;
+    link.textContent = `Rastrear ${tracking} (${trans||'transportadora'}) →`;
+    wrap.style.display = 'block';
+  }
+
   window.saveGeral = function() {
     saveDoc({
       estado:      selectedEstado,
@@ -1024,6 +1095,13 @@
       dob:         document.getElementById('g-dob').value,
       planoNome:   document.getElementById('g-plano').value.trim(),
       notasAdmin:  document.getElementById('g-notas').value.trim(),
+      kit: {
+        transportadora: document.getElementById('g-transportadora').value,
+        tracking:       document.getElementById('g-tracking').value.trim(),
+        dataEnvio:      document.getElementById('g-data-envio').value,
+        dataEntrega:    document.getElementById('g-data-entrega').value,
+        morada:         document.getElementById('g-morada').value.trim(),
+      },
     }, 'msg-geral');
   };
 
