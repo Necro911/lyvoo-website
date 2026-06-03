@@ -185,6 +185,22 @@
     .tab-meta span { color:var(--txt-3); }
     .tab-meta.has-date span { color:var(--green); }
 
+    /* Modal alterações não guardadas ao mudar de tab */
+    .unsaved-modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.65); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+    .unsaved-modal-overlay.show { opacity:1; pointer-events:all; }
+    .unsaved-modal { background:var(--panel); border:1px solid rgba(251,191,36,0.25); border-radius:16px; padding:28px 28px 24px; width:min(400px,90vw); box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+    .unsaved-modal-icon { font-size:28px; margin-bottom:12px; }
+    .unsaved-modal-title { font-size:15px; font-weight:800; color:var(--txt); margin-bottom:6px; }
+    .unsaved-modal-sub { font-size:13px; color:var(--txt-3); line-height:1.5; margin-bottom:22px; }
+    .unsaved-modal-actions { display:flex; gap:8px; flex-direction:column; }
+    .unsaved-modal-actions button { width:100%; padding:11px 16px; border-radius:10px; font-family:inherit; font-size:13.5px; font-weight:700; cursor:pointer; transition:all 0.18s; border:none; }
+    .btn-modal-save { background:var(--amber); color:#0A0800; }
+    .btn-modal-save:hover { opacity:0.88; }
+    .btn-modal-discard { background:rgba(248,113,113,0.08); color:var(--red); border:1px solid rgba(248,113,113,0.2) !important; }
+    .btn-modal-discard:hover { background:rgba(248,113,113,0.15); }
+    .btn-modal-cancel { background:rgba(255,255,255,0.04); color:var(--txt-3); border:1px solid var(--line-2) !important; }
+    .btn-modal-cancel:hover { color:var(--txt); border-color:rgba(255,255,255,0.18) !important; }
+
     /* Notificar cliente */
     .notify-box { background:rgba(74,222,128,0.04); border:1px solid rgba(74,222,128,0.15); border-radius:14px; padding:18px 20px; display:flex; align-items:center; gap:16px; margin-bottom:20px; }
     .notify-box-text { flex:1; }
@@ -515,6 +531,20 @@
 
 </div><!-- /layout -->
 
+<!-- Modal confirmação ao mudar de tab com alterações não guardadas -->
+<div class="unsaved-modal-overlay" id="unsaved-modal-overlay">
+  <div class="unsaved-modal">
+    <div class="unsaved-modal-icon">⚠️</div>
+    <div class="unsaved-modal-title">Alterações não guardadas</div>
+    <div class="unsaved-modal-sub">Tens alterações por guardar neste separador. O que queres fazer antes de continuar?</div>
+    <div class="unsaved-modal-actions">
+      <button class="btn-modal-save" id="modal-btn-save">Guardar e continuar</button>
+      <button class="btn-modal-discard" id="modal-btn-discard">Descartar alterações</button>
+      <button class="btn-modal-cancel" id="modal-btn-cancel">Ficar neste separador</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast alterações não guardadas -->
 <div class="unsaved-toast" id="unsaved-toast">
   <strong>⚠ Alterações não guardadas</strong>
@@ -756,8 +786,10 @@
     suplementacao:'tsSupp', consultas:'tsConsult', relatorio:'tsRelatorio'
   };
   let currentTimestamps = {};
+  let pendingTab = null; // tab para onde o utilizador quer ir
 
-  window.switchTab = function(name) {
+  // Executa efectivamente a mudança de tab (sem verificação de dirty)
+  function doSwitchTab(name) {
     currentTab = name;
     const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio'];
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabs[i] === name));
@@ -777,6 +809,50 @@
       metaTxt.textContent = 'Nunca guardado neste separador';
       meta.className = 'tab-meta';
     }
+  }
+
+  // Mostra o modal de confirmação
+  function showUnsavedModal() {
+    document.getElementById('unsaved-modal-overlay').classList.add('show');
+  }
+  function hideUnsavedModal() {
+    document.getElementById('unsaved-modal-overlay').classList.remove('show');
+    pendingTab = null;
+  }
+
+  // Botões do modal
+  document.getElementById('modal-btn-save').addEventListener('click', async () => {
+    hideUnsavedModal();
+    // Guarda o tab actual e depois muda
+    const tabToSave = dirtyTab;
+    const tabToGo   = pendingTab;
+    // Chamar a função de guardar do tab sujo
+    if (tabToSave && TAB_SAVE_FN[tabToSave]) {
+      await TAB_SAVE_FN[tabToSave]();
+    }
+    if (tabToGo) doSwitchTab(tabToGo);
+  });
+  document.getElementById('modal-btn-discard').addEventListener('click', () => {
+    const tabToGo = pendingTab;
+    hideUnsavedModal();
+    if (tabToGo) doSwitchTab(tabToGo);
+  });
+  document.getElementById('modal-btn-cancel').addEventListener('click', () => {
+    hideUnsavedModal();
+  });
+  // Fechar ao clicar no overlay
+  document.getElementById('unsaved-modal-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) hideUnsavedModal();
+  });
+
+  window.switchTab = function(name) {
+    // Se há alterações não guardadas num tab diferente do destino → pedir confirmação
+    if (dirtyTab && dirtyTab !== name) {
+      pendingTab = name;
+      showUnsavedModal();
+      return; // não muda de tab ainda
+    }
+    doSwitchTab(name);
   };
 
   // ── EmailJS ───────────────────────────────────────────────────────────
@@ -1169,8 +1245,9 @@
   // ── Guardar ───────────────────────────────────────────────────────────
   async function saveDoc(data, msgId) {
     if (!currentUID) return;
-    const btn = event.target;
-    btn.disabled = true; btn.textContent = 'A guardar…';
+    // event pode não existir quando chamado programaticamente (ex: modal)
+    const btn = (typeof event !== 'undefined' && event?.target?.classList?.contains('btn-save')) ? event.target : null;
+    if (btn) { btn.disabled = true; btn.textContent = 'A guardar…'; }
     try {
       // Guardar timestamp do tab actual
       const tsKey = TAB_TS_KEYS[currentTab];
@@ -1193,7 +1270,7 @@
     } catch(e) {
       showMsg(msgId, 'Erro: ' + e.message, true);
     }
-    btn.disabled = false; btn.textContent = 'Guardar' + (msgId.includes('bio')?'  biomarcadores':msgId.includes('plano')?' plano':msgId.includes('supp')?' suplementação':msgId.includes('consult')?' consultas':msgId.includes('rel')?' relatório':'');
+    if (btn) { btn.disabled = false; btn.textContent = 'Guardar' + (msgId.includes('bio')?' biomarcadores':msgId.includes('plano')?' plano':msgId.includes('supp')?' suplementação':msgId.includes('consult')?' consultas':msgId.includes('rel')?' relatório':''); }
   }
 
   // ── Link de rastreio dinâmico ─────────────────────────────────────────
