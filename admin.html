@@ -212,6 +212,20 @@
     /* Destaque checkbox nas linhas de biomarcadores */
     .bio-tbl .destaque-cell { width:32px; text-align:center; }
     .destaque-cb { width:16px; height:16px; cursor:pointer; accent-color:var(--cyan); }
+    .bio-tbl tr.row-highlighted { background:rgba(61,217,232,0.05); }
+    .bio-tbl tr.row-highlighted td { border-bottom-color:rgba(61,217,232,0.1); }
+
+    /* Cards pré-visualização destaques */
+    .destaque-card-prev { background:var(--panel-2); border:1px solid var(--line-2); border-radius:10px; padding:10px 12px; transition:border-color 0.2s; }
+    .destaque-card-prev:hover { border-color:rgba(61,217,232,0.25); }
+    .destaque-card-prev-name { font-size:11px; color:var(--txt-2); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .destaque-card-prev-val { font-size:15px; font-weight:800; color:var(--txt); letter-spacing:-0.02em; }
+    .destaque-card-prev-unit { font-size:10px; color:var(--txt-3); font-weight:400; }
+    .destaque-card-prev-tag { font-size:10px; font-weight:700; margin-top:4px; }
+    .destaque-card-prev-tag.good { color:var(--green); }
+    .destaque-card-prev-tag.warn { color:var(--amber); }
+    .destaque-card-prev-tag.crit { color:var(--red); }
+    .destaque-empty-hint { color:var(--txt-3); font-size:12px; padding:14px 16px; border:1px dashed rgba(255,255,255,0.07); border-radius:10px; text-align:center; grid-column:1/-1; }
 
     /* Loading / empty states */
     #loading-state, #access-denied { padding:80px 20px; text-align:center; color:var(--txt-3); font-size:14px; }
@@ -394,6 +408,18 @@
 
       <!-- ── TAB: BIOMARCADORES ── -->
       <div class="tab-content" id="tab-biomarcadores">
+
+        <!-- Pré-visualização dos destaques -->
+        <div class="form-section" id="destaque-preview-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line)">
+            <span class="form-section-title" style="margin:0;border:none;padding:0">Biomarcadores em destaque <span style="color:var(--txt-3);font-weight:400;text-transform:none;letter-spacing:0">(painel do cliente)</span></span>
+            <span id="destaque-counter" style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.04);color:var(--txt-3);transition:all 0.2s">0 selecionados</span>
+          </div>
+          <div id="destaque-preview" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px;min-height:56px;"></div>
+          <div id="destaque-warning" style="display:none;margin-top:10px;font-size:12px;color:var(--amber)">⚠ Apenas os primeiros 5 são mostrados ao cliente. Desmarca os restantes ou reordena nas tabelas abaixo.</div>
+          <p style="margin-top:10px;font-size:11.5px;color:var(--txt-3)">Marca ⭐ nas colunas de destaque abaixo para escolher quais os biomarcadores que aparecem no painel do cliente.</p>
+        </div>
+
         <div class="form-section">
           <div class="form-section-title">Data da análise</div>
           <div class="form-row">
@@ -1048,6 +1074,19 @@
   };
 
   // ── Biomarcadores editor ──────────────────────────────────────────────
+  // Event delegation: qualquer checkbox destaque dentro do container
+  document.getElementById('bio-categories').addEventListener('change', e => {
+    if (e.target.classList.contains('destaque-cb')) {
+      updateDestaquePreview();
+      markDirty();
+    }
+  });
+  // Actualizar preview quando valor/tag mudam numa linha destacada
+  document.getElementById('bio-categories').addEventListener('input', e => {
+    const tr = e.target.closest('tr');
+    if (tr && tr.classList.contains('row-highlighted')) updateDestaquePreview();
+  });
+
   function buildBioEditor(savedData) {
     const container = document.getElementById('bio-categories');
     container.innerHTML = '';
@@ -1081,6 +1120,8 @@
         </table>`;
       container.appendChild(div);
     });
+    // Actualizar preview após renderização
+    requestAnimationFrame(updateDestaquePreview);
   }
 
   function bioRow(r) {
@@ -1107,7 +1148,61 @@
     tr.innerHTML = bioRow({nome:'',valor:'',unidade:'',referencia:'',tag:'',delta:''});
     tbody.appendChild(tr);
     tr.querySelector('input').focus();
+    updateDestaquePreview();
   };
+
+  // ── Pré-visualização dos biomarcadores em destaque ──────────────────────
+  function updateDestaquePreview() {
+    const checked = [];
+    document.querySelectorAll('#bio-categories .destaque-cb').forEach(cb => {
+      const tr = cb.closest('tr');
+      // Highlight visual da linha
+      tr.classList.toggle('row-highlighted', cb.checked);
+      if (!cb.checked) return;
+      const inputs = tr.querySelectorAll('input[type=text]');
+      const sel    = tr.querySelector('select');
+      const nome   = inputs[0]?.value.trim();
+      const valor  = inputs[1]?.value.trim();
+      const unidade = inputs[2]?.value.trim();
+      const tag    = sel?.value || '';
+      if (nome) checked.push({ nome, valor, unidade, tag });
+    });
+
+    const counter = document.getElementById('destaque-counter');
+    const preview = document.getElementById('destaque-preview');
+    const warning = document.getElementById('destaque-warning');
+
+    // Contador
+    const n = checked.length;
+    counter.textContent = `${n} selecionado${n !== 1 ? 's' : ''}`;
+    if (n > 0) {
+      counter.style.background = 'rgba(61,217,232,0.1)';
+      counter.style.color = 'var(--cyan)';
+      counter.style.borderColor = 'rgba(61,217,232,0.25)';
+    } else {
+      counter.style.background = 'rgba(255,255,255,0.04)';
+      counter.style.color = 'var(--txt-3)';
+    }
+
+    // Aviso se mais de 5
+    warning.style.display = n > 5 ? 'block' : 'none';
+
+    // Preview cards (apenas os primeiros 5)
+    const shown = checked.slice(0, 5);
+    if (!shown.length) {
+      preview.innerHTML = '<div class="destaque-empty-hint">Nenhum biomarcador em destaque selecionado. Usa as colunas ⭐ nas tabelas abaixo.</div>';
+      return;
+    }
+    preview.innerHTML = shown.map(r => {
+      const tagCls = r.tag === 'otimo' ? 'good' : r.tag === 'atencao' ? 'warn' : r.tag === 'critico' ? 'crit' : '';
+      const tagLbl = r.tag === 'otimo' ? 'Ótimo' : r.tag === 'atencao' ? 'Atenção' : r.tag === 'critico' ? 'Crítico' : '';
+      return `<div class="destaque-card-prev">
+        <div class="destaque-card-prev-name" title="${r.nome}">${r.nome}</div>
+        <div class="destaque-card-prev-val">${r.valor || '—'} <span class="destaque-card-prev-unit">${r.unidade || ''}</span></div>
+        ${tagLbl ? `<div class="destaque-card-prev-tag ${tagCls}">${tagLbl}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
 
   function collectBioData() {
     const result = {};
