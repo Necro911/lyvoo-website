@@ -883,6 +883,71 @@
     /* ──────────────────────────────────────────
        PLANS
     ────────────────────────────────────────── */
+    /* ── Single Plan ── */
+    .sp-header { text-align: center; margin-bottom: 56px; }
+    .sp-header h2 { font-size: clamp(34px, 5vw, 60px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 16px; }
+    .sp-sub { font-size: 17px; color: var(--ink-2); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    .sp-card {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; background: #fff;
+      border: 1.5px solid var(--border); border-radius: 28px;
+      overflow: hidden; box-shadow: 0 16px 56px rgba(0,0,0,0.08);
+      max-width: 1000px; margin: 0 auto;
+    }
+
+    .sp-left { padding: 48px 44px; display: flex; flex-direction: column; gap: 0; }
+    .sp-right { background: var(--surface); border-left: 1.5px solid var(--border); padding: 40px 36px; display: flex; flex-direction: column; gap: 24px; }
+
+    /* Price */
+    .sp-price-wrap { margin-bottom: 28px; }
+    .sp-price { display: flex; align-items: flex-end; gap: 4px; margin-bottom: 6px; }
+    .sp-cur { font-size: 24px; font-weight: 700; color: var(--ink); padding-bottom: 10px; }
+    .sp-val { font-size: 80px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; color: var(--ink); }
+    .sp-per { font-size: 18px; font-weight: 500; color: var(--ink-3); padding-bottom: 10px; }
+    .sp-daily { font-size: 15px; font-weight: 600; color: var(--teal-light); margin-bottom: 6px; }
+    .sp-billing { font-size: 12.5px; color: var(--ink-3); }
+
+    .sp-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .sp-section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 18px; }
+
+    /* Features */
+    .sp-features { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+    .sp-features li { display: flex; align-items: flex-start; gap: 12px; }
+    .sp-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(11,82,90,0.1); color: var(--teal-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .sp-features li div { display: flex; flex-direction: column; gap: 2px; }
+    .sp-features li strong { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .sp-features li span { font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+
+    /* CTA */
+    .sp-cta {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: var(--teal); color: #fff; text-decoration: none;
+      font-size: 16px; font-weight: 700; padding: 16px 28px; border-radius: 14px;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 8px 24px rgba(11,82,90,0.3);
+    }
+    .sp-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+    .sp-guarantee { text-align: center; font-size: 12px; color: var(--ink-3); margin-top: 12px; }
+
+    /* Biomarkers side */
+    .sp-bio-header { }
+    .sp-bio-title { font-size: 15px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 4px; }
+    .sp-bio-sub { font-size: 12.5px; color: var(--ink-3); }
+    .sp-bio-groups { display: flex; flex-direction: column; gap: 16px; }
+    .sp-bio-group { }
+    .sp-bio-cat { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 7px; }
+    .sp-bio-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .sp-bio-chips span { font-size: 12px; font-weight: 500; color: var(--ink-2); background: #fff; border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px; }
+    .sp-bio-note { font-size: 12px; color: var(--ink-3); line-height: 1.5; border-top: 1px solid var(--border); padding-top: 16px; }
+
+    @media (max-width: 860px) {
+      .sp-card { grid-template-columns: 1fr; }
+      .sp-right { border-left: none; border-top: 1.5px solid var(--border); }
+      .sp-left { padding: 36px 28px; }
+      .sp-val { font-size: 64px; }
+    }
+
     .plans-header { text-align: center; margin-bottom: 60px; }
     .plans-header h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 14px; }
     .plans-header p { font-size: 17px; color: var(--ink-2); max-width: 440px; margin: 0 auto; }
@@ -2816,83 +2881,103 @@
 <!-- ── PLANOS ── -->
 <section class="step-layer layer-off" id="planos">
   <div class="container">
-    <div class="plans-header fade">
-      <span class="label">Planos</span>
-      <h2 class="fade fade-d1">Escolha o seu programa<br/>de <span class="grad-text">prevenção</span></h2>
-      <p class="fade fade-d2">Dois programas anuais com análises, consultas e reavaliação incluídos.</p>
-    </div>
-    <div class="plans-grid fade fade-d2">
 
-      <!-- ESSENCIAL -->
-      <div class="plan-card ess">
-        <div class="plan-label-chip ess">Essencial</div>
-        <div class="plan-name">Lyvoo Essencial</div>
-        <div class="plan-desc">Programa anual de prevenção cardiometabólica. O ponto de entrada ideal.</div>
-        <div class="plan-price">
-          <span class="price-cur">€</span>
-          <span class="price-main">320</span>
-          <span class="price-per">/ano</span>
+    <!-- Header -->
+    <div class="sp-header fade">
+      <span class="label">Programa anual</span>
+      <h2 class="fade fade-d1">Um único plano.<br/><span class="grad-text">Tudo incluído.</span></h2>
+      <p class="sp-sub fade fade-d2">Análises completas custam habitualmente €800–1500 em clínicas privadas.<br/>Na Lyvoo, tem tudo por menos de €1 por dia.</p>
+    </div>
+
+    <!-- Main card -->
+    <div class="sp-card fade fade-d2">
+
+      <!-- Left: price + features -->
+      <div class="sp-left">
+        <div class="sp-price-wrap">
+          <div class="sp-price">
+            <span class="sp-cur">€</span>
+            <span class="sp-val">359</span>
+            <span class="sp-per">/ano</span>
+          </div>
+          <div class="sp-daily">≈ €0.98 por dia</div>
+          <div class="sp-billing">Pagamento único anual · Sem renovação automática</div>
         </div>
-        <div class="price-note">Pagamento único anual · 2 avaliações incluídas</div>
-        <div class="plan-sep"></div>
-        <div class="plan-section-head">Inclui</div>
-        <ul class="plan-features">
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 avaliações por ano</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 consulta inicial de nutrição</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 consulta de follow-up</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Plano nutricional personalizado</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Reavaliação comparativa aos 6 meses</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Kit de análises enviado para casa</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Acesso à app Lyvoo</li>
+
+        <div class="sp-divider"></div>
+
+        <div class="sp-section-label">O que está incluído</div>
+        <ul class="sp-features">
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>+40 biomarcadores analisados</strong><span>Painel completo cardiovascular, hormonal, metabólico, nutricional, tiróide, renal e hepático</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Kit enviado para casa em 48h</strong><span>Lanceta, cartão DBS, luvas e guia — recolha simples sem sair de casa</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Laboratório certificado ISO 15189</strong><span>Resultados em 7–10 dias úteis com máxima precisão clínica</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Relatório médico + nutricional</strong><span>Interpretação integrada por médico e nutricionista — não números isolados</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Plano alimentar personalizado</strong><span>Baseado nos seus biomarcadores e objetivos de saúde</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Reavaliação aos 6 meses</strong><span>Segundo painel completo para medir o progresso com o seu baseline</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>App Lyvoo com suporte contínuo</strong><span>Acompanhamento do progresso, notificações e comunicação com a equipa</span></div></li>
         </ul>
-        <div class="plan-section-head">Painel (11 biomarcadores)</div>
-        <div class="panel-chips">
-          <span class="panel-chip">HbA1c</span><span class="panel-chip">LDL</span><span class="panel-chip">HDL</span>
-          <span class="panel-chip">Triglicéridos</span><span class="panel-chip">Colesterol total</span>
-          <span class="panel-chip">ALT</span><span class="panel-chip">GGT</span><span class="panel-chip">Creatinina</span>
-          <span class="panel-chip">PCR</span><span class="panel-chip">TSH</span><span class="panel-chip">Ferritina</span>
-        </div>
-        <a href="registar.html?plano=essencial" class="plan-cta" data-plano="essencial">Começar com o Essencial</a>
+
+        <a href="registar.html?plano=lyvoo" class="sp-cta">
+          Começar o programa
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg>
+        </a>
+        <p class="sp-guarantee">14 dias de garantia de devolução · Sem compromisso</p>
       </div>
 
-      <!-- COMPLETO -->
-      <div class="plan-card comp">
-        <div class="plan-label-chip comp">
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1l1.3 2.7L11 4.3l-2.5 2.4.6 3.3L6 8.7l-3.1 1.3.6-3.3L1 4.3l3.7-.6z"/></svg>
-          Mais popular
+      <!-- Right: biomarkers -->
+      <div class="sp-right">
+        <div class="sp-bio-header">
+          <span class="sp-bio-title">+40 biomarcadores incluídos</span>
+          <span class="sp-bio-sub">Cobertura clínica completa</span>
         </div>
-        <div class="plan-name">Lyvoo Completo</div>
-        <div class="plan-desc">Programa anual de medicina preventiva com supervisão médica. O plano principal da Lyvoo.</div>
-        <div class="plan-price">
-          <span class="price-cur">€</span>
-          <span class="price-main">640</span>
-          <span class="price-per">/ano</span>
+        <div class="sp-bio-groups">
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Cardiovascular</div>
+            <div class="sp-bio-chips">
+              <span>LDL</span><span>HDL</span><span>ApoB</span><span>Triglicéridos</span><span>Colesterol total</span><span>PCR-us</span>
+            </div>
+          </div>
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Metabólico</div>
+            <div class="sp-bio-chips">
+              <span>HbA1c</span><span>Glicose</span><span>Insulina jejum</span><span>HOMA-IR</span>
+            </div>
+          </div>
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Hormonal</div>
+            <div class="sp-bio-chips">
+              <span>Testosterona</span><span>Estradiol</span><span>DHEA-S</span><span>Cortisol</span><span>SHBG</span>
+            </div>
+          </div>
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Tiróide</div>
+            <div class="sp-bio-chips">
+              <span>TSH</span><span>FT4</span><span>FT3</span>
+            </div>
+          </div>
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Nutricional</div>
+            <div class="sp-bio-chips">
+              <span>Vitamina D</span><span>Vitamina B12</span><span>Folato B9</span><span>Magnésio</span><span>Ferro</span><span>Ferritina</span><span>Zinco</span><span>Selénio</span>
+            </div>
+          </div>
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Renal &amp; Hepática</div>
+            <div class="sp-bio-chips">
+              <span>Creatinina</span><span>Ureia</span><span>ALT</span><span>AST</span><span>GGT</span><span>Bilirrubina</span><span>Albumina</span>
+            </div>
+          </div>
+          <div class="sp-bio-group">
+            <div class="sp-bio-cat">Inflamação</div>
+            <div class="sp-bio-chips">
+              <span>PCR</span><span>IL-6</span><span>Fibrinogénio</span><span>VSG</span>
+            </div>
+          </div>
         </div>
-        <div class="price-note">Pagamento único anual · Supervisão médica incluída</div>
-        <div class="plan-sep"></div>
-        <div class="plan-section-head">Tudo do Essencial, mais</div>
-        <ul class="plan-features">
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Consulta médica preventiva</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório integrado médico + nutrição</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Follow-up e revisão médica</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Acesso preferencial a módulos avançados</li>
-          <li><span class="pf-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Painel expandido (15 biomarcadores)</li>
-        </ul>
-        <div class="plan-section-head">Painel (15 biomarcadores)</div>
-        <div class="panel-chips">
-          <span class="panel-chip">HbA1c</span><span class="panel-chip">LDL</span><span class="panel-chip">HDL</span>
-          <span class="panel-chip">ApoB</span><span class="panel-chip">Triglicéridos</span><span class="panel-chip">Colesterol total</span>
-          <span class="panel-chip">ALT</span><span class="panel-chip">GGT</span><span class="panel-chip">Creatinina</span>
-          <span class="panel-chip">Ferritina</span><span class="panel-chip">TSH</span><span class="panel-chip">FT4</span>
-          <span class="panel-chip">Vitamina B12</span><span class="panel-chip">PCR</span><span class="panel-chip">Magnésio</span>
-        </div>
-        <a href="registar.html?plano=completo" class="plan-cta" data-plano="completo">Começar com o Completo</a>
+        <p class="sp-bio-note">+ módulos opcionais disponíveis — microbioma, hormonal completo, genética e mais</p>
       </div>
 
     </div>
-    <p style="text-align:center;margin-top:22px;font-size:13px;color:var(--ink-3)" class="fade">
-      Ambos os planos incluem kit de análises enviado para casa · Acesso à app Lyvoo · Suporte contínuo
-    </p>
   </div>
 </section>
 
