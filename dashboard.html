@@ -709,110 +709,32 @@
       <div class="sec-header">
         <div>
           <h2 class="sec-title">Biomarcadores</h2>
-          <p class="sec-sub">Resultados da sua análise · Janeiro 2026</p>
+          <p class="sec-sub" id="bio-sub">Resultados da sua análise</p>
         </div>
         <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Crítico</div>
       </div>
-      <div class="bio-section">
-        <div class="bio-sec-title">Cardiovascular</div>
-        <div class="bio-table">
-          <div class="bio-row"><span class="bio-name">Colesterol LDL</span><span class="bio-val">85 <small>mg/dL</small></span><span class="bio-range">< 100 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:55%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 15</span></div>
-          <div class="bio-row"><span class="bio-name">Colesterol HDL</span><span class="bio-val">62 <small>mg/dL</small></span><span class="bio-range">> 50 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:75%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 4</span></div>
-          <div class="bio-row"><span class="bio-name">ApoB</span><span class="bio-val">72 <small>mg/dL</small></span><span class="bio-range">< 90 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:60%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 8</span></div>
-          <div class="bio-row"><span class="bio-name">Triglicéridos</span><span class="bio-val">118 <small>mg/dL</small></span><span class="bio-range">< 150 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:70%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 22</span></div>
-          <div class="bio-row"><span class="bio-name">PCR ultra-sensível</span><span class="bio-val">0.8 <small>mg/L</small></span><span class="bio-range">< 1.0 mg/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:80%;background:var(--amber)"></div></div><span class="bio-tag warn">Atenção</span><span class="bio-delta down">↓ 0.6</span></div>
-        </div>
-      </div>
-      <div class="bio-section">
-        <div class="bio-sec-title">Metabólico</div>
-        <div class="bio-table">
-          <div class="bio-row"><span class="bio-name">HbA1c</span><span class="bio-val">5.2 <small>%</small></span><span class="bio-range">< 5.7%</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:45%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 0.3</span></div>
-          <div class="bio-row"><span class="bio-name">Glicose em jejum</span><span class="bio-val">88 <small>mg/dL</small></span><span class="bio-range">70–99 mg/dL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:62%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta down">↓ 5</span></div>
-          <div class="bio-row"><span class="bio-name">Insulina jejum</span><span class="bio-val">6.2 <small>µU/mL</small></span><span class="bio-range">< 10 µU/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:40%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
-        </div>
-      </div>
-      <div class="bio-section">
-        <div class="bio-sec-title">Nutricional</div>
-        <div class="bio-table">
-          <div class="bio-row"><span class="bio-name">Vitamina D</span><span class="bio-val">52 <small>ng/mL</small></span><span class="bio-range">40–80 ng/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:55%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 18</span></div>
-          <div class="bio-row"><span class="bio-name">Vitamina B12</span><span class="bio-val">612 <small>pg/mL</small></span><span class="bio-range">200–900 pg/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:70%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 96</span></div>
-          <div class="bio-row"><span class="bio-name">Ferritina</span><span class="bio-val">68 <small>ng/mL</small></span><span class="bio-range">30–200 ng/mL</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:35%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta up">↑ 8</span></div>
-          <div class="bio-row"><span class="bio-name">Magnésio</span><span class="bio-val">0.82 <small>mmol/L</small></span><span class="bio-range">0.74–0.99 mmol/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:48%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
-        </div>
-      </div>
-      <div class="bio-section">
-        <div class="bio-sec-title">Tiróide</div>
-        <div class="bio-table">
-          <div class="bio-row"><span class="bio-name">TSH</span><span class="bio-val">1.8 <small>mUI/L</small></span><span class="bio-range">0.5–4.0 mUI/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:35%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
-          <div class="bio-row"><span class="bio-name">FT4</span><span class="bio-val">14.2 <small>pmol/L</small></span><span class="bio-range">12–22 pmol/L</span><div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:22%;background:var(--green)"></div></div><span class="bio-tag good">Ótimo</span><span class="bio-delta">—</span></div>
-        </div>
+      <div id="bio-content">
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Os seus resultados ainda não estão disponíveis. Em breve!</div>
       </div>
     </div>
 
     <!-- PLANO ALIMENTAR -->
     <div id="sec-plano-alimentar" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Plano alimentar</h2><p class="sec-sub">Personalizado com base nos seus biomarcadores · Janeiro 2026</p></div>
+        <div><h2 class="sec-title">Plano alimentar</h2><p class="sec-sub" id="plano-sub">Personalizado com base nos seus biomarcadores</p></div>
       </div>
-      <div class="sec-cards-grid">
-        <div class="sec-card">
-          <div class="sec-card-label" style="color:var(--cyan)">Objectivo principal</div>
-          <div class="sec-card-title">Reduzir inflamação sistémica</div>
-          <div class="sec-card-desc">O seu PCR ultra-sensível está ligeiramente elevado (0.8 mg/L). A dieta anti-inflamatória é a intervenção mais eficaz para o normalizar.</div>
-        </div>
-        <div class="sec-card">
-          <div class="sec-card-label" style="color:var(--green)">Macros diários</div>
-          <div class="sec-card-title">Proteína · Gordura · Hidratos</div>
-          <div class="sec-macro-bars">
-            <div class="sec-macro"><span>Proteína</span><div class="sec-macro-bar"><div style="width:30%;background:var(--cyan)"></div></div><span>30%</span></div>
-            <div class="sec-macro"><span>Gorduras</span><div class="sec-macro-bar"><div style="width:35%;background:var(--violet)"></div></div><span>35%</span></div>
-            <div class="sec-macro"><span>Hidratos</span><div class="sec-macro-bar"><div style="width:35%;background:var(--green)"></div></div><span>35%</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="sec-list-section">
-        <div class="sec-list-title" style="color:var(--green)">✓ Priorizar</div>
-        <div class="sec-tags"><span>Peixe gordo (salmão, sardinha)</span><span>Azeite virgem extra</span><span>Vegetais crucíferos</span><span>Frutos vermelhos</span><span>Nozes e amêndoas</span><span>Leguminosas</span><span>Cúrcuma e gengibre</span></div>
-      </div>
-      <div class="sec-list-section">
-        <div class="sec-list-title" style="color:var(--red)">✗ Reduzir</div>
-        <div class="sec-tags"><span>Açúcar refinado</span><span>Óleos vegetais processados</span><span>Álcool (> 1 copo/dia)</span><span>Carnes processadas</span><span>Farinhas refinadas</span></div>
+      <div id="plano-content">
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">O seu plano alimentar ainda não está disponível. Em breve!</div>
       </div>
     </div>
 
     <!-- SUPLEMENTAÇÃO -->
     <div id="sec-suplementacao" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Suplementação</h2><p class="sec-sub">Prescrita com base nos seus resultados · Janeiro 2026</p></div>
+        <div><h2 class="sec-title">Suplementação</h2><p class="sec-sub" id="supp-sub">Prescrita com base nos seus resultados</p></div>
       </div>
-      <div class="supp-grid">
-        <div class="supp-card">
-          <div class="supp-icon" style="background:rgba(61,217,232,0.08);color:var(--cyan)">D3</div>
-          <div class="supp-body">
-            <div class="supp-name">Vitamina D3 + K2</div>
-            <div class="supp-dose">2000 UI/dia · Com a refeição principal</div>
-            <div class="supp-reason">Manutenção dos níveis óptimos de Vitamina D (52 ng/mL). A K2 assegura a correcta direcção do cálcio.</div>
-          </div>
-          <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
-        </div>
-        <div class="supp-card">
-          <div class="supp-icon" style="background:rgba(139,92,246,0.08);color:var(--violet)">Ω3</div>
-          <div class="supp-body">
-            <div class="supp-name">Ómega-3 (EPA+DHA)</div>
-            <div class="supp-dose">2g/dia · Com o jantar</div>
-            <div class="supp-reason">Redução da inflamação sistémica (PCR 0.8 mg/L). Benefício cardiovascular adicional para o LDL.</div>
-          </div>
-          <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
-        </div>
-        <div class="supp-card">
-          <div class="supp-icon" style="background:rgba(251,191,36,0.08);color:var(--amber)">Mg</div>
-          <div class="supp-body">
-            <div class="supp-name">Magnésio (glicinato)</div>
-            <div class="supp-dose">300 mg/dia · Ao deitar</div>
-            <div class="supp-reason">Suporte metabólico e melhoria da qualidade do sono. Forma glicinato para melhor absorção.</div>
-          </div>
-          <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
-        </div>
+      <div class="supp-grid" id="supp-content">
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">O seu plano de suplementação ainda não está disponível. Em breve!</div>
       </div>
     </div>
 
@@ -822,34 +744,8 @@
         <div><h2 class="sec-title">Consultas</h2><p class="sec-sub">Próximas e passadas</p></div>
         <a href="contacto.html" class="sec-btn">+ Agendar</a>
       </div>
-      <div class="consult-list">
-        <div class="consult-row upcoming">
-          <div class="consult-date"><div class="consult-day">24</div><div class="consult-month">Jun</div></div>
-          <div class="consult-info">
-            <div class="consult-title">Follow-up de nutrição</div>
-            <div class="consult-meta">11:00 · Videochamada · Mariana Silva, Nutricionista</div>
-          </div>
-          <span class="consult-tag upcoming-tag">Em breve</span>
-          <a href="#" class="appt-btn">Remarcar</a>
-        </div>
-        <div class="consult-row upcoming">
-          <div class="consult-date"><div class="consult-day">7</div><div class="consult-month">Jul</div></div>
-          <div class="consult-info">
-            <div class="consult-title">Consulta de medicina preventiva</div>
-            <div class="consult-meta">10:00 · Videochamada · Dr. André Martins, Medicina Preventiva</div>
-          </div>
-          <span class="consult-tag upcoming-tag">Agendada</span>
-          <a href="#" class="appt-btn">Remarcar</a>
-        </div>
-        <div class="consult-row upcoming">
-          <div class="consult-date"><div class="consult-day">21</div><div class="consult-month">Jul</div></div>
-          <div class="consult-info">
-            <div class="consult-title">Reavaliação — análise ao sangue</div>
-            <div class="consult-meta">Kit enviado para casa · Recolha em domicílio</div>
-          </div>
-          <span class="consult-tag">Pendente</span>
-          <a href="#" class="appt-btn">Ver instruções</a>
-        </div>
+      <div class="consult-list" id="consult-content">
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="contacto.html" style="color:var(--cyan)">Agende a sua consulta →</a></div>
       </div>
     </div>
 
@@ -1055,6 +951,204 @@
     return nome.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
   }
 
+  // ── Render: Biomarcadores ─────────────────────────────────────────────
+  const CAT_LABELS = {
+    cardiovascular:'Cardiovascular', metabolico:'Metabólico', nutricional:'Nutricional',
+    tiroide:'Tiróide', hormonal:'Hormonal', hematologia:'Hematologia',
+    hepatico:'Hepático', renal:'Renal'
+  };
+  function renderBiomarcadores(resultados) {
+    const container = document.getElementById('bio-content');
+    const sub = document.getElementById('bio-sub');
+    if (!resultados || !resultados.biomarcadores) return;
+    if (resultados.dataAnalise) sub.textContent = 'Resultados da sua análise · ' + resultados.dataAnalise;
+    const bio = resultados.biomarcadores;
+    let html = '';
+    Object.entries(bio).forEach(([cat, rows]) => {
+      if (!rows || !rows.length) return;
+      const activeRows = rows.filter(r => r.valor);
+      if (!activeRows.length) return;
+      html += `<div class="bio-section"><div class="bio-sec-title">${CAT_LABELS[cat]||cat}</div><div class="bio-table">`;
+      activeRows.forEach(r => {
+        const tagCls = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
+        const tagLbl = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
+        const barColor = r.tag==='otimo'?'var(--green)':r.tag==='atencao'?'var(--amber)':'var(--red)';
+        const delta = r.delta ? (r.delta.startsWith('-')||r.delta.startsWith('↓')?`<span class="bio-delta down">${r.delta}</span>`:`<span class="bio-delta up">${r.delta}</span>`) : '<span class="bio-delta">—</span>';
+        html += `<div class="bio-row">
+          <span class="bio-name">${r.nome}</span>
+          <span class="bio-val">${r.valor} <small>${r.unidade||''}</small></span>
+          <span class="bio-range">${r.referencia||''}</span>
+          <div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:60%;background:${barColor}"></div></div>
+          <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'—'}</span>
+          ${delta}
+        </div>`;
+      });
+      html += '</div></div>';
+    });
+    if (html) container.innerHTML = html;
+  }
+
+  // ── Render: Plano alimentar ───────────────────────────────────────────
+  function renderPlano(pa) {
+    const container = document.getElementById('plano-content');
+    if (!pa || !pa.objectivo) return;
+    const prot = pa.proteina||0, gord = pa.gordura||0, hidr = pa.hidratos||0;
+    const prTags = (pa.priorizar||[]).map(t=>`<span>${t}</span>`).join('');
+    const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
+    const obs = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">Observações</div><p style="font-size:13.5px;color:var(--txt-2);line-height:1.7">${pa.obs}</p></div>` : '';
+    container.innerHTML = `
+      <div class="sec-cards-grid">
+        <div class="sec-card">
+          <div class="sec-card-label" style="color:var(--cyan)">Objectivo principal</div>
+          <div class="sec-card-title">${pa.objectivo}</div>
+          <div class="sec-card-desc">${pa.objectivoDesc||''}</div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-card-label" style="color:var(--green)">Macros diários${pa.kcal?' · '+pa.kcal:''}</div>
+          <div class="sec-card-title">Proteína · Gordura · Hidratos</div>
+          <div class="sec-macro-bars">
+            <div class="sec-macro"><span>Proteína</span><div class="sec-macro-bar"><div style="width:${prot}%;background:var(--cyan)"></div></div><span>${prot}%</span></div>
+            <div class="sec-macro"><span>Gorduras</span><div class="sec-macro-bar"><div style="width:${gord}%;background:var(--violet)"></div></div><span>${gord}%</span></div>
+            <div class="sec-macro"><span>Hidratos</span><div class="sec-macro-bar"><div style="width:${hidr}%;background:var(--green)"></div></div><span>${hidr}%</span></div>
+          </div>
+        </div>
+      </div>
+      ${prTags?`<div class="sec-list-section"><div class="sec-list-title" style="color:var(--green)">✓ Priorizar</div><div class="sec-tags">${prTags}</div></div>`:''}
+      ${rdTags?`<div class="sec-list-section"><div class="sec-list-title" style="color:var(--red)">✗ Reduzir</div><div class="sec-tags">${rdTags}</div></div>`:''}
+      ${obs}`;
+  }
+
+  // ── Render: Suplementação ─────────────────────────────────────────────
+  const SUPP_COLORS = ['var(--cyan)','var(--violet)','var(--amber)','var(--green)','var(--red)'];
+  const SUPP_BG = ['rgba(61,217,232,0.08)','rgba(139,92,246,0.08)','rgba(251,191,36,0.08)','rgba(74,222,128,0.08)','rgba(248,113,113,0.08)'];
+  function renderSupplementos(list) {
+    const container = document.getElementById('supp-content');
+    if (!list || !list.length) return;
+    const ativos = list.filter(s => s.ativo !== false);
+    if (!ativos.length) return;
+    container.innerHTML = ativos.map((s, i) => {
+      const ci = i % SUPP_COLORS.length;
+      return `<div class="supp-card">
+        <div class="supp-icon" style="background:${SUPP_BG[ci]};color:${SUPP_COLORS[ci]}">${s.sigla||'•'}</div>
+        <div class="supp-body">
+          <div class="supp-name">${s.nome}</div>
+          <div class="supp-dose">${s.dose}${s.momento?' · '+s.momento:''}</div>
+          <div class="supp-reason">${s.razao||''}</div>
+        </div>
+        <span class="supp-badge" style="background:rgba(74,222,128,0.1);color:var(--green)">Activo</span>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Render: Consultas ─────────────────────────────────────────────────
+  const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  function renderConsultas(list) {
+    const container = document.getElementById('consult-content');
+    if (!list || !list.length) return;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const sorted = [...list].sort((a,b) => (a.data||'').localeCompare(b.data||''));
+    container.innerHTML = sorted.map(c => {
+      const d = c.data ? new Date(c.data + 'T00:00:00') : null;
+      const isPast = d && d < today;
+      const day = d ? d.getDate() : '—';
+      const mon = d ? MESES[d.getMonth()] : '—';
+      const tagCls = isPast ? '' : 'upcoming-tag';
+      const tagLbl = isPast ? 'Realizada' : (c.estado==='confirmada'?'Confirmada':'Agendada');
+      const linkBtn = c.link && !isPast
+        ? `<a href="${c.link}" target="_blank" rel="noopener" class="appt-btn" style="background:rgba(61,217,232,0.08);border-color:rgba(61,217,232,0.25);color:var(--cyan)">Entrar</a>`
+        : `<span class="appt-btn" style="opacity:0.4;cursor:default">${isPast?'Realizada':'Sem link'}</span>`;
+      return `<div class="consult-row ${isPast?'':'upcoming'}">
+        <div class="consult-date"><div class="consult-day">${day}</div><div class="consult-month">${mon}</div></div>
+        <div class="consult-info">
+          <div class="consult-title">${c.titulo}</div>
+          <div class="consult-meta">${c.hora||''}${c.hora?' · ':''}Videochamada${c.medico?' · '+c.medico:''}</div>
+          ${c.notas?`<div class="consult-meta" style="margin-top:2px;font-style:italic">${c.notas}</div>`:''}
+        </div>
+        <span class="consult-tag ${tagCls}">${tagLbl}</span>
+        ${linkBtn}
+      </div>`;
+    }).join('');
+
+    // Actualizar também o sidebar (próxima consulta)
+    const proxima = sorted.find(c => {
+      if (!c.data) return false;
+      return new Date(c.data + 'T00:00:00') >= today;
+    });
+    if (proxima) {
+      const pd = new Date(proxima.data + 'T00:00:00');
+      const sba = document.querySelector('.sb-appt-title');
+      const sbm1 = document.querySelectorAll('.sb-appt-meta')[0];
+      const sbm2 = document.querySelectorAll('.sb-appt-meta')[1];
+      if (sba) sba.textContent = proxima.titulo;
+      if (sbm1) sbm1.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${pd.getDate()} ${MESES[pd.getMonth()]} ${pd.getFullYear()}`;
+      if (sbm2 && proxima.hora) sbm2.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${proxima.hora}`;
+      const sbBtn = document.querySelector('.sb-appt-btn');
+      if (sbBtn && proxima.link) { sbBtn.href = proxima.link; sbBtn.target = '_blank'; sbBtn.textContent = 'Entrar na consulta'; }
+    }
+  }
+
+  // ── Render: Highlights biomarcadores no painel ────────────────────────
+  function renderBioHighlights(resultados) {
+    const grid = document.querySelector('.bio-grid');
+    if (!grid || !resultados?.biomarcadores) return;
+    const allRows = Object.values(resultados.biomarcadores).flat().filter(r => r.valor);
+    const highlights = allRows.slice(0, 5);
+    if (!highlights.length) return;
+    grid.innerHTML = highlights.map(r => {
+      const tagCls = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
+      const tagLbl = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
+      const deltaDir = r.delta && (r.delta.startsWith('-')||r.delta.startsWith('↓')) ? 'up' : 'up';
+      return `<div class="bio-card">
+        <div class="bio-top"><span class="bio-name">${r.nome}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'—'}</span></div>
+        <div class="bio-val">${r.valor} <small>${r.unidade||''}</small></div>
+        ${r.delta?`<div class="bio-trend up">${r.delta}</div>`:'<div class="bio-trend">—</div>'}
+      </div>`;
+    }).join('');
+  }
+
+  // ── Render: Score de saúde no painel ─────────────────────────────────
+  function renderScore(relatorio) {
+    if (!relatorio?.score) return;
+    const scoreVal = relatorio.score;
+    const cls = relatorio.classificacao || 'Bom';
+    const circumference = 351.9;
+    const offset = circumference - (scoreVal / 100) * circumference;
+    const ringEl = document.querySelector('#view-resultados .ring svg circle:nth-child(2)');
+    if (ringEl) ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    const valEl = document.querySelector('#view-resultados .ring-center .ring-val');
+    if (valEl) valEl.innerHTML = `${scoreVal}<small>/100</small>`;
+    const subEl = document.querySelector('#view-resultados .ring-center .ring-sub');
+    if (subEl) { subEl.textContent = cls; subEl.className = 'ring-sub good'; }
+
+    // Sub-scores
+    const scoreItems = document.querySelectorAll('#view-resultados .score-item .score-val');
+    if (scoreItems.length >= 4) {
+      if (relatorio.scoreBio)  scoreItems[0].innerHTML = `${relatorio.scoreBio}<small>/100</small>`;
+      if (relatorio.scoreNut)  scoreItems[2].innerHTML = `${relatorio.scoreNut}<small>/100</small>`;
+      if (relatorio.scoreSono) scoreItems[3].innerHTML = `${relatorio.scoreSono}<small>/100</small>`;
+    }
+
+    // Progresso
+    if (relatorio.progresso) {
+      const pctEl = document.getElementById('prog-pct');
+      if (pctEl) pctEl.innerHTML = `${relatorio.progresso}<small>%</small>`;
+      const progCircle = document.querySelector('#view-resultados .ring:first-child circle:nth-child(2)');
+      if (progCircle) {
+        const off = circumference - (relatorio.progresso / 100) * circumference;
+        progCircle.setAttribute('stroke-dashoffset', off.toFixed(1));
+      }
+    }
+
+    // Link relatório
+    if (relatorio.url) {
+      document.querySelectorAll('#view-resultados .btn-ghost').forEach(btn => {
+        if (btn.textContent.includes('plano') || btn.textContent.includes('análise')) {
+          btn.href = relatorio.url; btn.target = '_blank';
+        }
+      });
+    }
+  }
+
   onAuthStateChanged(auth, async (user) => {
     clearTimeout(window._authFallback);
     if (!user) { window.location.href = 'login.html'; return; }
@@ -1080,6 +1174,20 @@
         if (completo) nome = completo;
         if (d.planoNome) planoNome = d.planoNome;
         if (d.estado) estadoNum = d.estado;
+
+        // Render secções com dados reais
+        if (d.resultados)     renderBiomarcadores(d.resultados);
+        if (d.planoAlimentar) renderPlano(d.planoAlimentar);
+        if (d.suplementacao)  renderSupplementos(d.suplementacao);
+        if (d.consultas)      renderConsultas(d.consultas);
+        if (d.resultados)     renderBioHighlights(d.resultados);
+        if (d.relatorio)      renderScore(d.relatorio);
+
+        // Sub-title das secções
+        if (d.resultados?.dataAnalise) {
+          const sub = document.getElementById('supp-sub');
+          if (sub) sub.textContent = 'Prescrita com base nos seus resultados · ' + d.resultados.dataAnalise;
+        }
       }
     } catch (err) {
       console.warn('Não foi possível carregar o perfil:', err);
