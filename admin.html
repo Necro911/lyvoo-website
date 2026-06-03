@@ -155,6 +155,31 @@
     .estado-card-lbl { font-size:10px; color:var(--txt-3); margin-top:4px; line-height:1.3; }
     .estado-card.selected .estado-card-lbl { color:var(--txt-2); }
 
+    /* Filtros de estado */
+    .estado-filters { display:flex; gap:6px; flex-wrap:wrap; padding:10px 20px 12px; border-bottom:1px solid var(--line); }
+    .ef-btn { font-size:11px; font-weight:700; padding:4px 11px; border-radius:999px; border:1px solid var(--line-2); background:none; color:var(--txt-3); cursor:pointer; transition:all 0.15s; }
+    .ef-btn:hover { color:var(--txt-2); border-color:rgba(255,255,255,0.18); }
+    .ef-btn.active { background:rgba(61,217,232,0.1); border-color:rgba(61,217,232,0.3); color:var(--cyan); }
+    .ef-btn[data-e="1"].active { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.15); color:var(--txt-2); }
+    .ef-btn[data-e="2"].active { background:rgba(251,191,36,0.1); border-color:rgba(251,191,36,0.3); color:var(--amber); }
+    .ef-btn[data-e="3"].active { background:rgba(61,217,232,0.08); border-color:rgba(61,217,232,0.25); color:var(--cyan); }
+    .ef-btn[data-e="4"].active { background:rgba(74,222,128,0.08); border-color:rgba(74,222,128,0.25); color:var(--green); }
+    .ef-btn[data-e="5"].active { background:rgba(139,92,246,0.08); border-color:rgba(139,92,246,0.25); color:var(--violet); }
+
+    /* Waitlist */
+    .wl-row { display:flex; align-items:center; gap:14px; padding:12px 20px; border-bottom:1px solid var(--line); font-size:13px; }
+    .wl-row:last-child { border-bottom:none; }
+    .wl-email { flex:1; color:var(--txt-2); }
+    .wl-date { font-size:11.5px; color:var(--txt-3); white-space:nowrap; }
+
+    /* Toast aviso não guardado */
+    .unsaved-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:#1A1F22; border:1px solid var(--amber); border-radius:12px; padding:12px 20px; display:flex; align-items:center; gap:14px; font-size:13px; color:var(--txt-2); z-index:999; box-shadow:0 8px 32px rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:opacity 0.25s; }
+    .unsaved-toast.show { opacity:1; pointer-events:all; }
+    .unsaved-toast strong { color:var(--amber); }
+    .unsaved-toast-btns { display:flex; gap:8px; }
+    .toast-btn-save { font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; border:none; background:var(--amber); color:#0A0800; cursor:pointer; }
+    .toast-btn-disc { font-size:12px; font-weight:600; padding:6px 14px; border-radius:8px; border:1px solid var(--line-2); background:none; color:var(--txt-2); cursor:pointer; }
+
     /* Loading / empty states */
     #loading-state, #access-denied { padding:80px 20px; text-align:center; color:var(--txt-3); font-size:14px; }
     #access-denied h2 { font-size:20px; font-weight:800; color:var(--red); margin-bottom:10px; }
@@ -188,16 +213,27 @@
   <!-- ── SIDEBAR: lista de utilizadores ── -->
   <aside class="sidebar">
     <div class="sb-top">
-      <h2>Clientes</h2>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <h2 style="margin:0">Clientes</h2>
+        <button class="ef-btn" id="btn-show-waitlist" onclick="toggleWaitlist()" style="font-size:11px">Waitlist</button>
+      </div>
       <div class="search-wrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" class="search-input" id="search-input" placeholder="Nome ou email…" />
       </div>
     </div>
-    <div class="stats-mini" id="stats-mini">
+    <div class="stats-mini">
       <div class="stat-mini"><div class="stat-mini-val" id="s-total">—</div><div class="stat-mini-lbl">Total</div></div>
       <div class="stat-mini"><div class="stat-mini-val" id="s-active" style="color:var(--green)">—</div><div class="stat-mini-lbl">Resultados</div></div>
       <div class="stat-mini"><div class="stat-mini-val" id="s-pending" style="color:var(--amber)">—</div><div class="stat-mini-lbl">Pendente</div></div>
+    </div>
+    <div class="estado-filters" id="estado-filters">
+      <button class="ef-btn active" data-e="all" onclick="setEstadoFilter('all')">Todos</button>
+      <button class="ef-btn" data-e="1" onclick="setEstadoFilter(1)">1 Kit</button>
+      <button class="ef-btn" data-e="2" onclick="setEstadoFilter(2)">2 Enviado</button>
+      <button class="ef-btn" data-e="3" onclick="setEstadoFilter(3)">3 Lab</button>
+      <button class="ef-btn" data-e="4" onclick="setEstadoFilter(4)">4 Prontos</button>
+      <button class="ef-btn" data-e="5" onclick="setEstadoFilter(5)">5 Reavaliação</button>
     </div>
     <div class="user-list" id="user-list"></div>
   </aside>
@@ -408,6 +444,36 @@
 
 </div><!-- /layout -->
 
+<!-- Toast alterações não guardadas -->
+<div class="unsaved-toast" id="unsaved-toast">
+  <strong>⚠ Alterações não guardadas</strong>
+  <span>Tens alterações neste separador.</span>
+  <div class="unsaved-toast-btns">
+    <button class="toast-btn-save" id="toast-save-btn">Guardar</button>
+    <button class="toast-btn-disc" onclick="discardChanges()">Descartar</button>
+  </div>
+</div>
+
+<!-- Painel Waitlist (overlay) -->
+<div id="waitlist-panel" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);" onclick="if(event.target===this)toggleWaitlist()">
+  <div style="position:absolute;right:0;top:0;bottom:0;width:min(480px,100%);background:var(--panel);border-left:1px solid var(--line-2);display:flex;flex-direction:column;">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:15px;font-weight:800;color:var(--txt)">Waitlist</div>
+        <div style="font-size:12px;color:var(--txt-3);margin-top:2px">Inscrições da página inicial · <span id="wl-count">—</span> leads</div>
+      </div>
+      <button onclick="toggleWaitlist()" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:22px;line-height:1;padding:4px 8px;">×</button>
+    </div>
+    <div style="padding:12px 24px;border-bottom:1px solid var(--line);">
+      <input type="text" id="wl-search" class="search-input" placeholder="Filtrar por email…" oninput="filterWaitlist()" style="width:100%"/>
+    </div>
+    <div id="wl-list" style="flex:1;overflow-y:auto;"></div>
+    <div style="padding:16px 24px;border-top:1px solid var(--line);">
+      <button onclick="exportWaitlist()" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line-2);background:none;color:var(--txt-2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.color='var(--txt)'" onmouseout="this.style.color='var(--txt-2)'">↓ Exportar CSV</button>
+    </div>
+  </div>
+</div>
+
 <script>
   window._authFallback = setTimeout(function() {
     document.getElementById('loading-state').style.display = 'none';
@@ -510,8 +576,12 @@
   };
 
   let allUsers = [];
+  let allWaitlist = [];
   let currentUID = null;
   let selectedEstado = 1;
+  let estadoFilter = 'all';
+  let currentTab = 'geral';
+  let dirtyTab = null; // tab com alterações não guardadas
 
   // ── Utils ─────────────────────────────────────────────────────────────
   function iniciais(n) { return (n||'?').split(' ').filter(Boolean).map(x=>x[0]).join('').substring(0,2).toUpperCase(); }
@@ -557,14 +627,66 @@
     return [...document.getElementById(wrapId).querySelectorAll('.tag-pill')].map(p => p.textContent.replace('×','').trim()).filter(Boolean);
   }
 
+  // ── Filtro de estado ──────────────────────────────────────────────────
+  window.setEstadoFilter = function(val) {
+    estadoFilter = val;
+    document.querySelectorAll('.ef-btn[data-e]').forEach(b => b.classList.toggle('active', b.dataset.e === String(val)));
+    applyFilters();
+  };
+
+  function applyFilters() {
+    const q = (document.getElementById('search-input').value || '').toLowerCase();
+    renderList(allUsers.filter(u => {
+      const n = [u.firstName,u.lastName].filter(Boolean).join(' ').toLowerCase();
+      const matchQ = !q || n.includes(q) || (u.email||'').toLowerCase().includes(q);
+      const matchE = estadoFilter === 'all' || (u.estado||1) === estadoFilter;
+      return matchQ && matchE;
+    }));
+  }
+
+  // ── Detecção de alterações não guardadas ──────────────────────────────
+  const TAB_SAVE_FN = {
+    geral: () => saveGeral(),
+    biomarcadores: () => saveBiomarcadores(),
+    plano: () => savePlano(),
+    suplementacao: () => saveSupp(),
+    consultas: () => saveConsultas(),
+    relatorio: () => saveRelatorio(),
+  };
+
+  function markDirty() {
+    if (!currentUID) return;
+    dirtyTab = currentTab;
+    document.getElementById('unsaved-toast').classList.add('show');
+    document.getElementById('toast-save-btn').onclick = () => {
+      TAB_SAVE_FN[dirtyTab]?.();
+      clearDirty();
+    };
+  }
+
+  function clearDirty() {
+    dirtyTab = null;
+    document.getElementById('unsaved-toast').classList.remove('show');
+  }
+
+  window.discardChanges = clearDirty;
+
+  function attachDirtyListeners() {
+    // Qualquer input/textarea/select dentro dos tab-contents marca como dirty
+    document.querySelectorAll('.tab-content input, .tab-content textarea, .tab-content select').forEach(el => {
+      el.addEventListener('input', markDirty, { once: false });
+      el.addEventListener('change', markDirty, { once: false });
+    });
+  }
+
   // ── Tab switching ─────────────────────────────────────────────────────
   window.switchTab = function(name) {
-    document.querySelectorAll('.tab').forEach((t,i) => {
-      const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio'];
-      t.classList.toggle('active', tabs[i] === name);
-    });
+    currentTab = name;
+    const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio'];
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabs[i] === name));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
+    clearDirty();
   };
 
   // ── Estado selector ───────────────────────────────────────────────────
@@ -601,13 +723,7 @@
     } catch(e) { console.error(e); }
   }
 
-  document.getElementById('search-input').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    renderList(allUsers.filter(u => {
-      const n = [u.firstName,u.lastName].filter(Boolean).join(' ').toLowerCase();
-      return !q || n.includes(q) || (u.email||'').toLowerCase().includes(q);
-    }));
-  });
+  document.getElementById('search-input').addEventListener('input', applyFilters);
 
   // ── Open user detail ──────────────────────────────────────────────────
   window.openUser = async function(uid) {
@@ -679,6 +795,9 @@
     });
 
     switchTab('geral');
+    clearDirty();
+    // Pequeno delay para o DOM estar pronto antes de ligar os listeners
+    setTimeout(attachDirtyListeners, 100);
   };
 
   // ── Biomarcadores editor ──────────────────────────────────────────────
@@ -955,6 +1074,61 @@
         resumo:         document.getElementById('rel-resumo').value.trim(),
       }
     }, 'msg-rel');
+  };
+
+  // ── Waitlist ──────────────────────────────────────────────────────────
+  window.toggleWaitlist = async function() {
+    const panel = document.getElementById('waitlist-panel');
+    const isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    document.getElementById('btn-show-waitlist').classList.toggle('active', !isOpen);
+    if (!isOpen && !allWaitlist.length) await loadWaitlist();
+  };
+
+  async function loadWaitlist() {
+    const list = document.getElementById('wl-list');
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--txt-3);font-size:13px">A carregar…</div>';
+    try {
+      const snap = await getDocs(collection(db,'waitlist'));
+      allWaitlist = [];
+      snap.forEach(d => allWaitlist.push({id:d.id,...d.data()}));
+      allWaitlist.sort((a,b) => (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0));
+      document.getElementById('wl-count').textContent = allWaitlist.length;
+      renderWaitlist(allWaitlist);
+    } catch(e) {
+      list.innerHTML = `<div style="padding:20px;text-align:center;color:var(--red);font-size:13px">Erro: ${e.message}</div>`;
+    }
+  }
+
+  function renderWaitlist(items) {
+    const list = document.getElementById('wl-list');
+    if (!items.length) {
+      list.innerHTML = '<div style="padding:40px;text-align:center;color:var(--txt-3);font-size:13px">Sem inscrições ainda.</div>';
+      return;
+    }
+    list.innerHTML = items.map(w => {
+      const d = w.criadoEm ? fmtDate(w.criadoEm) : '—';
+      return `<div class="wl-row">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(61,217,232,0.1);border:1px solid rgba(61,217,232,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="wl-email">${w.email||'—'}</div>
+        <div class="wl-date">${d}</div>
+      </div>`;
+    }).join('');
+  }
+
+  window.filterWaitlist = function() {
+    const q = document.getElementById('wl-search').value.toLowerCase();
+    renderWaitlist(allWaitlist.filter(w => (w.email||'').toLowerCase().includes(q)));
+  };
+
+  window.exportWaitlist = function() {
+    if (!allWaitlist.length) return;
+    const rows = [['Email','Data inscrição'], ...allWaitlist.map(w => [w.email||'', w.criadoEm ? fmtDate(w.criadoEm) : ''])];
+    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lyvoo-waitlist.csv'; a.click();
   };
 
   // ── Auth ──────────────────────────────────────────────────────────────
