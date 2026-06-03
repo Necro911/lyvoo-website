@@ -321,7 +321,11 @@
       dados.plano = planoEscolhido;
       dados.planoNome = PLANOS[planoEscolhido].nome;
     }
-    // merge:true — não apaga campos existentes (ex.: se já tinha plano)
+    // Estado do programa (1=kit pendente, 2=kit enviado, 3=amostra recebida, 4=resultados prontos, 5=reavaliação)
+    dados.estado = 1;
+    dados.estadoLabel = 'Kit a ser preparado';
+
+    // merge:true — não apaga campos existentes
     await setDoc(doc(db, 'users', user.uid), {
       criadoEm: serverTimestamp(),
       ...dados

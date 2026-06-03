@@ -10,559 +10,556 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
-      --violet: #8B5CF6; --green: #4ADE80;
-      --bg: #070B0D; --panel: #0E1417; --panel-2: #121A1E;
-      --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.10);
-      --txt: #E8EDEF; --txt-2: #9DAAB0; --txt-3: #5E6C72;
+      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8; --violet: #8B5CF6;
+      --green: #4ADE80; --amber: #FBBF24; --red: #F87171;
+      --bg: #070B0D; --panel: #0D1518; --panel-2: #111B1F;
+      --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.11);
+      --txt: #E8EDEF; --txt-2: #9DAAB0; --txt-3: #4E6068;
+      --sidebar-w: 256px;
     }
-    body {
-      font-family: 'Inter', sans-serif; background: var(--bg); color: var(--txt);
-      -webkit-font-smoothing: antialiased; min-height: 100vh;
-    }
+    html, body { height: 100%; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--txt); -webkit-font-smoothing: antialiased; }
     a { text-decoration: none; color: inherit; }
 
-    /* LOADING */
-    .loading-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
-    .loading-screen.hidden { display: none; }
+    /* ── LOADING ── */
+    #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    #loading.hide { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner { width: 36px; height: 36px; border: 3px solid rgba(61,217,232,0.2); border-top-color: var(--cyan); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    .spinner { width: 32px; height: 32px; border: 2.5px solid rgba(61,217,232,0.15); border-top-color: var(--cyan); border-radius: 50%; animation: spin 0.7s linear infinite; }
 
-    /* SHELL */
-    .shell { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
+    /* ── LAYOUT ── */
+    .app { display: flex; min-height: 100vh; }
 
     /* ── SIDEBAR ── */
     .sidebar {
-      background: var(--bg); border-right: 1px solid var(--line);
-      display: flex; flex-direction: column; padding: 24px 16px;
-      position: sticky; top: 0; height: 100vh;
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--panel); border-right: 1px solid var(--line);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
+      overflow-y: auto;
     }
-    .sb-logo { padding: 4px 12px 28px; }
+    .sb-logo { padding: 22px 20px 18px; border-bottom: 1px solid var(--line); }
     .sb-logo img { height: 38px; width: auto; display: block; }
 
-    .sb-section { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); padding: 0 12px; margin: 22px 0 8px; }
+    /* User card */
+    .sb-user { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+    .sb-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #3DD9E8, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .sb-user-info { flex: 1; min-width: 0; }
+    .sb-user-name { font-size: 13px; font-weight: 600; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sb-user-plan { font-size: 11px; color: var(--txt-3); }
 
-    .sb-nav { display: flex; flex-direction: column; gap: 2px; }
-    .sb-link {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 12px; border-radius: 10px;
-      font-size: 14px; font-weight: 500; color: var(--txt-2);
-      transition: background 0.18s, color 0.18s;
+    /* Nav */
+    .sb-nav { padding: 12px 12px; flex: 1; }
+    .sb-section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); padding: 14px 8px 6px; }
+    .sb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: 10px;
+      font-size: 13.5px; font-weight: 500; color: var(--txt-2);
+      cursor: pointer; transition: all 0.18s; position: relative;
+      margin-bottom: 1px;
     }
-    .sb-link svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.85; }
-    .sb-link:hover { background: rgba(255,255,255,0.04); color: var(--txt); }
-    .sb-link.active { background: rgba(61,217,232,0.10); color: var(--cyan); }
-    .sb-link.active svg { opacity: 1; }
+    .sb-item svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.75; }
+    .sb-item:hover:not(.locked) { background: rgba(255,255,255,0.05); color: var(--txt); }
+    .sb-item:hover:not(.locked) svg { opacity: 1; }
+    .sb-item.active { background: rgba(61,217,232,0.09); color: var(--cyan); }
+    .sb-item.active svg { opacity: 1; }
 
-    /* next appointment card */
-    .sb-appt {
-      margin-top: auto; background: var(--panel); border: 1px solid var(--line);
-      border-radius: 16px; padding: 18px;
-    }
-    .sb-appt-label { font-size: 11px; color: var(--txt-3); margin-bottom: 6px; }
-    .sb-appt-title { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 12px; }
-    .sb-appt-meta { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--txt-2); margin-bottom: 6px; }
-    .sb-appt-meta svg { width: 13px; height: 13px; color: var(--cyan); }
-    .sb-appt-btn {
-      display: block; text-align: center; margin-top: 14px; padding: 9px;
-      border-radius: 10px; border: 1px solid var(--line-2);
-      font-size: 13px; font-weight: 600; color: var(--cyan); transition: background 0.18s;
-    }
-    .sb-appt-btn:hover { background: rgba(61,217,232,0.08); }
+    /* Locked state */
+    .sb-item.locked { opacity: 0.35; cursor: not-allowed; }
+    .sb-lock { margin-left: auto; width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Sidebar bottom */
+    .sb-bottom { padding: 12px; border-top: 1px solid var(--line); }
+    .sb-logout { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: 13px; color: var(--txt-3); background: none; border: none; cursor: pointer; width: 100%; transition: all 0.18s; }
+    .sb-logout:hover { color: var(--red); background: rgba(248,113,113,0.07); }
+    .sb-logout svg { width: 16px; height: 16px; }
 
     /* ── MAIN ── */
-    .main { padding: 28px 32px 64px; max-width: 1320px; }
+    .main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
 
-    .topbar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 20px; }
-    .greeting h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; color: var(--txt); margin-bottom: 4px; }
-    .greeting p { font-size: 14px; color: var(--txt-2); }
+    /* Top bar */
+    .topbar { padding: 20px 36px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--panel); position: sticky; top: 0; z-index: 40; }
+    .topbar-left h1 { font-size: 18px; font-weight: 700; color: var(--txt); letter-spacing: -0.02em; }
+    .topbar-left p { font-size: 13px; color: var(--txt-3); margin-top: 2px; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-estado { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--cyan); background: rgba(61,217,232,0.08); border: 1px solid rgba(61,217,232,0.18); padding: 5px 12px; border-radius: 999px; }
+    .topbar-estado .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    .topbar-right { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
-    .bell { position: relative; color: var(--txt-2); cursor: pointer; transition: color 0.2s; }
-    .bell:hover { color: var(--txt); }
-    .bell .dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg); }
-    .user { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px; border-radius: 10px; transition: background 0.2s; }
-    .user:hover { background: rgba(255,255,255,0.04); }
-    .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #3DD9E8, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0; }
-    .user-info { line-height: 1.3; }
-    .user-name { font-size: 13.5px; font-weight: 700; color: var(--txt); }
-    .user-plan { font-size: 11.5px; color: var(--txt-3); }
-    .user-chevron { color: var(--txt-3); }
+    /* Page content */
+    .page-content { flex: 1; padding: 36px; max-width: 900px; }
 
-    /* GRID */
-    .grid { display: grid; gap: 20px; }
-    .row-2 { grid-template-columns: 1fr 1fr; }
-    .row-4 { grid-template-columns: repeat(4, 1fr); }
-    .row-main { grid-template-columns: 1.15fr 1fr; }
-    .mb { margin-bottom: 20px; }
+    /* ── PROGRESS TRACKER ── */
+    .progress-card { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px; margin-bottom: 28px; }
+    .progress-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; }
+    .progress-card-header h2 { font-size: 16px; font-weight: 700; color: var(--txt); margin-bottom: 4px; }
+    .progress-card-header p { font-size: 13px; color: var(--txt-3); }
+    .progress-pct { font-size: 28px; font-weight: 900; color: var(--cyan); letter-spacing: -0.04em; }
+    .progress-pct small { font-size: 13px; color: var(--txt-3); font-weight: 500; }
 
-    .panel {
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: 18px; padding: 24px;
-    }
-    .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .panel-head h2 { font-size: 16px; font-weight: 700; color: var(--txt); }
-    .panel-link { font-size: 13px; font-weight: 600; color: var(--cyan); }
-    .panel-link:hover { text-decoration: underline; }
+    /* Steps */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step-row { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; position: relative; }
+    .step-row:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 44px; bottom: -2px; width: 2px; background: var(--line-2); }
+    .step-row.done::after { background: rgba(74,222,128,0.3); }
+    .step-row.active::after { background: linear-gradient(180deg, rgba(61,217,232,0.4), var(--line-2)); }
 
-    /* circular ring */
-    .ring-wrap { display: flex; align-items: center; gap: 26px; }
-    .ring { position: relative; width: 132px; height: 132px; flex-shrink: 0; }
-    .ring svg { transform: rotate(-90deg); }
-    .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .ring-val { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; color: var(--txt); line-height: 1; }
-    .ring-val small { font-size: 14px; color: var(--txt-3); font-weight: 600; }
-    .ring-sub { font-size: 11px; color: var(--txt-2); margin-top: 4px; }
-    .ring-sub.good { color: var(--green); font-weight: 600; }
+    .step-icon { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
+    .step-icon.done { background: rgba(74,222,128,0.15); color: var(--green); border: 1.5px solid rgba(74,222,128,0.3); }
+    .step-icon.active { background: rgba(61,217,232,0.12); color: var(--cyan); border: 1.5px solid rgba(61,217,232,0.3); }
+    .step-icon.pending { background: rgba(255,255,255,0.04); color: var(--txt-3); border: 1.5px solid var(--line); }
 
-    /* checklist */
-    .checklist { flex: 1; display: flex; flex-direction: column; gap: 14px; }
-    .check-item { display: flex; align-items: center; gap: 12px; }
-    .check-mark { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .check-mark.done { background: rgba(74,222,128,0.15); color: var(--green); }
-    .check-mark.prog { border: 2px solid var(--cyan); }
-    .check-mark.prog::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); }
-    .check-mark.todo { border: 2px solid var(--line-2); }
-    .check-body { line-height: 1.3; }
-    .check-title { font-size: 13.5px; font-weight: 600; color: var(--txt); }
-    .check-state { font-size: 12px; color: var(--txt-3); }
+    .step-body { flex: 1; padding-top: 4px; }
+    .step-title { font-size: 14px; font-weight: 600; color: var(--txt); margin-bottom: 3px; }
+    .step-row.pending .step-title { color: var(--txt-3); }
+    .step-desc { font-size: 12.5px; color: var(--txt-3); line-height: 1.5; }
+    .step-badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin-left: 8px; }
+    .step-badge.done { background: rgba(74,222,128,0.12); color: var(--green); }
+    .step-badge.active { background: rgba(61,217,232,0.12); color: var(--cyan); }
+    .step-badge.pending { background: rgba(255,255,255,0.05); color: var(--txt-3); }
 
-    /* score breakdown */
-    .score-list { flex: 1; display: flex; flex-direction: column; gap: 16px; }
-    .score-item { display: flex; align-items: center; gap: 12px; font-size: 13.5px; }
-    .score-item svg { width: 17px; height: 17px; color: var(--cyan); flex-shrink: 0; }
-    .score-name { flex: 1; color: var(--txt-2); }
-    .score-val { font-weight: 700; color: var(--txt); }
-    .score-val small { color: var(--txt-3); font-weight: 500; }
+    /* ── NEXT ACTION CARD ── */
+    .action-card { background: linear-gradient(135deg, rgba(61,217,232,0.07), rgba(139,92,246,0.05)); border: 1px solid rgba(61,217,232,0.18); border-radius: 20px; padding: 28px 32px; margin-bottom: 28px; display: flex; align-items: center; gap: 24px; }
+    .action-icon { width: 52px; height: 52px; border-radius: 16px; background: rgba(61,217,232,0.10); border: 1px solid rgba(61,217,232,0.2); display: flex; align-items: center; justify-content: center; color: var(--cyan); flex-shrink: 0; }
+    .action-body { flex: 1; }
+    .action-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
+    .action-title { font-size: 17px; font-weight: 700; color: var(--txt); margin-bottom: 6px; letter-spacing: -0.02em; }
+    .action-desc { font-size: 13.5px; color: var(--txt-2); line-height: 1.6; }
+    .action-btn { display: inline-flex; align-items: center; gap: 7px; background: var(--teal); color: #fff; font-size: 13px; font-weight: 700; padding: 10px 20px; border-radius: 10px; flex-shrink: 0; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .action-btn:hover { opacity: 0.88; }
 
-    .btn-ghost {
-      display: inline-block; margin-top: 22px; padding: 10px 18px;
-      border-radius: 10px; border: 1px solid var(--line-2);
-      font-size: 13px; font-weight: 600; color: var(--cyan); transition: background 0.18s;
-    }
-    .btn-ghost:hover { background: rgba(61,217,232,0.08); }
+    /* ── INFO GRID ── */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+    .info-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
+    .info-card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+    .info-card-label svg { width: 14px; height: 14px; color: var(--cyan); }
+    .info-card-title { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 4px; }
+    .info-card-desc { font-size: 13px; color: var(--txt-2); line-height: 1.6; }
+    .info-card-val { font-size: 28px; font-weight: 900; color: var(--txt); letter-spacing: -0.04em; margin-bottom: 2px; }
+    .info-card-sub { font-size: 12px; color: var(--txt-3); }
 
-    /* feature cards */
-    .feature {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
-      overflow: hidden; display: flex; flex-direction: column;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .feature:hover { border-color: rgba(61,217,232,0.25); transform: translateY(-2px); }
-    .feature-head { padding: 20px 20px 0; font-size: 15px; font-weight: 700; color: var(--txt); }
-    .feature-img { height: 104px; margin: 14px 20px 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .feature-img svg { width: 40px; height: 40px; color: #fff; opacity: 0.9; z-index: 1; }
-    .feature-body { padding: 14px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-    .feature-desc { font-size: 12.5px; color: var(--txt-2); line-height: 1.5; margin-bottom: 16px; flex: 1; }
-    .feature-cta { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--cyan); }
-    .feature-cta svg { width: 15px; height: 15px; }
+    /* ── LOCKED SECTION ── */
+    .locked-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .locked-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; opacity: 0.45; }
+    .locked-card-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; color: var(--txt-3); margin-bottom: 12px; }
+    .locked-card-title { font-size: 13px; font-weight: 600; color: var(--txt-2); margin-bottom: 4px; }
+    .locked-card-desc { font-size: 12px; color: var(--txt-3); line-height: 1.5; }
+    .locked-hint { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--txt-3); margin-top: 20px; padding: 12px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--line); border-radius: 10px; }
 
-    /* biomarker highlights */
-    .bio-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--txt-2); }
-    .bio-legend span { display: flex; align-items: center; gap: 5px; }
-    .bio-legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-    .bio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-    .bio-card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
-    .bio-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-    .bio-name { font-size: 12.5px; font-weight: 600; color: var(--txt); }
-    .bio-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(74,222,128,0.15); color: var(--green); }
-    .bio-val { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--txt); }
-    .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 500; }
-    .bio-trend { font-size: 11px; color: var(--txt-2); margin-top: 2px; }
-    .bio-trend.up { color: var(--green); }
-    .bio-spark { margin-top: 10px; }
+    /* ── SECTION TITLE ── */
+    .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 14px; margin-top: 4px; }
 
-    /* upcoming list */
-    .appt-list { display: flex; flex-direction: column; gap: 4px; }
-    .appt-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
-    .appt-row:last-child { border-bottom: none; }
-    .appt-ava { width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--panel-2); color: var(--cyan); }
-    .appt-ava svg { width: 19px; height: 19px; }
-    .appt-info { flex: 1; line-height: 1.4; }
-    .appt-title { font-size: 13.5px; font-weight: 600; color: var(--txt); }
-    .appt-meta { font-size: 12px; color: var(--txt-3); }
-    .appt-btn { font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line-2); color: var(--txt-2); transition: all 0.18s; flex-shrink: 0; }
-    .appt-btn:hover { color: var(--cyan); border-color: rgba(61,217,232,0.3); }
-
-    /* daily habits */
-    .habits { display: flex; flex-direction: column; gap: 22px; }
-    .habit { }
-    .habit-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .habit-top svg { width: 17px; height: 17px; color: var(--cyan); }
-    .habit-name { flex: 1; font-size: 13.5px; color: var(--txt-2); }
-    .habit-val { font-size: 13px; font-weight: 700; color: var(--txt); }
-    .habit-val small { color: var(--txt-3); font-weight: 500; }
-    .habit-bar { height: 6px; border-radius: 999px; background: rgba(255,255,255,0.06); overflow: hidden; }
-    .habit-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--teal-light), var(--cyan)); }
-
-    @media (max-width: 1100px) {
-      .row-4 { grid-template-columns: 1fr 1fr; }
-      .bio-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 860px) {
-      .shell { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .row-2, .row-main { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 560px) {
-      .row-4 { grid-template-columns: 1fr; }
-      .bio-grid { grid-template-columns: 1fr 1fr; }
-      .main { padding: 20px 16px 48px; }
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .info-grid { grid-template-columns: 1fr; }
+      .locked-grid { grid-template-columns: 1fr 1fr; }
+      .page-content { padding: 20px; }
+      .topbar { padding: 16px 20px; }
+      .action-card { flex-direction: column; align-items: flex-start; }
     }
   </style>
-  <script src="cookie-banner.js" defer></script>
 </head>
 <body>
 
-<!-- LOADING -->
-<div class="loading-screen" id="loadingScreen"><div class="spinner"></div></div>
+<div id="loading"><div class="spinner"></div></div>
 
-<div class="shell" id="shell" style="display:none">
+<div class="app" id="app" style="display:none">
 
   <!-- ── SIDEBAR ── -->
-  <aside class="sidebar">
-    <a href="index.html" class="sb-logo"><img src="images/logo.png" alt="Lyvoo" /></a>
+  <aside class="sidebar" id="sidebar">
 
+    <div class="sb-logo">
+      <a href="index.html"><img src="images/logo.png" alt="Lyvoo" /></a>
+    </div>
+
+    <!-- User -->
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">?</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name" id="sbName">—</div>
+        <div class="sb-user-plan" id="sbPlan">—</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
     <nav class="sb-nav">
-      <a href="#" class="sb-link active">
+
+      <!-- Principal -->
+      <div class="sb-section-label">Principal</div>
+
+      <div class="sb-item active" data-page="inicio" onclick="navTo('inicio')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-        Painel
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
-        Plano alimentar
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
-        Suplementação
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
-        Biomarcadores
-      </a>
-      <a href="#" class="sb-link">
+        Início
+      </div>
+
+      <div class="sb-item" data-page="programa" onclick="navTo('programa')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        O meu programa
+      </div>
+
+      <div class="sb-item" data-page="consultas" onclick="navTo('consultas')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Consultas
-      </a>
+      </div>
 
-      <div class="sb-section">Dados pessoais</div>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Dados pessoais
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        Dados de saúde
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        Estilo de vida
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Conta e segurança
-      </a>
-      <a href="#" class="sb-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Privacidade
-      </a>
+      <div class="sb-item" data-page="modulos" onclick="navTo('modulos')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Módulos opcionais
+      </div>
+
+      <!-- Resultados (bloqueados até estado 4) -->
+      <div class="sb-section-label" style="margin-top:8px">Resultados</div>
+
+      <div class="sb-item locked" id="nav-biomarcadores" data-page="biomarcadores">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg>
+        Biomarcadores
+        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+
+      <div class="sb-item locked" id="nav-relatorio" data-page="relatorio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Relatório médico
+        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+
+      <div class="sb-item locked" id="nav-nutricao" data-page="nutricao">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        Plano nutricional
+        <svg class="sb-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+
+      <!-- Conta -->
+      <div class="sb-section-label" style="margin-top:8px">Conta</div>
+
+      <div class="sb-item" data-page="perfil" onclick="navTo('perfil')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Perfil
+      </div>
+
     </nav>
 
-    <div class="sb-appt">
-      <div class="sb-appt-label">A sua próxima consulta</div>
-      <div class="sb-appt-title">Follow-up de nutrição</div>
-      <div class="sb-appt-meta">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        24 Jun 2026
-      </div>
-      <div class="sb-appt-meta">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        11:00
-      </div>
-      <a href="#" class="sb-appt-btn">Ver detalhes</a>
+    <!-- Bottom -->
+    <div class="sb-bottom">
+      <button class="sb-logout" id="btnLogout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Terminar sessão
+      </button>
     </div>
+
   </aside>
 
   <!-- ── MAIN ── -->
   <main class="main">
 
-    <!-- TOPBAR -->
+    <!-- Topbar -->
     <div class="topbar">
-      <div class="greeting">
-        <h1 id="greeting">Olá 👋</h1>
-        <p>Acompanhe a sua saúde. Melhore o seu futuro.</p>
+      <div class="topbar-left">
+        <h1 id="pageTitle">Início</h1>
+        <p id="pageSubtitle">Bem-vindo ao seu programa Lyvoo</p>
       </div>
       <div class="topbar-right">
-        <div class="bell">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="topbar-estado">
           <span class="dot"></span>
-        </div>
-        <div class="user">
-          <div class="user-avatar" id="navAvatar">?</div>
-          <div class="user-info">
-            <div class="user-name" id="navName">—</div>
-            <div class="user-plan" id="navPlan">—</div>
-          </div>
-          <button class="user-chevron" id="btnLogout" title="Sair" style="background:none;border:none;cursor:pointer;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          </button>
+          <span id="estadoLabel">—</span>
         </div>
       </div>
     </div>
 
-    <!-- ROW 1: Program + Score -->
-    <div class="grid row-main mb">
+    <!-- ── PAGE: INÍCIO ── -->
+    <div class="page-content" id="page-inicio">
 
-      <!-- Program progress -->
-      <div class="panel">
-        <div class="panel-head"><h2>Progresso do programa</h2></div>
-        <div class="ring-wrap">
-          <div class="ring">
-            <svg width="132" height="132">
-              <circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
-              <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="204.1"/>
-              <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#0D7A87"/></linearGradient></defs>
-            </svg>
-            <div class="ring-center"><div class="ring-val">42<small>%</small></div><div class="ring-sub">progresso 6 meses</div></div>
-          </div>
-          <div class="checklist">
-            <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
-            <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Consultas iniciais</div><div class="check-state">Concluídas</div></div></div>
-            <div class="check-item"><div class="check-mark prog"></div><div class="check-body"><div class="check-title">Plano personalizado</div><div class="check-state">Em curso</div></div></div>
-            <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Reavaliação</div><div class="check-state">Em breve</div></div></div>
-          </div>
+      <!-- Próxima acção -->
+      <div class="action-card" id="action-card">
+        <div class="action-icon" id="action-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </div>
-        <a href="#" class="btn-ghost">Ver plano completo</a>
+        <div class="action-body">
+          <div class="action-label" id="action-label">A carregar…</div>
+          <div class="action-title" id="action-title">—</div>
+          <div class="action-desc" id="action-desc">—</div>
+        </div>
+        <a href="#" class="action-btn" id="action-btn">—</a>
       </div>
 
-      <!-- Health score -->
-      <div class="panel">
-        <div class="panel-head"><h2>Score de saúde</h2></div>
-        <div class="ring-wrap">
-          <div class="ring">
-            <svg width="132" height="132">
-              <circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
-              <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="45.7"/>
-              <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
-            </svg>
-            <div class="ring-center"><div class="ring-val">87<small>/100</small></div><div class="ring-sub good">Excelente</div></div>
+      <!-- Stats -->
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Programa
           </div>
-          <div class="score-list">
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><span class="score-name">Biomarcadores</span><span class="score-val">82<small>/100</small></span></div>
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span class="score-name">Estilo de vida</span><span class="score-val">90<small>/100</small></span></div>
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg><span class="score-name">Nutrição</span><span class="score-val">85<small>/100</small></span></div>
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><span class="score-name">Sono</span><span class="score-val">88<small>/100</small></span></div>
-          </div>
+          <div class="info-card-val" id="stat-programa">—</div>
+          <div class="info-card-sub" id="stat-programa-sub">—</div>
         </div>
-        <a href="#" class="btn-ghost">Ver análise</a>
+        <div class="info-card">
+          <div class="info-card-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+            Biomarcadores
+          </div>
+          <div class="info-card-val">+40</div>
+          <div class="info-card-sub">Incluídos no programa</div>
+        </div>
       </div>
 
+      <!-- Progress tracker -->
+      <div class="progress-card">
+        <div class="progress-card-header">
+          <div>
+            <h2>Progresso do programa</h2>
+            <p>Acompanhe as etapas do seu programa anual</p>
+          </div>
+          <div>
+            <div class="progress-pct" id="progress-pct">0<small>%</small></div>
+          </div>
+        </div>
+        <div class="steps" id="steps-container">
+          <!-- Preenchido por JS -->
+        </div>
+      </div>
+
+      <!-- Secções bloqueadas -->
+      <div class="section-title">Disponível após os resultados</div>
+      <div class="locked-grid">
+        <div class="locked-card">
+          <div class="locked-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg></div>
+          <div class="locked-card-title">Biomarcadores</div>
+          <div class="locked-card-desc">Score de saúde e análise detalhada de cada parâmetro.</div>
+        </div>
+        <div class="locked-card">
+          <div class="locked-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="locked-card-title">Relatório médico</div>
+          <div class="locked-card-desc">Interpretação clínica dos seus resultados por médico e nutricionista.</div>
+        </div>
+        <div class="locked-card">
+          <div class="locked-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></div>
+          <div class="locked-card-title">Plano nutricional</div>
+          <div class="locked-card-desc">Plano alimentar personalizado com base nos seus biomarcadores.</div>
+        </div>
+      </div>
+      <div class="locked-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Estas secções ficam disponíveis assim que os resultados laboratoriais forem entregues na app (7–10 dias após receção da amostra).
+      </div>
+
+    </div><!-- /page-inicio -->
+
+    <!-- ── PLACEHOLDER PAGES ── -->
+    <div class="page-content" id="page-programa" style="display:none">
+      <p style="color:var(--txt-3);font-size:14px">Secção <strong style="color:var(--txt)">O meu programa</strong> — em construção.</p>
     </div>
-
-    <!-- ROW 2: feature cards -->
-    <div class="grid row-4 mb">
-
-      <a href="#" class="feature">
-        <div class="feature-head">Plano alimentar</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#1B6B3A,#0E3D24);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21V11M12 11a5 5 0 0 0 5-5 5 5 0 0 0-10 0 5 5 0 0 0 5 5Z"/><path d="M3 11h18a9 9 0 0 1-9 9 9 9 0 0 1-9-9Z"/></svg>
-        </div>
-        <div class="feature-body">
-          <div class="feature-desc">Nutrição personalizada com base nos seus objetivos.</div>
-          <div class="feature-cta">Ver plano <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        </div>
-      </a>
-
-      <a href="#" class="feature">
-        <div class="feature-head">Suplementação</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#6D4AA8,#3A2A66);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
-        </div>
-        <div class="feature-body">
-          <div class="feature-desc">Suplementos à medida das suas necessidades.</div>
-          <div class="feature-cta">Ver suplementos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        </div>
-      </a>
-
-      <a href="#" class="feature">
-        <div class="feature-head">Biomarcadores</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#0E5A63,#08323A);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg>
-        </div>
-        <div class="feature-body">
-          <div class="feature-desc">Acompanhe a sua evolução ao longo do tempo.</div>
-          <div class="feature-cta">Ver biomarcadores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        </div>
-      </a>
-
-      <a href="#" class="feature">
-        <div class="feature-head">Consultas</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#3A5566,#1E2E3A);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <div class="feature-body">
-          <div class="feature-desc">Faça a gestão das suas consultas.</div>
-          <div class="feature-cta">Ver consultas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        </div>
-      </a>
-
+    <div class="page-content" id="page-consultas" style="display:none">
+      <p style="color:var(--txt-3);font-size:14px">Secção <strong style="color:var(--txt)">Consultas</strong> — em construção.</p>
     </div>
-
-    <!-- ROW 3: biomarker highlights -->
-    <div class="panel mb">
-      <div class="panel-head">
-        <h2>Biomarcadores em destaque</h2>
-        <div class="bio-legend">
-          <a href="#" class="panel-link">Ver todos</a>
-          <span><i style="background:#3DD9E8"></i>Atual</span>
-          <span><i style="background:#5E6C72"></i>Anterior</span>
-        </div>
-      </div>
-      <div class="bio-grid">
-
-        <div class="bio-card">
-          <div class="bio-top"><span class="bio-name">Colesterol LDL</span><span class="bio-tag">Ótimo</span></div>
-          <div class="bio-val">85 <small>mg/dL</small></div>
-          <div class="bio-trend up">↓ 15 mg/dL</div>
-          <svg class="bio-spark" width="100%" height="40" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,30 24,28 48,32 72,26 96,22 120,18" fill="none" stroke="#5E6C72" stroke-width="2"/><polyline points="0,24 24,22 48,20 72,16 96,14 120,10" fill="none" stroke="#3DD9E8" stroke-width="2.5"/></svg>
-        </div>
-
-        <div class="bio-card">
-          <div class="bio-top"><span class="bio-name">HbA1c</span><span class="bio-tag">Ótimo</span></div>
-          <div class="bio-val">5.2 <small>%</small></div>
-          <div class="bio-trend up">↓ 0.3%</div>
-          <svg class="bio-spark" width="100%" height="40" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,26 24,28 48,24 72,25 96,22 120,20" fill="none" stroke="#5E6C72" stroke-width="2"/><polyline points="0,22 24,20 48,21 72,18 96,16 120,15" fill="none" stroke="#3DD9E8" stroke-width="2.5"/></svg>
-        </div>
-
-        <div class="bio-card">
-          <div class="bio-top"><span class="bio-name">PCR</span><span class="bio-tag">Ótimo</span></div>
-          <div class="bio-val">0.8 <small>mg/L</small></div>
-          <div class="bio-trend up">↓ 0.6 mg/L</div>
-          <svg class="bio-spark" width="100%" height="40" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,20 24,24 48,22 72,26 96,28 120,30" fill="none" stroke="#5E6C72" stroke-width="2"/><polyline points="0,16 24,18 48,20 72,22 96,26 120,28" fill="none" stroke="#3DD9E8" stroke-width="2.5"/></svg>
-        </div>
-
-        <div class="bio-card">
-          <div class="bio-top"><span class="bio-name">Ferritina</span><span class="bio-tag">Ótimo</span></div>
-          <div class="bio-val">68 <small>ng/mL</small></div>
-          <div class="bio-trend up">↑ 8 ng/mL</div>
-          <svg class="bio-spark" width="100%" height="40" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,30 24,28 48,26 72,24 96,22 120,20" fill="none" stroke="#5E6C72" stroke-width="2"/><polyline points="0,26 24,22 48,20 72,18 96,15 120,12" fill="none" stroke="#3DD9E8" stroke-width="2.5"/></svg>
-        </div>
-
-        <div class="bio-card">
-          <div class="bio-top"><span class="bio-name">Vitamina B12</span><span class="bio-tag">Ótimo</span></div>
-          <div class="bio-val">612 <small>pg/mL</small></div>
-          <div class="bio-trend up">↑ 96 pg/mL</div>
-          <svg class="bio-spark" width="100%" height="40" viewBox="0 0 120 40" preserveAspectRatio="none"><polyline points="0,30 24,29 48,26 72,23 96,20 120,18" fill="none" stroke="#5E6C72" stroke-width="2"/><polyline points="0,26 24,24 48,20 72,17 96,14 120,11" fill="none" stroke="#3DD9E8" stroke-width="2.5"/></svg>
-        </div>
-
-      </div>
+    <div class="page-content" id="page-modulos" style="display:none">
+      <p style="color:var(--txt-3);font-size:14px">Secção <strong style="color:var(--txt)">Módulos opcionais</strong> — em construção.</p>
     </div>
-
-    <!-- ROW 4: upcoming + habits -->
-    <div class="grid row-main">
-
-      <div class="panel">
-        <div class="panel-head"><h2>Próximas consultas</h2></div>
-        <div class="appt-list">
-          <div class="appt-row">
-            <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></div>
-            <div class="appt-info"><div class="appt-title">Follow-up de nutrição</div><div class="appt-meta">24 Jun 2026 · 11:00 · com Mariana Silva</div></div>
-            <a href="#" class="appt-btn">Remarcar</a>
-          </div>
-          <div class="appt-row">
-            <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-            <div class="appt-info"><div class="appt-title">Consulta de medicina preventiva</div><div class="appt-meta">7 Jul 2026 · 10:00 · com Dr. André Martins</div></div>
-            <a href="#" class="appt-btn">Remarcar</a>
-          </div>
-          <div class="appt-row">
-            <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
-            <div class="appt-info"><div class="appt-title">Reavaliação (análise ao sangue)</div><div class="appt-meta">21 Jul 2026 · kit em casa</div></div>
-            <a href="#" class="appt-btn">Ver instruções</a>
-          </div>
-        </div>
-        <a href="#" class="panel-link" style="display:inline-block;margin-top:16px;">Ver todas as consultas</a>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head"><h2>Hábitos diários</h2><a href="#" class="panel-link">Editar</a></div>
-        <div class="habits">
-          <div class="habit">
-            <div class="habit-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 8 6l3 2 2-4 3 8 4-2"/></svg><span class="habit-name">Passos</span><span class="habit-val">7842 <small>/ 10 000</small></span></div>
-            <div class="habit-bar"><div class="habit-fill" style="width:78%"></div></div>
-          </div>
-          <div class="habit">
-            <div class="habit-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="habit-name">Atividade física</span><span class="habit-val">45 <small>/ 60 min</small></span></div>
-            <div class="habit-bar"><div class="habit-fill" style="width:75%"></div></div>
-          </div>
-          <div class="habit">
-            <div class="habit-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><span class="habit-name">Sono</span><span class="habit-val">7.2 <small>/ 8 h</small></span></div>
-            <div class="habit-bar"><div class="habit-fill" style="width:90%"></div></div>
-          </div>
-          <div class="habit">
-            <div class="habit-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-4-3-6l-4-6-4 6c-2 2-3 4-3 6a7 7 0 0 0 7 7z"/></svg><span class="habit-name">Água</span><span class="habit-val">1.6 <small>/ 2 L</small></span></div>
-            <div class="habit-bar"><div class="habit-fill" style="width:80%"></div></div>
-          </div>
-        </div>
-        <a href="#" class="panel-link" style="display:inline-block;margin-top:22px;">Ver estilo de vida completo</a>
-      </div>
-
+    <div class="page-content" id="page-perfil" style="display:none">
+      <p style="color:var(--txt-3);font-size:14px">Secção <strong style="color:var(--txt)">Perfil</strong> — em construção.</p>
     </div>
 
   </main>
-</div>
+</div><!-- /app -->
 
 <script type="module">
-  import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-  import { auth, db } from './lyvoo-firebase.js';
+import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { auth, db } from './lyvoo-firebase.js';
 
-  function saudacao() {
-    const h = new Date().getHours();
-    if (h < 12) return 'Bom dia';
-    if (h < 20) return 'Boa tarde';
-    return 'Boa noite';
-  }
+// ── Estado → conteúdo ──────────────────────────────────────────────────
+const ESTADOS = {
+  1: {
+    label:     'Kit a ser preparado',
+    pct:       10,
+    actionLabel: 'Próximo passo',
+    actionTitle: 'O seu kit está a ser preparado.',
+    actionDesc:  'Receberá um email com o número de envio assim que o kit for expedido. Entrega esperada em 48h úteis.',
+    actionBtn:   'Acompanhar envio',
+    actionHref:  '#',
+    statPrograma: 'Ano 1',
+    statProgramaSub: 'Programa iniciado',
+    passoAtivo: 1,
+  },
+  2: {
+    label:     'Kit enviado',
+    pct:       30,
+    actionLabel: 'Ação necessária',
+    actionTitle: 'O seu kit chegou. Faça a recolha.',
+    actionDesc:  'Siga as instruções incluídas no kit. Após a recolha, envie a amostra no envelope pré-pago. Dúvidas? Contacte-nos.',
+    actionBtn:   'Ver instruções',
+    actionHref:  '#',
+    statPrograma: 'Ano 1',
+    statProgramaSub: 'Recolha pendente',
+    passoAtivo: 2,
+  },
+  3: {
+    label:     'Laboratório a processar',
+    pct:       55,
+    actionLabel: 'Em curso',
+    actionTitle: 'Amostra recebida. Análise em curso.',
+    actionDesc:  'O laboratório está a processar a sua amostra. Os resultados estarão disponíveis em 7–10 dias úteis.',
+    actionBtn:   'Saber mais',
+    actionHref:  '#',
+    statPrograma: 'Ano 1',
+    statProgramaSub: 'Análise em curso',
+    passoAtivo: 3,
+  },
+  4: {
+    label:     'Resultados disponíveis',
+    pct:       80,
+    actionLabel: 'Novidade',
+    actionTitle: 'Os seus resultados estão prontos!',
+    actionDesc:  'O relatório médico e o plano nutricional personalizado estão disponíveis. Consulte os seus biomarcadores.',
+    actionBtn:   'Ver resultados',
+    actionHref:  '#',
+    statPrograma: 'Ano 1',
+    statProgramaSub: 'Resultados prontos',
+    passoAtivo: 4,
+  },
+  5: {
+    label:     'Reavaliação',
+    pct:       90,
+    actionLabel: 'Reavaliação',
+    actionTitle: 'Está na fase de reavaliação.',
+    actionDesc:  'O segundo kit foi enviado. Repita o processo para vermos a sua evolução em relação ao baseline.',
+    actionBtn:   'Ver baseline',
+    actionHref:  '#',
+    statPrograma: 'Ano 1',
+    statProgramaSub: 'Reavaliação em curso',
+    passoAtivo: 5,
+  },
+};
 
-  function iniciaisDe(nome) {
-    return nome.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
-  }
+const PASSOS = [
+  { id: 1, title: 'Programa iniciado', desc: 'Conta criada e programa activado.' },
+  { id: 2, title: 'Kit enviado para casa', desc: 'Kit de recolha expedido para a sua morada.' },
+  { id: 3, title: 'Amostra enviada ao laboratório', desc: 'Amostra recolhida e enviada para análise ISO 15189.' },
+  { id: 4, title: 'Resultados e plano entregues', desc: 'Relatório médico, biomarcadores e plano nutricional disponíveis na app.' },
+  { id: 5, title: 'Reavaliação aos 6 meses', desc: 'Segundo painel comparativo com o seu baseline.' },
+];
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) { window.location.href = 'login.html'; return; }
+// ── Navegação ──────────────────────────────────────────────────────────
+const pages = ['inicio','programa','consultas','modulos','perfil'];
+window.navTo = function(page) {
+  pages.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) el.style.display = p === page ? 'block' : 'none';
+  });
+  document.querySelectorAll('.sb-item[data-page]').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === page);
+  });
+  const titles = { inicio:'Início', programa:'O meu programa', consultas:'Consultas', modulos:'Módulos opcionais', perfil:'Perfil' };
+  document.getElementById('pageTitle').textContent = titles[page] || page;
+};
 
-    // Valores imediatos a partir da Auth (rápido)
-    let nome = user.displayName || user.email.split('@')[0];
-    let planoNome = null;
+// ── Renderizar passos ──────────────────────────────────────────────────
+function renderPassos(estado) {
+  const container = document.getElementById('steps-container');
+  container.innerHTML = '';
+  PASSOS.forEach(p => {
+    const done   = p.id < estado.passoAtivo;
+    const active = p.id === estado.passoAtivo;
+    const row = document.createElement('div');
+    row.className = 'step-row ' + (done ? 'done' : active ? 'active' : 'pending');
+    row.innerHTML = `
+      <div class="step-icon ${done ? 'done' : active ? 'active' : 'pending'}">
+        ${done
+          ? '<svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+          : active
+            ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>'
+            : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/></svg>'
+        }
+      </div>
+      <div class="step-body">
+        <div class="step-title">${p.title}<span class="step-badge ${done?'done':active?'active':'pending'}">${done?'Concluído':active?'Em curso':'Pendente'}</span></div>
+        <div class="step-desc">${p.desc}</div>
+      </div>`;
+    container.appendChild(row);
+  });
+}
 
-    // Dados do Firestore (perfil + plano)
-    try {
-      const snap = await getDoc(doc(db, 'users', user.uid));
-      if (snap.exists()) {
-        const d = snap.data();
-        const completo = [d.firstName, d.lastName].filter(Boolean).join(' ');
-        if (completo) nome = completo;
-        if (d.planoNome) planoNome = d.planoNome;
+// ── Desbloquear secções conforme estado ────────────────────────────────
+function aplicarEstado(estadoNum) {
+  const e = ESTADOS[estadoNum] || ESTADOS[1];
+
+  // Topbar
+  document.getElementById('estadoLabel').textContent = e.label;
+  document.getElementById('progress-pct').innerHTML = e.pct + '<small>%</small>';
+
+  // Action card
+  document.getElementById('action-label').textContent = e.actionLabel;
+  document.getElementById('action-title').textContent = e.actionTitle;
+  document.getElementById('action-desc').textContent  = e.actionDesc;
+  document.getElementById('action-btn').textContent   = e.actionBtn;
+  document.getElementById('action-btn').href          = e.actionHref;
+
+  // Stats
+  document.getElementById('stat-programa').textContent     = e.statPrograma;
+  document.getElementById('stat-programa-sub').textContent = e.statProgramaSub;
+
+  // Passos
+  renderPassos(e);
+
+  // Desbloquear secções se estado >= 4
+  if (estadoNum >= 4) {
+    ['biomarcadores','relatorio','nutricao'].forEach(id => {
+      const el = document.getElementById('nav-' + id);
+      if (el) {
+        el.classList.remove('locked');
+        el.querySelector('.sb-lock')?.remove();
+        el.onclick = () => navTo(id);
       }
-    } catch (err) {
-      console.warn('Não foi possível carregar o perfil:', err);
+    });
+    // Esconder locked grid
+    document.querySelector('.locked-grid')?.closest('.page-content > *:last-child')?.remove();
+  }
+}
+
+// ── Auth + Firestore ───────────────────────────────────────────────────
+function saudacao() {
+  const h = new Date().getHours();
+  return h < 12 ? 'Bom dia' : h < 20 ? 'Boa tarde' : 'Boa noite';
+}
+
+function iniciais(nome) {
+  return nome.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'login.html'; return; }
+
+  let nome = user.displayName || user.email.split('@')[0];
+  let estadoNum = 1;
+
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      const d = snap.data();
+      const completo = [d.firstName, d.lastName].filter(Boolean).join(' ');
+      if (completo) nome = completo;
+      if (d.estado) estadoNum = d.estado;
+      if (d.planoNome) document.getElementById('sbPlan').textContent = d.planoNome.replace('Lyvoo ', '');
     }
+  } catch (err) {
+    console.warn('Firestore:', err);
+  }
 
-    const primeiro = nome.split(' ')[0];
-    document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
-    document.getElementById('navName').textContent  = nome;
-    document.getElementById('navAvatar').textContent = iniciaisDe(nome);
-    document.getElementById('navPlan').textContent = planoNome
-      ? planoNome.replace('Lyvoo ', 'Plano ')
-      : 'Sem plano ativo';
+  const primeiro = nome.split(' ')[0];
+  document.getElementById('sbName').textContent = nome;
+  document.getElementById('sbAvatar').textContent = iniciais(nome);
+  document.getElementById('pageSubtitle').textContent = saudacao() + ', ' + primeiro + ' 👋';
 
-    document.getElementById('loadingScreen').classList.add('hidden');
-    document.getElementById('shell').style.display = 'grid';
-  });
+  aplicarEstado(estadoNum);
 
-  document.getElementById('btnLogout').addEventListener('click', async () => {
-    await signOut(auth);
-    window.location.href = 'index.html';
-  });
+  document.getElementById('loading').classList.add('hide');
+  document.getElementById('app').style.display = 'flex';
+});
+
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await signOut(auth);
+  window.location.href = 'index.html';
+});
 </script>
 
 </body>
