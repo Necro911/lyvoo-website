@@ -427,7 +427,7 @@
     </div><!-- /view-onboarding -->
 
     <!-- ══ VISTA RESULTADOS (estado >= 4) ══ -->
-    <div id="view-resultados">
+    <div id="view-resultados" style="display:none">
 
     <!-- Banner resultados (estado 4 — primeira vez) -->
     <div id="results-banner" style="display:none; margin:0 32px 0; padding:18px 24px; background:linear-gradient(135deg,rgba(74,222,128,0.09),rgba(61,217,232,0.06)); border:1px solid rgba(74,222,128,0.22); border-radius:16px; display:flex; align-items:center; gap:16px; margin-bottom:20px;">
@@ -755,6 +755,8 @@
       badge.style.display = 'inline-flex';
     }
 
+    const primeiro = nome.split(' ')[0];
+
     // ── Vista: onboarding (1–3) vs resultados (4–5) ──
     const viewOn  = document.getElementById('view-onboarding');
     const viewRes = document.getElementById('view-resultados');
@@ -811,7 +813,6 @@
       renderOnboarding(estadoNum, primeiro);
     }
 
-    const primeiro = nome.split(' ')[0];
     document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
     document.getElementById('navName').textContent  = nome;
     document.getElementById('navAvatar').textContent = iniciaisDe(nome);
