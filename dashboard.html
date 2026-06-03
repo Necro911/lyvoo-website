@@ -57,6 +57,57 @@
     .sb-lock-icon { margin-left: auto; width: 13px; height: 13px; flex-shrink: 0; opacity: 0.6; }
 
     /* Estado badge no topbar */
+    /* ── Onboarding ── */
+    .ob-welcome { margin-bottom: 28px; }
+    .ob-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
+    .ob-title { font-size: clamp(26px, 3vw, 38px); font-weight: 800; letter-spacing: -0.04em; color: var(--txt); margin-bottom: 10px; }
+    .ob-sub { font-size: 16px; color: var(--txt-2); line-height: 1.7; max-width: 560px; }
+
+    .ob-action { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, rgba(61,217,232,0.07), rgba(139,92,246,0.04)); border: 1px solid rgba(61,217,232,0.18); border-radius: 20px; padding: 24px 28px; margin-bottom: 28px; }
+    .ob-action-icon { width: 52px; height: 52px; border-radius: 16px; background: rgba(61,217,232,0.10); border: 1px solid rgba(61,217,232,0.2); display: flex; align-items: center; justify-content: center; color: var(--cyan); flex-shrink: 0; }
+    .ob-action-body { flex: 1; }
+    .ob-action-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 5px; }
+    .ob-action-title { font-size: 17px; font-weight: 700; color: var(--txt); margin-bottom: 5px; letter-spacing: -0.02em; }
+    .ob-action-desc { font-size: 13.5px; color: var(--txt-2); line-height: 1.6; }
+    .ob-action-time { font-size: 12px; color: var(--txt-3); text-align: right; flex-shrink: 0; white-space: nowrap; }
+
+    .ob-timeline-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 24px 28px; margin-bottom: 28px; }
+    .ob-timeline-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .ob-timeline-title { font-size: 14px; font-weight: 700; color: var(--txt); }
+    .ob-pct { font-size: 20px; font-weight: 900; color: var(--cyan); letter-spacing: -0.04em; }
+    .ob-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; margin-bottom: 24px; }
+    .ob-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--teal-light), var(--cyan)); transition: width 0.6s ease; }
+
+    .ob-steps { display: flex; flex-direction: column; gap: 0; }
+    .ob-step { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .ob-step:last-child { border-bottom: none; }
+    .ob-step-dot { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .ob-step-dot.done { background: rgba(74,222,128,0.12); color: var(--green); border: 1.5px solid rgba(74,222,128,0.25); }
+    .ob-step-dot.active { background: rgba(61,217,232,0.10); color: var(--cyan); border: 1.5px solid rgba(61,217,232,0.3); }
+    .ob-step-dot.pending { background: rgba(255,255,255,0.03); color: var(--txt-3); border: 1.5px solid var(--line); }
+    .ob-step-body { flex: 1; }
+    .ob-step-title { font-size: 13.5px; font-weight: 600; color: var(--txt); margin-bottom: 2px; }
+    .ob-step.pending .ob-step-title { color: var(--txt-3); }
+    .ob-step-desc { font-size: 12px; color: var(--txt-3); line-height: 1.5; }
+    .ob-step-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 8px; }
+    .ob-step-badge.done { background: rgba(74,222,128,0.12); color: var(--green); }
+    .ob-step-badge.active { background: rgba(61,217,232,0.10); color: var(--cyan); }
+    .ob-step-badge.pending { background: rgba(255,255,255,0.05); color: var(--txt-3); }
+    .ob-step-eta { font-size: 11px; color: var(--txt-3); margin-top: 3px; }
+
+    .ob-preview-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 14px; }
+    .ob-preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .ob-preview-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+    .ob-preview-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .ob-preview-name { font-size: 13.5px; font-weight: 700; color: var(--txt-2); margin-bottom: 6px; }
+    .ob-preview-desc { font-size: 12px; color: var(--txt-3); line-height: 1.6; }
+
+    @media (max-width: 760px) {
+      .ob-action { flex-direction: column; align-items: flex-start; }
+      .ob-preview-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Estado badge ── */
     .estado-badge {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 11.5px; font-weight: 600;
@@ -327,6 +378,70 @@
       </div>
     </div>
 
+    <!-- ══ VISTA ONBOARDING (estado 1–3) ══ -->
+    <div id="view-onboarding" style="display:none; padding:36px 32px 64px; max-width:860px;">
+
+      <!-- Boas-vindas -->
+      <div class="ob-welcome">
+        <span class="ob-tag">O seu programa começa agora</span>
+        <h2 class="ob-title" id="ob-greeting">Bem-vindo à Lyvoo.</h2>
+        <p class="ob-sub">O seu kit está a ser preparado. Enquanto isso, aqui está o que vai acontecer nas próximas semanas.</p>
+      </div>
+
+      <!-- Card de acção activa -->
+      <div class="ob-action" id="ob-action">
+        <div class="ob-action-icon" id="ob-action-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="ob-action-body">
+          <div class="ob-action-label" id="ob-action-label">Próximo passo</div>
+          <div class="ob-action-title" id="ob-action-title">—</div>
+          <div class="ob-action-desc" id="ob-action-desc">—</div>
+        </div>
+        <div class="ob-action-time" id="ob-action-time">—</div>
+      </div>
+
+      <!-- Timeline do programa -->
+      <div class="ob-timeline-wrap">
+        <div class="ob-timeline-header">
+          <span class="ob-timeline-title">O seu programa — passo a passo</span>
+          <span class="ob-pct" id="ob-pct">0%</span>
+        </div>
+        <div class="ob-bar"><div class="ob-bar-fill" id="ob-bar-fill" style="width:0%"></div></div>
+        <div class="ob-steps" id="ob-steps"></div>
+      </div>
+
+      <!-- Preview do que vai receber -->
+      <div class="ob-preview-title">O que recebe quando os resultados chegarem</div>
+      <div class="ob-preview-grid">
+        <div class="ob-preview-card">
+          <div class="ob-preview-icon" style="background:rgba(61,217,232,0.08);color:var(--cyan);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg>
+          </div>
+          <div class="ob-preview-name">Score de saúde</div>
+          <div class="ob-preview-desc">Pontuação global e análise detalhada de +40 biomarcadores com interpretação clínica.</div>
+        </div>
+        <div class="ob-preview-card">
+          <div class="ob-preview-icon" style="background:rgba(139,92,246,0.08);color:var(--violet);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="ob-preview-name">Relatório médico</div>
+          <div class="ob-preview-desc">Análise integrada por médico e nutricionista. Cada valor contextualizado com recomendações práticas.</div>
+        </div>
+        <div class="ob-preview-card">
+          <div class="ob-preview-icon" style="background:rgba(74,222,128,0.08);color:var(--green);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+          </div>
+          <div class="ob-preview-name">Plano nutricional</div>
+          <div class="ob-preview-desc">Plano alimentar personalizado com base nos seus biomarcadores e objectivos de saúde.</div>
+        </div>
+      </div>
+
+    </div><!-- /view-onboarding -->
+
+    <!-- ══ VISTA RESULTADOS (estado >= 4) ══ -->
+    <div id="view-resultados">
+
     <!-- ROW 1: Program + Score -->
     <div class="grid row-main mb">
 
@@ -525,6 +640,8 @@
 
     </div>
 
+    </div><!-- /view-resultados -->
+
   </main>
 </div>
 
@@ -532,6 +649,84 @@
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
+
+  // ── Dados de onboarding por estado ──────────────────────────────────
+  const OB_ESTADOS = {
+    1: {
+      actionIcon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+      actionLabel: 'A acontecer agora',
+      actionTitle: 'O seu kit está a ser preparado.',
+      actionDesc:  'Receberá um email com o número de seguimento assim que o kit for expedido. Entrega prevista em 48h úteis após confirmação.',
+      actionTime:  'Entrega em ~48h',
+      pct: 10,
+    },
+    2: {
+      actionIcon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>',
+      actionLabel: 'Ação necessária',
+      actionTitle: 'O seu kit chegou. Faça a recolha.',
+      actionDesc:  'Siga as instruções incluídas no kit. A recolha demora menos de 5 minutos. Após a recolha, envie a amostra no envelope pré-pago.',
+      actionTime:  'Prazo: 7 dias',
+      pct: 30,
+    },
+    3: {
+      actionIcon: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      actionLabel: 'Em curso',
+      actionTitle: 'Amostra recebida. Laboratório a processar.',
+      actionDesc:  'O laboratório certificado ISO 15189 está a analisar a sua amostra. Os resultados e o relatório estarão disponíveis em breve.',
+      actionTime:  '7–10 dias úteis',
+      pct: 55,
+    },
+  };
+
+  const OB_PASSOS = [
+    { id:1, title:'Programa iniciado',                desc:'Conta criada e programa activo.',                                    eta:'' },
+    { id:2, title:'Kit enviado para casa',             desc:'Kit de recolha expedido para a sua morada.',                         eta:'48h após inscrição' },
+    { id:3, title:'Amostra enviada ao laboratório',    desc:'Recolha realizada e amostra enviada para análise.',                  eta:'Após receber o kit' },
+    { id:4, title:'Resultados e relatório entregues',  desc:'Score de saúde, biomarcadores, relatório médico e plano nutricional.', eta:'7–10 dias após recolha' },
+    { id:5, title:'Reavaliação aos 6 meses',           desc:'Segundo painel completo para comparar com o seu baseline.',          eta:'6 meses após o início' },
+  ];
+
+  function renderOnboarding(estadoNum, nome) {
+    const e = OB_ESTADOS[estadoNum] || OB_ESTADOS[1];
+
+    // Greeting
+    document.getElementById('ob-greeting').textContent = 'Bem-vindo, ' + nome + '.';
+
+    // Action card
+    document.getElementById('ob-action-icon').innerHTML = e.actionIcon;
+    document.getElementById('ob-action-label').textContent = e.actionLabel;
+    document.getElementById('ob-action-title').textContent = e.actionTitle;
+    document.getElementById('ob-action-desc').textContent  = e.actionDesc;
+    document.getElementById('ob-action-time').textContent  = e.actionTime;
+
+    // Progress bar
+    document.getElementById('ob-pct').textContent = e.pct + '%';
+    document.getElementById('ob-bar-fill').style.width = e.pct + '%';
+
+    // Steps
+    const container = document.getElementById('ob-steps');
+    container.innerHTML = '';
+    OB_PASSOS.forEach(p => {
+      const done   = p.id < estadoNum;
+      const active = p.id === estadoNum;
+      const cls    = done ? 'done' : active ? 'active' : 'pending';
+      const dotSvg = done
+        ? '<svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        : active
+          ? '<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="currentColor"/></svg>'
+          : '<svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+      const row = document.createElement('div');
+      row.className = 'ob-step ' + cls;
+      row.innerHTML = `
+        <div class="ob-step-dot ${cls}">${dotSvg}</div>
+        <div class="ob-step-body">
+          <div class="ob-step-title">${p.title}<span class="ob-step-badge ${cls}">${done?'Concluído':active?'Em curso':'Pendente'}</span></div>
+          <div class="ob-step-desc">${p.desc}</div>
+          ${p.eta ? `<div class="ob-step-eta">${p.eta}</div>` : ''}
+        </div>`;
+      container.appendChild(row);
+    });
+  }
 
   function saudacao() {
     const h = new Date().getHours();
@@ -573,7 +768,7 @@
       console.warn('Não foi possível carregar o perfil:', err);
     }
 
-    // Mostrar badge de estado
+    // Badge de estado
     const badge = document.getElementById('estadoBadge');
     const labelEl = document.getElementById('estadoLabel');
     if (badge && labelEl) {
@@ -581,15 +776,24 @@
       badge.style.display = 'inline-flex';
     }
 
-    // Desbloquear secções quando estado >= 4 (resultados disponíveis)
+    // ── Vista: onboarding (1–3) vs resultados (4–5) ──
+    const viewOn  = document.getElementById('view-onboarding');
+    const viewRes = document.getElementById('view-resultados');
+
     if (estadoNum >= 4) {
+      // Mostrar dashboard completo
+      viewOn.style.display  = 'none';
+      viewRes.style.display = 'block';
+      // Desbloquear sidebar
       ['sb-plano-alimentar', 'sb-suplementacao', 'sb-biomarcadores'].forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-          el.classList.remove('sb-locked');
-          el.querySelector('.sb-lock-icon')?.remove();
-        }
+        if (el) { el.classList.remove('sb-locked'); el.querySelector('.sb-lock-icon')?.remove(); }
       });
+    } else {
+      // Mostrar onboarding
+      viewOn.style.display  = 'block';
+      viewRes.style.display = 'none';
+      renderOnboarding(estadoNum, primeiro);
     }
 
     const primeiro = nome.split(' ')[0];
