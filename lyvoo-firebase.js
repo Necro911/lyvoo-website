@@ -1,7 +1,5 @@
-﻿// ─────────────────────────────────────────────────────────────
 // Configuração Firebase partilhada — Lyvoo
 // Importado por registar.html, login.html, dashboard.html
-// ─────────────────────────────────────────────────────────────
 import { initializeApp }  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth }        from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore }   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
@@ -23,8 +21,7 @@ auth.languageCode = 'pt';
 
 export const db = getFirestore(app);
 
-// Catálogo de planos (fonte única de verdade)
+// Plano único Lyvoo
 export const PLANOS = {
-  essencial: { id: 'essencial', nome: 'Lyvoo Essencial', preco: 320 },
-  completo:  { id: 'completo',  nome: 'Lyvoo Completo',  preco: 640 }
+  lyvoo: { id: 'lyvoo', nome: 'Lyvoo', preco: 359 }
 };
