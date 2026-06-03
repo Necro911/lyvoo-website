@@ -180,6 +180,23 @@
     .toast-btn-save { font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; border:none; background:var(--amber); color:#0A0800; cursor:pointer; }
     .toast-btn-disc { font-size:12px; font-weight:600; padding:6px 14px; border-radius:8px; border:1px solid var(--line-2); background:none; color:var(--txt-2); cursor:pointer; }
 
+    /* Última actualização por tab */
+    .tab-meta { font-size:11px; color:var(--txt-3); padding:10px 28px 0; }
+    .tab-meta span { color:var(--txt-3); }
+    .tab-meta.has-date span { color:var(--green); }
+
+    /* Notificar cliente */
+    .notify-box { background:rgba(74,222,128,0.04); border:1px solid rgba(74,222,128,0.15); border-radius:14px; padding:18px 20px; display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+    .notify-box-text { flex:1; }
+    .notify-box-title { font-size:13.5px; font-weight:700; color:var(--green); margin-bottom:3px; }
+    .notify-box-sub { font-size:12px; color:var(--txt-3); }
+    .btn-notify { font-size:13px; font-weight:700; padding:9px 18px; border-radius:9px; border:1px solid rgba(74,222,128,0.3); background:rgba(74,222,128,0.08); color:var(--green); cursor:pointer; white-space:nowrap; transition:all 0.18s; }
+    .btn-notify:hover { background:rgba(74,222,128,0.15); }
+
+    /* Destaque checkbox nas linhas de biomarcadores */
+    .bio-tbl .destaque-cell { width:32px; text-align:center; }
+    .destaque-cb { width:16px; height:16px; cursor:pointer; accent-color:var(--cyan); }
+
     /* Loading / empty states */
     #loading-state, #access-denied { padding:80px 20px; text-align:center; color:var(--txt-3); font-size:14px; }
     #access-denied h2 { font-size:20px; font-weight:800; color:var(--red); margin-bottom:10px; }
@@ -265,9 +282,21 @@
         <button class="tab" onclick="switchTab('consultas')">Consultas</button>
         <button class="tab" onclick="switchTab('relatorio')">Relatório</button>
       </div>
+      <div class="tab-meta" id="tab-meta"><span id="tab-meta-txt">—</span></div>
 
       <!-- ── TAB: GERAL ── -->
       <div class="tab-content active" id="tab-geral">
+
+        <!-- Notificação ao cliente (aparece quando estado = 4) -->
+        <div class="notify-box" id="notify-box" style="display:none">
+          <div style="font-size:26px;line-height:1">🎉</div>
+          <div class="notify-box-text">
+            <div class="notify-box-title">Resultados prontos — notificar o cliente?</div>
+            <div class="notify-box-sub">O estado foi definido como 4. O cliente ainda não foi notificado por email.</div>
+          </div>
+          <button class="btn-notify" id="btn-notify" onclick="notificarCliente()">✉ Enviar email</button>
+        </div>
+
         <div class="form-section">
           <div class="form-section-title">Estado do programa</div>
           <div class="estado-cards" id="estado-cards">
@@ -721,6 +750,12 @@
   }
 
   // ── Tab switching ─────────────────────────────────────────────────────
+  const TAB_TS_KEYS = {
+    geral:'tsGeral', biomarcadores:'tsBio', plano:'tsPlano',
+    suplementacao:'tsSupp', consultas:'tsConsult', relatorio:'tsRelatorio'
+  };
+  let currentTimestamps = {};
+
   window.switchTab = function(name) {
     currentTab = name;
     const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio'];
@@ -728,13 +763,66 @@
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     clearDirty();
+    // Mostrar timestamp deste tab
+    const tsKey = TAB_TS_KEYS[name];
+    const ts = currentTimestamps[tsKey];
+    const meta = document.getElementById('tab-meta');
+    const metaTxt = document.getElementById('tab-meta-txt');
+    if (ts) {
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      metaTxt.textContent = 'Última actualização: ' + d.toLocaleString('pt-PT', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      meta.className = 'tab-meta has-date';
+    } else {
+      metaTxt.textContent = 'Nunca guardado neste separador';
+      meta.className = 'tab-meta';
+    }
   };
 
-  // ── Estado selector ───────────────────────────────────────────────────
+  // ── Notificar cliente ─────────────────────────────────────────────────
+  window.notificarCliente = function() {
+    const u = allUsers.find(x => x.uid === currentUID);
+    if (!u) return;
+    const nome = [u.firstName,u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '';
+    const primeiro = nome.split(' ')[0] || 'Cliente';
+    const email = u.email || '';
+    const assunto = encodeURIComponent('Os seus resultados Lyvoo estão prontos');
+    const corpo = encodeURIComponent(
+`Olá ${primeiro},
+
+Os seus resultados estão disponíveis na sua área de membro Lyvoo.
+
+Pode aceder agora em: https://necro911.github.io/lyvoo-website/dashboard.html
+
+Encontrará:
+• Os seus biomarcadores detalhados
+• O relatório médico personalizado
+• O seu plano alimentar
+• As recomendações de suplementação
+
+Qualquer questão, estamos disponíveis em hello@lyvoo.pt
+
+Com os melhores cumprimentos,
+A equipa Lyvoo`
+    );
+    window.open(`mailto:${email}?subject=${assunto}&body=${corpo}`);
+    // Marcar como notificado
+    const btn = document.getElementById('btn-notify');
+    btn.textContent = '✓ Email aberto';
+    btn.style.opacity = '0.5';
+    btn.disabled = true;
+  };
+
+  // Mostrar/esconder notify box conforme estado
   window.selectEstado = function(n) {
     selectedEstado = n;
     document.querySelectorAll('.estado-card').forEach(c => c.classList.toggle('selected', +c.dataset.e === n));
+    const box = document.getElementById('notify-box');
+    if (box) box.style.display = n === 4 ? 'flex' : 'none';
+    // Reset botão notificação
+    const btn = document.getElementById('btn-notify');
+    if (btn) { btn.textContent = '✉ Enviar email'; btn.style.opacity = '1'; btn.disabled = false; }
   };
+
 
   // ── Render user list ──────────────────────────────────────────────────
   function renderList(users) {
@@ -786,6 +874,8 @@
     document.getElementById('dh-name').textContent = nome;
     document.getElementById('dh-meta').textContent = (d.email||'—') + ' · Registado ' + fmtDate(d.criadoEm);
 
+    // Timestamps
+    currentTimestamps = d.timestamps || {};
     // Geral
     selectEstado(d.estado||1);
     document.getElementById('g-first').value          = d.firstName||'';
@@ -875,9 +965,9 @@
           <button class="btn-add-row" onclick="addBioRow('${catKey}')">+ Linha</button>
         </div>
         <table class="bio-tbl">
-          <colgroup><col style="width:22%"><col style="width:11%"><col style="width:11%"><col style="width:20%"><col style="width:13%"><col style="width:15%"><col style="width:8%"></colgroup>
+          <colgroup><col style="width:20%"><col style="width:10%"><col style="width:10%"><col style="width:18%"><col style="width:12%"><col style="width:14%"><col style="width:10%"><col style="width:6%"></colgroup>
           <thead><tr>
-            <th>Biomarcador</th><th>Valor</th><th>Unidade</th><th>Referência</th><th>Tag</th><th>Δ (variação)</th><th></th>
+            <th>Biomarcador</th><th>Valor</th><th>Unidade</th><th>Referência</th><th>Tag</th><th>Δ (variação)</th><th title="Mostrar no painel do cliente">⭐ Destaque</th><th></th>
           </tr></thead>
           <tbody id="biotbody-${catKey}">
             ${allRows.map(r => bioRow(r)).join('')}
@@ -890,7 +980,7 @@
   function bioRow(r) {
     return `<tr>
       <td><input type="text" value="${r.nome||''}" placeholder="Nome" /></td>
-      <td><input type="text" value="${r.valor||''}" placeholder="—" style="width:80px" /></td>
+      <td><input type="text" value="${r.valor||''}" placeholder="—" style="width:72px" /></td>
       <td><input type="text" value="${r.unidade||''}" placeholder="mg/dL" /></td>
       <td><input type="text" value="${r.referencia||''}" placeholder="referência" /></td>
       <td><select>
@@ -900,6 +990,7 @@
         <option value="critico" ${r.tag==='critico'?'selected':''}>Crítico</option>
       </select></td>
       <td><input type="text" value="${r.delta||''}" placeholder="ex: -15 ou +8" /></td>
+      <td class="destaque-cell"><input type="checkbox" class="destaque-cb" title="Mostrar no painel" ${r.destaque?'checked':''} /></td>
       <td><button class="btn-del-row" onclick="this.closest('tr').remove()" title="Remover">×</button></td>
     </tr>`;
   }
@@ -919,8 +1010,9 @@
       if (!tbody) return;
       const rows = [];
       tbody.querySelectorAll('tr').forEach(tr => {
-        const inputs = tr.querySelectorAll('input');
-        const sel = tr.querySelector('select');
+        const inputs = tr.querySelectorAll('input[type=text], input[type=number]');
+        const sel  = tr.querySelector('select');
+        const cb   = tr.querySelector('input[type=checkbox]');
         const nome = inputs[0].value.trim();
         if (!nome) return;
         rows.push({
@@ -930,6 +1022,7 @@
           referencia: inputs[3].value.trim(),
           tag:        sel.value,
           delta:      inputs[4].value.trim(),
+          destaque:   cb ? cb.checked : false,
         });
       });
       result[catKey] = rows;
@@ -1049,7 +1142,15 @@
     const btn = event.target;
     btn.disabled = true; btn.textContent = 'A guardar…';
     try {
-      await setDoc(doc(db,'users',currentUID), { ...data, atualizadoEm: serverTimestamp() }, { merge: true });
+      // Guardar timestamp do tab actual
+      const tsKey = TAB_TS_KEYS[currentTab];
+      const tsUpdate = tsKey ? { [`timestamps.${tsKey}`]: serverTimestamp() } : {};
+      await setDoc(doc(db,'users',currentUID), { ...data, ...tsUpdate, atualizadoEm: serverTimestamp() }, { merge: true });
+      // Actualizar timestamp local
+      if (tsKey) {
+        currentTimestamps[tsKey] = { toDate: () => new Date() };
+        switchTab(currentTab); // refresh meta
+      }
       // Actualizar cache local
       const idx = allUsers.findIndex(u => u.uid === currentUID);
       if (idx !== -1) allUsers[idx] = { ...allUsers[idx], ...data };

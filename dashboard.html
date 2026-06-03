@@ -1107,7 +1107,9 @@
     const grid = document.querySelector('.bio-grid');
     if (!grid || !resultados?.biomarcadores) return;
     const allRows = Object.values(resultados.biomarcadores).flat().filter(r => r.valor);
-    const highlights = allRows.slice(0, 5);
+    // Preferir marcadores com destaque:true, fallback para os primeiros 5
+    const starred = allRows.filter(r => r.destaque);
+    const highlights = (starred.length ? starred : allRows).slice(0, 5);
     if (!highlights.length) return;
     grid.innerHTML = highlights.map(r => {
       const tagCls = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
