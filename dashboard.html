@@ -465,7 +465,7 @@
         <p class="ob-sub">O seu kit está a ser preparado. Enquanto isso, aqui está o que vai acontecer nas próximas semanas.</p>
       </div>
 
-      <!-- Card de acção activa -->
+      <!-- Card de ação ativa -->
       <div class="ob-action" id="ob-action">
         <div class="ob-action-icon" id="ob-action-icon">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
@@ -525,7 +525,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
           </div>
           <div class="ob-preview-name">Plano nutricional</div>
-          <div class="ob-preview-desc">Plano alimentar personalizado com base nos seus biomarcadores e objectivos de saúde.</div>
+          <div class="ob-preview-desc">Plano alimentar personalizado com base nos seus biomarcadores e objetivos de saúde.</div>
         </div>
       </div>
 
@@ -865,12 +865,12 @@
       if (el) el.style.display = 'block';
     }
 
-    // Actualizar sidebar activo
+    // Atualizar sidebar ativo
     document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
     const activeLink = document.getElementById('sb-' + name);
     if (activeLink) activeLink.classList.add('active');
 
-    // Actualizar título da página (usado em topbar)
+    // Atualizar título da página (usado em topbar)
     document.getElementById('pageTitle').textContent = SECTION_TITLES[name] || '';
 
     // Fazer scroll para o topo
@@ -906,7 +906,7 @@
   };
 
   const OB_PASSOS = [
-    { id:1, title:'Programa iniciado',                desc:'Conta criada e programa activo.',                                    eta:'' },
+    { id:1, title:'Programa iniciado',                desc:'Conta criada e programa ativo.',                                    eta:'' },
     { id:2, title:'Kit enviado para casa',             desc:'Kit de recolha expedido para a sua morada.',                         eta:'48h após inscrição' },
     { id:3, title:'Amostra enviada ao laboratório',    desc:'Recolha realizada e amostra enviada para análise.',                  eta:'Após receber o kit' },
     { id:4, title:'Resultados e relatório entregues',  desc:'Score de saúde, biomarcadores, relatório médico e plano nutricional.', eta:'7–10 dias após recolha' },
@@ -1084,7 +1084,7 @@
       </div>`;
     }).join('');
 
-    // Actualizar também o sidebar (próxima consulta)
+    // Atualizar também o sidebar (próxima consulta)
     const proxima = sorted.find(c => {
       if (!c.data) return false;
       return new Date(c.data + 'T00:00:00') >= today;
@@ -1284,7 +1284,7 @@
         const banner = document.getElementById('results-banner');
         if (banner) banner.style.display = 'flex';
 
-        // Progress: 80% + checklist actualizado
+        // Progress: 80% + checklist atualizado
         const pctEl = document.getElementById('prog-pct');
         if (pctEl) pctEl.innerHTML = '80<small>%</small>';
 

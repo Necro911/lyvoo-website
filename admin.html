@@ -180,7 +180,7 @@
     .toast-btn-save { font-size:12px; font-weight:700; padding:6px 14px; border-radius:8px; border:none; background:var(--amber); color:#0A0800; cursor:pointer; }
     .toast-btn-disc { font-size:12px; font-weight:600; padding:6px 14px; border-radius:8px; border:1px solid var(--line-2); background:none; color:var(--txt-2); cursor:pointer; }
 
-    /* Última actualização por tab */
+    /* Última atualização por tab */
     .tab-meta { font-size:11px; color:var(--txt-3); padding:10px 28px 0; }
     .tab-meta span { color:var(--txt-3); }
     .tab-meta.has-date span { color:var(--green); }
@@ -441,12 +441,12 @@
         <div class="form-section">
           <div class="form-section-title">Objectivo</div>
           <div class="form-field">
-            <label class="form-label">Título do objectivo</label>
+            <label class="form-label">Título do objetivo</label>
             <input class="form-input" id="pa-obj" type="text" placeholder="Ex: Reduzir inflamação sistémica" />
           </div>
           <div class="form-field">
             <label class="form-label">Descrição</label>
-            <textarea class="form-textarea" id="pa-obj-desc" placeholder="Explicação clínica do objectivo nutricional..."></textarea>
+            <textarea class="form-textarea" id="pa-obj-desc" placeholder="Explicação clínica do objetivo nutricional..."></textarea>
           </div>
         </div>
         <div class="form-section">
@@ -829,7 +829,7 @@
     const metaTxt = document.getElementById('tab-meta-txt');
     if (ts) {
       const d = ts.toDate ? ts.toDate() : new Date(ts);
-      metaTxt.textContent = 'Última actualização: ' + d.toLocaleString('pt-PT', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      metaTxt.textContent = 'Última atualização: ' + d.toLocaleString('pt-PT', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
       meta.className = 'tab-meta has-date';
     } else {
       metaTxt.textContent = 'Nunca guardado neste separador';
@@ -1081,7 +1081,7 @@
       markDirty();
     }
   });
-  // Actualizar preview quando valor/tag mudam numa linha destacada
+  // Atualizar preview quando valor/tag mudam numa linha destacada
   document.getElementById('bio-categories').addEventListener('input', e => {
     const tr = e.target.closest('tr');
     if (tr && tr.classList.contains('row-highlighted')) updateDestaquePreview();
@@ -1120,7 +1120,7 @@
         </table>`;
       container.appendChild(div);
     });
-    // Actualizar preview após renderização
+    // Atualizar preview após renderização
     requestAnimationFrame(updateDestaquePreview);
   }
 
@@ -1348,12 +1348,12 @@
       const tsKey = TAB_TS_KEYS[currentTab];
       const tsUpdate = tsKey ? { [`timestamps.${tsKey}`]: serverTimestamp() } : {};
       await setDoc(doc(db,'users',currentUID), { ...data, ...tsUpdate, atualizadoEm: serverTimestamp() }, { merge: true });
-      // Actualizar timestamp local
+      // Atualizar timestamp local
       if (tsKey) {
         currentTimestamps[tsKey] = { toDate: () => new Date() };
         switchTab(currentTab); // refresh meta
       }
-      // Actualizar cache local
+      // Atualizar cache local
       const idx = allUsers.findIndex(u => u.uid === currentUID);
       if (idx !== -1) allUsers[idx] = { ...allUsers[idx], ...data };
       renderList(allUsers.filter(u => {
