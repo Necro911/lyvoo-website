@@ -275,6 +275,10 @@
 <!-- LOADING -->
 <div class="loading-screen" id="loadingScreen"><div class="spinner"></div></div>
 
+<!-- Fallback absoluto: se JS não correr em 5s, redireciona para login -->
+<noscript><meta http-equiv="refresh" content="0;url=login.html"/></noscript>
+<script>setTimeout(function(){if(document.getElementById('shell').style.display==='none')window.location.replace('login.html');},5000);</script>
+
 <div class="shell" id="shell" style="display:none">
 
   <!-- ── SIDEBAR ── -->
