@@ -629,7 +629,19 @@
     .rap-sig-name { font-size: 12px; font-weight: 700; color: var(--ink); }
     .rap-sig-role { font-size: 10px; color: var(--ink-3); margin-top: 1px; }
 
-    /* Step 4 — Plano nutricional mockup */
+    /* Step 4 — imagem plano nutricional */
+    .step4-img-wrap {
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.13);
+      aspect-ratio: 4/3;
+    }
+    .step4-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: left center;
+      display: block;
+    }
+
+    /* Step 4 — Plano nutricional mockup (CSS reservado) */
     .nut-card {
       background: #fff; border: 1.5px solid var(--border);
       border-radius: 24px; overflow: hidden;
