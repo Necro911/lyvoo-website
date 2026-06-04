@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create account — Lyvoo</title>
+  <meta name="description" content="Create your Lyvoo account and start your personalised preventive health programme." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
+      --violet: #8B5CF6; --surface: #F6F8F9; --border: #E3E8EA;
+      --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96;
+    }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(160deg, #030D10 0%, #060F16 60%, #04080E 100%); min-height: 100vh; color: var(--ink); -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; }
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.7); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: rgba(255,255,255,0.8); }
+    .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
+    .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
+    .page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 100px 24px 60px; }
+    .card { background: #fff; border-radius: 28px; padding: 48px 44px; width: 100%; max-width: 460px; box-shadow: 0 32px 80px rgba(0,0,0,0.35); }
+    .card-header { text-align: center; margin-bottom: 36px; }
+    .card-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 14px; }
+    .card-title { font-size: 28px; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); line-height: 1.15; margin-bottom: 8px; }
+    .card-title span { background: linear-gradient(135deg, #3DD9E8, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .card-sub { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+    .btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px 20px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff; font-size: 14px; font-weight: 600; color: var(--ink); cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-google:hover { background: var(--surface); border-color: #C8D0D3; }
+    .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-size: 12px; font-weight: 500; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .form { display: flex; flex-direction: column; gap: 14px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+    .field input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface); font-family: 'Inter', sans-serif; font-size: 14px; color: var(--ink); outline: none; transition: border-color 0.2s, background 0.2s; }
+    .field input::placeholder { color: var(--ink-3); }
+    .field input:focus { border-color: var(--teal-light); background: #fff; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .input-wrap { position: relative; }
+    .input-wrap input { width: 100%; padding-right: 42px; }
+    .toggle-pw { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--ink-3); padding: 0; display: flex; align-items: center; }
+    .toggle-pw:hover { color: var(--ink-2); }
+    .terms { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--ink-3); line-height: 1.5; margin-top: 4px; }
+    .terms input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--teal); width: 15px; height: 15px; cursor: pointer; }
+    .terms a { color: var(--teal-light); text-decoration: none; }
+    .terms a:hover { text-decoration: underline; }
+    .btn-submit { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px 20px; border-radius: 12px; background: var(--teal); color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s; margin-top: 6px; }
+    .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+    .login-link { text-align: center; font-size: 13px; color: var(--ink-3); margin-top: 22px; }
+    .login-link a { color: var(--teal-light); font-weight: 600; text-decoration: none; }
+    .login-link a:hover { text-decoration: underline; }
+    .trust { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .trust-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; color: var(--ink-3); }
+    .trust-item svg { color: var(--teal-light); flex-shrink: 0; }
+    .field input.error { border-color: #EF4444; }
+    .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
+    @media (max-width: 520px) { .card { padding: 36px 24px; border-radius: 20px; } .card-title { font-size: 24px; } .field-row { grid-template-columns: 1fr; } .trust { flex-direction: column; gap: 10px; } }
+  </style>
+  <script src="../cookie-banner.js" defer></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../index.html">
+      <img src="../images/logo.png" alt="Lyvoo" style="height:46px;width:auto;display:block;" />
+    </a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="lang-toggle"><a href="../registar.html">PT</a><a href="#" class="lang-active">EN</a></div>
+      <a href="index.html" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+        Back to homepage
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="card">
+
+    <div class="card-header">
+      <div class="card-label">Welcome to Lyvoo</div>
+      <h1 class="card-title">Start your<br/><span>health programme</span></h1>
+      <p class="card-sub">Create your account for free. Payment only occurs once your kit is dispatched.</p>
+    </div>
+
+    <a href="#" class="btn-google" id="btnGoogle">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </a>
+
+    <div class="divider">or sign up with email</div>
+
+    <form class="form" id="registerForm" novalidate>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="James" autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="lastName">Last name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Smith" autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" />
+        <span class="field-error" id="emailError">Please enter a valid email address.</span>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" />
+          <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">
+            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <span class="field-error" id="passwordError">Password must be at least 8 characters.</span>
+      </div>
+
+      <div class="terms">
+        <input type="checkbox" id="terms" name="terms" />
+        <label for="terms">
+          I accept Lyvoo's <a href="../termos.html" target="_blank">Terms of Service</a> and <a href="../privacidade.html" target="_blank">Privacy Policy</a>.
+        </label>
+      </div>
+
+      <div class="terms" style="margin-top:-4px;">
+        <input type="checkbox" id="serviceStart" name="serviceStart" />
+        <label for="serviceStart">
+          I understand that by confirming my subscription, kit dispatch begins immediately and that, once used, I waive my right of withdrawal under the applicable consumer law.
+        </label>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        Create account
+      </button>
+
+    </form>
+
+    <p class="login-link">Already have an account? <a href="login.html">Sign in</a></p>
+
+    <div class="trust">
+      <div class="trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Encrypted data
+      </div>
+      <div class="trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        GDPR compliant
+      </div>
+      <div class="trust-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+        No commitment
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+  import {
+    createUserWithEmailAndPassword, signInWithPopup,
+    GoogleAuthProvider, updateProfile
+  } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { auth, db, PLANOS } from '../lyvoo-firebase.js';
+
+  const planoParam    = new URLSearchParams(location.search).get('plano');
+  const planoEscolhido = PLANOS[planoParam] ? planoParam : null;
+
+  async function guardarPerfil(user, { firstName = '', lastName = '' } = {}) {
+    const dados = { email: user.email, atualizadoEm: serverTimestamp() };
+    if (firstName || lastName) { dados.firstName = firstName; dados.lastName = lastName; }
+    if (planoEscolhido) { dados.plano = planoEscolhido; dados.planoNome = PLANOS[planoEscolhido].nome; }
+    dados.estado = 1;
+    dados.estadoLabel = 'Kit being prepared';
+    await setDoc(doc(db, 'users', user.uid), { criadoEm: serverTimestamp(), ...dados }, { merge: true });
+  }
+
+  const erros = {
+    'auth/email-already-in-use':   'An account already exists with this email address.',
+    'auth/weak-password':          'Password must be at least 6 characters.',
+    'auth/invalid-email':          'Please enter a valid email address.',
+    'auth/popup-closed-by-user':   'Authentication cancelled.',
+    'auth/popup-blocked':          'Pop-up blocked by your browser. Please allow pop-ups for this site.',
+    'auth/network-request-failed': 'Connection error. Please check your internet connection.',
+    'auth/too-many-requests':      'Too many attempts. Please wait a moment and try again.',
+  };
+
+  function mensagemErro(code) { return erros[code] || 'An unexpected error occurred. Please try again.'; }
+
+  function mostrarErroGlobal(msg) {
+    let el = document.getElementById('globalError');
+    if (!el) { el = document.createElement('p'); el.id = 'globalError'; el.style.cssText = 'color:#EF4444;font-size:13px;text-align:center;margin-top:12px;'; document.getElementById('registerForm').appendChild(el); }
+    el.textContent = msg; el.style.display = 'block';
+  }
+
+  function limparErroGlobal() { const el = document.getElementById('globalError'); if (el) el.style.display = 'none'; }
+
+  function setBtnLoading(loading) {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = loading;
+    btn.innerHTML = loading
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Creating account…'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg> Create account';
+  }
+
+  function setGoogleLoading(loading) { const btn = document.getElementById('btnGoogle'); btn.style.opacity = loading ? '0.6' : '1'; btn.style.pointerEvents = loading ? 'none' : ''; }
+
+  function aoAutenticar() { window.location.href = planoEscolhido ? '../dashboard.html' : 'index.html#programme'; }
+
+  const togglePw = document.getElementById('togglePw');
+  const pwInput  = document.getElementById('password');
+  const eyeIcon  = document.getElementById('eyeIcon');
+  togglePw.addEventListener('click', () => {
+    const oculto = pwInput.type === 'password';
+    pwInput.type = oculto ? 'text' : 'password';
+    eyeIcon.innerHTML = oculto
+      ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+      : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  });
+
+  const form       = document.getElementById('registerForm');
+  const emailInput = document.getElementById('email');
+  const emailErr   = document.getElementById('emailError');
+  const pwErr      = document.getElementById('passwordError');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); limparErroGlobal();
+    let valido = true;
+    const emailVal = emailInput.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { emailInput.classList.add('error'); emailErr.style.display = 'block'; valido = false; } else { emailInput.classList.remove('error'); emailErr.style.display = 'none'; }
+    if (pwInput.value.length < 8) { pwInput.classList.add('error'); pwErr.style.display = 'block'; valido = false; } else { pwInput.classList.remove('error'); pwErr.style.display = 'none'; }
+    if (!document.getElementById('terms').checked) { mostrarErroGlobal('You must accept the Terms of Service to continue.'); valido = false; }
+    if (!document.getElementById('serviceStart').checked) { mostrarErroGlobal('You must confirm the immediate service start policy to continue.'); valido = false; }
+    if (!valido) return;
+    setBtnLoading(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, emailVal, pwInput.value);
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const nome = [firstName, lastName].filter(Boolean).join(' ');
+      if (nome) await updateProfile(cred.user, { displayName: nome });
+      await guardarPerfil(cred.user, { firstName, lastName });
+      aoAutenticar();
+    } catch (err) { setBtnLoading(false); mostrarErroGlobal(mensagemErro(err.code)); }
+  });
+
+  emailInput.addEventListener('input', () => { emailInput.classList.remove('error'); emailErr.style.display = 'none'; limparErroGlobal(); });
+  pwInput.addEventListener('input', () => { pwInput.classList.remove('error'); pwErr.style.display = 'none'; limparErroGlobal(); });
+
+  document.getElementById('btnGoogle').addEventListener('click', async (e) => {
+    e.preventDefault(); limparErroGlobal(); setGoogleLoading(true);
+    try {
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const partes = (result.user.displayName || '').trim().split(' ');
+      await guardarPerfil(result.user, { firstName: partes[0] || '', lastName: partes.slice(1).join(' ') });
+      aoAutenticar();
+    } catch (err) { setGoogleLoading(false); if (err.code !== 'auth/popup-closed-by-user') mostrarErroGlobal(mensagemErro(err.code)); }
+  });
+</script>
+
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin { animation: spin 0.8s linear infinite; }
+</style>
+
+</body>
+</html>

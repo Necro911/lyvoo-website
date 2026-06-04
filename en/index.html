@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lyvoo — Personalised Preventive Health</title>
+  <meta name="description" content="Biomarkers, preventive medicine, nutrition and integrated follow-up. Analyse, understand and improve your health — from the comfort of your home." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Lyvoo" />
+  <meta property="og:locale"      content="en_GB" />
+  <meta property="og:url"         content="https://necro911.github.io/lyvoo-website/en/" />
+  <meta property="og:title"       content="Lyvoo — Personalised Preventive Health" />
+  <meta property="og:description" content="At-home blood tests, medical interpretation and personalised nutritional plan. From analysis to action plan, without leaving home." />
+  <meta property="og:image"       content="https://necro911.github.io/lyvoo-website/images/og-image.jpg" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt"    content="Lyvoo — Personalised preventive health" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Lyvoo — Personalised Preventive Health" />
+  <meta name="twitter:description" content="At-home blood tests, medical interpretation and personalised nutritional plan." />
+  <meta name="twitter:image"       content="https://necro911.github.io/lyvoo-website/images/og-image.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal:#0B525A;--teal-light:#0D7A87;--cyan:#3DD9E8;--violet:#8B5CF6;--purple:#9B6FD4;
+      --bg:#FFFFFF;--surface:#F6F8F9;--border:#E3E8EA;--ink:#0B1215;--ink-2:#3A4A50;--ink-3:#7A8F96;
+      --dark-bg:#060F16;--dark-surface:#0F1518;--dark-border:rgba(255,255,255,0.08);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    .container{max-width:1140px;margin:0 auto;padding:0 28px}
+    .label{font-size:11px;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--teal-light);display:block;margin-bottom:18px}
+    .label-light{color:rgba(255,255,255,0.45)}
+    .grad-text{background:linear-gradient(120deg,var(--cyan) 0%,var(--violet) 55%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .section{padding:112px 0}.section-dark{background:var(--dark-bg)}.section-surface{background:var(--surface)}
+    .fade{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease}
+    .fade.in{opacity:1;transform:translateY(0)}
+    .fade-d1{transition-delay:0.1s}.fade-d2{transition-delay:0.2s}.fade-d3{transition-delay:0.3s}.fade-d4{transition-delay:0.4s}.fade-d5{transition-delay:0.5s}
+    .btn{display:inline-flex;align-items:center;gap:9px;font-size:15px;font-weight:650;padding:15px 30px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s,opacity 0.2s}
+    .btn-dark{background:var(--ink);color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.22)}.btn-dark:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,0.32)}
+    .btn-teal{background:var(--teal);color:#fff;box-shadow:0 4px 20px rgba(11,82,90,0.28)}.btn-teal:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(11,82,90,0.42)}
+    .btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border)}.btn-outline:hover{border-color:var(--ink-3);background:var(--surface)}
+    .btn-white{background:#fff;color:var(--teal);box-shadow:0 4px 20px rgba(0,0,0,0.18)}.btn-white:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,0.26)}
+    .btn-ghost-white{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);border:1.5px solid rgba(255,255,255,0.18)}.btn-ghost-white:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.32)}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 28px;transition:background 0.35s,box-shadow 0.35s}
+    .nav.scrolled{background:rgba(6,12,14,0.82);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);box-shadow:0 1px 0 rgba(255,255,255,0.06)}
+    .nav-inner{max-width:1140px;margin:0 auto;height:70px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .brand-logo{height:46px;width:auto;display:block}.footer-logo{height:64px;width:auto;display:block}
+    .nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+    .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:14px;font-weight:500;padding:8px 14px;border-radius:8px;transition:color 0.2s,background 0.2s}
+    .nav-links a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+    .nav-cta{background:#fff!important;color:var(--teal)!important;border-radius:999px!important;padding:9px 22px!important}.nav-cta:hover{opacity:0.88;background:#fff!important}
+    .nav-login{border:1.5px solid rgba(255,255,255,0.22)!important;border-radius:999px!important;padding:8px 18px!important;color:rgba(255,255,255,0.75)!important;font-weight:600!important;transition:border-color 0.2s,color 0.2s!important}.nav-login:hover{border-color:rgba(255,255,255,0.5)!important;color:#fff!important;background:transparent!important}
+    .lang-toggle{display:flex;align-items:center;border:1px solid rgba(255,255,255,0.14);border-radius:999px;overflow:hidden}
+    .lang-toggle a{font-size:11px;font-weight:700;letter-spacing:0.04em;padding:5px 10px;color:rgba(255,255,255,0.38);text-decoration:none;transition:all 0.2s}
+    .lang-toggle a.lang-active{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85)}
+    .lang-toggle a:hover:not(.lang-active){color:rgba(255,255,255,0.65)}
+    .nav-mob{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px}
+    .hero{padding-top:130px;padding-bottom:0;background:linear-gradient(160deg,#030D10 0%,#060F16 55%,#04080E 100%);overflow:hidden;position:relative}
+    .hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(61,217,232,0.07) 0%,transparent 65%),radial-gradient(ellipse 40% 60% at 30% 80%,rgba(139,92,246,0.06) 0%,transparent 60%)}
+    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;max-width:1140px;margin:0 auto;padding:0 28px;position:relative}
+    .hero-left{padding-bottom:80px}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(61,217,232,0.08);border:1px solid rgba(61,217,232,0.2);border-radius:999px;padding:6px 14px;margin-bottom:28px;font-size:12.5px;font-weight:600;color:var(--cyan)}
+    .hero-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:blink 2.2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    .hero h1{font-size:clamp(34px,4.6vw,60px);font-weight:850;letter-spacing:-0.045em;line-height:1.14;margin-bottom:22px;color:#fff;white-space:nowrap}
+    .hero-subhead{font-size:clamp(18px,2vw,22px);font-weight:400;letter-spacing:-0.02em;line-height:1.35;color:rgba(255,255,255,0.88);margin-bottom:22px}
+    .hero-sub{font-size:18px;color:rgba(255,255,255,0.52);line-height:1.7;max-width:440px;margin-bottom:14px;font-weight:400}
+    .hero-sub:last-of-type{margin-bottom:40px}
+    .hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:52px}
+    .btn-outline{background:transparent;color:rgba(255,255,255,0.75);border:1.5px solid rgba(255,255,255,0.2)}.btn-outline:hover{border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.06);color:#fff}
+    .hero-proof{display:flex;align-items:center;gap:20px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.1)}
+    .proof-item{display:flex;flex-direction:column;gap:2px}
+    .proof-num{font-size:22px;font-weight:800;letter-spacing:-0.04em}
+    .proof-label{font-size:12px;color:rgba(255,255,255,0.35);font-weight:500}
+    .proof-divider{width:1px;height:36px;background:rgba(255,255,255,0.12)}
+    .hero-right{display:flex;justify-content:center;align-items:center;padding-bottom:60px}
+    .hero-canvas{position:relative;width:500px;height:500px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .hc-glow{position:absolute;border-radius:50%;pointer-events:none}
+    .hc-glow-a{width:340px;height:340px;background:radial-gradient(circle,rgba(61,217,232,0.14) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+    .hc-glow-b{width:180px;height:180px;background:radial-gradient(circle,rgba(139,92,246,0.16) 0%,transparent 70%);top:5%;right:5%;animation:floatOrb 7s ease-in-out infinite}
+    .hc-glow-c{width:140px;height:140px;background:radial-gradient(circle,rgba(74,222,128,0.12) 0%,transparent 70%);bottom:8%;left:5%;animation:floatOrb 9s ease-in-out infinite reverse}
+    @keyframes floatOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.1)}}
+    .hc-orbit{position:relative;width:480px;height:480px;flex-shrink:0}
+    .hc-svg{width:100%;height:100%}.hc-ring-track{fill:none}.hc-ring-fill{fill:none;stroke-linecap:round}
+    .hc-center-content{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+    .hc-logo{width:90px;height:auto;margin-bottom:8px;object-fit:contain}
+    .hc-sd-label{font-size:10px;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+    .hc-sd-num{font-size:54px;font-weight:850;color:#fff;letter-spacing:-0.06em;line-height:1}
+    .hc-sd-max{font-size:14px;color:rgba(255,255,255,0.3);margin-top:2px}
+    .hc-sd-badge{margin-top:10px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.28);color:#4ADE80;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px}
+    .hc-metric{position:absolute;background:rgba(8,14,18,0.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:11px 16px;display:flex;flex-direction:column;gap:3px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+    .hc-m1{top:4%;right:6%;animation:floatCard 5s ease-in-out infinite}
+    .hc-m2{top:44%;right:-2%;animation:floatCard 6s ease-in-out infinite 1.2s}
+    .hc-m3{bottom:8%;left:4%;animation:floatCard 5.5s ease-in-out infinite 0.6s}
+    @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    .hcm-label{font-size:10px;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:0.07em;font-weight:600;white-space:nowrap}
+    .hcm-val{font-size:14px;font-weight:750;white-space:nowrap}.hcm-stat{font-size:10px;color:rgba(255,255,255,0.3);white-space:nowrap}
+    .hc-legend{position:absolute;bottom:0;left:50%;transform:translateX(-50%);display:flex;gap:16px;background:rgba(8,14,18,0.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 20px}
+    .hc-leg{display:flex;align-items:center;gap:6px;font-size:10.5px;color:rgba(255,255,255,0.45);white-space:nowrap}
+    .hc-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .trust-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 0}
+    .trust-inner{display:flex;align-items:center;justify-content:center;gap:52px;flex-wrap:wrap}
+    .trust-item{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-3);font-weight:500}
+    .trust-ico{color:var(--teal);flex-shrink:0}
+    .process-intro{text-align:center;max-width:600px;margin:0 auto 90px}
+    .process-intro h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:16px}
+    .process-intro p{font-size:17px;color:var(--ink-2);line-height:1.75;max-width:640px;margin:0 auto}
+    .cycle-row{position:relative;margin-top:48px;height:220px;display:flex;align-items:center}
+    .cycle-pills-track{width:100%;overflow:hidden}
+    .cycle-pills-inner{display:flex;align-items:center;gap:12px;width:max-content;animation:pillsScroll 28s linear infinite}
+    @keyframes pillsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .cpill{flex-shrink:0;padding:10px 22px;border-radius:999px;border:1.5px solid #D8EBED;background:#fff;font-size:14px;font-weight:500;color:#2C5F64;white-space:nowrap;box-shadow:0 2px 8px rgba(11,82,90,0.06)}
+    .cycle-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:220px;height:220px;background:transparent;border-radius:50%;box-shadow:0 8px 48px rgba(11,82,90,0.10);display:flex;align-items:center;justify-content:center;z-index:2}
+    .cycle-svg{width:100%;height:100%}
+    .cycle-fade-left,.cycle-fade-right{position:absolute;top:0;height:100%;width:160px;z-index:1;pointer-events:none}
+    .cycle-fade-left{left:0;background:linear-gradient(to right,#fff 40%,transparent)}
+    .cycle-fade-right{right:0;background:linear-gradient(to left,#fff 40%,transparent)}
+    .process-step{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:80px 0;border-top:1px solid var(--border)}
+    .process-step:first-child{border-top:none}
+    .process-step.reverse .step-text{order:2}.process-step.reverse .step-visual{order:1}
+    .step-num-label{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+    .step-num-circle{width:36px;height:36px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+    .step-num-label span{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal-light)}
+    .step-text h3{font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-0.03em;margin-bottom:14px;line-height:1.2}
+    .step-text p{font-size:15px;color:var(--ink-2);line-height:1.8;margin-bottom:24px}
+    .step-detail{display:flex;flex-direction:column;gap:12px}
+    .step-detail-item{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2);line-height:1.6}
+    .step-detail-item svg{flex-shrink:0;color:var(--teal-light)}
+    .step-visual{position:relative}
+    .problem-intro{text-align:center;max-width:800px;margin:0 auto 60px}
+    .problem-intro h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:16px;white-space:nowrap}
+    .problem-intro p{font-size:17px;color:var(--ink-2);line-height:1.75;max-width:640px;margin:0 auto}
+    .cmp-rows{max-width:920px;margin:0 auto;display:flex;flex-direction:column}
+    .cmp-row{display:grid;grid-template-columns:1fr 48px 1fr;align-items:center;gap:0;padding:32px 0;border-top:1px solid var(--border)}
+    .cmp-rows .cmp-row:first-child{border-top:none}
+    .cmp-problem{display:flex;align-items:flex-start;gap:20px;padding-right:32px}
+    .cmp-problem-num{flex-shrink:0;font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:0.05em;padding-top:3px}
+    .cmp-problem-title{font-size:16px;font-weight:600;color:var(--ink-2);margin:0 0 5px;line-height:1.4}
+    .cmp-problem-sub{font-size:13px;color:var(--ink-3);margin:0;line-height:1.6}
+    .cmp-arrow{display:flex;align-items:center;justify-content:center;color:var(--teal-light);opacity:0.5}
+    .cmp-solution{padding-left:32px;border-left:2px solid rgba(11,82,90,0.12)}
+    .cmp-solution-title{font-size:17px;font-weight:700;color:var(--teal);margin:0 0 5px;line-height:1.4}
+    .cmp-solution-sub{font-size:13px;color:var(--ink-2);margin:0;line-height:1.6}
+    @media(max-width:680px){.cmp-row{grid-template-columns:1fr;gap:12px}.cmp-arrow{justify-content:flex-start;transform:rotate(90deg)}.cmp-solution{padding-left:0;border-left:none;border-top:2px solid rgba(11,82,90,0.12);padding-top:12px}}
+    .siphox-check{align-items:center!important}
+    .siphox-check-icon{width:20px;height:20px;border-radius:50%;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .step4-img-wrap{border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.13);aspect-ratio:4/3}
+    .step4-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:left center;display:block}
+    .step-subhead{font-size:clamp(18px,2.2vw,24px);font-weight:700;letter-spacing:-0.03em;color:var(--teal-light);margin-bottom:18px;margin-top:2px}
+    .step-detail-item strong{color:var(--ink);font-weight:700}
+    .app-section{background:var(--dark-bg);padding:120px 0;overflow:hidden;position:relative}
+    .app-bg-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 20% 50%,rgba(61,217,232,0.07) 0%,transparent 70%),radial-gradient(ellipse 50% 50% at 80% 50%,rgba(139,92,246,0.06) 0%,transparent 70%)}
+    .app-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative}
+    .app-text h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;color:#fff;margin-bottom:18px;line-height:1.15}
+    .app-text p{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.8;margin-bottom:36px}
+    .app-features{display:flex;flex-direction:column;gap:22px;margin-bottom:44px}
+    .app-feature{display:flex;align-items:flex-start;gap:16px}
+    .app-feature-icon{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--cyan)}
+    .app-feature-text h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px}
+    .app-feature-text p{font-size:13.5px;color:rgba(255,255,255,0.45);line-height:1.6;margin:0}
+    .app-mockup-wrap{position:relative;width:520px;height:580px;display:flex;align-items:center;justify-content:center}
+    .app-bubble{position:absolute;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.12);border-radius:999px;padding:9px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.8);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.3);pointer-events:none;z-index:3}
+    .app-bubble-1{top:80px;left:20px;animation:floatA 4.2s ease-in-out infinite}
+    .app-bubble-2{top:240px;left:10px;animation:floatB 3.8s ease-in-out infinite}
+    .app-bubble-3{top:130px;right:20px;animation:floatC 4.6s ease-in-out infinite}
+    .app-bubble-4{bottom:18px;left:50%;transform:translateX(-50%);animation:floatA 5s ease-in-out infinite 0.4s;border-color:rgba(61,217,232,0.25);color:var(--cyan)}
+    @keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    @keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+    @keyframes floatC{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    .app-phone-3d{width:240px;height:490px;background:#0D1518;border-radius:42px;border:7px solid #1C2830;box-shadow:0 0 0 1px rgba(255,255,255,0.07),0 40px 80px rgba(0,0,0,0.7),0 0 60px rgba(61,217,232,0.06);overflow:hidden;position:relative;transform:perspective(1000px) rotateY(-8deg) rotateX(2deg);transition:transform 0.4s ease}
+    .app-phone-3d:hover{transform:perspective(1000px) rotateY(-3deg) rotateX(1deg)}
+    .app-main-screen{width:100%;height:100%;background:#080E10;display:flex;flex-direction:column;overflow:hidden}
+    .ams-header{padding:22px 14px 10px;display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
+    .ams-greeting{font-size:9px;color:rgba(255,255,255,0.35);font-weight:500;margin-bottom:2px}
+    .ams-title{font-size:16px;font-weight:800;color:#fff;letter-spacing:-0.03em}
+    .ams-pill{background:rgba(61,217,232,0.12);color:var(--cyan);font-size:8px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid rgba(61,217,232,0.2);white-space:nowrap;margin-top:4px}
+    .ams-score-ring{display:flex;flex-direction:column;align-items:center;padding:6px 0 10px;flex-shrink:0}
+    .ring-container{position:relative;width:80px;height:80px;margin-bottom:5px}
+    .ring-svg{width:80px;height:80px;transform:rotate(-90deg)}
+    .ring-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:5}
+    .ring-fill{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:201;stroke-dashoffset:26}
+    .ring-fill-grad{stroke:url(#ringGrad)}
+    .ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .ring-score{font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.04em;line-height:1}
+    .ring-max{font-size:9px;color:rgba(255,255,255,0.3)}.ring-label{font-size:9px;color:rgba(255,255,255,0.35)}
+    .ams-chart-wrap{margin:0 12px 8px;background:rgba(255,255,255,0.03);border-radius:10px;padding:8px 10px;border:1px solid rgba(255,255,255,0.05);flex-shrink:0}
+    .ams-chart-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+    .ams-chart-title{font-size:8px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.06em}
+    .ams-chart-period{font-size:7px;color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px}
+    .ams-chart-legend{display:flex;gap:8px;margin-bottom:6px}
+    .ams-chart-legend span{display:flex;align-items:center;gap:3px;font-size:7px;color:rgba(255,255,255,0.35)}
+    .ams-chart-legend i{width:10px;height:2px;border-radius:1px;display:inline-block}
+    .ams-sparkline{width:100%;display:block}
+    .ams-metrics{padding:0 12px;display:flex;flex-direction:column;gap:5px}
+    .ams-metric{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border-radius:9px;padding:7px 9px;border:1px solid rgba(255,255,255,0.05)}
+    .mm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}.mm-name{font-size:9px;color:rgba(255,255,255,0.55);flex:1}.mm-val{font-size:9px;font-weight:700}
+    .ev-header{text-align:center;max-width:640px;margin:0 auto 72px}
+    .ev-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:14px}
+    .ev-header p{font-size:17px;line-height:1.75;max-width:640px;margin:0 auto}
+    .ev-stats{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:0;align-items:start;margin-bottom:56px}
+    .ev-stat{padding:0 32px;text-align:center}.ev-stat:first-child{padding-left:0}.ev-stat:last-child{padding-right:0}
+    .ev-num{font-size:clamp(36px,5vw,64px);font-weight:800;letter-spacing:-0.04em;line-height:1;background:linear-gradient(135deg,#3DD9E8,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+    .ev-unit{font-size:0.45em;font-weight:700;vertical-align:super}
+    .ev-label{font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:0.01em}
+    .ev-sub{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6}
+    .ev-divider{width:1px;background:rgba(255,255,255,0.08);align-self:stretch;margin:8px 0}
+    .ev-conclusion{max-width:760px;margin:0 auto}
+    .ev-conclusion-inner{display:flex;gap:16px;align-items:flex-start;background:rgba(61,217,232,0.06);border:1px solid rgba(61,217,232,0.15);border-radius:16px;padding:24px 28px;margin-bottom:20px}
+    .ev-conclusion-inner svg{flex-shrink:0;margin-top:2px}
+    .ev-conclusion-inner p{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.75;margin:0}
+    .ev-source{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.04em}
+    @media(max-width:860px){.ev-stats{grid-template-columns:1fr 1fr;gap:40px}.ev-divider{display:none}.ev-stat{padding:0}}
+    .sp-header{text-align:center;margin-bottom:56px}
+    .sp-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:16px}
+    .sp-sub{font-size:17px;color:var(--ink-2);max-width:640px;margin:0 auto;line-height:1.75}
+    .sp-card{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#fff;border:1.5px solid var(--border);border-radius:28px;overflow:hidden;box-shadow:0 16px 56px rgba(0,0,0,0.08);max-width:1000px;margin:0 auto}
+    .sp-left{padding:48px 44px;display:flex;flex-direction:column;gap:0}
+    .sp-right{background:var(--surface);border-left:1.5px solid var(--border);padding:40px 36px;display:flex;flex-direction:column;gap:24px}
+    .sp-price-wrap{margin-bottom:28px}
+    .sp-price{display:flex;align-items:flex-end;gap:4px;margin-bottom:6px}
+    .sp-cur{font-size:24px;font-weight:700;color:var(--ink);padding-bottom:10px}
+    .sp-val{font-size:80px;font-weight:900;letter-spacing:-0.05em;line-height:1;color:var(--ink)}
+    .sp-per{font-size:18px;font-weight:500;color:var(--ink-3);padding-bottom:10px}
+    .sp-daily{font-size:15px;font-weight:600;color:var(--teal-light);margin-bottom:6px}
+    .sp-billing{font-size:12.5px;color:var(--ink-3)}
+    .sp-divider{height:1px;background:var(--border);margin:24px 0}
+    .sp-section-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+    .sp-features{list-style:none;display:flex;flex-direction:column;gap:16px;margin-bottom:32px}
+    .sp-features li{display:flex;align-items:flex-start;gap:12px}
+    .sp-check{width:20px;height:20px;border-radius:50%;background:rgba(11,82,90,0.1);color:var(--teal-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .sp-features li div{display:flex;flex-direction:column;gap:2px}
+    .sp-features li strong{font-size:14px;font-weight:600;color:var(--ink)}
+    .sp-features li span{font-size:12.5px;color:var(--ink-3);line-height:1.5}
+    .sp-cta{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--teal);color:#fff;text-decoration:none;font-size:16px;font-weight:700;padding:16px 28px;border-radius:14px;transition:opacity 0.2s,transform 0.15s;box-shadow:0 8px 24px rgba(11,82,90,0.3)}
+    .sp-cta:hover{opacity:0.9;transform:translateY(-2px)}
+    .sp-guarantee{text-align:center;font-size:12px;color:var(--ink-3);margin-top:12px}
+    .sp-bio-title{font-size:15px;font-weight:700;color:var(--ink);display:block;margin-bottom:4px}
+    .sp-bio-sub{font-size:12.5px;color:var(--ink-3)}
+    .sp-bio-groups{display:flex;flex-direction:column;gap:16px}
+    .sp-bio-cat{font-size:10.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal-light);margin-bottom:7px}
+    .sp-bio-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .sp-bio-chips span{font-size:12px;font-weight:500;color:var(--ink-2);background:#fff;border:1px solid var(--border);border-radius:999px;padding:4px 11px}
+    .sp-bio-note{font-size:12px;color:var(--ink-3);line-height:1.5;border-top:1px solid var(--border);padding-top:16px}
+    @media(max-width:860px){.sp-card{grid-template-columns:1fr}.sp-right{border-left:none;border-top:1.5px solid var(--border)}.sp-left{padding:36px 28px}.sp-val{font-size:64px}}
+    .modules-header{text-align:center;margin-bottom:60px}
+    .modules-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:14px}
+    .modules-header p{font-size:17px;color:var(--ink-2);max-width:640px;margin:0 auto;line-height:1.75}
+    .modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .module-card{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:10px;position:relative;transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s,background 0.2s;cursor:pointer}
+    .module-card:hover{transform:translateY(-3px);background:#fff;box-shadow:0 8px 32px rgba(0,0,0,0.08);border-color:rgba(11,82,90,0.25)}
+    .mod-icon{width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--teal-light)}
+    .mod-icon svg{width:22px;height:22px}
+    .mod-name{font-size:15px;font-weight:750;color:var(--ink)}
+    .mod-desc{font-size:13px;color:var(--ink-3);line-height:1.65;flex:1}
+    .mod-footer{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+    .mod-price{display:none}
+    .mod-add{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--teal-light);text-decoration:none;cursor:pointer}
+    .mod-add::after{content:'';position:absolute;inset:0;border-radius:20px}
+    .cta-section{padding:130px 0;text-align:center;position:relative;overflow:hidden;background:linear-gradient(140deg,#0A1415 0%,#051520 50%,#0D0820 100%)}
+    .cta-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 110%,rgba(61,217,232,0.14) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 20% 20%,rgba(139,92,246,0.1) 0%,transparent 60%)}
+    .cta-section h2{font-size:clamp(32px,5.5vw,68px);font-weight:850;letter-spacing:-0.045em;color:#fff;max-width:780px;margin:0 auto 18px;line-height:1.1;position:relative}
+    .cta-section p{font-size:18px;color:rgba(255,255,255,0.5);max-width:460px;margin:0 auto 44px;line-height:1.75;position:relative}
+    .cta-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;position:relative}
+    .cta-trust{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:36px;position:relative}
+    .cta-trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.5);font-weight:500;white-space:nowrap}
+    .cta-trust-item svg{width:15px;height:15px;color:var(--cyan);flex-shrink:0}
+    .cta-trust-sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.2)}
+    @media(max-width:700px){.cta-trust{flex-direction:column;gap:12px}.cta-trust-sep{display:none}}
+    .layer-dark .modules-header h2{color:#fff}.layer-dark .modules-header p{color:rgba(255,255,255,0.45)}.layer-dark .modules-header .label{color:var(--cyan);border-color:rgba(61,217,232,0.25)}
+    .layer-dark .module-card{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08)}
+    @keyframes glowPulse{0%,100%{box-shadow:0 0 0 1.5px rgba(61,217,232,0.2),0 0 18px rgba(61,217,232,0.12),0 8px 32px rgba(61,217,232,0.10)}50%{box-shadow:0 0 0 1.5px rgba(61,217,232,0.35),0 0 32px rgba(61,217,232,0.22),0 8px 40px rgba(61,217,232,0.16)}}
+    .layer-dark .module-card--highlight{border:2px solid rgba(61,217,232,0.55);animation:glowPulse 2.8s ease-in-out infinite}
+    .layer-dark .module-card--highlight:hover{border-color:rgba(61,217,232,0.85);animation:none;box-shadow:0 0 0 2px rgba(61,217,232,0.25),0 0 40px rgba(61,217,232,0.28),0 12px 40px rgba(61,217,232,0.18);transform:translateY(-4px)}
+    .layer-dark .module-card--highlight .mod-icon{background:rgba(61,217,232,0.12);border-color:rgba(61,217,232,0.25)}
+    .layer-dark .module-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(61,217,232,0.25);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+    .layer-dark .mod-icon{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);color:var(--cyan)}
+    .layer-dark .mod-name{color:#fff}.layer-dark .mod-desc{color:rgba(255,255,255,0.4)}.layer-dark .mod-add{color:var(--cyan)}
+    .team-header{text-align:center;margin-bottom:56px}
+    .team-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;color:var(--ink);margin-bottom:14px}
+    .team-sub{font-size:17px;color:var(--ink-2);max-width:640px;margin:0 auto;line-height:1.75}
+    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:960px;margin:0 auto}
+    .team-card{background:var(--surface);border:1.5px solid var(--border);border-radius:24px;overflow:hidden;transition:transform 0.25s,box-shadow 0.25s}
+    .team-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(11,82,90,0.10)}
+    .team-photo{width:100%;aspect-ratio:1/1;background:linear-gradient(145deg,#EEF9F9,#E0F2F4);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .team-photo img{width:100%;height:100%;object-fit:cover;display:block}
+    .team-photo-placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:rgba(11,82,90,0.25)}
+    .team-info{padding:22px 24px}
+    .team-name{font-size:18px;font-weight:800;letter-spacing:-0.03em;color:var(--ink);margin-bottom:10px}
+    .team-roles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .team-badge{font-size:11px;font-weight:700;letter-spacing:0.05em;padding:4px 11px;border-radius:999px;text-transform:uppercase}
+    .team-badge.founder{background:linear-gradient(135deg,rgba(61,217,232,0.12),rgba(139,92,246,0.12));color:var(--teal-light);border:1px solid rgba(61,217,232,0.2)}
+    .team-badge.nutri{background:rgba(74,222,128,0.10);color:#16A34A;border:1px solid rgba(74,222,128,0.2)}
+    .team-badge.medico{background:rgba(11,82,90,0.08);color:var(--teal-light);border:1px solid rgba(11,82,90,0.15)}
+    .team-badge.ux{background:rgba(139,92,246,0.10);color:var(--violet);border:1px solid rgba(139,92,246,0.2)}
+    .team-desc{font-size:13.5px;color:var(--ink-3);line-height:1.7}
+    @media(max-width:860px){.team-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.team-grid{grid-template-columns:1fr;max-width:360px}}
+    .waitlist-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:16px 0}
+    .waitlist-text .label{color:var(--cyan);border-color:rgba(61,217,232,0.25)}
+    .waitlist-text h2{font-size:clamp(26px,3.5vw,44px);font-weight:800;letter-spacing:-0.04em;color:#fff;margin:14px 0 14px;line-height:1.15}
+    .waitlist-text p{font-size:16px;color:rgba(255,255,255,0.5);line-height:1.7}
+    .waitlist-fields{display:flex;gap:10px;margin-bottom:10px}
+    .waitlist-fields input{flex:1;padding:13px 16px;border-radius:12px;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);font-family:'Inter',sans-serif;font-size:14px;color:#fff;outline:none;transition:border-color 0.2s}
+    .waitlist-fields input::placeholder{color:rgba(255,255,255,0.3)}
+    .waitlist-fields input:focus{border-color:var(--cyan)}
+    .waitlist-fields button{display:flex;align-items:center;gap:8px;flex-shrink:0;padding:13px 22px;border-radius:12px;background:var(--teal);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;white-space:nowrap;transition:opacity 0.2s,transform 0.15s}
+    .waitlist-fields button:hover{opacity:0.88;transform:translateY(-1px)}
+    .waitlist-fields button:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+    .waitlist-error{font-size:12.5px;color:#FCA5A5;min-height:18px}
+    .waitlist-ok{display:flex;align-items:center;gap:6px;font-size:13px;color:#4ADE80}
+    .waitlist-note{font-size:11.5px;color:rgba(255,255,255,0.25);margin-top:10px}
+    .waitlist-note a{color:rgba(255,255,255,0.4)}
+    .waitlist-more{display:inline-block;margin-top:20px;font-size:13px;color:rgba(255,255,255,0.4);text-decoration:none;grid-column:1/-1;transition:color 0.2s}
+    .waitlist-more:hover{color:rgba(255,255,255,0.75)}
+    @media(max-width:760px){.waitlist-wrap{grid-template-columns:1fr;gap:28px}.waitlist-fields{flex-direction:column}.waitlist-fields button{width:100%;justify-content:center}}
+    .dark-continuum{background:linear-gradient(to bottom,#071018 0%,#060F16 30%,#050D14 60%,#060F16 100%)}
+    .dark-continuum .app-section{background:transparent}.dark-continuum #evidencia{background:transparent!important}.dark-continuum .glp-section{background:transparent}.dark-continuum #atlas{background:transparent!important}.dark-continuum #modulos{background:transparent!important}
+    .glp-section{background:var(--dark-bg);padding:120px 0;position:relative;overflow:hidden}
+    .glp-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 60% at 0% 50%,rgba(61,217,232,0.05) 0%,transparent 65%),radial-gradient(ellipse 45% 50% at 100% 20%,rgba(139,92,246,0.05) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 60% 90%,rgba(74,222,128,0.04) 0%,transparent 55%)}
+    .glp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(61,217,232,0.08);border:1px solid rgba(61,217,232,0.22);border-radius:999px;padding:6px 16px;margin-bottom:28px;font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan)}
+    .glp-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:blink 2.2s infinite}
+    .glp-intro-row{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-bottom:48px}
+    .glp-intro-row>p{font-size:15.5px;color:rgba(255,255,255,0.48);line-height:1.8;margin:0}
+    .glp-intro-row .glp-meds{margin-bottom:0}
+    .glp-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+    .glp-left h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;color:#fff;margin-bottom:18px}
+    .glp-left>p{font-size:16px;color:rgba(255,255,255,0.48);line-height:1.8;margin-bottom:28px}
+    .glp-meds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+    .glp-med{font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.04);letter-spacing:0.01em;transition:all 0.2s}
+    .glp-med:hover{color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.2)}
+    .glp-concerns{display:flex;flex-direction:column;gap:18px;margin-bottom:40px}
+    .glp-concern{display:flex;align-items:flex-start;gap:16px;padding:16px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;transition:border-color 0.2s,background 0.2s}
+    .glp-concern:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.12)}
+    .glp-concern-icon{width:38px;height:38px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .glp-concern-icon svg{width:18px;height:18px}
+    .glp-concern-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
+    .glp-concern-sub{font-size:12.5px;color:rgba(255,255,255,0.38);line-height:1.55}
+    .glp-panel{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.09);border-radius:24px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);position:sticky;top:100px}
+    .glp-panel-hdr{padding:20px 22px;background:linear-gradient(135deg,rgba(74,222,128,0.08),rgba(61,217,232,0.05));border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between}
+    .glp-panel-title{font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.02em}
+    .glp-panel-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(74,222,128,0.12);color:#4ADE80;border:1px solid rgba(74,222,128,0.25)}
+    .glp-panel-body{padding:18px;display:flex;flex-direction:column;gap:10px}
+    .glp-bio-row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:11px 13px}
+    .glp-bio-icon{font-size:15px;flex-shrink:0;width:24px;text-align:center}
+    .glp-bio-info{flex:1;min-width:0}
+    .glp-bio-name{font-size:12px;color:rgba(255,255,255,0.55);font-weight:500;margin-bottom:1px}
+    .glp-bio-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;flex-shrink:0}
+    .glp-bio-tag.ok{background:rgba(74,222,128,0.1);color:#4ADE80;border:1px solid rgba(74,222,128,0.2)}
+    .glp-bio-tag.warn{background:rgba(251,191,36,0.1);color:#FBBF24;border:1px solid rgba(251,191,36,0.2)}
+    .glp-bio-tag.low{background:rgba(248,113,113,0.08);color:#F87171;border:1px solid rgba(248,113,113,0.2)}
+    .glp-bio-bar{width:52px;height:4px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;flex-shrink:0}
+    .glp-bio-bar-fill{height:100%;border-radius:999px}
+    .glp-cta-strip{margin-top:20px;padding:16px 20px;background:rgba(61,217,232,0.05);border:1px solid rgba(61,217,232,0.15);border-radius:14px;display:flex;align-items:center;gap:14px}
+    .glp-cta-strip p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;flex:1;margin:0}
+    .glp-cta-strip p strong{color:#fff}
+    .glp-cta-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:10px 18px;border-radius:999px;background:var(--cyan);color:#03130F;text-decoration:none;transition:opacity 0.2s,transform 0.15s}
+    .glp-cta-btn:hover{opacity:0.88;transform:translateY(-1px)}
+    @media(max-width:960px){.glp-intro-row{grid-template-columns:1fr;gap:28px}.glp-inner{grid-template-columns:1fr;gap:48px}.glp-panel{position:static}}
+    .tst-header{text-align:center;margin-bottom:60px}
+    .tst-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:14px;color:#fff}
+    .tst-header p{font-size:17px;color:rgba(255,255,255,0.5);max-width:640px;margin:0 auto;line-height:1.75}
+    .tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .tst-card{background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.09);border-radius:20px;padding:30px;display:flex;flex-direction:column;transition:transform 0.2s,border-color 0.2s,background 0.2s}
+    .tst-card:hover{transform:translateY(-3px);border-color:rgba(61,217,232,0.25);background:rgba(255,255,255,0.05)}
+    .tst-card.feature{grid-column:span 3;flex-direction:row;gap:40px;align-items:center;background:linear-gradient(135deg,rgba(61,217,232,0.07),rgba(139,92,246,0.05));border-color:rgba(61,217,232,0.2);padding:40px}
+    .tst-quote{font-size:14.5px;line-height:1.7;color:rgba(255,255,255,0.78);margin-bottom:22px;flex:1}
+    .tst-card.feature .tst-quote{font-size:clamp(18px,2.2vw,24px);font-weight:600;letter-spacing:-0.02em;color:#fff;line-height:1.5;margin-bottom:0}
+    .tst-feature-side{flex:1}
+    .tst-stars{display:flex;gap:3px;margin-bottom:16px}
+    .tst-stars svg{width:15px;height:15px;color:#FBBF24}
+    .tst-person{display:flex;align-items:center;gap:12px}
+    .tst-avatar{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff}
+    .tst-name{font-size:14px;font-weight:700;color:#fff;line-height:1.3}
+    .tst-meta{font-size:12px;color:rgba(255,255,255,0.4)}
+    .tst-result{display:inline-flex;align-items:center;gap:6px;margin-top:18px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);color:#4ADE80;font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;align-self:flex-start}
+    .tst-result svg{width:13px;height:13px}
+    .layer-white .tst-header h2{color:var(--ink)}.layer-white .tst-header p{color:var(--ink-2)}
+    .layer-white .tst-card{background:#fff;border-color:var(--border);box-shadow:0 4px 24px rgba(11,82,90,0.06)}
+    .layer-white .tst-card:hover{border-color:rgba(11,82,90,0.2);background:#FAFCFC}
+    .layer-white .tst-card.feature{background:linear-gradient(135deg,#F0F9FA,#EEF4FF);border-color:rgba(11,82,90,0.12)}
+    .layer-white .tst-quote{color:var(--ink-2)}.layer-white .tst-card.feature .tst-quote{color:var(--ink)}.layer-white .tst-name{color:var(--ink)}.layer-white .tst-meta{color:var(--ink-3)}
+    .faq-wrap{max-width:780px;margin:0 auto}
+    .faq-header{text-align:center;margin-bottom:56px}
+    .faq-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:14px}
+    .faq-header p{font-size:17px;color:var(--ink-2);max-width:640px;margin:0 auto;line-height:1.75}
+    .faq-item{border-bottom:1px solid var(--border)}
+    .faq-q{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px 4px;text-align:left;font-family:inherit;font-size:clamp(16px,2vw,19px);font-weight:650;color:var(--ink);letter-spacing:-0.02em;transition:color 0.2s}
+    .faq-q:hover{color:var(--teal-light)}
+    .faq-icon{flex-shrink:0;width:22px;height:22px;position:relative;transition:transform 0.3s}
+    .faq-icon::before,.faq-icon::after{content:'';position:absolute;background:var(--teal-light);border-radius:2px;transition:opacity 0.3s,background 0.2s}
+    .faq-icon::before{top:10px;left:3px;right:3px;height:2px}
+    .faq-icon::after{left:10px;top:3px;bottom:3px;width:2px}
+    .faq-item.open .faq-icon::after{opacity:0}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.35s ease}
+    .faq-a-inner{padding:0 4px 24px;font-size:15px;color:var(--ink-2);line-height:1.75;max-width:680px}
+    .faq-foot{text-align:center;margin-top:48px;font-size:15px;color:var(--ink-3)}
+    .faq-foot a{color:var(--teal-light);font-weight:600;text-decoration:none}
+    .faq-foot a:hover{text-decoration:underline}
+    @media(max-width:760px){.tst-grid{grid-template-columns:1fr}.tst-card.feature{grid-column:span 1;flex-direction:column;gap:24px;align-items:flex-start}}
+    .footer{background:#060A0C;padding:64px 0 36px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
+    .footer-brand-text{font-size:14px;color:rgba(255,255,255,0.3);margin-top:14px;max-width:240px;line-height:1.7}
+    .footer-col h5{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:18px}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+    .footer-col a{text-decoration:none;font-size:14px;color:rgba(255,255,255,0.5);transition:color 0.2s}
+    .footer-col a:hover{color:rgba(255,255,255,0.85)}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:28px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:rgba(255,255,255,0.25)}
+    .footer-bottom-links{display:flex;gap:20px}
+    .footer-bottom-links a{color:rgba(255,255,255,0.3);text-decoration:none}
+    .footer-bottom-links a:hover{color:rgba(255,255,255,0.6)}
+    @media(max-width:960px){.hero-inner{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding-bottom:60px}.process-step{grid-template-columns:1fr;gap:40px}.process-step.reverse .step-text{order:1}.process-step.reverse .step-visual{order:2}.app-inner{grid-template-columns:1fr}.modules-grid{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}.nav-links{display:none}.nav-mob{display:flex}}
+    @media(max-width:600px){.section{padding:72px 0}.modules-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr;gap:32px}.trust-inner{gap:24px;flex-direction:column;align-items:flex-start;padding:0 28px}.hero-proof{flex-direction:column;align-items:flex-start;gap:14px}.proof-divider{display:none}}
+    .mob-menu{display:none;position:fixed;top:70px;left:0;right:0;z-index:99;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-direction:column;gap:4px;padding:16px 20px}
+    .mob-menu.open{display:flex}
+    .mob-menu a{text-decoration:none;color:var(--ink);font-size:16px;font-weight:500;padding:12px 14px;border-radius:10px}
+    .step-layer{width:100%;overflow:hidden;padding:120px 0}
+    .layer-white{background:#FFFFFF}.layer-off{background:#F1F5F6}
+    .layer-dark{background:linear-gradient(160deg,#030D10 0%,#060F16 55%,#04080E 100%)}
+    .process-step{border-top:none!important;padding:0}
+    .process-step h3{font-size:clamp(36px,5.5vw,68px);letter-spacing:-0.045em;line-height:1.08}
+    .layer-dark .label{color:rgba(61,217,232,0.55)}.layer-dark .step-num-label span{color:rgba(255,255,255,0.45)}.layer-dark .step-num-circle{background:rgba(61,217,232,0.15);color:var(--cyan)}.layer-dark h3{color:#fff}.layer-dark .step-text p{color:rgba(255,255,255,0.48)}.layer-dark .step-detail-item{color:rgba(255,255,255,0.48)}.layer-dark .step-detail-item svg{color:var(--cyan)}.layer-dark .step-detail-item strong{color:rgba(255,255,255,0.9)}.layer-dark .step-subhead{color:rgba(61,217,232,0.85)}.layer-dark .step-atlas-top h3{color:#fff}.layer-dark .step-atlas-right p{color:rgba(255,255,255,0.45)}.layer-dark .step-atlas-right .step-detail-item{color:rgba(255,255,255,0.38)}.layer-dark .process-intro h2{color:#fff}.layer-dark .process-intro p{color:rgba(255,255,255,0.45)}
+    .section.section-surface{background:#F1F5F6}.section{padding:120px 0}
+    .hero h1{font-size:clamp(34px,4.6vw,60px);letter-spacing:-0.045em;white-space:nowrap}
+    .process-intro h2,.problem-intro h2,.ev-header h2,.sp-header h2,.plans-header h2,.modules-header h2,.addons-header h2,.team-header h2,.tst-header h2,.faq-header h2,.app-text h2,.why-left h2{font-size:clamp(30px,4vw,54px);line-height:1.15;letter-spacing:-0.04em}
+    .cta-section h2{font-size:clamp(40px,7vw,84px)}
+    .process-step.step-atlas{display:block}
+    .step-atlas-top{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-bottom:32px}
+    .step-atlas-top h3{font-size:clamp(28px,3.8vw,56px);font-weight:800;letter-spacing:-0.04em;margin-bottom:16px;line-height:1.15}
+    .step-atlas-right p{font-size:15px;color:rgba(255,255,255,0.45);line-height:1.8;margin-bottom:20px}
+    .step-atlas-right .step-detail-item{color:rgba(255,255,255,0.38);font-size:13px}
+    .bioatlas{background:#07090B;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+    .ba-topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;gap:12px}
+    .ba-headline{font-size:12px;font-weight:700;color:#8B5CF6;letter-spacing:0.08em;text-transform:uppercase}
+    .ba-filters{display:flex;gap:5px;flex-wrap:wrap}
+    .ba-filter{padding:5px 13px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(139,92,246,0.25);background:transparent;color:rgba(139,92,246,0.7);transition:all 0.2s;white-space:nowrap}
+    .ba-filter:hover{color:#8B5CF6;border-color:rgba(139,92,246,0.5)}
+    .ba-filter.active{border-color:var(--cyan);color:var(--cyan);background:rgba(61,217,232,0.07)}
+    .ba-body{display:flex;min-height:340px}
+    .ba-grid{flex:1;display:grid;grid-template-columns:repeat(5,1fr);padding:14px;gap:3px;align-content:start}
+    .ba-item{padding:9px 10px;border-radius:8px;cursor:pointer;transition:opacity 0.2s,background 0.2s,border-color 0.2s;border:1px solid transparent}
+    .ba-item:hover:not(.dimmed){background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}
+    .ba-item.dimmed{opacity:0.1;pointer-events:none}
+    .ba-item.selected{background:rgba(61,217,232,0.07);border-color:rgba(61,217,232,0.28)}
+    .ba-item-row{display:flex;align-items:center;gap:6px}
+    .ba-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .ba-name{font-size:12px;font-weight:600;color:rgba(255,255,255,0.78);line-height:1.3}
+    .ba-catname{font-size:9.5px;color:rgba(255,255,255,0.2);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em}
+    .ba-detail{width:230px;flex-shrink:0;border-left:1px solid rgba(255,255,255,0.07);padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+    .ba-detail-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;opacity:0.3}
+    .ba-detail-empty svg{width:28px;height:28px;color:rgba(255,255,255,0.4)}
+    .ba-detail-empty span{font-size:12px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.5}
+    .ba-detail-cat{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+    .ba-detail-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.2}
+    .ba-detail-full{font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px}
+    .ba-detail-sep{height:1px;background:rgba(255,255,255,0.07)}
+    .ba-detail-range-label{font-size:9.5px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:4px}
+    .ba-detail-range{font-size:13px;font-weight:700}
+    .ba-detail-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.75}
+    @media(max-width:960px){.step-atlas-top{grid-template-columns:1fr;gap:28px}.ba-grid{grid-template-columns:repeat(3,1fr)}.ba-detail{display:none}}
+    @media(max-width:600px){.ba-grid{grid-template-columns:repeat(2,1fr)}}
+    .mob-menu a:hover{background:var(--surface)}
+    .cf-section{background:#fff;padding:110px 0}
+    .cf-head{text-align:center;max-width:560px;margin:0 auto 72px}
+    .cf-head .label{display:inline-block;margin-bottom:14px}
+    .cf-head h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;color:var(--ink);margin:0 0 14px}
+    .cf-head p{font-size:17px;color:var(--ink-2);line-height:1.75;max-width:640px;margin:0 auto}
+    .cf-steps{display:flex;flex-direction:column}
+    .cf-step{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:56px 0}
+    .cf-step+.cf-step{border-top:1px solid var(--border)}
+    .cf-step.cf-rev .cf-text{order:2}.cf-step.cf-rev .cf-visual{order:1}
+    .cf-numrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+    .cf-circle{width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .cf-tag{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal-light)}
+    .cf-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;background:#EEF9F9;color:var(--teal);border:1px solid rgba(11,82,90,0.15);margin-left:auto}
+    .cf-text h3{font-size:clamp(22px,2.8vw,33px);font-weight:800;letter-spacing:-0.03em;line-height:1.2;margin:0 0 14px;color:var(--ink)}
+    .cf-text p{font-size:15px;color:var(--ink-2);line-height:1.8;margin:0 0 22px}
+    .cf-checks{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
+    .cf-checks li{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2)}
+    .cf-chk{width:22px;height:22px;border-radius:50%;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .cf-visual{border-radius:24px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(145deg,#F0F9FA 0%,#E6F3F5 100%);border:1px solid rgba(11,82,90,0.1);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 48px rgba(11,82,90,0.08)}
+    .cf-visual img{width:100%;height:100%;object-fit:cover}
+    @media(max-width:860px){.cf-step{grid-template-columns:1fr;gap:32px}.cf-step.cf-rev .cf-text{order:0}.cf-step.cf-rev .cf-visual{order:0}}
+    .glp-left h2{font-size:clamp(30px,4vw,54px);line-height:1.15;letter-spacing:-0.04em}
+  </style>
+  <script src="../cookie-banner.js" defer></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="../images/logo.png" alt="Lyvoo" class="brand-logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#processo">How it works</a></li>
+      <li><a href="#atlas">What we test</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li class="lang-toggle"><a href="../index.html">PT</a><a href="#" class="lang-active">EN</a></li>
+      <li><a href="login.html" class="nav-login">Sign in</a></li>
+      <li><a href="register.html" class="nav-cta">Get started</a></li>
+    </ul>
+    <button class="nav-mob" id="mobBtn" aria-label="Menu">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a href="#processo" onclick="closeMob()">How it works</a>
+  <a href="#atlas" onclick="closeMob()">What we test</a>
+  <a href="contact.html" onclick="closeMob()">Contact</a>
+  <a href="login.html" onclick="closeMob()" style="text-align:center;color:rgba(0,0,0,0.65);">Sign in</a>
+  <a href="register.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;margin-top:6px">Get started</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1 class="fade fade-d1">
+        A new standard in<br/>
+        <span class="grad-text">Preventive health</span>
+      </h1>
+      <div class="hero-subhead fade fade-d2">
+        We turn lab results into action.<br/>From the comfort of your home.
+      </div>
+      <div class="hero-actions fade fade-d3">
+        <a href="register.html" class="btn btn-dark">
+          Get started
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 16 16"><path d="M3 13L13 3M13 13V3H3"/></svg>
+        </a>
+        <a href="#processo" class="btn btn-outline">See how it works</a>
+      </div>
+      <div class="hero-proof fade fade-d4">
+        <div class="proof-item">
+          <span class="proof-num grad-text">100%</span>
+          <span class="proof-label">From home</span>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <span class="proof-num grad-text">6 months</span>
+          <span class="proof-label">Real reassessment</span>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <span class="proof-num grad-text">40+</span>
+          <span class="proof-label">Biomarkers</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right fade fade-d3">
+      <div class="hero-canvas">
+        <div class="hc-glow hc-glow-a"></div>
+        <div class="hc-glow hc-glow-b"></div>
+        <div class="hc-glow hc-glow-c"></div>
+        <div class="hc-orbit">
+          <svg class="hc-svg" viewBox="0 0 480 480" fill="none">
+            <defs>
+              <linearGradient id="gCyan" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#06B6D4"/></linearGradient>
+              <linearGradient id="gViolet" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient>
+              <linearGradient id="gGreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34D399"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <linearGradient id="gCenter" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0B2A30"/><stop offset="100%" stop-color="#050D10"/></linearGradient>
+              <filter id="glow1"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="glow2"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <circle cx="240" cy="240" r="234" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+            <circle cx="240" cy="240" r="220" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <g stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-linecap="round">
+              <line x1="240" y1="10" x2="240" y2="22" transform="rotate(0 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(30 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(60 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="22" transform="rotate(90 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(120 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(150 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="22" transform="rotate(180 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(210 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(240 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="22" transform="rotate(270 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(300 240 240)"/>
+              <line x1="240" y1="10" x2="240" y2="18" transform="rotate(330 240 240)"/>
+            </g>
+            <circle cx="240" cy="240" r="198" class="hc-ring-track" stroke="rgba(61,217,232,0.08)" stroke-width="16"/>
+            <circle cx="240" cy="240" r="198" class="hc-ring-fill" stroke="url(#gCyan)" stroke-width="16" stroke-dasharray="882 1244" transform="rotate(-90 240 240)" filter="url(#glow1)"/>
+            <circle cx="240" cy="240" r="174" class="hc-ring-track" stroke="rgba(167,139,250,0.08)" stroke-width="16"/>
+            <circle cx="240" cy="240" r="174" class="hc-ring-fill" stroke="url(#gViolet)" stroke-width="16" stroke-dasharray="718 1093" transform="rotate(-90 240 240)" filter="url(#glow1)"/>
+            <circle cx="240" cy="240" r="150" class="hc-ring-track" stroke="rgba(52,211,153,0.08)" stroke-width="16"/>
+            <circle cx="240" cy="240" r="150" class="hc-ring-fill" stroke="url(#gGreen)" stroke-width="16" stroke-dasharray="830 942" transform="rotate(-90 240 240)" filter="url(#glow1)"/>
+            <circle cx="240" cy="240" r="120" fill="url(#gCenter)"/>
+            <circle cx="240" cy="240" r="120" stroke="rgba(61,217,232,0.1)" stroke-width="1"/>
+            <circle cx="240" cy="42" r="5" fill="#3DD9E8" filter="url(#glow2)" transform="rotate(129 240 240)"/>
+            <circle cx="240" cy="66" r="5" fill="#A78BFA" filter="url(#glow2)" transform="rotate(119 240 240)"/>
+            <circle cx="240" cy="90" r="5" fill="#34D399" filter="url(#glow2)" transform="rotate(158 240 240)"/>
+          </svg>
+          <div class="hc-center-content">
+            <div class="hc-sd-label">Health score</div>
+            <div class="hc-sd-num">87</div>
+            <div class="hc-sd-max">/ 100</div>
+            <div class="hc-sd-badge">+12 pts this month</div>
+          </div>
+        </div>
+        <div class="hc-metric hc-m1">
+          <div class="hcm-label">LDL Cholesterol</div>
+          <div class="hcm-val" style="color:#3DD9E8">2.8 mmol/L</div>
+          <div class="hcm-stat">↓ Improved 18%</div>
+        </div>
+        <div class="hc-metric hc-m2">
+          <div class="hcm-label">HbA1c</div>
+          <div class="hcm-val" style="color:#4ADE80">5.1% — optimal</div>
+          <div class="hcm-stat">No insulin resistance</div>
+        </div>
+        <div class="hc-metric hc-m3">
+          <div class="hcm-label">Vitamin D</div>
+          <div class="hcm-val" style="color:#A78BFA">52 ng/mL</div>
+          <div class="hcm-stat">↑ Within optimal range</div>
+        </div>
+        <div class="hc-legend">
+          <div class="hc-leg"><div class="hc-leg-dot" style="background:#3DD9E8"></div>Cardiovascular</div>
+          <div class="hc-leg"><div class="hc-leg-dot" style="background:#A78BFA"></div>Hormonal</div>
+          <div class="hc-leg"><div class="hc-leg-dot" style="background:#34D399"></div>Nutrition</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Certified laboratory testing
+      </div>
+      <div class="trust-item">
+        <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/><path d="M16 11l2 2 4-4"/></svg>
+        Medical supervision
+      </div>
+      <div class="trust-item">
+        <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8L2 8v12a2 2 0 0 0 2 2z"/><polyline points="14,2 14,8 20,8"/></svg>
+        Test kit delivered to your door
+      </div>
+      <div class="trust-item">
+        <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        Continuous monitoring app
+      </div>
+      <div class="trust-item">
+        <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/></svg>
+        Made in Portugal
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSO: Understand. Act. Measure. -->
+<section class="step-layer layer-white" id="processo" style="padding:56px 0 48px;overflow:hidden">
+  <div class="container">
+    <div class="process-intro fade">
+      <h2>Understand. Act. <span class="grad-text">Measure.</span></h2>
+      <p>A continuous cycle of prevention. <br>From biomarker collection to your action plan. <br>Through to the 6-month reassessment that proves your progress.</p>
+    </div>
+  </div>
+  <div class="cycle-row fade fade-d2">
+    <div class="cycle-pills-track">
+      <div class="cycle-pills-inner">
+        <span class="cpill">Energy</span><span class="cpill">Recovery</span><span class="cpill">Cholesterol</span><span class="cpill">Inflammation</span><span class="cpill">Cortisol</span><span class="cpill">Glucose</span><span class="cpill">Testosterone</span><span class="cpill">Microbiome</span><span class="cpill">Thyroid</span><span class="cpill">Iron</span><span class="cpill">Vitamin D</span><span class="cpill">Immunity</span><span class="cpill">Metabolism</span><span class="cpill">Sleep</span><span class="cpill">Hydration</span><span class="cpill">Gut health</span><span class="cpill">Longevity</span><span class="cpill">VO2max</span>
+        <span class="cpill">Energy</span><span class="cpill">Recovery</span><span class="cpill">Cholesterol</span><span class="cpill">Inflammation</span><span class="cpill">Cortisol</span><span class="cpill">Glucose</span><span class="cpill">Testosterone</span><span class="cpill">Microbiome</span><span class="cpill">Thyroid</span><span class="cpill">Iron</span><span class="cpill">Vitamin D</span><span class="cpill">Immunity</span><span class="cpill">Metabolism</span><span class="cpill">Sleep</span><span class="cpill">Hydration</span><span class="cpill">Gut health</span><span class="cpill">Longevity</span><span class="cpill">VO2max</span>
+      </div>
+    </div>
+    <div class="cycle-card">
+      <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" class="cycle-svg">
+        <defs>
+          <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0B525A"/><stop offset="50%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+          <filter id="arcGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <circle cx="130" cy="130" r="110" fill="none" stroke="#E8F2F4" stroke-width="1.5"/>
+        <circle cx="130" cy="130" r="110" fill="none" stroke="url(#arcGrad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="490 692" transform="rotate(-90 130 130)" filter="url(#arcGlow)">
+          <animateTransform attributeName="transform" type="rotate" from="-90 130 130" to="270 130 130" dur="9s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="130" cy="130" r="58" fill="none" stroke="#C8E4E8" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="cycle-fade-left"></div>
+    <div class="cycle-fade-right"></div>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section class="step-layer layer-off" id="problema">
+  <div class="container">
+    <div class="problem-intro fade">
+      <span class="label">The problem</span>
+      <h2>You have your results.<br/>But do you know what <span class="grad-text" style="white-space:nowrap">they mean?</span></h2>
+      <p>Most people have blood tests once a year, receive their results and wait months for a follow-up appointment.<br/>No context. No plan. No continuity.</p>
+    </div>
+    <div class="cmp-rows fade fade-d2">
+      <div class="cmp-row">
+        <div class="cmp-problem"><span class="cmp-problem-num">01</span><div><p class="cmp-problem-title">Wait 3 to 12+ months for an appointment</p><p class="cmp-problem-sub">Portugal's healthcare system is under pressure. Problems worsen while you wait.</p></div></div>
+        <div class="cmp-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+        <div class="cmp-solution"><p class="cmp-solution-title">Results in 7–10 days</p><p class="cmp-solution-sub">Kit delivered to your door. Collect at your convenience. Return by post. No queues, no travel.</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-problem"><span class="cmp-problem-num">02</span><div><p class="cmp-problem-title">Fragmented tests, no context</p><p class="cmp-problem-sub">Isolated, basic parameters that don't reveal the full picture of your health.</p></div></div>
+        <div class="cmp-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+        <div class="cmp-solution"><p class="cmp-solution-title">+40 biomarkers in a single panel</p><p class="cmp-solution-sub">Cardiovascular, hormonal, metabolic, nutritional<br/>and more. An integrated, complete view.</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-problem"><span class="cmp-problem-num">03</span><div><p class="cmp-problem-title">"Within normal range" with no explanation</p><p class="cmp-problem-sub">Being within normal range doesn't mean you're healthy. It means you're not in immediate danger.</p></div></div>
+        <div class="cmp-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+        <div class="cmp-solution"><p class="cmp-solution-title">Integrated medical interpretation</p><p class="cmp-solution-sub">Every result in context. Thinking long-term.<br/>You know exactly what it means and what to do.</p></div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-problem"><span class="cmp-problem-num">04</span><div><p class="cmp-problem-title">Every appointment starts from scratch</p><p class="cmp-problem-sub">No history, no continuity. Nobody tracks your progress over time.</p></div></div>
+        <div class="cmp-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+        <div class="cmp-solution"><p class="cmp-solution-title">Continuous reassessment. Measurable progress.</p><p class="cmp-solution-sub">6-month follow-up assessment. Your plan adapts to what has actually changed.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK CONTINUUM: Atlas + Modules -->
+<div class="dark-continuum">
+
+<!-- ATLAS -->
+<section class="step-layer layer-dark" id="atlas">
+  <div class="container">
+    <span class="label fade" style="color:var(--cyan);border-color:rgba(61,217,232,0.2);display:block;text-align:center">Biomarkers</span>
+    <div class="process-step step-atlas" style="padding-top:24px;border-top:none">
+      <div class="step-atlas-top fade">
+        <h3><span style="white-space:nowrap">+40 parameters.</span><br/><span class="grad-text" style="font-size:0.65em;white-space:nowrap">A complete picture.</span></h3>
+        <div class="step-atlas-right">
+          <p>Your sample is processed in a certified laboratory. Every biomarker was selected for its clinical relevance and direct impact on preventive health. Click a category to explore the panel.</p>
+          <div class="step-detail">
+            <div class="step-detail-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>7 clinical categories covered</div>
+            <div class="step-detail-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>ISO 15189 accredited laboratory</div>
+            <div class="step-detail-item"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Every parameter with integrated clinical interpretation</div>
+          </div>
+        </div>
+      </div>
+      <div class="fade fade-d2">
+        <div class="bioatlas" id="bioAtlas">
+          <div class="ba-topbar">
+            <span class="ba-headline">Lyvoo Biomarker Panel</span>
+            <div class="ba-filters">
+              <button class="ba-filter active" data-cat="todos">All</button>
+              <button class="ba-filter" data-cat="cardiovascular">Cardiovascular</button>
+              <button class="ba-filter" data-cat="hormonal">Hormonal</button>
+              <button class="ba-filter" data-cat="nutricional">Nutritional</button>
+              <button class="ba-filter" data-cat="tiróide">Thyroid</button>
+              <button class="ba-filter" data-cat="inflamação">Inflammation</button>
+              <button class="ba-filter" data-cat="renal">Renal</button>
+              <button class="ba-filter" data-cat="hepática">Hepatic</button>
+            </div>
+          </div>
+          <div class="ba-body">
+            <div class="ba-grid" id="baGrid"></div>
+            <div class="ba-detail" id="baDetail">
+              <div class="ba-detail-empty">
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span>Select a parameter to view details</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="step-layer layer-dark" id="modulos">
+  <div class="container">
+    <div class="modules-header">
+      <span class="label fade">Optional add-on modules</span>
+      <h2 class="fade fade-d1"><span class="grad-text">Depth</span> when you need it</h2>
+      <p class="fade fade-d2">Add specialist analyses to your programme.<br/>Each module includes testing, clinical interpretation and specific recommendations.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card module-card--highlight fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.5-1 3-2 4l-2 2-2-2c-1-1-2-2.5-2-4a4 4 0 0 1 4-4z"/><path d="M8 12l-4 4 2 2 4-4"/><path d="M16 12l4 4-2 2-4-4"/><circle cx="12" cy="20" r="2"/></svg></div>
+        <div class="mod-name">Genetic Testing</div>
+        <div class="mod-desc">Assess predisposition to hereditary conditions, risk of passing them on and guide preventive measures or treatments.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/genetica.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card module-card--highlight fade fade-d1">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/><path d="M7 7c.5-1 1.5-2 5-2s4.5 1 5 2"/></svg></div>
+        <div class="mod-name">Microbiome</div>
+        <div class="mod-desc">Full gut flora analysis. Understand the impact of your microbiome on metabolic health, immunity and wellbeing.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/microbioma.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 6v6l4 2"/></svg></div>
+        <div class="mod-name">Female Hormonal</div>
+        <div class="mod-desc">Complete female hormonal panel. Cycle, fertility, menopause, bone health and oestrogen balance.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/hormonal-feminino.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <div class="mod-name">Male Hormonal</div>
+        <div class="mod-desc">Testosterone, DHEA, PSA and men's health markers with clinical interpretation and recommendations.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/hormonal-masculino.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d1">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="mod-name">Energy &amp; Fatigue</div>
+        <div class="mod-desc">Markers linked to chronic fatigue, cellular energy, iron metabolism and mitochondrial function.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/energia-fadiga.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="mod-name">Extended Thyroid</div>
+        <div class="mod-desc">TSH, FT3, FT4 and thyroid antibodies with specialist functional interpretation.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/tiroide.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="mod-name">Extra medical consultation</div>
+        <div class="mod-desc">Additional preventive medical session with your Lyvoo doctor for review or specific concerns.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/consulta-medica.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d1">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="mod-name">Extra nutrition consultation</div>
+        <div class="mod-desc">Additional session with your nutritionist to adjust your dietary plan or address specific goals.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/consulta-nutricao.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
+        <div class="mod-name">Vitamin D upgrade</div>
+        <div class="mod-desc">Vitamin D 25-OH analysis with personalised supplementation recommendation based on your levels.</div>
+        <div class="mod-footer"><a class="mod-add" href="../modulos/vitamina-d.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /dark-continuum Atlas+Modules -->
+
+<!-- HOW IT WORKS -->
+<style>
+  .cf-section{background:#fff;padding:110px 0}
+  .cf-head{text-align:center;max-width:560px;margin:0 auto 72px}
+  .cf-head .label{display:inline-block;margin-bottom:14px}
+  .cf-head h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;line-height:1.15;color:var(--ink);margin:0 0 14px}
+  .cf-head p{font-size:17px;color:var(--ink-2);line-height:1.75;max-width:640px;margin:0 auto}
+  .cf-steps{display:flex;flex-direction:column}
+  .cf-step{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:56px 0}
+  .cf-step+.cf-step{border-top:1px solid var(--border)}
+  .cf-step.cf-rev .cf-text{order:2}.cf-step.cf-rev .cf-visual{order:1}
+  .cf-numrow{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+  .cf-circle{width:38px;height:38px;border-radius:50%;background:var(--teal);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .cf-tag{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal-light)}
+  .cf-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;background:#EEF9F9;color:var(--teal);border:1px solid rgba(11,82,90,0.15);margin-left:auto}
+  .cf-text h3{font-size:clamp(22px,2.8vw,33px);font-weight:800;letter-spacing:-0.03em;line-height:1.2;margin:0 0 14px;color:var(--ink)}
+  .cf-text p{font-size:15px;color:var(--ink-2);line-height:1.8;margin:0 0 22px}
+  .cf-checks{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
+  .cf-checks li{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink-2)}
+  .cf-chk{width:22px;height:22px;border-radius:50%;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .cf-visual{border-radius:24px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(145deg,#F0F9FA 0%,#E6F3F5 100%);border:1px solid rgba(11,82,90,0.1);display:flex;align-items:center;justify-content:center;box-shadow:0 16px 48px rgba(11,82,90,0.08)}
+  .cf-visual img{width:100%;height:100%;object-fit:cover}
+  @media(max-width:860px){.cf-step{grid-template-columns:1fr;gap:32px}.cf-step.cf-rev .cf-text,.cf-step.cf-rev .cf-visual{order:0}}
+</style>
+
+<section class="cf-section" id="como-funciona">
+  <div class="container">
+    <div class="cf-head fade">
+      <span class="label">How it works</span>
+      <h2>From <span class="grad-text" style="white-space:nowrap">analysis</span> to plan</h2>
+      <p>Four simple steps, from sign-up to continuous health optimisation.</p>
+    </div>
+    <div class="cf-steps">
+
+      <!-- Step 1 -->
+      <div class="cf-step fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">1</div>
+            <span class="cf-tag">Become a member</span>
+            <span class="cf-badge">Today</span>
+          </div>
+          <h3>Subscribe and receive your kit at home.</h3>
+          <p>One annual programme, everything included. The collection kit arrives at your address within 48 hours, with everything you need for at-home testing.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Single annual payment, no surprises</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Medical supervision included</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Cancel at any time</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#F0F9FA,#E4F2F5);padding:0;">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="s1"><feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#0B525A" flood-opacity="0.10"/></filter><linearGradient id="boxLid" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#0D7A87"/></linearGradient><linearGradient id="boxBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#F4FBFC"/></linearGradient></defs>
+            <circle cx="80" cy="70" r="90" fill="rgba(11,82,90,0.04)"/><circle cx="410" cy="300" r="110" fill="rgba(61,217,232,0.06)"/>
+            <rect x="155" y="110" width="170" height="160" rx="14" fill="url(#boxBody)" filter="url(#s1)"/>
+            <rect x="143" y="90" width="194" height="38" rx="10" fill="url(#boxLid)" filter="url(#s1)"/>
+            <text x="240" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="white" letter-spacing="2.5">LYVOO</text>
+            <rect x="232" y="90" width="16" height="180" rx="2" fill="rgba(61,217,232,0.18)"/>
+            <rect x="178" y="138" width="84" height="10" rx="5" fill="#D0E9ED"/><rect x="178" y="158" width="64" height="10" rx="5" fill="#D0E9ED"/><rect x="178" y="178" width="74" height="10" rx="5" fill="#D0E9ED"/>
+            <rect x="348" y="115" width="82" height="26" rx="13" fill="white" filter="url(#s1)"/><circle cx="361" cy="128" r="7" fill="#3DD9E8"/><text x="396" y="133" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#0B525A">Lancet</text>
+            <rect x="50" y="150" width="72" height="50" rx="8" fill="white" filter="url(#s1)"/><rect x="50" y="150" width="72" height="20" rx="8 8 0 0" fill="#8B5CF6"/><text x="86" y="165" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">DBS</text><rect x="58" y="178" width="56" height="6" rx="3" fill="#E0E7FF"/><rect x="58" y="188" width="40" height="6" rx="3" fill="#E0E7FF"/>
+            <rect x="348" y="210" width="72" height="52" rx="8" fill="white" filter="url(#s1)"/><polyline points="348,210 384,238 420,210" fill="none" stroke="#FBBF24" stroke-width="2"/><rect x="348" y="238" width="72" height="24" rx="0 0 8 8" fill="#FFFBEB"/>
+            <rect x="168" y="292" width="144" height="30" rx="15" fill="#0B525A"/><text x="240" y="312" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white" letter-spacing="0.5">Delivered in 48h</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="cf-step cf-rev fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">2</div>
+            <span class="cf-tag">Collect at home</span>
+            <span class="cf-badge">Day 1</span>
+          </div>
+          <h3>Collect your sample. No needles, no travel.</h3>
+          <p>A simple finger-prick collects your sample in 5 minutes. Follow the app instructions and return in the pre-paid envelope included.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>No needles or venepuncture</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5-minute collection from the comfort of home</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Pre-paid return to certified laboratory</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#F8FFFE,#EBF7F8);padding:0;">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="s2"><feDropShadow dx="0" dy="6" stdDeviation="16" flood-color="#0B525A" flood-opacity="0.10"/></filter><radialGradient id="glow2en" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.12"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></radialGradient></defs>
+            <circle cx="240" cy="180" r="160" fill="url(#glow2en)"/>
+            <ellipse cx="240" cy="270" rx="70" ry="50" fill="#FDE8D8"/>
+            <rect x="155" y="170" width="36" height="110" rx="18" fill="#FDE8D8"/><rect x="200" y="150" width="36" height="130" rx="18" fill="#FDE8D8"/><rect x="245" y="145" width="36" height="135" rx="18" fill="#FDE8D8"/><rect x="290" y="155" width="36" height="120" rx="18" fill="#FDE8D8"/>
+            <rect x="200" y="150" width="36" height="130" rx="18" fill="#FDDCC8"/>
+            <circle cx="218" cy="152" r="10" fill="#3DD9E8" opacity="0.9"/><circle cx="218" cy="152" r="6" fill="#0D7A87"/>
+            <rect x="90" y="120" width="100" height="36" rx="18" fill="white" filter="url(#s2)"/><circle cx="108" cy="138" r="9" fill="#3DD9E8"/><text x="155" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#0B525A">Lancet</text>
+            <rect x="310" y="80" width="140" height="60" rx="14" fill="white" filter="url(#s2)"/><text x="380" y="105" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#6B9298" font-weight="500">Collect in</text><text x="380" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="800" fill="#0B525A" letter-spacing="-0.5">5 min</text>
+            <rect x="310" y="230" width="140" height="50" rx="14" fill="white" filter="url(#s2)"/><circle cx="330" cy="255" r="10" fill="#4ADE80" opacity="0.9"/><text x="390" y="251" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">No needles</text><text x="390" y="265" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">No travel</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="cf-step fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">3</div>
+            <span class="cf-tag">Integrated interpretation</span>
+            <span class="cf-badge">7–10 days</span>
+          </div>
+          <h3>Doctor and nutritionist. One single report.</h3>
+          <p>Your results are jointly analysed by a doctor and nutritionist. You receive a report with real clinical context and practical recommendations — not isolated numbers.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Medical interpretation of every out-of-range biomarker</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Nutritional analysis aligned with your results</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Report in the app and dashboard in clear, accessible language</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#F0F9FA,#E8F4F6);padding:0;">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="s3"><feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#0B525A" flood-opacity="0.09"/></filter><linearGradient id="cardTop3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#0D7A87"/></linearGradient></defs>
+            <circle cx="420" cy="60" r="100" fill="rgba(61,217,232,0.07)"/><circle cx="60" cy="310" r="80" fill="rgba(139,92,246,0.05)"/>
+            <rect x="80" y="50" width="320" height="270" rx="18" fill="white" filter="url(#s3)"/>
+            <rect x="80" y="50" width="320" height="52" rx="18 18 0 0" fill="url(#cardTop3)"/>
+            <text x="120" y="80" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Integrated Report · Jan 2026</text>
+            <rect x="330" y="66" width="56" height="20" rx="10" fill="rgba(61,217,232,0.25)"/><text x="358" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#3DD9E8">Complete</text>
+            <rect x="96" y="118" width="120" height="64" rx="12" fill="#F0F9FA"/><text x="156" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298" letter-spacing="0.5">Health score</text><text x="156" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="#0B525A">87</text>
+            <rect x="232" y="118" width="152" height="64" rx="12" fill="#F0F9FA"/><text x="308" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">Biomarkers OK</text>
+            <rect x="244" y="168" width="20" height="12" rx="2" fill="#3DD9E8" opacity="0.4"/><rect x="270" y="158" width="20" height="22" rx="2" fill="#3DD9E8" opacity="0.6"/><rect x="296" y="152" width="20" height="28" rx="2" fill="#3DD9E8" opacity="0.8"/><rect x="322" y="155" width="20" height="25" rx="2" fill="#3DD9E8"/><rect x="348" y="162" width="20" height="18" rx="2" fill="#4ADE80"/>
+            <circle cx="108" cy="215" r="5" fill="#4ADE80"/><text x="120" y="219" font-family="Inter,sans-serif" font-size="10" fill="#374151">Lipid profile — <tspan font-weight="700" fill="#4ADE80">optimal</tspan></text>
+            <circle cx="108" cy="237" r="5" fill="#FBBF24"/><text x="120" y="241" font-family="Inter,sans-serif" font-size="10" fill="#374151">CRP — <tspan font-weight="700" fill="#FBBF24">Caution</tspan></text>
+            <circle cx="108" cy="259" r="5" fill="#4ADE80"/><text x="120" y="263" font-family="Inter,sans-serif" font-size="10" fill="#374151">HbA1c — <tspan font-weight="700" fill="#4ADE80">Excellent</tspan></text>
+            <line x1="96" y1="285" x2="384" y2="285" stroke="#E8F2F4" stroke-width="1"/>
+            <circle cx="120" cy="306" r="14" fill="#0B525A"/><text x="120" y="311" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">AC</text><text x="140" y="303" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#111827">Dr. Ana Costa</text><text x="140" y="315" font-family="Inter,sans-serif" font-size="8" fill="#9CA3AF">Preventive medicine</text>
+            <circle cx="280" cy="306" r="14" fill="#8B5CF6"/><text x="280" y="311" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">MS</text><text x="300" y="303" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#111827">Dr. Marta Silva</text><text x="300" y="315" font-family="Inter,sans-serif" font-size="8" fill="#9CA3AF">Nutritionist</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="cf-step cf-rev fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">4</div>
+            <span class="cf-tag">Track and optimise</span>
+            <span class="cf-badge">6 months</span>
+          </div>
+          <h3>A plan that evolves with you. Reassessed.</h3>
+          <p>You receive a personalised dietary plan. After 6 months you repeat the panel and we compare results against your baseline to prove the progress.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Nutritional plan adjusted to your biomarkers</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6-month reassessment with a new full panel</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Comparative report: baseline vs. 6 months</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F);padding:0;border-color:rgba(61,217,232,0.15);">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs><filter id="s4"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000" flood-opacity="0.3"/></filter><linearGradient id="lineGrad4" x1="0" y1="0" x2="480" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient><linearGradient id="fillGrad4" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.2"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient></defs>
+            <ellipse cx="240" cy="180" rx="220" ry="140" fill="rgba(13,92,101,0.18)"/>
+            <line x1="60" y1="80" x2="60" y2="280" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><line x1="60" y1="280" x2="440" y2="280" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><line x1="60" y1="200" x2="440" y2="200" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 4"/><line x1="60" y1="140" x2="440" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 4"/>
+            <text x="80" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Jan</text><text x="156" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Feb</text><text x="232" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Mar</text><text x="308" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Apr</text><text x="384" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">May</text><text x="430" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Jun</text>
+            <polyline points="80,240 156,238 232,242 308,236 384,240 430,238" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="5 4"/>
+            <path d="M80,240 L156,220 L232,195 L308,168 L384,142 L430,118 L430,280 L80,280Z" fill="url(#fillGrad4)"/>
+            <polyline points="80,240 156,220 232,195 308,168 384,142 430,118" fill="none" stroke="url(#lineGrad4)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="80" cy="240" r="4" fill="rgba(255,255,255,0.3)"/><circle cx="232" cy="195" r="4" fill="#3DD9E8"/><circle cx="430" cy="118" r="6" fill="#3DD9E8" filter="url(#s4)"/>
+            <rect x="340" y="90" width="100" height="28" rx="14" fill="rgba(61,217,232,0.15)" stroke="rgba(61,217,232,0.3)" stroke-width="1"/><text x="390" y="109" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#3DD9E8">↑ +12 pts</text>
+            <rect x="66" y="56" width="90" height="48" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="111" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">LDL</text><text x="111" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#4ADE80">−18%</text>
+            <rect x="168" y="56" width="90" height="48" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="213" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">CRP</text><text x="213" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#4ADE80">−34%</text>
+            <rect x="270" y="56" width="100" height="48" rx="12" fill="rgba(61,217,232,0.1)" stroke="rgba(61,217,232,0.2)" stroke-width="1"/><text x="320" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Score</text><text x="320" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#3DD9E8">+12 pts</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NUTRITION STEP -->
+<section class="step-layer layer-white">
+  <div class="container">
+    <div class="process-step reverse">
+      <div class="step-visual fade">
+        <div class="step4-img-wrap">
+          <img src="../images/plano-nutricional.jpg" alt="Lyvoo personalised nutritional plan — tablet with nutritional data and healthy foods" />
+        </div>
+      </div>
+      <div class="step-text fade fade-d1">
+        <h3><span class="grad-text">Nutrition</span> built on<br/>your biomarkers.</h3>
+        <div class="step-subhead">Not a generic table.</div>
+        <p>Your nutritionist interprets your blood test results and builds a dietary plan tailored to you — with calculated macros, a food list and clinical notes specific to your metabolic profile.</p>
+        <div class="step-detail">
+          <div class="step-detail-item siphox-check">
+            <div class="siphox-check-icon"><svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Personalised macros</strong> - Macronutrients calculated from your results, not population averages</span>
+          </div>
+          <div class="step-detail-item siphox-check">
+            <div class="siphox-check-icon"><svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Adapted to you, not the other way around</strong> - Lyvoo respects your tastes and preferences</span>
+          </div>
+          <div class="step-detail-item siphox-check">
+            <div class="siphox-check-icon"><svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Continuous support</strong> - You don't have to wait 6 months. We stay in touch throughout your progress</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK CONTINUUM: App + Evidence + GLP -->
+<div class="dark-continuum">
+
+<!-- APP -->
+<section class="app-section" id="app">
+  <div class="app-bg-glow"></div>
+  <div class="container">
+    <div class="app-inner">
+      <div class="app-text">
+        <span class="label label-light fade">The Lyvoo app</span>
+        <h2 class="fade fade-d1">Your health dashboard<br/><span class="grad-text">in your pocket.</span></h2>
+        <p class="fade fade-d2">Lyvoo centralises everything: results, nutritional plan, appointments, reminders and communication with your clinical team. Designed to be simple to use and impossible to ignore.</p>
+        <div class="app-features fade fade-d2">
+          <div class="app-feature">
+            <div class="app-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="app-feature-text">
+              <h4>Real-time results</h4>
+              <p>As soon as the laboratory processes your sample, results appear in the app with clear, contextualised interpretation.</p>
+            </div>
+          </div>
+          <div class="app-feature">
+            <div class="app-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="app-feature-text">
+              <h4>Dynamic nutritional plan</h4>
+              <p>Your dietary and supplementation plan tracks your biomarker evolution and is updated at each assessment.</p>
+            </div>
+          </div>
+          <div class="app-feature">
+            <div class="app-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="app-feature-text">
+              <h4>Direct line to your team</h4>
+              <p>Message your doctor or nutritionist directly through the app. No waiting until the next appointment.</p>
+            </div>
+          </div>
+          <div class="app-feature">
+            <div class="app-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="app-feature-text">
+              <h4>Evolving health score</h4>
+              <p>A single number that summarises your preventive health status and should rise throughout the programme.</p>
+            </div>
+          </div>
+        </div>
+        <div class="fade fade-d3">
+          <a href="register.html" class="btn btn-ghost-white">Start the programme</a>
+        </div>
+      </div>
+      <div class="app-mockup-wrap fade fade-d2">
+        <div class="app-bubble app-bubble-1">Nutrition</div>
+        <div class="app-bubble app-bubble-2">Genetics</div>
+        <div class="app-bubble app-bubble-3">Microbiome</div>
+        <div class="app-bubble app-bubble-4">6-month reassessment</div>
+        <div class="app-phone-3d">
+          <div class="app-main-screen">
+            <div class="ams-header">
+              <div><div class="ams-greeting">Hello, James</div><div class="ams-title">Summary</div></div>
+              <span class="ams-pill">In progress</span>
+            </div>
+            <div class="ams-score-ring">
+              <div class="ring-container">
+                <svg class="ring-svg" viewBox="0 0 80 80"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><circle class="ring-bg" cx="40" cy="40" r="32"/><circle class="ring-fill ring-fill-grad" cx="40" cy="40" r="32"/></svg>
+                <div class="ring-num"><span class="ring-score">87</span><span class="ring-max">/100</span></div>
+              </div>
+              <span class="ring-label">Health score</span>
+            </div>
+            <div class="ams-chart-wrap">
+              <div class="ams-chart-top"><span class="ams-chart-title">Biomarker trends</span><span class="ams-chart-period">6 months</span></div>
+              <div class="ams-chart-legend"><span><i style="background:#3DD9E8"></i>LDL</span><span><i style="background:#8B5CF6"></i>Triglycerides</span><span><i style="background:#C084FC"></i>CRP</span></div>
+              <svg viewBox="0 0 200 60" class="ams-sparkline">
+                <defs><linearGradient id="fill1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.2"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient></defs>
+                <line x1="0" y1="20" x2="200" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/><line x1="0" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+                <text x="10" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Jan</text><text x="50" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Mar</text><text x="100" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Apr</text><text x="150" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May</text><text x="193" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Jun</text>
+                <path d="M10,48 L50,42 L100,34 L150,24 L193,12 L193,55 L10,55Z" fill="url(#fill1)"/>
+                <polyline points="10,48 50,42 100,34 150,24 193,12" fill="none" stroke="#3DD9E8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="193" cy="12" r="2.5" fill="#3DD9E8"/>
+                <polyline points="10,52 50,49 100,45 150,40 193,36" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="193" cy="36" r="2.5" fill="#8B5CF6"/>
+                <polyline points="10,55 50,53 100,51 150,48 193,44" fill="none" stroke="#C084FC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="193" cy="44" r="2.5" fill="#C084FC"/>
+              </svg>
+            </div>
+            <div class="ams-metrics">
+              <div class="ams-metric"><div class="mm-dot" style="background:#4ADE80"></div><span class="mm-name">LDL Cholesterol</span><span class="mm-val" style="color:#4ADE80">optimal ↓</span></div>
+              <div class="ams-metric"><div class="mm-dot" style="background:#3DD9E8"></div><span class="mm-name">HbA1c</span><span class="mm-val" style="color:#3DD9E8">5.1%</span></div>
+              <div class="ams-metric"><div class="mm-dot" style="background:#FBBF24"></div><span class="mm-name">CRP</span><span class="mm-val" style="color:#FBBF24">Caution ↓</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCIENTIFIC EVIDENCE -->
+<section class="step-layer layer-dark" id="evidencia">
+  <div class="container">
+    <div class="ev-header fade">
+      <span class="label" style="color:var(--cyan);border-color:rgba(61,217,232,0.2);">Scientific evidence</span>
+      <h2 style="color:#fff;">Prevention works.<br/><span class="grad-text">The numbers prove it.</span></h2>
+      <p style="color:rgba(255,255,255,0.45);">Published clinical studies demonstrate that continuous preventive monitoring and telemedicine produce measurable, consistent results.</p>
+    </div>
+    <div class="ev-stats fade fade-d2">
+      <div class="ev-stat">
+        <div class="ev-num">−18<span class="ev-unit">mg/dL</span></div>
+        <div class="ev-label">LDL reduction</div>
+        <div class="ev-sub">vs. −5.7 mg/dL in conventional care, in remote monitoring programmes</div>
+      </div>
+      <div class="ev-divider"></div>
+      <div class="ev-stat">
+        <div class="ev-num">−5.6<span class="ev-unit">mmHg</span></div>
+        <div class="ev-label">Systolic reduction</div>
+        <div class="ev-sub">at 6 and 12 months, in a review of 54 clinical trials combining telemonitoring and teleconsultation</div>
+      </div>
+      <div class="ev-divider"></div>
+      <div class="ev-stat">
+        <div class="ev-num">−0.45<span class="ev-unit">%</span></div>
+        <div class="ev-label">HbA1c reduction</div>
+        <div class="ev-sub">in type 2 diabetes patients followed remotely, with direct impact on cardiovascular risk</div>
+      </div>
+      <div class="ev-divider"></div>
+      <div class="ev-stat">
+        <div class="ev-num">84<span class="ev-unit">%</span></div>
+        <div class="ev-label">Patient satisfaction</div>
+        <div class="ev-sub">rated the remote monitoring programme as very useful, with higher reported therapeutic adherence</div>
+      </div>
+    </div>
+    <div class="ev-conclusion fade fade-d3">
+      <div class="ev-conclusion-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>The best results come from combining clinical monitoring with continuous follow-up. Telemedicine transforms episodic care into regular prevention, increasing adherence, risk factor control and quality of life.</p>
+      </div>
+      <div class="ev-source">Sources: Digital Health Transformation Through Telemedicine (2020–2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
+    </div>
+  </div>
+</section>
+
+<!-- GLP-FRIENDLY -->
+<section class="glp-section" id="glp-friendly">
+  <div class="glp-glow"></div>
+  <div class="container" style="position:relative">
+    <div style="text-align:center;margin-bottom:40px">
+      <span class="glp-badge fade"><span class="glp-badge-dot"></span>We are GLP-Friendly</span>
+      <h2 class="fade fade-d1" style="font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;color:#fff;max-width:720px;margin:0 auto 0;line-height:1.15">
+        On GLPs?<br/><span class="grad-text">We've got you covered.</span>
+      </h2>
+    </div>
+    <div class="glp-intro-row fade fade-d2">
+      <p>
+        GLP-1/GIP/glucagon agonists are a revolution, but rapid weight loss brings challenges many healthcare professionals are still not closely monitoring: <strong style="color:rgba(255,255,255,0.72)">muscle mass loss, nutritional deficiencies, renal and thyroid changes</strong>. Lyvoo was built for exactly this.
+      </p>
+      <div class="glp-meds">
+        <span class="glp-med">Ozempic</span><span class="glp-med">Wegovy</span><span class="glp-med">Mounjaro</span><span class="glp-med">Rybelsus</span><span class="glp-med">Saxenda</span><span class="glp-med">Victoza</span><span class="glp-med">Trulicity</span><span class="glp-med">Retatrutide</span>
+      </div>
+    </div>
+    <div class="glp-inner">
+      <div class="glp-left fade fade-d1">
+        <div class="glp-concerns">
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(248,113,113,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5a6 6 0 0 1 9.17 7.6M17.5 17.5a6 6 0 0 1-9.17-7.6M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+            <div>
+              <div class="glp-concern-title">Muscle mass preservation</div>
+              <div class="glp-concern-sub">GLPs suppress appetite. Without adequate support, significant muscle loss is common. We monitor creatinine, urea and body composition markers.</div>
+            </div>
+          </div>
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(251,191,36,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg></div>
+            <div>
+              <div class="glp-concern-title">Silent nutritional deficiencies</div>
+              <div class="glp-concern-sub">With reduced food intake, Vitamin B12, D, Iron, Zinc and Folate drop rapidly. The Lyvoo panel detects this before symptoms appear.</div>
+            </div>
+          </div>
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(61,217,232,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#3DD9E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="6"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a14 14 0 0 1 4 10 14 14 0 0 1-4 10 14 14 0 0 1-4-10 14 14 0 0 1 4-10z"/></svg></div>
+            <div>
+              <div class="glp-concern-title">Renal and hepatic function in focus</div>
+              <div class="glp-concern-sub">Frequent dehydration and the drug's direct impact require periodic renal monitoring. Creatinine, eGFR, ALT and AST are part of our GLP protocol.</div>
+            </div>
+          </div>
+          <div class="glp-concern">
+            <div class="glp-concern-icon" style="background:rgba(74,222,128,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div>
+              <div class="glp-concern-title">Real-time metabolic profile</div>
+              <div class="glp-concern-sub">HbA1c, fasting insulin, HOMA-IR and glucose. We track the metabolic response to treatment to adjust your dietary plan with clinical precision.</div>
+            </div>
+          </div>
+        </div>
+        <div class="glp-cta-strip">
+          <p><strong>On GLPs or about to start?</strong><br/>Join Lyvoo and have a doctor and nutritionist tracking your progress with real data.</p>
+          <a href="#waitlist" class="glp-cta-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Get started
+          </a>
+        </div>
+      </div>
+      <div class="glp-right fade fade-d2">
+        <div class="glp-panel">
+          <div class="glp-panel-hdr">
+            <div>
+              <div class="glp-panel-title">GLP Panel — Dedicated monitoring</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px">Analysis January 2026 · James S.</div>
+            </div>
+            <span class="glp-panel-badge">In treatment</span>
+          </div>
+          <div class="glp-panel-body">
+            <div class="glp-bio-row"><div class="glp-bio-icon">💪</div><div class="glp-bio-info"><div class="glp-bio-name">Creatinine (muscle)</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:78%;background:#4ADE80"></div></div><span class="glp-bio-tag ok">Optimal</span></div>
+            <div class="glp-bio-row"><div class="glp-bio-icon">⚡</div><div class="glp-bio-info"><div class="glp-bio-name">Vitamin B12</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:28%;background:#FBBF24"></div></div><span class="glp-bio-tag warn">Caution</span></div>
+            <div class="glp-bio-row"><div class="glp-bio-icon">🌞</div><div class="glp-bio-info"><div class="glp-bio-name">Vitamin D</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:22%;background:#F87171"></div></div><span class="glp-bio-tag low">Low</span></div>
+            <div class="glp-bio-row"><div class="glp-bio-icon">🩸</div><div class="glp-bio-info"><div class="glp-bio-name">HbA1c (3-month glucose)</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:86%;background:#4ADE80"></div></div><span class="glp-bio-tag ok">Optimal</span></div>
+            <div class="glp-bio-row"><div class="glp-bio-icon">🫘</div><div class="glp-bio-info"><div class="glp-bio-name">eGFR (renal)</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:92%;background:#4ADE80"></div></div><span class="glp-bio-tag ok">Optimal</span></div>
+            <div class="glp-bio-row"><div class="glp-bio-icon">🔩</div><div class="glp-bio-info"><div class="glp-bio-name">Ferritin</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:18%;background:#FBBF24"></div></div><span class="glp-bio-tag warn">Caution</span></div>
+            <div class="glp-bio-row"><div class="glp-bio-icon">🦋</div><div class="glp-bio-info"><div class="glp-bio-name">TSH (thyroid)</div></div><div class="glp-bio-bar"><div class="glp-bio-bar-fill" style="width:70%;background:#4ADE80"></div></div><span class="glp-bio-tag ok">Optimal</span></div>
+          </div>
+          <div style="padding:14px 18px;border-top:1px solid rgba(255,255,255,0.07)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:11px;color:rgba(255,255,255,0.3);font-weight:600;text-transform:uppercase;letter-spacing:0.08em">GLP Progress · 3 months</span>
+              <span style="font-size:12px;font-weight:800;color:#4ADE80">−8.4 kg</span>
+            </div>
+            <div style="height:5px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden"><div style="height:100%;width:52%;background:linear-gradient(90deg,#3DD9E8,#4ADE80);border-radius:999px"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:10px;color:rgba(255,255,255,0.2)">Start</span>
+              <span style="font-size:10px;color:rgba(255,255,255,0.2)">6m target</span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:rgba(255,255,255,0.18);margin-top:14px;text-align:center;line-height:1.6">
+          Illustrative data. Lyvoo does not prescribe and does not replace your treating physician.<br/>We work in complementarity with your existing healthcare team.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /dark-continuum App+Evidence+GLP -->
+
+<!-- TESTIMONIALS -->
+<section class="step-layer layer-white" id="testemunhos">
+  <div class="container">
+    <div class="tst-header">
+      <span class="label fade">Real stories</span>
+      <h2 class="fade fade-d1">Prevention that <span class="grad-text">changes lives</span></h2>
+      <p class="fade fade-d2">People like you who decided to understand their health before it was too late.</p>
+    </div>
+    <div class="tst-grid">
+      <div class="tst-card feature fade">
+        <div class="tst-quote">"I always felt well, but Lyvoo detected inflammatory markers and a lipid profile my GP had never requested. Six months later, following their plan, I reduced my LDL by 22%. It was the best decision I ever made for my health."</div>
+        <div class="tst-feature-side">
+          <div class="tst-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+          <div class="tst-person"><div class="tst-avatar" style="background:linear-gradient(135deg,#0D7A87,#0B525A)">RM</div><div><div class="tst-name">Ricardo Marques</div><div class="tst-meta">42 · Lisbon · Lyvoo Programme</div></div></div>
+          <div class="tst-result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>LDL −22% in 6 months</div>
+        </div>
+      </div>
+      <div class="tst-card fade">
+        <div class="tst-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+        <div class="tst-quote">"Testing at home changed everything. I always put off check-ups because of the queues and time. With the Lyvoo kit, I did it all on a Sunday morning."</div>
+        <div class="tst-person"><div class="tst-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">SC</div><div><div class="tst-name">Sofia Carvalho</div><div class="tst-meta">35 · Porto</div></div></div>
+      </div>
+      <div class="tst-card fade fade-d1">
+        <div class="tst-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+        <div class="tst-quote">"What sets Lyvoo apart is clarity. I didn't receive a sheet of incomprehensible numbers — I received a report that explains what matters and what to do."</div>
+        <div class="tst-person"><div class="tst-avatar" style="background:linear-gradient(135deg,#3DD9E8,#06B6D4)">PA</div><div><div class="tst-name">Pedro Almeida</div><div class="tst-meta">48 · Braga · Lyvoo Programme</div></div></div>
+      </div>
+      <div class="tst-card fade fade-d2">
+        <div class="tst-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+        <div class="tst-quote">"I'd had constant fatigue for years. Lyvoo identified iron and vitamin D deficiency. With the supplementation plan, I feel like a different person."</div>
+        <div class="tst-person"><div class="tst-avatar" style="background:linear-gradient(135deg,#F472B6,#DB2777)">AT</div><div><div class="tst-name">Ana Teixeira</div><div class="tst-meta">39 · Coimbra · Lyvoo Programme</div></div></div>
+      </div>
+      <div class="tst-card fade fade-d3">
+        <div class="tst-stars"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+        <div class="tst-quote">"The 6-month reassessment was what convinced me. Seeing in numbers that the effort was working — that's priceless."</div>
+        <div class="tst-person"><div class="tst-avatar" style="background:linear-gradient(135deg,#34D399,#059669)">JF</div><div><div class="tst-name">João Ferreira</div><div class="tst-meta">51 · Faro · Lyvoo Programme</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="step-layer layer-white" id="equipa">
+  <div class="container">
+    <div class="team-header fade">
+      <span class="label">Our team</span>
+      <h2 class="fade fade-d1">Built by people who believe<br/>in <span class="grad-text">prevention</span></h2>
+      <p class="team-sub fade fade-d2">Lyvoo was born from the conviction that preventive medicine should be accessible to everyone. And that technology and clinical expertise complement each other.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card fade">
+        <div class="team-photo"><div class="team-photo-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>
+        <div class="team-info">
+          <div class="team-name">Ricardo Teixeira</div>
+          <div class="team-roles"><span class="team-badge founder">CEO · Co-Founder</span><span class="team-badge nutri">Nutritionist</span></div>
+          <p class="team-desc">Clinical nutritionist with experience in preventive medicine and metabolic health. Passionate about science, he founded Lyvoo to democratise access to biomarker-based nutritional intervention.</p>
+        </div>
+      </div>
+      <div class="team-card fade fade-d1">
+        <div class="team-photo"><div class="team-photo-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>
+        <div class="team-info">
+          <div class="team-name">Jaime Abreu</div>
+          <div class="team-roles"><span class="team-badge medico">Doctor</span></div>
+          <p class="team-desc">Specialist in preventive medicine. Responsible for the clinical supervision of Lyvoo programmes and the medical interpretation of laboratory results.</p>
+        </div>
+      </div>
+      <div class="team-card fade fade-d2">
+        <div class="team-photo"><div class="team-photo-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div></div>
+        <div class="team-info">
+          <div class="team-name">Lúcia Abreu</div>
+          <div class="team-roles"><span class="team-badge founder">Co-Founder</span><span class="team-badge ux">UX Researcher</span></div>
+          <p class="team-desc">Passionate about technology and innovation, she leads the Lyvoo user experience. She ensures complex tools become simple and accessible for the people who matter most: the user.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME -->
+<section class="step-layer layer-off" id="planos">
+  <div class="container">
+    <div class="sp-header fade">
+      <span class="label">Annual programme</span>
+      <h2 class="fade fade-d1">One plan.<br/><span class="grad-text">Everything included.</span></h2>
+      <p class="sp-sub fade fade-d2">Comprehensive blood tests typically cost €800–1,500 at private clinics.<br/>With Lyvoo, you get everything for less than €1 per day.</p>
+    </div>
+    <div class="sp-card fade fade-d2">
+      <div class="sp-left">
+        <div class="sp-price-wrap">
+          <div class="sp-price"><span class="sp-cur">€</span><span class="sp-val">359</span><span class="sp-per">/year</span></div>
+          <div class="sp-daily">≈ €0.98 per day</div>
+          <div class="sp-billing">Single annual payment · No automatic renewal</div>
+        </div>
+        <div class="sp-divider"></div>
+        <div class="sp-section-label">What's included</div>
+        <ul class="sp-features">
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>+40 biomarkers analysed</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Test kit delivered to your door within 48h</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>ISO 15189 certified laboratory</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Medical + nutritional integrated report</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Personalised dietary plan</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>6-month follow-up reassessment</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Lyvoo app with continuous support</strong></div></li>
+        </ul>
+        <a href="register.html?plano=lyvoo" class="sp-cta">Start the programme <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
+        <p class="sp-guarantee">Free cancellation before kit dispatch · No automatic renewal</p>
+      </div>
+      <div class="sp-right">
+        <div class="sp-bio-header">
+          <span class="sp-bio-title">+40 biomarkers included</span>
+          <span class="sp-bio-sub">Complete clinical coverage</span>
+        </div>
+        <div class="sp-bio-groups">
+          <div class="sp-bio-group"><div class="sp-bio-cat">Cardiovascular</div><div class="sp-bio-chips"><span>LDL</span><span>HDL</span><span>ApoB</span><span>Triglycerides</span><span>Total cholesterol</span><span>hsCRP</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Metabolic</div><div class="sp-bio-chips"><span>HbA1c</span><span>Glucose</span><span>Fasting insulin</span><span>HOMA-IR</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Hormonal</div><div class="sp-bio-chips"><span>Testosterone</span><span>Oestradiol</span><span>DHEA-S</span><span>Cortisol</span><span>SHBG</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Thyroid</div><div class="sp-bio-chips"><span>TSH</span><span>FT4</span><span>FT3</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Nutritional</div><div class="sp-bio-chips"><span>Vitamin D</span><span>Vitamin B12</span><span>Folate B9</span><span>Magnesium</span><span>Iron</span><span>Ferritin</span><span>Zinc</span><span>Selenium</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Renal &amp; Hepatic</div><div class="sp-bio-chips"><span>Creatinine</span><span>Urea</span><span>ALT</span><span>AST</span><span>GGT</span><span>Bilirubin</span><span>Albumin</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Inflammation</div><div class="sp-bio-chips"><span>CRP</span><span>IL-6</span><span>Fibrinogen</span><span>ESR</span></div></div>
+        </div>
+        <p class="sp-bio-note">+ Optional add-on modules available: Microbiome, Genetic testing, Hormonal and more</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="step-layer layer-dark" id="waitlist">
+  <div class="container">
+    <div class="waitlist-wrap fade">
+      <div class="waitlist-text">
+        <span class="label">Waitlist</span>
+        <h2>Ready to take control<br/>of your health?</h2>
+        <p>Leave your email and we'll let you know when we have availability. No spam, no commitment.</p>
+      </div>
+      <form class="waitlist-form fade fade-d2" id="waitlistForm" novalidate>
+        <div class="waitlist-fields">
+          <input type="email" id="wEmail" placeholder="your@email.com" autocomplete="email" />
+          <button type="submit" id="wBtn">
+            <span id="wBtnText">Join the waitlist</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <p class="waitlist-error" id="wError"></p>
+        <p class="waitlist-ok" id="wOk" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4ADE80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Successfully added! We'll be in touch shortly.
+        </p>
+        <p class="waitlist-note">By submitting you accept our <a href="../privacidade.html">Privacy Policy</a>.</p>
+      </form>
+      <a href="contact.html" class="waitlist-more">Have a specific question? Talk to us →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="step-layer layer-off" id="faq">
+  <div class="container">
+    <div class="faq-wrap">
+      <div class="faq-header">
+        <span class="label fade">Frequently asked questions</span>
+        <h2 class="fade fade-d1">Everything you need <span class="grad-text">to know</span></h2>
+        <p class="fade fade-d2">Answers to the most common questions before you get started.</p>
+      </div>
+      <div class="faq-list fade fade-d2">
+        <div class="faq-item">
+          <button class="faq-q">Do I need to go to a laboratory?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">No. That's the heart of Lyvoo. The test kit is sent to your address, you collect your blood sample via finger-prick at home, and return it in the pre-paid envelope included. No queues, no travel, no appointments.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is at-home collection safe and reliable?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Yes. The kit uses clinically validated capillary collection technology, with step-by-step instructions and app support. Samples are processed in laboratories accredited to ISO 15189 standards — the same quality standard as the best clinical laboratories.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How long do results take?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Between 7 and 10 business days after the laboratory receives your sample. Once ready, you receive a notification in the app with your interpreted results and integrated report.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What happens if a value is abnormal?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Any out-of-range marker is analysed by our medical team, who contextualise it in the report and define an action plan. You also receive nutritional recommendations aligned with your results. You're never left alone with a number you don't understand.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What's included in the programme?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">The Lyvoo programme (€359/year) includes everything in one subscription: +40 biomarkers analysed, kit delivered to your door, ISO 15189 certified laboratory, integrated medical and nutritional report, personalised dietary plan, full 6-month reassessment and app access with continuous team support. No hidden costs, no mandatory extras.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Does this replace my GP?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">No. Lyvoo is a preventive medicine service that complements — rather than replaces — your regular healthcare. Our goal is to give you visibility into your health and act early, sharing information you can take to your treating physician.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">How does the 6-month reassessment work?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Midway through the annual programme you receive a new kit to repeat the panel. We compare the results with your initial baseline and show you, in numbers, what has changed. We then adjust your clinical and nutritional plan to your real progress.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is my health data protected?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Yes. Your data is processed in accordance with GDPR and stored with encryption. Clinical information is confidential and is never shared with third parties without your explicit consent.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Is my data shared with insurers or employers?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">No. Your health data is strictly confidential and is never shared with insurers, employers or any third party without your explicit consent. Only the Lyvoo clinical team responsible for your programme accesses your results, and solely to provide the contracted service.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">What if I struggle to collect the sample?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">The kit includes a detailed step-by-step guide and the Lyvoo app accompanies you through each collection step with visual instructions. The vast majority of users have no difficulty at all. If the sample is insufficient or the collection didn't go well, we send a new kit at no extra charge.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Can I cancel the programme at any time?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">The programme does not renew automatically — you won't receive surprise charges. You can cancel free of charge before kit dispatch. After dispatch but before sample use, we refund minus €15 logistics costs. After using the kit, the service has started and no refund applies, except in cases of error attributable to Lyvoo. See our <a href="../termos.html#cancelamento">full refund policy</a>.</div></div>
+        </div>
+      </div>
+      <div class="faq-foot fade">
+        Still have questions? <a href="mailto:hello@lyvoo.pt">Talk to our team →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <span class="label label-light fade" style="display:block;text-align:center;margin-bottom:20px">Start today</span>
+    <h2 class="fade fade-d1">The first step<br/>is understanding where you stand.</h2>
+    <p class="fade fade-d2">From there, we chart the path together: with real data, a clear plan, and results that can be measured.</p>
+    <div class="cta-btns fade fade-d3">
+      <a href="index.html#planos" class="btn btn-white">View programme <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 16 16"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
+      <a href="mailto:hello@lyvoo.pt" class="btn btn-ghost-white">Talk to the team</a>
+    </div>
+    <div class="cta-trust fade fade-d4">
+      <div class="cta-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No travel — kit delivered to your door</div>
+      <span class="cta-trust-sep"></span>
+      <div class="cta-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>ISO 15189 certified laboratories</div>
+      <span class="cta-trust-sep"></span>
+      <div class="cta-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>Real medical supervision</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="nav-logo" style="text-decoration:none"><img src="../images/logo.png" alt="Lyvoo" class="footer-logo" /></a>
+        <div class="footer-brand-text">Personalised health.</br>Intelligent prevention.</br>Real impact.</div>
+      </div>
+      <div class="footer-col"><h5>Product</h5><ul><li><a href="#como-funciona">How it works</a></li><li><a href="index.html#planos">Programme</a></li></ul></div>
+      <div class="footer-col"><h5>Company</h5><ul><li><a href="#equipa">About us</a></li><li><a href="#equipa">Clinical team</a></li></ul></div>
+      <div class="footer-col"><h5>Support</h5><ul><li><a href="#faq">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a href="../privacidade.html">Privacy</a></li><li><a href="../termos.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lyvoo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="../privacidade.html">Privacy policy</a>
+        <a href="../termos.html">Terms of service</a>
+        <button class="lc-manage-btn" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.3);font-family:'Inter',sans-serif;font-size:13px;padding:0" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+  const mobBtn = document.getElementById('mobBtn');
+  const mobMenu = document.getElementById('mobMenu');
+  mobBtn.addEventListener('click', () => mobMenu.classList.toggle('open'));
+  function closeMob() { mobMenu.classList.remove('open'); }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  const CAT_COLORS = {
+    cardiovascular:'#F87171',hormonal:'#C084FC',nutricional:'#4ADE80',
+    'tiróide':'#60A5FA',inflamação:'#FB923C',renal:'#34D399',hepática:'#FBBF24'
+  };
+
+  const BIOMARKERS = [
+    {id:'ldl',name:'LDL',full:'LDL Cholesterol',cats:['cardiovascular'],range:'< 3.0 mmol/L',desc:'Bad cholesterol. Elevated levels increase the risk of arterial plaque and cardiovascular disease. Primary target in cardiac prevention.'},
+    {id:'hdl',name:'HDL',full:'HDL Cholesterol',cats:['cardiovascular'],range:'> 1.0 (M) / > 1.2 (F) mmol/L',desc:'Good cholesterol. Transports cholesterol from arteries to the liver. Low levels associated with higher cardiovascular risk.'},
+    {id:'apob',name:'ApoB',full:'Apolipoprotein B',cats:['cardiovascular'],range:'< 90 mg/dL',desc:'Better cardiovascular risk marker than LDL. Represents the total number of atherogenic particles in circulation.'},
+    {id:'col',name:'Total chol.',full:'Total Cholesterol',cats:['cardiovascular'],range:'< 5.0 mmol/L',desc:'Total blood cholesterol measure. Assessed alongside LDL, HDL and triglycerides for a complete lipid profile.'},
+    {id:'trig',name:'Triglycerides',full:'Triglycerides',cats:['cardiovascular'],range:'< 1.7 mmol/L',desc:'Blood fats. Elevated by excess sugar and alcohol consumption. An independent cardiovascular risk factor.'},
+    {id:'lpa',name:'Lp(a)',full:'Lipoprotein(a)',cats:['cardiovascular'],range:'< 75 nmol/L',desc:'Genetic cardiovascular risk factor. Largely determined by genetics, responds poorly to dietary changes.'},
+    {id:'hcy',name:'Homocysteine',full:'Homocysteine',cats:['cardiovascular','nutricional'],range:'< 10 µmol/L',desc:'Amino acid and cardiovascular risk marker. Elevated by deficiencies of B12, B9 and B6. Responds well to supplementation.'},
+    {id:'testt',name:'Testosterone T',full:'Total Testosterone',cats:['hormonal'],range:'300–1000 ng/dL (M)',desc:'Main male sex hormone. Affects muscle mass, energy, libido and mood. Naturally declines with age.'},
+    {id:'testl',name:'Testosterone F',full:'Free Testosterone',cats:['hormonal'],range:'50–210 pg/mL (M)',desc:'Biologically active testosterone fraction. More clinically relevant than total in cases of symptomatic deficiency.'},
+    {id:'dhea',name:'DHEA-S',full:'Dehydroepiandrosterone-S',cats:['hormonal'],range:'Variable by age/sex',desc:'Adrenal pre-hormone. Declines with age. Associated with vitality, immunity and body composition.'},
+    {id:'cortisol',name:'Cortisol',full:'Morning Cortisol',cats:['hormonal'],range:'6–23 µg/dL (morning)',desc:'Stress hormone. Chronically elevated cortisol impairs sleep, immunity and metabolism. Essential to assess in burnout.'},
+    {id:'estrad',name:'Oestradiol',full:'Oestradiol (E2)',cats:['hormonal'],range:'Variable by phase/sex',desc:'Main oestrogen. Crucial for bone, cardiovascular and cognitive health. Monitored in menopause and excess in men.'},
+    {id:'lhfsh',name:'LH / FSH',full:'Gonadotrophins LH and FSH',cats:['hormonal'],range:'Variable by phase/sex',desc:'Pituitary hormones that regulate gonadal function. Essential in fertility and menopause assessment.'},
+    {id:'ins',name:'Fasting insulin',full:'Fasting Insulin',cats:['hormonal','nutricional'],range:'< 8 µU/mL',desc:'Early marker of insulin resistance, well before glucose changes. Elevated in chronic pancreatic overload.'},
+    {id:'shbg',name:'SHBG',full:'Sex Hormone Binding Globulin',cats:['hormonal'],range:'10–80 nmol/L',desc:'Sex hormone transport protein. Affects the availability of free testosterone and oestradiol in the body.'},
+    {id:'hba1c',name:'HbA1c',full:'Glycated Haemoglobin',cats:['nutricional'],range:'< 5.7%',desc:'3-month blood sugar average. Primary marker of glycaemic control. Altered at the pre-diabetic stage.'},
+    {id:'glicose',name:'Glucose',full:'Fasting Glucose',cats:['nutricional'],range:'< 5.6 mmol/L',desc:'Fasting blood sugar. Less representative than HbA1c alone, but useful as a quick screening tool.'},
+    {id:'b12',name:'Vitamin B12',full:'Vitamin B12 (Cobalamin)',cats:['nutricional'],range:'> 400 pg/mL',desc:'Essential for nerve function, red blood cells and DNA synthesis. Deficiency common in vegetarians and metformin users.'},
+    {id:'vitd',name:'Vitamin D',full:'Vitamin D 25-OH',cats:['nutricional'],range:'40–60 ng/mL',desc:'Essential for immunity, bone health and hormonal regulation. Deficiency very prevalent in Portugal, even with sun.'},
+    {id:'b9',name:'Folate B9',full:'Folic Acid / Folate',cats:['nutricional'],range:'> 7 ng/mL',desc:'Essential B vitamin for DNA synthesis. Related to homocysteine and cardiovascular health. Critical in pregnancy.'},
+    {id:'mg',name:'Magnesium',full:'Serum Magnesium',cats:['nutricional'],range:'0.75–0.95 mmol/L',desc:'Involved in over 300 enzymatic reactions. Deficiency linked to cramps, insomnia, anxiety and cardiovascular risk.'},
+    {id:'zn',name:'Zinc',full:'Serum Zinc',cats:['nutricional'],range:'70–120 µg/dL',desc:'Essential mineral for immunity, wound healing and testosterone synthesis. Common deficiency in restrictive diets.'},
+    {id:'ferrit',name:'Ferritin',full:'Serum Ferritin',cats:['nutricional'],range:'30–200 ng/mL',desc:'Main iron store in the body. Low causes fatigue and anaemia. Very high indicates inflammation or iron overload.'},
+    {id:'sel',name:'Selenium',full:'Serum Selenium',cats:['nutricional'],range:'100–165 µg/L',desc:'Essential antioxidant for thyroid function and cellular protection. European soils are poor — silent deficiency is common.'},
+    {id:'tsh',name:'TSH',full:'Thyroid Stimulating Hormone',cats:['tiróide'],range:'0.5–2.5 mU/L (functional)',desc:'Primary thyroid function marker. Elevated may indicate hypothyroidism even with T3/T4 within the laboratory "normal".'},
+    {id:'ft3',name:'FT3',full:'Free Triiodothyronine',cats:['tiróide'],range:'3.5–4.5 pg/mL',desc:'Active form of thyroid hormone. Affects metabolism, energy and body temperature. Can be low with normal TSH.'},
+    {id:'ft4',name:'FT4',full:'Free Thyroxine',cats:['tiróide'],range:'1.0–1.5 ng/dL',desc:'Thyroid pro-hormone converted to FT3 in tissues. Assesses the secretory capacity of the gland.'},
+    {id:'antitpo',name:'Anti-TPO',full:'Anti-peroxidase antibodies',cats:['tiróide'],range:'< 35 IU/mL',desc:"Marker of Hashimoto's thyroiditis. May be elevated years before any changes in functional values."},
+    {id:'antiTG',name:'Anti-TG',full:'Anti-thyroglobulin antibodies',cats:['tiróide'],range:'< 20 IU/mL',desc:"Second marker of thyroid autoimmunity. Complements Anti-TPO in complete assessment of Hashimoto's disease."},
+    {id:'pcrus',name:'hsCRP',full:'High-sensitivity CRP',cats:['inflamação','cardiovascular'],range:'< 1.0 mg/L (optimal)',desc:'Ultrasensitive marker of systemic inflammation and cardiovascular risk. More precise than standard CRP for prevention.'},
+    {id:'pcr',name:'CRP',full:'C-Reactive Protein',cats:['inflamação'],range:'< 5 mg/L',desc:'Acute inflammation marker. Elevated in infections, autoimmune conditions and metabolic syndrome.'},
+    {id:'il6',name:'IL-6',full:'Interleukin-6',cats:['inflamação'],range:'< 7 pg/mL',desc:'Pro-inflammatory cytokine. Elevated in visceral obesity, autoimmune conditions and chronic stress.'},
+    {id:'fibrin',name:'Fibrinogen',full:'Plasma Fibrinogen',cats:['inflamação','cardiovascular'],range:'200–400 mg/dL',desc:'Coagulation protein and inflammatory marker. Elevated levels increase thrombosis and cardiovascular event risk.'},
+    {id:'vsg',name:'ESR',full:'Erythrocyte Sedimentation Rate',cats:['inflamação'],range:'< 20 mm/h (M)',desc:'Non-specific inflammation marker. Useful for monitoring chronic inflammatory conditions over time.'},
+    {id:'creat',name:'Creatinine',full:'Serum Creatinine',cats:['renal'],range:'0.6–1.2 mg/dL (M)',desc:'Primary renal function marker. Only rises when more than 50% of renal function is compromised.'},
+    {id:'ureia',name:'Urea',full:'Urea / BUN',cats:['renal'],range:'7–25 mg/dL',desc:'Protein metabolism by-product filtered by the kidneys. Assessed with creatinine for complete renal function.'},
+    {id:'aurico',name:'Uric acid',full:'Serum Uric Acid',cats:['renal'],range:'< 6.0 (F) / < 7.0 (M) mg/dL',desc:'Purine metabolism product. Elevated causes gout and is associated with metabolic syndrome and cardiovascular risk.'},
+    {id:'tfg',name:'eGFR',full:'Estimated Glomerular Filtration Rate',cats:['renal'],range:'> 90 mL/min/1.73m²',desc:'Best overall indicator of renal function. Calculated from creatinine, age and sex. Naturally declines with age.'},
+    {id:'cisC',name:'Cystatin C',full:'Serum Cystatin C',cats:['renal'],range:'< 0.95 mg/L',desc:'More sensitive renal function marker than creatinine. Not affected by muscle mass — ideal for athletes and the elderly.'},
+    {id:'alt',name:'ALT',full:'Alanine Aminotransferase',cats:['hepática'],range:'< 35 (F) / < 45 (M) U/L',desc:'Specific hepatic enzyme. Elevated in fatty liver, hepatitis and excessive alcohol use. Primary liver marker.'},
+    {id:'ast',name:'AST',full:'Aspartate Aminotransferase',cats:['hepática'],range:'< 40 U/L',desc:'Present in liver and muscle. Assessed with ALT for differential diagnosis of hepatic vs. muscular damage.'},
+    {id:'ggt',name:'GGT',full:'Gamma-Glutamyl Transferase',cats:['hepática'],range:'< 50 U/L (M)',desc:'Sensitive to alcohol, drugs and fatty liver. May be altered before ALT and AST show any change.'},
+    {id:'bilirrub',name:'Bilirubin',full:'Total Bilirubin',cats:['hepática'],range:'0.2–1.2 mg/dL',desc:'Haemoglobin degradation product. Elevated in hepatic dysfunction, haemolysis and cholestasis.'},
+    {id:'album',name:'Albumin',full:'Serum Albumin',cats:['hepática'],range:'3.5–5.0 g/dL',desc:'Main plasma protein, produced by the liver. Low in chronic liver disease, malnutrition and inflammation.'},
+    {id:'prottot',name:'Total proteins',full:'Total Serum Proteins',cats:['hepática'],range:'6.0–8.5 g/dL',desc:'Overall assessment of the liver\'s protein synthesis capacity. Includes albumin and globulins.'},
+  ];
+
+  function initAtlas() {
+    const grid = document.getElementById('baGrid');
+    const detail = document.getElementById('baDetail');
+    if (!grid) return;
+    BIOMARKERS.forEach(b => {
+      const el = document.createElement('div');
+      el.className = 'ba-item';
+      el.dataset.cats = b.cats.join(',');
+      const color = CAT_COLORS[b.cats[0]] || '#aaa';
+      el.innerHTML = `<div class="ba-item-row"><span class="ba-dot" style="background:${color}"></span><span class="ba-name">${b.name}</span></div><div class="ba-catname">${b.cats[0]}</div>`;
+      el.addEventListener('click', () => selectBiomarker(b, el));
+      grid.appendChild(el);
+    });
+    document.querySelectorAll('.ba-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.ba-filter').forEach(f => f.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.ba-item').forEach(item => {
+          const match = cat === 'todos' || item.dataset.cats.split(',').includes(cat);
+          item.classList.toggle('dimmed', !match);
+          if (!match) item.classList.remove('selected');
+        });
+        const sel = grid.querySelector('.ba-item.selected');
+        if (!sel) detail.innerHTML = `<div class="ba-detail-empty"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Select a parameter to view details</span></div>`;
+      });
+    });
+  }
+
+  function selectBiomarker(b, el) {
+    document.querySelectorAll('.ba-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    const color = CAT_COLORS[b.cats[0]] || '#aaa';
+    const detail = document.getElementById('baDetail');
+    detail.innerHTML = `<div class="ba-detail-content"><div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${b.cats[0]}</span></div><div><div class="ba-detail-name">${b.full}</div><div class="ba-detail-full">${b.name}</div></div><div class="ba-detail-sep"></div><div><div class="ba-detail-range-label">Reference range</div><div class="ba-detail-range" style="color:${color}">${b.range}</div></div><div class="ba-detail-desc">${b.desc}</div></div>`;
+  }
+
+  initAtlas();
+
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const ans = btn.nextElementSibling;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-a').style.maxHeight = null; });
+      if (!isOpen) { item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+    });
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 78, behavior: 'smooth' }); }
+    });
+  });
+</script>
+
+<script type="module">
+  import { doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { db } from '../lyvoo-firebase.js';
+
+  const form  = document.getElementById('waitlistForm');
+  const input = document.getElementById('wEmail');
+  const btn   = document.getElementById('wBtn');
+  const errEl = document.getElementById('wError');
+  const okEl  = document.getElementById('wOk');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errEl.textContent = ''; okEl.style.display = 'none';
+    const email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Please enter a valid email address.'; return;
+    }
+    btn.disabled = true;
+    document.getElementById('wBtnText').textContent = 'Saving…';
+    try {
+      await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
+        email, criadoEm: serverTimestamp(), fonte: 'en/index.html'
+      }, { merge: true });
+      input.value = '';
+      form.querySelector('.waitlist-fields').style.display = 'none';
+      okEl.style.display = 'flex';
+    } catch {
+      btn.disabled = false;
+      document.getElementById('wBtnText').textContent = 'Join the waitlist';
+      errEl.textContent = 'Error saving. Please try again.';
+    }
+  });
+</script>
+</body>
+</html>

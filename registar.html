@@ -167,6 +167,10 @@
     /* ERROR STATE */
     .field input.error { border-color: #EF4444; }
     .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
+    .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
+    .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
 
     @media (max-width: 520px) {
       .card { padding: 36px 24px; border-radius: 20px; }
@@ -185,10 +189,13 @@
     <a href="index.html" class="nav-logo">
       <img src="images/logo.png" alt="Lyvoo" style="height:46px;width:auto;display:block;" />
     </a>
-    <a href="index.html" class="nav-back">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      Voltar ao início
-    </a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="lang-toggle"><a href="#" class="lang-active">PT</a><a href="en/register.html">EN</a></div>
+      <a href="index.html" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
+        Voltar ao início
+      </a>
+    </div>
   </div>
 </nav>
 
