@@ -1550,7 +1550,7 @@
       .process-step.reverse .step-text { order: 1; }
       .process-step.reverse .step-visual { order: 2; }
       .app-inner { grid-template-columns: 1fr; }
-      .app-phones { display: none; }
+      .app-phones, .app-mockup-wrap { display: none; }
       .why-grid-top { grid-template-columns: 1fr; }
       .why-left p { padding-right: 0; }
       .why-right-stats { margin-top: 36px; }
@@ -1569,11 +1569,19 @@
       .trust-inner { gap: 24px; flex-direction: column; align-items: flex-start; padding: 0 28px; }
       .hero-proof { flex-direction: column; align-items: flex-start; gap: 14px; }
       .proof-divider { display: none; }
+      /* Headings: allow wrapping so they never clip on narrow screens */
+      .hero h1, .problem-intro h2, .problem-intro h2 span { white-space: normal !important; }
+      /* Tighter vertical rhythm on mobile */
+      .hero { padding-top: 140px !important; padding-bottom: 64px !important; }
+      .step-layer { padding: 72px 0; }
+      .cf-section { padding: 72px 0; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-bottom-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
     }
 
     /* mobile menu */
     .mob-menu {
-      display: none; position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+      display: none; position: fixed; top: 100px; left: 0; right: 0; z-index: 99;
       background: rgba(255,255,255,0.96); backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border); flex-direction: column; gap: 4px; padding: 16px 20px;
     }
@@ -1755,8 +1763,9 @@
 <div class="mob-menu" id="mobMenu">
   <a href="#como-funciona" onclick="closeMob()">Como funciona</a>
   <a href="#atlas" onclick="closeMob()">O que testamos</a>
-  <a href="login.html" onclick="closeMob()" style="text-align:center;color:rgba(255,255,255,0.65);">Entrar</a>
-  <a href="registar.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;margin-top:6px">Começar agora</a>
+  <a href="contacto.html" onclick="closeMob()">Contacto</a>
+  <a href="login.html" onclick="closeMob()" style="text-align:center;border:1.5px solid var(--border);margin-top:6px;">Entrar</a>
+  <a href="registar.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;">Começar agora</a>
 </div>
 
 <!-- ── HERO ── -->
