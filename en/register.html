@@ -17,14 +17,14 @@
     }
     body { font-family: 'Inter', sans-serif; background: linear-gradient(160deg, #030D10 0%, #060F16 60%, #04080E 100%); min-height: 100vh; color: var(--ink); -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; }
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.7); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height:112px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height:96px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
     .nav-back { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
     .nav-back:hover { color: rgba(255,255,255,0.8); }
     .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
     .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
-    .page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 124px 24px 60px; }
+    .page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 112px 24px 60px; }
     .card { background: #fff; border-radius: 28px; padding: 48px 44px; width: 100%; max-width: 460px; box-shadow: 0 32px 80px rgba(0,0,0,0.35); }
     .card-header { text-align: center; margin-bottom: 36px; }
     .card-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 14px; }
@@ -70,7 +70,7 @@
 <nav class="nav">
   <div class="nav-inner">
     <a href="../index.html">
-      <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;margin-top:20px;" />
+      <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
     </a>
     <div style="display:flex;align-items:center;gap:12px;">
       <div class="lang-toggle"><a href="../registar.html">PT</a><a href="#" class="lang-active">EN</a></div>
