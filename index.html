@@ -117,6 +117,7 @@
     .nav-inner {
       max-width: 1140px; margin: 0 auto; height: 100px;
       display: flex; align-items: center; justify-content: space-between;
+      position: relative;
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .wordmark { font-size: 22px; font-weight: 800; color: var(--teal); letter-spacing: -0.04em; }
@@ -124,6 +125,11 @@
     .footer-logo { height:64px; width: auto; display: block; }
     /* Logo shows in natural brand colours on both the dark nav and dark footer */
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 4px; list-style: none;
+    }
+    .nav-links-right { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a {
       text-decoration: none; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;
       padding: 8px 14px; border-radius: 8px; transition: color 0.2s, background 0.2s;
@@ -1729,10 +1735,12 @@
     <a href="#" class="nav-logo">
       <img src="images/logo.png" alt="Lyvoo" class="brand-logo" />
     </a>
-    <ul class="nav-links">
+    <ul class="nav-links-center">
       <li><a href="#como-funciona">Como funciona</a></li>
       <li><a href="#atlas">O que testamos</a></li>
       <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <ul class="nav-links-right">
       <li class="lang-toggle"><a href="#" class="lang-active">PT</a><a href="en/index.html">EN</a></li>
       <li><a href="login.html" class="nav-login">Entrar</a></li>
       <li><a href="registar.html" class="nav-cta">Começar agora</a></li>
