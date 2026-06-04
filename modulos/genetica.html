@@ -100,7 +100,19 @@
       .content-grid { grid-template-columns: 1fr; gap: 40px; }
       .btn-cta-ghost { margin-left: 0; margin-top: 12px; }
     }
-  </style>
+      /* Mobile navbar: keep logo + lang toggle + CTA, hide verbose text links */
+    @media (max-width: 700px) {
+      .nav-links { gap: 8px; }
+      .nav-links > li { display: none; }
+      .nav-links > li.lang-toggle,
+      .nav-links > li:has(> .nav-cta) { display: flex; }
+      .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; }
+    }      @media (max-width: 700px) {
+      .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .lf-bottom { flex-direction: column; gap: 14px; text-align: center; }
+      .lf-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+    }
+    @media (max-width: 460px) { .lf-grid { grid-template-columns: 1fr; } }  </style>
   <script src="../cookie-banner.js" defer></script>
 </head>
 <body>
