@@ -420,6 +420,10 @@
     .mob-menu{display:none;position:fixed;top:100px;left:0;right:0;z-index:99;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-direction:column;gap:4px;padding:16px 20px}
     .mob-menu.open{display:flex}
     .mob-menu a{text-decoration:none;color:var(--ink);font-size:16px;font-weight:500;padding:12px 14px;border-radius:10px}
+    .mob-lang{display:flex;justify-content:center;align-items:center;gap:0;margin-top:10px;padding-top:14px;border-top:1px solid var(--border)}
+    .mob-lang span,.mob-lang a{font-size:13px;font-weight:700;letter-spacing:0.04em;padding:8px 22px !important;border-radius:999px;margin:0}
+    .mob-lang .mob-lang-active{background:var(--teal);color:#fff}
+    .mob-lang a{color:var(--ink-3)}
     .step-layer{width:100%;overflow:hidden;padding:120px 0}
     .layer-white{background:#FFFFFF}.layer-off{background:#F1F5F6}
     .layer-dark{background:linear-gradient(160deg,#030D10 0%,#060F16 55%,#04080E 100%)}
@@ -522,6 +526,10 @@
   <a href="contact.html" onclick="closeMob()">Contact</a>
   <a href="login.html" onclick="closeMob()" style="text-align:center;color:rgba(0,0,0,0.65);">Sign in</a>
   <a href="register.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;margin-top:6px">Get started</a>
+  <div class="mob-lang">
+    <a href="../index.html">PT</a>
+    <span class="mob-lang-active">EN</span>
+  </div>
 </div>
 
 <!-- HERO -->

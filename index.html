@@ -1587,6 +1587,10 @@
     }
     .mob-menu.open { display: flex; }
     .mob-menu a { text-decoration: none; color: var(--ink); font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 10px; }
+    .mob-lang { display: flex; justify-content: center; align-items: center; gap: 0; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .mob-lang span, .mob-lang a { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; padding: 8px 22px !important; border-radius: 999px; margin: 0; }
+    .mob-lang .mob-lang-active { background: var(--teal); color: #fff; }
+    .mob-lang a { color: var(--ink-3); }
 
     /* ── Apple/Whoop Full-Width Layer System ── */
     .step-layer { width: 100%; overflow: hidden; padding: 120px 0; }
@@ -1766,6 +1770,10 @@
   <a href="contacto.html" onclick="closeMob()">Contacto</a>
   <a href="login.html" onclick="closeMob()" style="text-align:center;border:1.5px solid var(--border);margin-top:6px;">Entrar</a>
   <a href="registar.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;">Começar agora</a>
+  <div class="mob-lang">
+    <span class="mob-lang-active">PT</span>
+    <a href="en/index.html">EN</a>
+  </div>
 </div>
 
 <!-- ── HERO ── -->
