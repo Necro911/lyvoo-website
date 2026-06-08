@@ -387,8 +387,7 @@
       success.style.display = 'block';
     } catch (err) {
       setLoading(false);
-      errEl.textContent = 'Não foi possível enviar. Tente novamente ou contacte hello@lyvoo.pt'
-        + (err && err.code ? ` (código: ${err.code})` : '');
+      errEl.textContent = 'Não foi possível enviar. Tente novamente ou contacte hello@lyvoo.pt';
       errEl.style.display = 'block';
       console.error('Falha ao gravar pedido na waitlist:', err);
     }
