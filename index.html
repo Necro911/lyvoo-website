@@ -509,6 +509,34 @@
     .step-visual { position: relative; }
 
     /* Visual 1: Kit card */
+    /* ── Head-to-head comparison table ── */
+    .vs-section { background: #fff; }
+    .vs-header { text-align: center; margin-bottom: 52px; }
+    .vs-header h2 { font-size: clamp(28px, 3.8vw, 50px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); line-height: 1.15; margin: 14px 0 16px; }
+    .vs-header p { font-size: 17px; color: var(--ink-2); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+    .vs-table { max-width: 900px; margin: 0 auto; border-radius: 20px; overflow: hidden; border: 1.5px solid rgba(11,82,90,0.1); }
+    .vs-col-headers { display: grid; grid-template-columns: 1fr 1fr 1fr; background: var(--ink); }
+    .vs-col-label { padding: 18px 24px; font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .vs-col-label.feature-col { color: rgba(255,255,255,0.35); background: var(--ink); }
+    .vs-col-label.trad-col { color: rgba(255,255,255,0.5); background: #1a2428; text-align: center; }
+    .vs-col-label.lyvoo-col { color: var(--cyan); background: #0B525A; text-align: center; }
+    .vs-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid rgba(11,82,90,0.08); }
+    .vs-row:nth-child(even) { background: rgba(11,82,90,0.025); }
+    .vs-cell { padding: 16px 24px; font-size: 14.5px; line-height: 1.5; display: flex; align-items: center; gap: 10px; }
+    .vs-cell.feature { font-weight: 600; color: var(--ink); font-size: 14px; }
+    .vs-cell.trad { color: var(--ink-2); }
+    .vs-cell.lyvoo { color: var(--teal); font-weight: 600; }
+    .vs-icon-no  { width: 18px; height: 18px; border-radius: 50%; background: rgba(239,68,68,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #EF4444; }
+    .vs-icon-yes { width: 18px; height: 18px; border-radius: 50%; background: rgba(61,217,232,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--teal); }
+    .vs-icon-meh { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: rgba(255,255,255,0.3); }
+    .vs-footnote { text-align: center; margin-top: 22px; font-size: 12.5px; color: var(--ink-3); }
+    @media (max-width: 680px) {
+      .vs-col-headers { grid-template-columns: 1.2fr 1fr 1fr; }
+      .vs-row { grid-template-columns: 1.2fr 1fr 1fr; }
+      .vs-cell { padding: 13px 14px; font-size: 12.5px; gap: 7px; }
+      .vs-col-label { padding: 14px; font-size: 11px; }
+    }
+
     /* ── Problem section ── */
     .problem-intro { text-align: center; max-width: 800px; margin: 0 auto 60px; }
     .problem-intro h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 16px; white-space: nowrap; }
@@ -2159,6 +2187,125 @@
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ── COMPARAÇÃO: Lyvoo vs. Análises Tradicionais ── -->
+<section class="step-layer layer-white vs-section" id="comparacao">
+  <div class="container">
+    <div class="vs-header fade">
+      <span class="label">Não é uma análise comum</span>
+      <h2>A diferença está nos <span class="grad-text">detalhes</span></h2>
+      <p>Perceba exactamente o que distingue a Lyvoo de uma análise clínica tradicional.</p>
+    </div>
+
+    <div class="vs-table fade fade-d1">
+      <!-- Column headers -->
+      <div class="vs-col-headers">
+        <div class="vs-col-label feature-col"></div>
+        <div class="vs-col-label trad-col">Análises tradicionais</div>
+        <div class="vs-col-label lyvoo-col">Lyvoo</div>
+      </div>
+
+      <!-- Rows -->
+      <div class="vs-row">
+        <div class="vs-cell feature">Recolha da amostra</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-meh"><svg width="10" height="10" viewBox="0 0 10 2" fill="currentColor"><rect y=".5" width="10" height="1" rx=".5"/></svg></span>
+          Laboratório ou clínica
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Em casa, sem deslocação
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Biomarcadores analisados</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          10–15 parâmetros básicos
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          +40 biomarcadores selecionados
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Resultados disponíveis em</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          Semanas (aguardar consulta)
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          7–10 dias úteis
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Interpretação médica</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          "Dentro dos valores"
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Relatório integrado personalizado
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Plano de ação incluído</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          Não incluído
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Plano médico + nutricional
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Nutrição personalizada</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          Não
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Sim, baseada nos seus resultados
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Reavaliação incluída</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          Nenhuma
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Incluída aos 6 meses
+        </div>
+      </div>
+
+      <div class="vs-row">
+        <div class="vs-cell feature">Custo total</div>
+        <div class="vs-cell trad">
+          <span class="vs-icon-no"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+          €800–1.500 em clínica privada
+        </div>
+        <div class="vs-cell lyvoo">
+          <span class="vs-icon-yes"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          €359/ano, tudo incluído
+        </div>
+      </div>
+
+    </div>
+    <p class="vs-footnote fade fade-d2">* Valores de referência para análises equivalentes em laboratórios e clínicas privadas em Portugal.</p>
   </div>
 </section>
 
