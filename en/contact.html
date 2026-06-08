@@ -310,18 +310,25 @@
     }
     setLoading(true);
     try {
+      // Critical step — must succeed
       await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
         firstName, lastName, email, interesse, mensagem,
         criadoEm: serverTimestamp(),
         fonte: 'en/contact.html'
       });
 
-      await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
-        from_name:  `${firstName} ${lastName}`.trim() || email,
-        from_email: email,
-        interesse,
-        mensagem:   mensagem || '(no message)',
-      });
+      // Email notification — a failure here shouldn't block the user,
+      // the request is already saved
+      try {
+        await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
+          from_name:  `${firstName} ${lastName}`.trim() || email,
+          from_email: email,
+          interesse,
+          mensagem:   mensagem || '(no message)',
+        });
+      } catch (notifyErr) {
+        console.error('EmailJS notification failed (entry already saved):', notifyErr);
+      }
 
       form.style.display = 'none';
       success.style.display = 'block';
@@ -329,7 +336,7 @@
       setLoading(false);
       errEl.textContent = 'Unable to send. Please try again or contact hello@lyvoo.pt';
       errEl.style.display = 'block';
-      console.error(err);
+      console.error('Failed to save waitlist entry:', err);
     }
   });
 </script>

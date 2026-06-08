@@ -362,20 +362,25 @@
 
     setLoading(true);
     try {
-      // Grava no Firestore
+      // Grava no Firestore — passo crítico, tem de ter sucesso
       await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
         firstName, lastName, email, interesse, mensagem,
         criadoEm: serverTimestamp(),
         fonte: 'contacto.html'
       });
 
-      // Envia notificação por email via EmailJS
-      await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
-        from_name:  `${firstName} ${lastName}`.trim() || email,
-        from_email: email,
-        interesse,
-        mensagem:   mensagem || '(sem mensagem)',
-      });
+      // Envia notificação por email via EmailJS — falha aqui não deve
+      // impedir o registo (o pedido já foi gravado com sucesso)
+      try {
+        await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
+          from_name:  `${firstName} ${lastName}`.trim() || email,
+          from_email: email,
+          interesse,
+          mensagem:   mensagem || '(sem mensagem)',
+        });
+      } catch (notifyErr) {
+        console.error('Notificação EmailJS falhou (registo já gravado):', notifyErr);
+      }
 
       form.style.display = 'none';
       success.style.display = 'block';
@@ -383,7 +388,7 @@
       setLoading(false);
       errEl.textContent = 'Não foi possível enviar. Tente novamente ou contacte hello@lyvoo.pt';
       errEl.style.display = 'block';
-      console.error(err);
+      console.error('Falha ao gravar pedido na waitlist:', err);
     }
   });
 </script>
