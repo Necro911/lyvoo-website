@@ -509,6 +509,35 @@
     .step-visual { position: relative; }
 
     /* Visual 1: Kit card */
+    /* ── Conditions grid / marquee ── */
+    .conditions-section { padding: 80px 0; overflow: hidden; }
+    .conditions-header { text-align: center; margin-bottom: 52px; padding: 0 24px; }
+    .conditions-header h2 { font-size: clamp(28px, 3.8vw, 50px); font-weight: 800; letter-spacing: -0.04em; color: #fff; line-height: 1.15; margin: 14px 0 16px; }
+    .conditions-header p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+    .conditions-track-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .conditions-track { display: flex; gap: 10px; width: max-content; }
+    .conditions-track-wrap > div:nth-child(1) .conditions-track { animation: marquee-left 38s linear infinite; }
+    .conditions-track-wrap > div:nth-child(2) .conditions-track { animation: marquee-right 42s linear infinite; }
+    .conditions-track-wrap > div:nth-child(3) .conditions-track { animation: marquee-left 35s linear infinite; }
+    @keyframes marquee-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+    .conditions-track-wrap > div { overflow: hidden; }
+    .condition-pill {
+      flex-shrink: 0; white-space: nowrap;
+      padding: 9px 18px; border-radius: 999px;
+      font-size: 13.5px; font-weight: 500; font-family: 'Inter', sans-serif;
+      border: 1px solid rgba(61,217,232,0.15);
+      background: rgba(61,217,232,0.05);
+      color: rgba(255,255,255,0.65);
+      transition: background 0.2s, color 0.2s;
+    }
+    .condition-pill.highlight {
+      background: rgba(61,217,232,0.1);
+      border-color: rgba(61,217,232,0.3);
+      color: rgba(255,255,255,0.88);
+    }
+    .conditions-note { text-align: center; margin-top: 40px; font-size: 13px; color: rgba(255,255,255,0.3); }
+
     /* ── Head-to-head comparison table ── */
     .vs-section { background: #fff; }
     .vs-header { text-align: center; margin-bottom: 52px; }
@@ -2306,7 +2335,6 @@
       </div>
 
     </div>
-    <p class="vs-footnote fade fade-d2">* Valores de referência para análises equivalentes em laboratórios e clínicas privadas em Portugal.</p>
   </div>
 </section>
 
@@ -2443,6 +2471,106 @@
 
     </div>
   </div>
+</section>
+
+<!-- ── CONDIÇÕES MONITORIZADAS ── -->
+<section class="step-layer layer-dark conditions-section" id="condicoes">
+  <div class="conditions-header fade">
+    <span class="label" style="color:rgba(61,217,232,0.55);border-color:rgba(61,217,232,0.2);">Prevenção antecipada</span>
+    <h2>Detete <span class="grad-text">antes</span> de sentir</h2>
+    <p>Os seus biomarcadores revelam sinais precoces de dezenas de condições — muito antes de surgirem sintomas.</p>
+  </div>
+
+  <div class="conditions-track-wrap">
+    <!-- Row 1 — esquerda -->
+    <div><div class="conditions-track">
+      <span class="condition-pill highlight">Diabetes tipo 2</span>
+      <span class="condition-pill">Dislipidemia</span>
+      <span class="condition-pill highlight">Hipertensão</span>
+      <span class="condition-pill">Hipotiroidismo</span>
+      <span class="condition-pill highlight">Défice de vitamina D</span>
+      <span class="condition-pill">Anemia ferropénica</span>
+      <span class="condition-pill highlight">Inflamação crónica</span>
+      <span class="condition-pill">Resistência à insulina</span>
+      <span class="condition-pill highlight">Síndrome metabólico</span>
+      <span class="condition-pill">Burnout</span>
+      <span class="condition-pill highlight">Colesterol elevado</span>
+      <span class="condition-pill">Défice de B12</span>
+      <!-- duplicado para loop contínuo -->
+      <span class="condition-pill highlight">Diabetes tipo 2</span>
+      <span class="condition-pill">Dislipidemia</span>
+      <span class="condition-pill highlight">Hipertensão</span>
+      <span class="condition-pill">Hipotiroidismo</span>
+      <span class="condition-pill highlight">Défice de vitamina D</span>
+      <span class="condition-pill">Anemia ferropénica</span>
+      <span class="condition-pill highlight">Inflamação crónica</span>
+      <span class="condition-pill">Resistência à insulina</span>
+      <span class="condition-pill highlight">Síndrome metabólico</span>
+      <span class="condition-pill">Burnout</span>
+      <span class="condition-pill highlight">Colesterol elevado</span>
+      <span class="condition-pill">Défice de B12</span>
+    </div></div>
+
+    <!-- Row 2 — direita -->
+    <div><div class="conditions-track">
+      <span class="condition-pill">Doença cardiovascular</span>
+      <span class="condition-pill highlight">Aterosclerose</span>
+      <span class="condition-pill">Défice de ferro</span>
+      <span class="condition-pill highlight">Fadiga crónica</span>
+      <span class="condition-pill">Artrite reumatoide</span>
+      <span class="condition-pill highlight">Stress oxidativo</span>
+      <span class="condition-pill">Função renal alterada</span>
+      <span class="condition-pill highlight">Doença autoimune</span>
+      <span class="condition-pill">Obesidade metabólica</span>
+      <span class="condition-pill highlight">Défice de magnésio</span>
+      <span class="condition-pill">Função hepática</span>
+      <span class="condition-pill highlight">Saúde óssea</span>
+      <!-- duplicado -->
+      <span class="condition-pill">Doença cardiovascular</span>
+      <span class="condition-pill highlight">Aterosclerose</span>
+      <span class="condition-pill">Défice de ferro</span>
+      <span class="condition-pill highlight">Fadiga crónica</span>
+      <span class="condition-pill">Artrite reumatoide</span>
+      <span class="condition-pill highlight">Stress oxidativo</span>
+      <span class="condition-pill">Função renal alterada</span>
+      <span class="condition-pill highlight">Doença autoimune</span>
+      <span class="condition-pill">Obesidade metabólica</span>
+      <span class="condition-pill highlight">Défice de magnésio</span>
+      <span class="condition-pill">Função hepática</span>
+      <span class="condition-pill highlight">Saúde óssea</span>
+    </div></div>
+
+    <!-- Row 3 — esquerda -->
+    <div><div class="conditions-track">
+      <span class="condition-pill highlight">Hipertiroidismo</span>
+      <span class="condition-pill">Síndrome do ovário poliquístico</span>
+      <span class="condition-pill highlight">Défice de testosterona</span>
+      <span class="condition-pill">Cancro da próstata (PSA)</span>
+      <span class="condition-pill highlight">Pré-diabetes</span>
+      <span class="condition-pill">Défice de vitamina B9</span>
+      <span class="condition-pill highlight">Desequilíbrio hormonal</span>
+      <span class="condition-pill">Inflamação sistémica</span>
+      <span class="condition-pill highlight">Saúde cardiovascular</span>
+      <span class="condition-pill">Défice de zinco</span>
+      <span class="condition-pill highlight">Disbiose intestinal</span>
+      <span class="condition-pill">Função tiroideia</span>
+      <!-- duplicado -->
+      <span class="condition-pill highlight">Hipertiroidismo</span>
+      <span class="condition-pill">Síndrome do ovário poliquístico</span>
+      <span class="condition-pill highlight">Défice de testosterona</span>
+      <span class="condition-pill">Cancro da próstata (PSA)</span>
+      <span class="condition-pill highlight">Pré-diabetes</span>
+      <span class="condition-pill">Défice de vitamina B9</span>
+      <span class="condition-pill highlight">Desequilíbrio hormonal</span>
+      <span class="condition-pill">Inflamação sistémica</span>
+      <span class="condition-pill highlight">Saúde cardiovascular</span>
+      <span class="condition-pill">Défice de zinco</span>
+      <span class="condition-pill highlight">Disbiose intestinal</span>
+      <span class="condition-pill">Função tiroideia</span>
+    </div></div>
+  </div>
+
+  <p class="conditions-note fade">+40 biomarcadores · 7 categorias clínicas · Laboratório ISO 15189</p>
 </section>
 
 </div><!-- /dark-continuum -->
