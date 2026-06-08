@@ -1595,8 +1595,11 @@
       .modules-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 32px; }
       .trust-inner { gap: 24px; flex-direction: column; align-items: flex-start; padding: 0 28px; }
-      .hero-proof { flex-direction: column; align-items: flex-start; gap: 14px; }
-      .proof-divider { display: none; }
+      .hero-proof { flex-direction: row; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 10px; }
+      .proof-item { gap: 1px; }
+      .proof-num { font-size: 17px; }
+      .proof-label { font-size: 10.5px; white-space: nowrap; }
+      .proof-divider { display: block; height: 28px; }
       /* Headings: allow wrapping so they never clip on narrow screens */
       .hero h1, .problem-intro h2, .problem-intro h2 span { white-space: normal !important; }
       /* Tighter vertical rhythm on mobile */
