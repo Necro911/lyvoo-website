@@ -323,6 +323,7 @@
         await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
           from_name:  `${firstName} ${lastName}`.trim() || email,
           from_email: email,
+          email,
           interesse,
           mensagem:   mensagem || '(no message)',
         });
