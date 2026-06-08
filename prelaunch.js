@@ -22,6 +22,7 @@
   const WAITLIST_LABEL    = isEN ? 'Join the waitlist' : 'Junte-se à lista de espera';
   const SOON_LABEL        = isEN ? 'Coming soon - pricing to be announced' : 'Em breve - preço a confirmar';
   const PRICE_PLACEHOLDER = isEN ? 'pricing to be announced' : 'preço a confirmar';
+  const STORIES_SOON      = isEN ? 'Soon, you could be part of the Lyvoo story.' : 'Em breve poderá fazer parte da história da Lyvoo.';
 
   /* ─────────── CSS ─────────── */
   const style = document.createElement('style');
@@ -31,6 +32,16 @@
       display: inline-block; font-size: 13px; font-weight: 600;
       color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.18);
       border-radius: 999px; padding: 8px 20px; font-family: 'Inter', sans-serif;
+    }
+    .prelaunch-stories-soon {
+      text-align: center; max-width: 540px; margin: 0 auto;
+      padding: 56px 36px; border: 1.5px dashed rgba(11,82,90,0.2);
+      border-radius: 22px; background: rgba(11,82,90,0.035);
+    }
+    .prelaunch-stories-soon svg { color: #0B525A; opacity: 0.45; margin-bottom: 16px; }
+    .prelaunch-stories-soon p {
+      font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 600;
+      line-height: 1.7; color: var(--ink-2, #5B6B6E); margin: 0;
     }
   `;
   document.head.appendChild(style);
@@ -62,6 +73,19 @@
     badge.textContent = SOON_LABEL;
     el.insertAdjacentElement('afterend', badge);
   });
+
+  /* ─────────── 3b. Secção "Histórias reais" → ainda sem testemunhos ─────────── */
+  const tstGrid = document.querySelector('#testemunhos .tst-grid');
+  if (tstGrid && !document.querySelector('.prelaunch-stories-soon')) {
+    tstGrid.classList.add('prelaunch-hide');
+    const soon = document.createElement('div');
+    soon.className = 'prelaunch-stories-soon';
+    soon.innerHTML = `
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z"/></svg>
+      <p>${STORIES_SOON}</p>
+    `;
+    tstGrid.insertAdjacentElement('afterend', soon);
+  }
 
   /* ─────────── 3. Menções textuais a "€359/ano" ou "€359/year" → mascaradas ─────────── */
   const priceTestRe    = /\(?\s*€\s?359\s?\/\s?(ano|year)\s*\)?/i;
