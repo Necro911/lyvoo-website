@@ -35,11 +35,19 @@
   `;
   document.head.appendChild(style);
 
-  /* ─────────── 1. CTAs de registo/login/dashboard → lista de espera ─────────── */
-  const ctaPattern = /(^|\/)(registar|register|login|dashboard)\.html(\?|#|$)/i;
+  /* ─────────── 1a. Links de login → escondidos (ninguém tem conta ainda) ─────────── */
+  const loginPattern = /(^|\/)login\.html(\?|#|$)/i;
   document.querySelectorAll('a[href]').forEach((a) => {
     const href = a.getAttribute('href') || '';
-    if (!ctaPattern.test(href)) return;
+    if (!loginPattern.test(href)) return;
+    a.classList.add('prelaunch-hide');
+  });
+
+  /* ─────────── 1b. CTAs de registo/dashboard → lista de espera (1 só botão) ─────────── */
+  const signupPattern = /(^|\/)(registar|register|dashboard)\.html(\?|#|$)/i;
+  document.querySelectorAll('a[href]').forEach((a) => {
+    const href = a.getAttribute('href') || '';
+    if (!signupPattern.test(href)) return;
     const svg = a.querySelector('svg');
     a.textContent = WAITLIST_LABEL;
     if (svg) a.appendChild(svg);
