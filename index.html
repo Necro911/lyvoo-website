@@ -1657,14 +1657,6 @@
       letter-spacing: -0.04em; margin-bottom: 16px; line-height: 1.15;
     }
 
-    /* Atlas + descrição lado a lado */
-    .atlas-main-layout {
-      display: grid; grid-template-columns: 1fr 280px; gap: 36px; align-items: start;
-    }
-    .atlas-side-desc { padding-top: 4px; }
-    .atlas-side-desc p { font-size: 15px; color: rgba(255,255,255,0.45); line-height: 1.8; margin-bottom: 20px; }
-    .atlas-side-desc .step-detail-item { color: rgba(255,255,255,0.38); font-size: 13px; }
-
     .step-atlas-right p { font-size: 15px; color: rgba(255,255,255,0.45); line-height: 1.8; margin-bottom: 20px; }
     .step-atlas-right .step-detail-item { color: rgba(255,255,255,0.38); font-size: 13px; }
 
@@ -3709,8 +3701,13 @@
   // Mobile menu
   const mobBtn = document.getElementById('mobBtn');
   const mobMenu = document.getElementById('mobMenu');
-  mobBtn.addEventListener('click', () => mobMenu.classList.toggle('open'));
+  mobBtn.addEventListener('click', (e) => { e.stopPropagation(); mobMenu.classList.toggle('open'); });
   function closeMob() { mobMenu.classList.remove('open'); }
+  document.addEventListener('click', (e) => {
+    if (mobMenu.classList.contains('open') && !mobMenu.contains(e.target) && e.target !== mobBtn) {
+      mobMenu.classList.remove('open');
+    }
+  });
 
 
   // Scroll fade-in

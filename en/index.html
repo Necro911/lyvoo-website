@@ -1558,8 +1558,13 @@
   window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
   const mobBtn = document.getElementById('mobBtn');
   const mobMenu = document.getElementById('mobMenu');
-  mobBtn.addEventListener('click', () => mobMenu.classList.toggle('open'));
+  mobBtn.addEventListener('click', (e) => { e.stopPropagation(); mobMenu.classList.toggle('open'); });
   function closeMob() { mobMenu.classList.remove('open'); }
+  document.addEventListener('click', (e) => {
+    if (mobMenu.classList.contains('open') && !mobMenu.contains(e.target) && e.target !== mobBtn) {
+      mobMenu.classList.remove('open');
+    }
+  });
 
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
