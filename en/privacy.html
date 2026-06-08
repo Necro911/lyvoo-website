@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="../images/og-image.jpg" type="image/jpeg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Lyvoo</title>
+  <meta name="description" content="How Lyvoo collects, uses, and protects your personal and health data." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Lyvoo" />
+  <meta property="og:title" content="Privacy Policy — Lyvoo" />
+  <meta property="og:description" content="How Lyvoo collects, uses, and protects your personal and health data, in compliance with the GDPR." />
+  <meta property="og:url" content="https://lyvoo.pt/en/privacy.html" />
+  <meta property="og:image" content="https://lyvoo.pt/images/og-image.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8; --bg: #FFFFFF; --surface: #F6F8F9; --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96; --dark-bg: #080C0E; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+    .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .nav { background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height:100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
+    .hero { background: var(--surface); border-bottom: 1px solid var(--border); padding: 64px 0 48px; }
+    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 12px; }
+    .hero-meta { font-size: 14px; color: var(--ink-3); }
+    .content { padding: 56px 0 80px; }
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; margin-bottom: 48px; }
+    .toc h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
+    .toc ol { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .toc a { font-size: 14px; color: var(--teal-light); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .section { margin-bottom: 48px; scroll-margin-top: 100px; }
+    .section h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .section h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin: 22px 0 10px; }
+    .section p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin-bottom: 14px; }
+    .section p:last-child { margin-bottom: 0; }
+    .section ul, .section ol { padding-left: 22px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .section li { font-size: 15px; color: var(--ink-2); line-height: 1.7; }
+    .section a { color: var(--teal-light); }
+    .highlight-box { background: #EEF9F9; border: 1px solid rgba(11,82,90,0.15); border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
+    .highlight-box p { color: var(--teal); margin-bottom: 0; font-size: 14px; }
+    .highlight-box strong { color: var(--teal); }
+    .alert-box { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
+    .alert-box p { color: #92400E; margin-bottom: 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th { background: var(--surface); padding: 10px 14px; text-align: left; font-weight: 600; color: var(--ink); border: 1px solid var(--border); }
+    td { padding: 10px 14px; color: var(--ink-2); border: 1px solid var(--border); line-height: 1.6; }
+    .footer { background: #07090B; padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .lf-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 16px; }
+    .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+    .lf-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .lf-col a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .lf-col a:hover { color: #fff; }
+    .lf-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding: 24px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .lf-bottom > span { font-size: 13px; color: rgba(255,255,255,0.25); }
+    .lf-links { display: flex; align-items: center; gap: 20px; }
+    .lf-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
+    .lf-links a:hover { color: rgba(255,255,255,0.7); }
+    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+    .lf-cookies:hover { color: rgba(255,255,255,0.7); }
+    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
+    @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; } .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; } }
+  </style>
+  <script src="../cookie-banner.js" defer></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#atlas">What we test</a></li>
+      <li><a href="register.html" class="nav-cta">Get started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="label">Legal documents</div>
+    <h1>Privacy Policy</h1>
+    <p class="hero-meta">Last updated: 1 June 2026 · Version 1.0</p>
+  </div>
+</section>
+
+<div class="content">
+  <div class="container">
+
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#controller">Data controller</a></li>
+        <li><a href="#data-collected">Data we collect</a></li>
+        <li><a href="#legal-basis">Legal basis and purposes</a></li>
+        <li><a href="#health-data">Health data — special category</a></li>
+        <li><a href="#sharing">Who we share your data with</a></li>
+        <li><a href="#retention">Retention periods</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#minors">Minors</a></li>
+        <li><a href="#changes">Changes to this policy</a></li>
+        <li><a href="#contact">Contact and complaints</a></li>
+      </ol>
+    </div>
+
+    <!-- 1 -->
+    <div class="section" id="controller">
+      <h2>1. Data controller</h2>
+      <p>The entity responsible for the processing of your personal data is:</p>
+      <p>
+        <strong>Lyvoo Health, Lda.</strong><br/>
+        [Full address — to be completed]<br/>
+        Tax number (NIF): [to be completed]<br/>
+        Privacy email: <a href="mailto:privacidade@lyvoo.pt">privacidade@lyvoo.pt</a>
+      </p>
+      <p>Under Regulation (EU) 2016/679 (GDPR), Lyvoo is the data controller for data collected through the lyvoo.pt platform and the Lyvoo app.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="section" id="data-collected">
+      <h2>2. Data we collect</h2>
+
+      <h3>2.1 Identification and contact data</h3>
+      <ul>
+        <li>First name and surname</li>
+        <li>Email address</li>
+        <li>Delivery address (for kit delivery)</li>
+        <li>Phone number (optional)</li>
+      </ul>
+
+      <h3>2.2 Health and biomarker data</h3>
+      <div class="alert-box">
+        <p><strong>⚠️ Please note:</strong> Health data is a special category of personal data under the GDPR (Article 9). Its processing requires explicit consent, which will be requested from you separately.</p>
+      </div>
+      <ul>
+        <li>Laboratory test results (blood biomarkers)</li>
+        <li>Medical and nutritional reports</li>
+        <li>Lifestyle data entered in the app (sleep, exercise, diet)</li>
+        <li>History of assessments and reassessments</li>
+      </ul>
+
+      <h3>2.3 Platform usage data</h3>
+      <ul>
+        <li>Browsing and interaction data on the website</li>
+        <li>IP address and device information</li>
+        <li>Cookies (see section 8)</li>
+      </ul>
+
+      <h3>2.4 Billing data</h3>
+      <ul>
+        <li>Information required for payment processing (managed by Stripe)</li>
+        <li>Transaction history</li>
+      </ul>
+    </div>
+
+    <!-- 3 -->
+    <div class="section" id="legal-basis">
+      <h2>3. Legal basis and purposes</h2>
+      <table>
+        <tr><th>Purpose</th><th>Legal basis (GDPR)</th></tr>
+        <tr><td>Creating and managing your account</td><td>Performance of contract (Art. 6(1)(b))</td></tr>
+        <tr><td>Dispatching the analysis kit</td><td>Performance of contract (Art. 6(1)(b))</td></tr>
+        <tr><td>Processing payment</td><td>Performance of contract (Art. 6(1)(b))</td></tr>
+        <tr><td>Processing health and biomarker data</td><td>Explicit consent (Art. 9(2)(a))</td></tr>
+        <tr><td>Sending communications about your programme</td><td>Performance of contract (Art. 6(1)(b))</td></tr>
+        <tr><td>Sending newsletters and preventive health content</td><td>Consent (Art. 6(1)(a))</td></tr>
+        <tr><td>Improving our services and conducting analyses</td><td>Legitimate interests (Art. 6(1)(f))</td></tr>
+        <tr><td>Complying with legal and regulatory obligations</td><td>Legal obligation (Art. 6(1)(c))</td></tr>
+      </table>
+    </div>
+
+    <!-- 4 -->
+    <div class="section" id="health-data">
+      <h2>4. Health data — special category</h2>
+      <div class="highlight-box">
+        <p><strong>The health data you entrust to us is processed with the highest level of protection.</strong> Only the clinical team directly responsible for your programme has access to your results, and strictly to the extent necessary to provide the service.</p>
+      </div>
+      <p>The processing of your health data is carried out exclusively for:</p>
+      <ul>
+        <li>Analysing the results of your laboratory tests</li>
+        <li>Producing personalised medical and nutritional reports</li>
+        <li>Monitoring the progress of your preventive health programme</li>
+        <li>Providing clinical support by the medical and nutrition team</li>
+      </ul>
+      <p>Your health data <strong>is not used for commercial purposes</strong>, is not shared with third parties for marketing purposes, and is not used to make automated decisions with significant effects on you.</p>
+      <p>You have the right to withdraw your consent to the processing of health data at any time via <a href="mailto:privacidade@lyvoo.pt">privacidade@lyvoo.pt</a>. Withdrawal of consent does not affect the lawfulness of processing carried out before the withdrawal, but may mean it is no longer possible to continue providing the service.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="section" id="sharing">
+      <h2>5. Who we share your data with</h2>
+      <p>Lyvoo does not sell or rent your personal data to third parties. We share your data only in the following circumstances:</p>
+
+      <h3>5.1 Service providers (processors)</h3>
+      <table>
+        <tr><th>Entity</th><th>Service</th><th>Location</th></tr>
+        <tr><td>Google Firebase / Firestore</td><td>Authentication and database</td><td>EU (eur3)</td></tr>
+        <tr><td>Stripe</td><td>Payment processing</td><td>EU</td></tr>
+        <tr><td>ISO 15189 certified partner laboratory</td><td>Laboratory analysis</td><td>Portugal</td></tr>
+      </table>
+      <p>All processors are bound by data processing agreements ensuring GDPR compliance.</p>
+
+      <h3>5.2 Legal obligations</h3>
+      <p>We may disclose your data where required by law, court order, or competent authority.</p>
+
+      <h3>5.3 International transfers</h3>
+      <p>Firebase servers are located in the EU (region eur3 — Europe). We do not transfer data to countries outside the European Economic Area without appropriate safeguards.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="section" id="retention">
+      <h2>6. Retention periods</h2>
+      <table>
+        <tr><th>Data type</th><th>Retention period</th></tr>
+        <tr><td>Account and profile data</td><td>Duration of account + 3 years</td></tr>
+        <tr><td>Health and biomarker data</td><td>Duration of account + 5 years (legal requirement for health records)</td></tr>
+        <tr><td>Billing data</td><td>10 years (tax obligation)</td></tr>
+        <tr><td>Browsing and analytical cookie data</td><td>13 months</td></tr>
+        <tr><td>Support communications</td><td>3 years</td></tr>
+      </table>
+      <p>After the retention period expires, data is deleted or irreversibly anonymised.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="section" id="rights">
+      <h2>7. Your rights</h2>
+      <p>Under the GDPR, you have the following rights with respect to your personal data:</p>
+      <ul>
+        <li><strong>Right of access</strong> — to know what data we hold about you and to receive a copy</li>
+        <li><strong>Right to rectification</strong> — to correct inaccurate or incomplete data</li>
+        <li><strong>Right to erasure</strong> ("right to be forgotten") — to request deletion of your data, unless we have a legal obligation to retain it</li>
+        <li><strong>Right to restriction of processing</strong> — to request suspension of processing in certain circumstances</li>
+        <li><strong>Right to data portability</strong> — to receive your data in a structured, machine-readable format</li>
+        <li><strong>Right to object</strong> — to object to processing based on legitimate interests</li>
+        <li><strong>Right not to be subject to automated decisions</strong> — we do not make decisions based solely on automated processing with significant effects</li>
+        <li><strong>Right to withdraw consent</strong> — for processing based on your consent, you may withdraw it at any time</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p>To exercise any of these rights, contact us by email: <a href="mailto:privacidade@lyvoo.pt">privacidade@lyvoo.pt</a>. We will respond within 30 days.</p>
+      </div>
+
+      <p>You also have the right to lodge a complaint with the Portuguese supervisory authority:</p>
+      <p>
+        <strong>CNPD — Portuguese Data Protection Authority (Comissão Nacional de Proteção de Dados)</strong><br/>
+        Rua de São Bento, 148-3.º, 1200-821 Lisboa<br/>
+        <a href="https://www.cnpd.pt" target="_blank" rel="noopener">www.cnpd.pt</a>
+      </p>
+    </div>
+
+    <!-- 8 -->
+    <div class="section" id="cookies">
+      <h2>8. Cookies</h2>
+      <p>We use cookies and similar technologies for the operation and improvement of the website.</p>
+
+      <h3>Strictly necessary cookies</h3>
+      <p>Essential for the functioning of the platform (authentication session, security preferences). These cannot be disabled.</p>
+
+      <h3>Analytical cookies</h3>
+      <p>We use Google Analytics to understand how users interact with the website (pages visited, session duration). These cookies require your consent and can be refused via the cookie banner displayed on your first visit.</p>
+
+      <h3>How to manage cookies</h3>
+      <p>You can manage your cookie preferences at any time through your browser settings or our cookie preference panel.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="section" id="security">
+      <h2>9. Security</h2>
+      <p>We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, loss, alteration, or disclosure, including:</p>
+      <ul>
+        <li>Encryption of data in transit (TLS/HTTPS)</li>
+        <li>Encryption of data at rest in the database</li>
+        <li>Role-based access control (only the clinical team accesses health data)</li>
+        <li>Secure authentication via Firebase Authentication</li>
+        <li>Access monitoring and audit logging</li>
+      </ul>
+      <p>In the event of a personal data breach that poses a risk to your rights and freedoms, we will notify you within 72 hours, as required by the GDPR.</p>
+    </div>
+
+    <!-- 10 -->
+    <div class="section" id="minors">
+      <h2>10. Minors</h2>
+      <p>The Lyvoo platform is intended for users aged 18 and over. We do not knowingly collect personal data from minors. If you become aware that a minor has provided us with personal data without parental consent, please contact us so that we can arrange for the deletion of that data.</p>
+    </div>
+
+    <!-- 11 -->
+    <div class="section" id="changes">
+      <h2>11. Changes to this policy</h2>
+      <p>We may update this Privacy Policy periodically. In the event of significant changes, we will notify you by email or via a notice on the platform, with a minimum of 15 days' notice.</p>
+      <p>The version in force is always the most recent one available on this page, with the date of last update indicated.</p>
+    </div>
+
+    <!-- 12 -->
+    <div class="section" id="contact">
+      <h2>12. Contact and complaints</h2>
+      <p>For any questions relating to the protection of your personal data:</p>
+      <ul>
+        <li>Email: <a href="mailto:privacidade@lyvoo.pt">privacidade@lyvoo.pt</a></li>
+        <li>Subject: "GDPR — [description of request]"</li>
+      </ul>
+      <p>We commit to responding within 30 calendar days of receipt of the request.</p>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="lf-grid">
+      <div>
+        <a href="index.html"><img src="../images/logo.png" alt="Lyvoo" style="height:38px;width:auto;display:block;" /></a>
+        <p class="lf-brand">Personalised preventive health.<br/>From home. Made in Portugal.</p>
+      </div>
+      <div class="lf-col"><h5>Product</h5><ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#atlas">What we test</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Company</h5><ul>
+        <li><a href="index.html#equipa">About us</a></li>
+        <li><a href="index.html#equipa">Clinical team</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Support</h5><ul>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+      </ul></div>
+    </div>
+    <div class="lf-bottom">
+      <span>© 2026 Lyvoo. All rights reserved.</span>
+      <div class="lf-links">
+        <a href="privacy.html">Privacy policy</a>
+        <a href="terms.html">Terms of service</a>
+        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

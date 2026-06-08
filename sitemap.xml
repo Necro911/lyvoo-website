@@ -34,6 +34,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://lyvoo.pt/en/terms.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/privacy.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
 
   <!-- Módulos PT -->
   <url>
@@ -78,6 +88,53 @@
   </url>
   <url>
     <loc>https://lyvoo.pt/modulos/consulta-nutricao.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Módulos EN -->
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/genetica.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/hormonal-masculino.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/hormonal-feminino.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/tiroide.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/microbioma.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/energia-fadiga.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/vitamina-d.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/consulta-medica.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/consulta-nutricao.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

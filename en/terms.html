@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="../images/og-image.jpg" type="image/jpeg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Lyvoo</title>
+  <meta name="description" content="Terms and conditions of use for the Lyvoo platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Lyvoo" />
+  <meta property="og:title" content="Terms of Service — Lyvoo" />
+  <meta property="og:description" content="Terms and conditions of use for the Lyvoo platform." />
+  <meta property="og:url" content="https://lyvoo.pt/en/terms.html" />
+  <meta property="og:image" content="https://lyvoo.pt/images/og-image.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8; --bg: #FFFFFF; --surface: #F6F8F9; --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96; --dark-bg: #080C0E; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+    .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .nav { background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height:100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
+    .hero { background: var(--surface); border-bottom: 1px solid var(--border); padding: 64px 0 48px; }
+    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 12px; }
+    .hero-meta { font-size: 14px; color: var(--ink-3); }
+    .content { padding: 56px 0 80px; }
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px 28px; margin-bottom: 48px; }
+    .toc h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px; }
+    .toc ol { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+    .toc a { font-size: 14px; color: var(--teal-light); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    .section { margin-bottom: 48px; scroll-margin-top: 100px; }
+    .section h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .section h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin: 22px 0 10px; }
+    .section p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin-bottom: 14px; }
+    .section p:last-child { margin-bottom: 0; }
+    .section ul, .section ol { padding-left: 22px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .section li { font-size: 15px; color: var(--ink-2); line-height: 1.7; }
+    .section a { color: var(--teal-light); }
+    .highlight-box { background: #EEF9F9; border: 1px solid rgba(11,82,90,0.15); border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
+    .highlight-box p { color: var(--teal); margin-bottom: 0; font-size: 14px; }
+    .alert-box { background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
+    .alert-box p { color: #92400E; margin-bottom: 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th { background: var(--surface); padding: 10px 14px; text-align: left; font-weight: 600; color: var(--ink); border: 1px solid var(--border); }
+    td { padding: 10px 14px; color: var(--ink-2); border: 1px solid var(--border); line-height: 1.6; }
+    .footer { background: #07090B; padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .lf-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 16px; }
+    .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+    .lf-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .lf-col a { font-size: 14px; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .lf-col a:hover { color: #fff; }
+    .lf-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding: 24px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .lf-bottom > span { font-size: 13px; color: rgba(255,255,255,0.25); }
+    .lf-links { display: flex; align-items: center; gap: 20px; }
+    .lf-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
+    .lf-links a:hover { color: rgba(255,255,255,0.7); }
+    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+    .lf-cookies:hover { color: rgba(255,255,255,0.7); }
+    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
+    @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; } .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; } }
+  </style>
+  <script src="../cookie-banner.js" defer></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#atlas">What we test</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="register.html" class="nav-cta">Get started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="label">Legal documents</div>
+    <h1>Terms of Service</h1>
+    <p class="hero-meta">Last updated: 1 June 2026 · Version 1.0</p>
+  </div>
+</section>
+
+<div class="content">
+  <div class="container">
+
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#introduction">Introduction and acceptance</a></li>
+        <li><a href="#service">Description of service</a></li>
+        <li><a href="#not-medical">Important medical notice</a></li>
+        <li><a href="#account">Account creation and management</a></li>
+        <li><a href="#plans">Plans and payments</a></li>
+        <li><a href="#cancellation">Cancellation and refunds</a></li>
+        <li><a href="#obligations">Your obligations</a></li>
+        <li><a href="#ip">Intellectual property</a></li>
+        <li><a href="#liability">Limitation of liability</a></li>
+        <li><a href="#suspension">Suspension and termination</a></li>
+        <li><a href="#law">Governing law</a></li>
+        <li><a href="#contact-terms">Contact</a></li>
+      </ol>
+    </div>
+
+    <!-- 1 -->
+    <div class="section" id="introduction">
+      <h2>1. Introduction and acceptance</h2>
+      <p>These Terms of Service ("Terms") govern the relationship between <strong>Lyvoo Health, Lda.</strong> ("Lyvoo", "we") and the user ("you", "user") with respect to access to and use of the Lyvoo platform, available at <a href="https://lyvoo.pt">lyvoo.pt</a> and on the Lyvoo mobile application ("Platform").</p>
+      <p>By creating an account or using the Platform, you confirm that:</p>
+      <ul>
+        <li>You have read, understood, and accept these Terms in their entirety</li>
+        <li>You are 18 years of age or older</li>
+        <li>You have legal capacity to enter into binding contracts</li>
+      </ul>
+      <p>If you do not agree with any of these Terms, you should not use the Platform.</p>
+    </div>
+
+    <!-- 2 -->
+    <div class="section" id="service">
+      <h2>2. Description of service</h2>
+      <p>Lyvoo is a personalised preventive medicine platform that offers:</p>
+      <ul>
+        <li>Delivery of biological sample collection kits (dry blood spot — DBS technology) for at-home laboratory analysis</li>
+        <li>Biomarker analysis in a laboratory certified to ISO 15189</li>
+        <li>Clinical interpretation of results by a medical and nutrition team</li>
+        <li>Personalised reports with preventive health recommendations</li>
+        <li>Personalised dietary and supplementation plans</li>
+        <li>Longitudinal health monitoring through the Lyvoo app</li>
+      </ul>
+      <p>Lyvoo reserves the right to modify, suspend, or discontinue Platform features, with reasonable prior notice.</p>
+    </div>
+
+    <!-- 3 -->
+    <div class="section" id="not-medical">
+      <h2>3. Important medical notice</h2>
+      <div class="alert-box">
+        <p><strong>⚕️ Lyvoo is not an emergency medical service and does not replace consultation with your GP or specialist.</strong></p>
+      </div>
+      <p>Lyvoo's services are preventive and wellness-oriented. The information, reports, and recommendations provided through the Platform:</p>
+      <ul>
+        <li><strong>Do not constitute a medical diagnosis</strong></li>
+        <li>Do not replace the assessment and advice of your attending physician</li>
+        <li>Should not be used as the sole basis for health decisions</li>
+        <li>Are not appropriate for urgent or emergency medical situations</li>
+      </ul>
+      <p>In the event of a medical emergency, call <strong>112 or go to your nearest A&amp;E</strong> immediately.</p>
+      <p>If any Lyvoo result or recommendation causes you concern, we recommend consulting your GP or a specialist.</p>
+    </div>
+
+    <!-- 4 -->
+    <div class="section" id="account">
+      <h2>4. Account creation and management</h2>
+      <h3>4.1 Registration</h3>
+      <p>To access Lyvoo's paid services, you must create an account by providing true, complete, and up-to-date information. You are responsible for maintaining the confidentiality of your password and for all activities carried out on your account.</p>
+
+      <h3>4.2 Security</h3>
+      <p>You must notify us immediately of any suspected unauthorised use of your account: <a href="mailto:suporte@lyvoo.pt">suporte@lyvoo.pt</a>. Lyvoo is not responsible for losses resulting from unauthorised use of your account.</p>
+
+      <h3>4.3 One account per user</h3>
+      <p>Each account is personal and non-transferable. Sharing an account with third parties or creating accounts on behalf of others without express authorisation is prohibited.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="section" id="plans">
+      <h2>5. Plans and payments</h2>
+      <h3>5.1 Pricing</h3>
+      <p>Lyvoo is a single annual all-inclusive programme, priced as follows at the date of publication of these Terms:</p>
+      <ul>
+        <li><strong>Lyvoo Programme</strong> — €359/year (all inclusive)</li>
+      </ul>
+      <p>All prices include VAT at the applicable legal rate. Lyvoo reserves the right to change prices with 30 days' prior notice to users with an active subscription.</p>
+
+      <h3>5.2 Billing</h3>
+      <p>Payment is annual and processed at the time of subscription. Payments are processed securely by Stripe. You will receive an invoice by email after each payment.</p>
+
+      <h3>5.3 Renewal</h3>
+      <p>The annual plan does not renew automatically. You will be notified by email 30 days before the programme ends, with the option to renew.</p>
+
+      <h3>5.4 Add-on modules</h3>
+      <p>Optional modules (Microbiome, Hormonal, Expanded Thyroid, etc.) are charged separately and are not included in the base plan. Prices are available on the modules page.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="section" id="cancellation">
+      <h2>6. Cancellation and refunds</h2>
+
+      <h3>6.1 Immediate commencement of service and waiver of right of withdrawal</h3>
+      <p>By confirming your subscription, you expressly agree that the performance of the service begins immediately — specifically the dispatch of the collection kit. Under Article 17(1)(a) of Decree-Law No. 24/2014 (Portuguese consumer law implementing Directive 2011/83/EU on consumer rights), the right of withdrawal <strong>does not apply</strong> after full performance of the service where performance has begun with the consumer's prior express agreement and acknowledgement that they would lose that right upon completion of performance.</p>
+      <p>This acceptance is obtained at the time of subscription via a mandatory checkbox with explicit legal text, before any payment is processed.</p>
+
+      <h3>6.2 Refund policy by service phase</h3>
+      <p>Eligibility for a refund depends on the stage of service execution at the time of the request:</p>
+      <table>
+        <tr><th>Situation</th><th>Refund</th></tr>
+        <tr><td>Cancellation request before kit is dispatched</td><td>Full refund</td></tr>
+        <tr><td>Kit dispatched but unused (sample not collected)</td><td>Refund minus shipping and processing costs (€15)</td></tr>
+        <tr><td>Kit used (sample sent to laboratory)</td><td>No refund — service commenced</td></tr>
+        <tr><td>Report delivered in the app</td><td>No refund — service completed</td></tr>
+      </table>
+
+      <h3>6.3 Lyvoo's responsibilities</h3>
+      <p>Regardless of the stage, Lyvoo commits to:</p>
+      <ul>
+        <li>Send a <strong>replacement kit at no cost</strong> in the event of a defective kit, kit damaged in transit, or technical failure</li>
+        <li>Repeat the laboratory analysis <strong>at no cost</strong> in the event of an insufficient sample due to kit failure (not due to user collection error)</li>
+        <li>Issue a full refund in the event of an inconclusive result attributable exclusively to Lyvoo or the partner laboratory</li>
+      </ul>
+
+      <h3>6.4 Account cancellation</h3>
+      <p>You may cancel your account at any time via the Platform settings or by email to <a href="mailto:suporte@lyvoo.pt">suporte@lyvoo.pt</a>. Cancellation does not trigger any automatic refund — the table in section 6.2 applies depending on the stage of execution. The programme is annual and <strong>does not renew automatically</strong>.</p>
+
+      <h3>6.5 How to request a refund or replacement</h3>
+      <p>Send an email to <a href="mailto:suporte@lyvoo.pt">suporte@lyvoo.pt</a> with the subject line <em>"Refund — [order number]"</em>, stating the reason and the stage you are at. We will respond within 3 working days.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="section" id="obligations">
+      <h2>7. Your obligations</h2>
+      <p>By using the Platform, you agree to:</p>
+      <ul>
+        <li>Provide truthful and complete information about your health status</li>
+        <li>Follow the biological sample collection instructions included in the kit</li>
+        <li>Not share your account with third parties</li>
+        <li>Not use the Platform for illegal or fraudulent purposes</li>
+        <li>Not attempt to access other users' accounts or Lyvoo systems without authorisation</li>
+        <li>Not reproduce, distribute, or commercially exploit any Platform content without written authorisation</li>
+        <li>Notify Lyvoo of any security vulnerability you identify</li>
+      </ul>
+    </div>
+
+    <!-- 8 -->
+    <div class="section" id="ip">
+      <h2>8. Intellectual property</h2>
+      <p>All Platform content — including texts, images, logos, software, generated reports, methodologies, and interfaces — is the property of Lyvoo Health, Lda. or its licensors, and is protected by copyright and other intellectual property rights.</p>
+      <p>The user is granted a personal, non-exclusive, non-transferable, and revocable licence to access and use the Platform exclusively for personal purposes, within the scope of the services contracted.</p>
+      <p>Your personal data and health data belong to you. Lyvoo does not acquire any proprietary rights over them.</p>
+    </div>
+
+    <!-- 9 -->
+    <div class="section" id="liability">
+      <h2>9. Limitation of liability</h2>
+      <div class="highlight-box">
+        <p>Lyvoo is committed to providing its services with the utmost rigour and professionalism. However, there are limitations to our liability that are important to understand.</p>
+      </div>
+      <p>Lyvoo is not liable for:</p>
+      <ul>
+        <li>Damages resulting from medical decisions taken solely on the basis of Lyvoo results, without consultation with a healthcare professional</li>
+        <li>Errors or inaccuracies arising from biological samples incorrectly collected by the user (not following the kit instructions)</li>
+        <li>Temporary Platform unavailability for technical reasons beyond Lyvoo's control</li>
+        <li>Indirect damages, loss of profits, or special damages, to the maximum extent permitted by law</li>
+      </ul>
+      <p>Lyvoo's total liability to any user shall not exceed the amount paid for the current plan, except where the law imposes broader liability.</p>
+      <p>These limitations do not affect the consumer's statutory rights under Portuguese and European consumer protection legislation.</p>
+    </div>
+
+    <!-- 10 -->
+    <div class="section" id="suspension">
+      <h2>10. Suspension and termination</h2>
+      <p>Lyvoo reserves the right to suspend or terminate your account, with or without notice, in the following cases:</p>
+      <ul>
+        <li>Breach of these Terms</li>
+        <li>Provision of false or misleading information</li>
+        <li>Fraudulent or abusive activities</li>
+        <li>Non-payment</li>
+        <li>As required by law or court order</li>
+      </ul>
+      <p>In the event of termination initiated by Lyvoo without cause attributable to the user, you will be refunded proportionally for the unused period of the plan.</p>
+    </div>
+
+    <!-- 11 -->
+    <div class="section" id="law">
+      <h2>11. Governing law and dispute resolution</h2>
+      <p>These Terms are governed by Portuguese law. In the event of a dispute, the parties commit to seeking an amicable resolution in the first instance.</p>
+      <p>If no agreement can be reached, the user may have recourse to:</p>
+      <ul>
+        <li><strong>Consumer dispute resolution (EU ODR platform)</strong> — <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a></li>
+      </ul>
+      <p>Without prejudice to the above, the courts of the consumer's domicile shall have jurisdiction to settle any disputes, in accordance with Portuguese law.</p>
+    </div>
+
+    <!-- 12 -->
+    <div class="section" id="contact-terms">
+      <h2>12. Contact</h2>
+      <p>For questions relating to these Terms of Service:</p>
+      <ul>
+        <li>General email: <a href="mailto:info@lyvoo.pt">info@lyvoo.pt</a></li>
+        <li>Support: <a href="mailto:suporte@lyvoo.pt">suporte@lyvoo.pt</a></li>
+        <li>Privacy: <a href="mailto:privacidade@lyvoo.pt">privacidade@lyvoo.pt</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="lf-grid">
+      <div>
+        <a href="index.html"><img src="../images/logo.png" alt="Lyvoo" style="height:38px;width:auto;display:block;" /></a>
+        <p class="lf-brand">Personalised preventive health.<br/>From home. Made in Portugal.</p>
+      </div>
+      <div class="lf-col"><h5>Product</h5><ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#atlas">What we test</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Company</h5><ul>
+        <li><a href="index.html#equipa">About us</a></li>
+        <li><a href="index.html#equipa">Clinical team</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Support</h5><ul>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+      </ul></div>
+    </div>
+    <div class="lf-bottom">
+      <span>© 2026 Lyvoo. All rights reserved.</span>
+      <div class="lf-links">
+        <a href="privacy.html">Privacy policy</a>
+        <a href="terms.html">Terms of service</a>
+        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
