@@ -1728,6 +1728,23 @@
     @media (max-width: 600px) {
       .ba-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* ── Texto cinzento mais legível em secções dark (mobile) ── */
+    @media (max-width: 760px) {
+      .layer-dark .step-text p,
+      .layer-dark .step-detail-item,
+      .layer-dark .step-atlas-right p,
+      .layer-dark .step-atlas-right .step-detail-item,
+      .layer-dark .process-intro p,
+      .layer-dark .modules-header p,
+      .step-atlas-right p,
+      .step-atlas-right .step-detail-item,
+      .glp-intro-row > p,
+      .glp-left > p,
+      .app-feature-text p,
+      .ba-detail-desc { color: rgba(255,255,255,0.62); }
+    }
+
     .mob-menu a:hover { background: var(--surface); }
   </style>
   <script src="cookie-banner.js" defer></script>
