@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Páginas privadas — não indexar
+Disallow: /admin.html
+Disallow: /dashboard.html
+Disallow: /login.html
+Disallow: /registar.html
+Disallow: /en/login.html
+Disallow: /en/register.html
+
+Sitemap: https://lyvoo.pt/sitemap.xml
