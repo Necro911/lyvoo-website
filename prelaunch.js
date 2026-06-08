@@ -1,5 +1,5 @@
-/**
- * Lyvoo — Modo pré-lançamento
+﻿/**
+ * Lyvoo - Modo pré-lançamento
  * Incluir com: <script src="prelaunch.js" defer></script>
  *
  * Enquanto a marca não está operacional, este script:
@@ -7,7 +7,7 @@
  *  2) esconde blocos de preço estruturados (com selo "Em breve")
  *  3) mascara menções textuais ao preço do Programa Lyvoo (€359/ano)
  *
- * INTERRUPTOR ÚNICO — para repor o site normal, basta mudar para `false`
+ * INTERRUPTOR ÚNICO - para repor o site normal, basta mudar para `false`
  * (ou remover a tag <script src="prelaunch.js">). Nada mais precisa de mudar.
  */
 (function () {
@@ -20,7 +20,7 @@
 
   const WAITLIST_HREF     = isEN ? 'https://lyvoo.pt/en/contact.html#contactForm' : 'https://lyvoo.pt/contacto.html#contactForm';
   const WAITLIST_LABEL    = isEN ? 'Join the waitlist' : 'Junte-se à lista de espera';
-  const SOON_LABEL        = isEN ? 'Coming soon — pricing to be announced' : 'Em breve — preço a confirmar';
+  const SOON_LABEL        = isEN ? 'Coming soon - pricing to be announced' : 'Em breve - preço a confirmar';
   const PRICE_PLACEHOLDER = isEN ? 'pricing to be announced' : 'preço a confirmar';
 
   /* ─────────── CSS ─────────── */

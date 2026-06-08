@@ -1,5 +1,5 @@
-/**
- * Lyvoo — Gestão de cookies RGPD
+﻿/**
+ * Lyvoo - Gestão de cookies RGPD
  * Incluir com: <script src="cookie-banner.js" defer></script>
  *
  * localStorage: lyvoo_cookies = "all" | "essential"

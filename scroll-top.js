@@ -1,5 +1,5 @@
-/**
- * Lyvoo — Botão "voltar ao topo"
+﻿/**
+ * Lyvoo - Botão "voltar ao topo"
  * Incluir com: <script src="scroll-top.js" defer></script>
  *
  * Aparece após scroll > 400px, scroll suave até ao topo ao clicar.
