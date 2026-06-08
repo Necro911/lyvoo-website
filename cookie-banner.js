@@ -180,7 +180,7 @@
       <div id="lc-banner-text">
         <strong>Este site utiliza cookies</strong>
         Cookies essenciais para o funcionamento e, com o seu consentimento, cookies analíticos.
-        <a href="privacidade.html#cookies">Saber mais</a>
+        <a href="https://lyvoo.pt/privacidade.html#cookies">Saber mais</a>
       </div>
       <div id="lc-banner-actions">
         <button class="lc-btn" id="lc-btn-essential">Apenas essenciais</button>

@@ -172,6 +172,8 @@
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
     .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.8s linear infinite; }
 
     @media (max-width: 520px) {
       .card { padding: 36px 24px; border-radius: 20px; }
@@ -308,25 +310,19 @@
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, setDoc, serverTimestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-  import { auth, db, PLANOS } from './lyvoo-firebase.js';
-
-  // Plano escolhido (passado via ?plano=essencial|completo a partir de planos.html)
-  const planoParam = new URLSearchParams(location.search).get('plano');
-  const planoEscolhido = PLANOS[planoParam] ? planoParam : null;
+  import { auth, db } from './lyvoo-firebase.js';
 
   // Cria/atualiza o documento do utilizador no Firestore
   async function guardarPerfil(user, { firstName = '', lastName = '' } = {}) {
     const dados = {
       email: user.email,
+      plano:     'lyvoo',
+      planoNome: 'Lyvoo',
       atualizadoEm: serverTimestamp()
     };
     if (firstName || lastName) {
       dados.firstName = firstName;
       dados.lastName  = lastName;
-    }
-    if (planoEscolhido) {
-      dados.plano = planoEscolhido;
-      dados.planoNome = PLANOS[planoEscolhido].nome;
     }
     // Estado do programa (1=kit pendente, 2=kit enviado, 3=amostra recebida, 4=resultados prontos, 5=reavaliação)
     dados.estado = 1;
@@ -502,10 +498,6 @@
   });
 </script>
 
-<style>
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spin { animation: spin 0.8s linear infinite; }
-</style>
 
 </body>
 </html>

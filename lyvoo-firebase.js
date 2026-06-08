@@ -20,8 +20,3 @@ export const auth = getAuth(app);
 auth.languageCode = 'pt';
 
 export const db = getFirestore(app);
-
-// Plano único Lyvoo
-export const PLANOS = {
-  lyvoo: { id: 'lyvoo', nome: 'Lyvoo', preco: 359 }
-};

@@ -63,6 +63,8 @@
     .field input.error { border-color: #EF4444; }
     .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
     @media (max-width: 520px) { .card { padding: 36px 24px; border-radius: 20px; } .card-title { font-size: 24px; } .field-row { grid-template-columns: 1fr; } .trust { flex-direction: column; gap: 10px; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.8s linear infinite; }
   </style>
   <script src="../cookie-banner.js" defer></script>
 </head>
@@ -184,15 +186,16 @@
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, setDoc, serverTimestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-  import { auth, db, PLANOS } from '../lyvoo-firebase.js';
-
-  const planoParam    = new URLSearchParams(location.search).get('plano');
-  const planoEscolhido = PLANOS[planoParam] ? planoParam : null;
+  import { auth, db } from '../lyvoo-firebase.js';
 
   async function guardarPerfil(user, { firstName = '', lastName = '' } = {}) {
-    const dados = { email: user.email, atualizadoEm: serverTimestamp() };
+    const dados = {
+      email: user.email,
+      plano:     'lyvoo',
+      planoNome: 'Lyvoo',
+      atualizadoEm: serverTimestamp()
+    };
     if (firstName || lastName) { dados.firstName = firstName; dados.lastName = lastName; }
-    if (planoEscolhido) { dados.plano = planoEscolhido; dados.planoNome = PLANOS[planoEscolhido].nome; }
     dados.estado = 1;
     dados.estadoLabel = 'Kit being prepared';
     await setDoc(doc(db, 'users', user.uid), { criadoEm: serverTimestamp(), ...dados }, { merge: true });
@@ -289,10 +292,6 @@
   });
 </script>
 
-<style>
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spin { animation: spin 0.8s linear infinite; }
-</style>
 
 </body>
 </html>

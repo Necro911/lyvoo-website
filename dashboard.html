@@ -536,7 +536,7 @@
     <div id="view-resultados" style="display:none">
 
     <!-- Banner resultados (estado 4 — primeira vez) -->
-    <div id="results-banner" style="display:none; margin:0 32px 0; padding:18px 24px; background:linear-gradient(135deg,rgba(74,222,128,0.09),rgba(61,217,232,0.06)); border:1px solid rgba(74,222,128,0.22); border-radius:16px; display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+    <div id="results-banner" style="display:none; margin:0 32px 20px; padding:18px 24px; background:linear-gradient(135deg,rgba(74,222,128,0.09),rgba(61,217,232,0.06)); border:1px solid rgba(74,222,128,0.22); border-radius:16px; align-items:center; gap:16px;">
       <div style="font-size:26px; line-height:1;">🎉</div>
       <div style="flex:1;">
         <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;">Os seus resultados estão prontos!</div>
@@ -828,7 +828,7 @@
 <script type="module">
 
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   // ── Navegação entre secções ──────────────────────────────────────────
@@ -1245,6 +1245,12 @@
         if (d.relatorio)      renderScore(d.relatorio);
         if (d.kit)            renderKitTracking(d.kit, estadoNum);
 
+        // Preencher campos do perfil
+        if (d.firstName) document.getElementById('pf-first').value = d.firstName;
+        if (d.lastName)  document.getElementById('pf-last').value  = d.lastName;
+        if (d.phone)     document.getElementById('pf-phone').value = d.phone;
+        if (d.dob)       document.getElementById('pf-dob').value   = d.dob;
+
         // Sub-title das secções
         if (d.resultados?.dataAnalise) {
           const sub = document.getElementById('supp-sub');
@@ -1325,30 +1331,16 @@
     document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
     document.getElementById('navName').textContent  = nome;
     document.getElementById('navAvatar').textContent = iniciaisDe(nome);
-    document.getElementById('navPlan').textContent = planoNome
-      ? planoNome.replace('Lyvoo ', 'Plano ')
-      : 'Sem plano ativo';
+    document.getElementById('navPlan').textContent = planoNome || 'Programa Lyvoo';
 
-    // Preencher perfil
+    // Preencher perfil (dados já carregados do primeiro getDoc)
     document.getElementById('profileAvatar').textContent = iniciaisDe(nome);
     document.getElementById('profileName').textContent   = nome;
     document.getElementById('profileEmail').textContent  = user.email;
     document.getElementById('pf-email').value = user.email;
-    // Preencher campos com dados do Firestore se existirem
-    try {
-      const snap2 = await getDoc(doc(db, 'users', user.uid));
-      if (snap2.exists()) {
-        const d = snap2.data();
-        if (d.firstName) document.getElementById('pf-first').value = d.firstName;
-        if (d.lastName)  document.getElementById('pf-last').value  = d.lastName;
-        if (d.phone)     document.getElementById('pf-phone').value = d.phone;
-        if (d.dob)       document.getElementById('pf-dob').value   = d.dob;
-      }
-    } catch(e) {}
 
     // Guardar perfil
     document.getElementById('pf-save-btn').addEventListener('click', async () => {
-      const { setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
       try {
         await setDoc(doc(db, 'users', user.uid), {
           firstName: document.getElementById('pf-first').value.trim(),
