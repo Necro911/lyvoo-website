@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="images/og-image.jpg" type="image/jpeg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — Lyvoo</title>
+  <title>Admin - Lyvoo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -272,9 +272,9 @@
       </div>
     </div>
     <div class="stats-mini">
-      <div class="stat-mini"><div class="stat-mini-val" id="s-total">—</div><div class="stat-mini-lbl">Total</div></div>
-      <div class="stat-mini"><div class="stat-mini-val" id="s-active" style="color:var(--green)">—</div><div class="stat-mini-lbl">Resultados</div></div>
-      <div class="stat-mini"><div class="stat-mini-val" id="s-pending" style="color:var(--amber)">—</div><div class="stat-mini-lbl">Pendente</div></div>
+      <div class="stat-mini"><div class="stat-mini-val" id="s-total">-</div><div class="stat-mini-lbl">Total</div></div>
+      <div class="stat-mini"><div class="stat-mini-val" id="s-active" style="color:var(--green)">-</div><div class="stat-mini-lbl">Resultados</div></div>
+      <div class="stat-mini"><div class="stat-mini-val" id="s-pending" style="color:var(--amber)">-</div><div class="stat-mini-lbl">Pendente</div></div>
     </div>
     <div class="estado-filters" id="estado-filters">
       <button class="ef-btn active" data-e="all" onclick="setEstadoFilter('all')">Todos</button>
@@ -300,8 +300,8 @@
       <div class="detail-hdr">
         <div class="detail-hdr-ava" id="dh-ava">?</div>
         <div class="detail-hdr-info">
-          <div class="detail-hdr-name" id="dh-name">—</div>
-          <div class="detail-hdr-meta" id="dh-meta">—</div>
+          <div class="detail-hdr-name" id="dh-name">-</div>
+          <div class="detail-hdr-meta" id="dh-meta">-</div>
         </div>
       </div>
 
@@ -314,7 +314,7 @@
         <button class="tab" onclick="switchTab('consultas')">Consultas</button>
         <button class="tab" onclick="switchTab('relatorio')">Relatório</button>
       </div>
-      <div class="tab-meta" id="tab-meta"><span id="tab-meta-txt">—</span></div>
+      <div class="tab-meta" id="tab-meta"><span id="tab-meta-txt">-</span></div>
 
       <!-- ── TAB: GERAL ── -->
       <div class="tab-content active" id="tab-geral">
@@ -323,7 +323,7 @@
         <div class="notify-box" id="notify-box" style="display:none">
           <div style="font-size:26px;line-height:1">🎉</div>
           <div class="notify-box-text">
-            <div class="notify-box-title">Resultados prontos — notificar o cliente?</div>
+            <div class="notify-box-title">Resultados prontos - notificar o cliente?</div>
             <div class="notify-box-sub">O estado foi definido como 4. O cliente ainda não foi notificado por email.</div>
           </div>
           <button class="btn-notify" id="btn-notify" onclick="notificarCliente()">✉ Enviar email</button>
@@ -360,7 +360,7 @@
             <div class="form-field">
               <label class="form-label">Transportadora</label>
               <select class="form-select" id="g-transportadora">
-                <option value="">— Selecionar —</option>
+                <option value="">- Selecionar -</option>
                 <option value="CTT">CTT</option>
                 <option value="CTT Expresso">CTT Expresso</option>
                 <option value="DHL">DHL</option>
@@ -525,7 +525,7 @@
             <div class="form-field"><label class="form-label">Score global (0–100)</label><input class="form-input" id="rel-score" type="number" min="0" max="100" placeholder="87" /></div>
             <div class="form-field"><label class="form-label">Classificação</label>
               <select class="form-select" id="rel-class">
-                <option value="">— Selecionar —</option>
+                <option value="">- Selecionar -</option>
                 <option value="Excelente">Excelente</option>
                 <option value="Muito bom">Muito bom</option>
                 <option value="Bom">Bom</option>
@@ -588,7 +588,7 @@
     <div style="padding:20px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;">
       <div>
         <div style="font-size:15px;font-weight:800;color:var(--txt)">Waitlist</div>
-        <div style="font-size:12px;color:var(--txt-3);margin-top:2px">Inscrições da página inicial · <span id="wl-count">—</span> leads</div>
+        <div style="font-size:12px;color:var(--txt-3);margin-top:2px">Inscrições da página inicial · <span id="wl-count">-</span> leads</div>
       </div>
       <button onclick="toggleWaitlist()" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:22px;line-height:1;padding:4px 8px;">×</button>
     </div>
@@ -668,9 +668,9 @@
         { nome:'Testosterona livre', unidade:'pg/mL',   referencia:'5–21 pg/mL (H)' },
         { nome:'DHEA-S',             unidade:'µg/dL',   referencia:'80–560 µg/dL' },
         { nome:'Cortisol (manhã)',   unidade:'µg/dL',   referencia:'6–23 µg/dL' },
-        { nome:'Estradiol',          unidade:'pg/mL',   referencia:'— (ver fase)' },
-        { nome:'LH',                 unidade:'UI/L',    referencia:'— (ver fase)' },
-        { nome:'FSH',                unidade:'UI/L',    referencia:'— (ver fase)' },
+        { nome:'Estradiol',          unidade:'pg/mL',   referencia:'- (ver fase)' },
+        { nome:'LH',                 unidade:'UI/L',    referencia:'- (ver fase)' },
+        { nome:'FSH',                unidade:'UI/L',    referencia:'- (ver fase)' },
       ]
     },
     hematologia: {
@@ -714,7 +714,7 @@
   // ── Utils ─────────────────────────────────────────────────────────────
   function iniciais(n) { return (n||'?').split(' ').filter(Boolean).map(x=>x[0]).join('').substring(0,2).toUpperCase(); }
   function fmtDate(ts) {
-    if (!ts) return '—';
+    if (!ts) return '-';
     const d = ts.toDate ? ts.toDate() : new Date(ts);
     return d.toLocaleDateString('pt-PT',{day:'2-digit',month:'short',year:'numeric'});
   }
@@ -923,7 +923,7 @@
 
     } catch(err) {
       console.error('EmailJS error:', err);
-      btn.textContent = '✗ Erro — tentar novamente';
+      btn.textContent = '✗ Erro - tentar novamente';
       btn.disabled = false;
       btn.style.background = 'rgba(248,113,113,0.08)';
       btn.style.borderColor = 'rgba(248,113,113,0.3)';
@@ -962,11 +962,11 @@
     const list = document.getElementById('user-list');
     if (!users.length) { list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--txt-3);font-size:13px">Nenhum cliente encontrado</div>'; return; }
     list.innerHTML = users.map(u => {
-      const nome = [u.firstName,u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '—';
+      const nome = [u.firstName,u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '-';
       const e = u.estado || 1;
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
         <div class="u-ava">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}</div><div class="u-email-sm">${u.email||'—'}</div></div>
+        <div class="u-body"><div class="u-name">${nome}</div><div class="u-email-sm">${u.email||'-'}</div></div>
         <span class="u-estado e${e}">${e}</span>
       </div>`;
     }).join('');
@@ -1001,11 +1001,11 @@
 
     const snap = await getDoc(doc(db,'users',uid));
     const d = snap.exists() ? snap.data() : {};
-    const nome = [d.firstName,d.lastName].filter(Boolean).join(' ') || d.email?.split('@')[0] || '—';
+    const nome = [d.firstName,d.lastName].filter(Boolean).join(' ') || d.email?.split('@')[0] || '-';
 
     document.getElementById('dh-ava').textContent = iniciais(nome);
     document.getElementById('dh-name').textContent = nome;
-    document.getElementById('dh-meta').textContent = (d.email||'—') + ' · Registado ' + fmtDate(d.criadoEm);
+    document.getElementById('dh-meta').textContent = (d.email||'-') + ' · Registado ' + fmtDate(d.criadoEm);
 
     // Timestamps
     currentTimestamps = d.timestamps || {};
@@ -1128,11 +1128,11 @@
   function bioRow(r) {
     return `<tr>
       <td><input type="text" value="${r.nome||''}" placeholder="Nome" /></td>
-      <td><input type="text" value="${r.valor||''}" placeholder="—" style="width:72px" /></td>
+      <td><input type="text" value="${r.valor||''}" placeholder="-" style="width:72px" /></td>
       <td><input type="text" value="${r.unidade||''}" placeholder="mg/dL" /></td>
       <td><input type="text" value="${r.referencia||''}" placeholder="referência" /></td>
       <td><select>
-        <option value="">—</option>
+        <option value="">-</option>
         <option value="otimo" ${r.tag==='otimo'?'selected':''}>Ótimo</option>
         <option value="atencao" ${r.tag==='atencao'?'selected':''}>Atenção</option>
         <option value="critico" ${r.tag==='critico'?'selected':''}>Crítico</option>
@@ -1199,7 +1199,7 @@
       const tagLbl = r.tag === 'otimo' ? 'Ótimo' : r.tag === 'atencao' ? 'Atenção' : r.tag === 'critico' ? 'Crítico' : '';
       return `<div class="destaque-card-prev">
         <div class="destaque-card-prev-name" title="${r.nome}">${r.nome}</div>
-        <div class="destaque-card-prev-val">${r.valor || '—'} <span class="destaque-card-prev-unit">${r.unidade || ''}</span></div>
+        <div class="destaque-card-prev-val">${r.valor || '-'} <span class="destaque-card-prev-unit">${r.unidade || ''}</span></div>
         ${tagLbl ? `<div class="destaque-card-prev-tag ${tagCls}">${tagLbl}</div>` : ''}
       </div>`;
     }).join('');
@@ -1489,12 +1489,12 @@
       return;
     }
     list.innerHTML = items.map(w => {
-      const d = w.criadoEm ? fmtDate(w.criadoEm) : '—';
+      const d = w.criadoEm ? fmtDate(w.criadoEm) : '-';
       return `<div class="wl-row">
         <div style="width:32px;height:32px;border-radius:50%;background:rgba(61,217,232,0.1);border:1px solid rgba(61,217,232,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </div>
-        <div class="wl-email">${w.email||'—'}</div>
+        <div class="wl-email">${w.email||'-'}</div>
         <div class="wl-date">${d}</div>
       </div>`;
     }).join('');

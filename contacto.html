@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="images/og-image.jpg" type="image/jpeg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contacto &amp; Waitlist — Lyvoo</title>
+  <title>Contacto &amp; Waitlist - Lyvoo</title>
   <meta name="description" content="Junte-se à lista de espera da Lyvoo. Deixe o seu contacto e entraremos em breve." />
-  <meta property="og:title" content="Contacto — Lyvoo" />
+  <meta property="og:title" content="Contacto - Lyvoo" />
   <meta property="og:description" content="Junte-se à lista de espera da Lyvoo e receba acesso prioritário ao lançamento." />
   <meta property="og:image" content="https://lyvoo.pt/images/og-image.jpg" />
   <meta property="og:site_name" content="Lyvoo" />
@@ -183,7 +183,7 @@
       <!-- FORM -->
       <div class="form-card">
         <h2>Junte-se à lista de espera</h2>
-        <p class="sub">Preencha o formulário e entraremos em contacto em breve. O serviço é 100% online — kit enviado para casa, resultados na app.</p>
+        <p class="sub">Preencha o formulário e entraremos em contacto em breve. O serviço é 100% online - kit enviado para casa, resultados na app.</p>
 
         <form class="form" id="contactForm" novalidate>
           <div class="field-row">
@@ -270,7 +270,7 @@
           <ul>
             <li>
               <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Sem spam — só informação relevante
+              Sem spam - só informação relevante
             </li>
             <li>
               <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -363,14 +363,14 @@
 
     setLoading(true);
     try {
-      // Grava no Firestore — passo crítico, tem de ter sucesso
+      // Grava no Firestore - passo crítico, tem de ter sucesso
       await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
         firstName, lastName, email, interesse, mensagem,
         criadoEm: serverTimestamp(),
         fonte: 'contacto.html'
       });
 
-      // Envia notificação por email via EmailJS — falha aqui não deve
+      // Envia notificação por email via EmailJS - falha aqui não deve
       // impedir o registo (o pedido já foi gravado com sucesso)
       try {
         await emailjs.send('service_x9g66zr', 'template_4is6gpi', {

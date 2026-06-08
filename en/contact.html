@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="../images/og-image.jpg" type="image/jpeg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact & Waitlist — Lyvoo</title>
+  <title>Contact & Waitlist - Lyvoo</title>
   <meta name="description" content="Join the Lyvoo waitlist. Leave your contact details and we'll be in touch shortly." />
-  <meta property="og:title" content="Contact — Lyvoo" />
+  <meta property="og:title" content="Contact - Lyvoo" />
   <meta property="og:description" content="Join the Lyvoo waitlist and get priority access at launch." />
   <meta property="og:image" content="https://lyvoo.pt/images/og-image.jpg" />
   <meta property="og:site_name" content="Lyvoo" />
@@ -133,7 +133,7 @@
 
       <div class="form-card">
         <h2>Join the waitlist</h2>
-        <p class="sub">Fill in the form and we'll be in touch shortly. The service is 100% online — kit delivered to your door, results in the app.</p>
+        <p class="sub">Fill in the form and we'll be in touch shortly. The service is 100% online - kit delivered to your door, results in the app.</p>
 
         <form class="form" id="contactForm" novalidate>
           <div class="field-row">
@@ -219,7 +219,7 @@
           <ul>
             <li>
               <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              No spam — only relevant updates
+              No spam - only relevant updates
             </li>
             <li>
               <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -311,14 +311,14 @@
     }
     setLoading(true);
     try {
-      // Critical step — must succeed
+      // Critical step - must succeed
       await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
         firstName, lastName, email, interesse, mensagem,
         criadoEm: serverTimestamp(),
         fonte: 'en/contact.html'
       });
 
-      // Email notification — a failure here shouldn't block the user,
+      // Email notification - a failure here shouldn't block the user,
       // the request is already saved
       try {
         await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
