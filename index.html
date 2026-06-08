@@ -115,6 +115,28 @@
       -webkit-backdrop-filter: saturate(180%) blur(24px);
       box-shadow: 0 1px 0 rgba(255,255,255,0.06);
     }
+    /* Adaptive theme: when the navbar overlaps a light/white section, switch to a light glass
+       look so the (dark) logo wordmark and nav text stay legible against the bright background */
+    .nav.on-light.scrolled {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      box-shadow: 0 1px 0 rgba(11,82,90,0.08), 0 8px 24px rgba(11,82,90,0.05);
+    }
+    .nav.on-light .nav-links a,
+    .nav.on-light .nav-links-center a,
+    .nav.on-light .nav-links-right a { color: rgba(11,33,37,0.62); }
+    .nav.on-light .nav-links a:hover,
+    .nav.on-light .nav-links-center a:hover,
+    .nav.on-light .nav-links-right a:hover { color: var(--ink); background: rgba(11,82,90,0.08); }
+    .nav.on-light .nav-cta { background: var(--teal) !important; color: #fff !important; }
+    .nav.on-light .nav-cta:hover { opacity: 0.88; background: var(--teal) !important; }
+    .nav.on-light .nav-login { border-color: rgba(11,82,90,0.25) !important; color: rgba(11,33,37,0.65) !important; }
+    .nav.on-light .nav-login:hover { border-color: var(--teal) !important; color: var(--ink) !important; }
+    .nav.on-light .lang-toggle { border-color: rgba(11,82,90,0.16); }
+    .nav.on-light .lang-toggle a { color: rgba(11,33,37,0.4); }
+    .nav.on-light .lang-toggle a.lang-active { background: rgba(11,82,90,0.1); color: var(--ink); }
+    .nav.on-light .nav-mob { color: var(--ink); }
     .nav-inner {
       max-width: 1140px; margin: 0 auto; height: 100px;
       display: flex; align-items: center; justify-content: space-between;
@@ -3731,7 +3753,38 @@
 <script>
   // Navbar scroll
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+
+  // Adaptive theme: detect whether the section currently behind the navbar is
+  // light (white/off-white) or dark, and toggle `.on-light` so the logo and
+  // nav text always keep good contrast against the section underneath.
+  const navThemeSections = Array.from(
+    document.querySelectorAll('.layer-white, .layer-off, .cf-section, .hero, .layer-dark, .app-section, .glp-section, .cta-section')
+  ).map((el) => ({ el, light: el.matches('.layer-white, .layer-off, .cf-section') }));
+
+  function updateNavTheme() {
+    const probeY = nav.offsetHeight / 2;
+    let isLight = false;
+    for (let i = 0; i < navThemeSections.length; i++) {
+      const { el, light } = navThemeSections[i];
+      const rect = el.getBoundingClientRect();
+      if (rect.height > 0 && rect.top <= probeY && rect.bottom >= probeY) { isLight = light; break; }
+    }
+    nav.classList.toggle('on-light', isLight);
+  }
+
+  let navThemeTicking = false;
+  function requestNavThemeUpdate() {
+    if (navThemeTicking) return;
+    navThemeTicking = true;
+    requestAnimationFrame(() => { updateNavTheme(); navThemeTicking = false; });
+  }
+
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+    requestNavThemeUpdate();
+  });
+  window.addEventListener('resize', requestNavThemeUpdate);
+  requestNavThemeUpdate();
 
   // Mobile menu
   const mobBtn = document.getElementById('mobBtn');
