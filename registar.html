@@ -2,6 +2,7 @@
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="images/og-image.jpg" type="image/jpeg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Criar conta — Lyvoo</title>
   <meta name="description" content="Crie a sua conta Lyvoo e comece o seu programa de medicina preventiva personalizada." />
@@ -384,9 +385,15 @@
     btn.style.pointerEvents = loading ? 'none' : '';
   }
 
-  function aoAutenticar() {
-    // Após registo: se já escolheu plano vai ao dashboard, senão escolhe plano
-    window.location.href = planoEscolhido ? 'dashboard.html' : 'index.html#planos';
+  const STRIPE_LINK = 'https://buy.stripe.com/3cI5kCdOE95e2j57It7N600';
+
+  function aoAutenticar(user) {
+    // Redirigir para Stripe com email pré-preenchido e UID como referência
+    const params = new URLSearchParams({
+      prefilled_email:     user.email || '',
+      client_reference_id: user.uid   || ''
+    });
+    window.location.href = `${STRIPE_LINK}?${params.toString()}`;
   }
 
   // ── Toggle palavra-passe ──
@@ -452,7 +459,7 @@
       const nome = [firstName, lastName].filter(Boolean).join(' ');
       if (nome) await updateProfile(cred.user, { displayName: nome });
       await guardarPerfil(cred.user, { firstName, lastName });
-      aoAutenticar();
+      aoAutenticar(cred.user);
     } catch (err) {
       setBtnLoading(false);
       mostrarErroGlobal(mensagemErro(err.code));
@@ -485,7 +492,7 @@
         firstName: partes[0] || '',
         lastName:  partes.slice(1).join(' ')
       });
-      aoAutenticar();
+      aoAutenticar(result.user);
     } catch (err) {
       setGoogleLoading(false);
       if (err.code !== 'auth/popup-closed-by-user') {

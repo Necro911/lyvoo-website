@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="../images/og-image.jpg" type="image/jpeg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact & Waitlist — Lyvoo</title>
   <meta name="description" content="Join the Lyvoo waitlist. Leave your contact details and we'll be in touch shortly." />
   <meta property="og:title" content="Contact — Lyvoo" />
   <meta property="og:description" content="Join the Lyvoo waitlist and get priority access at launch." />
-  <meta property="og:image" content="https://necro911.github.io/lyvoo-website/images/og-image.jpg" />
+  <meta property="og:image" content="https://lyvoo.pt/images/og-image.jpg" />
   <meta property="og:site_name" content="Lyvoo" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -271,10 +272,13 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="module">
   import { doc, setDoc, serverTimestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { db } from '../lyvoo-firebase.js';
+
+  emailjs.init('P0ArQ2tRYDeYkPZuR');
 
   const form    = document.getElementById('contactForm');
   const success = document.getElementById('formSuccess');
@@ -291,7 +295,13 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errEl.style.display = 'none';
-    const email = document.getElementById('email').value.trim();
+
+    const email     = document.getElementById('email').value.trim();
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const interesse = document.getElementById('interesse').value;
+    const mensagem  = document.getElementById('mensagem').value.trim();
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       errEl.textContent = 'Please enter a valid email address.';
       errEl.style.display = 'block';
@@ -300,14 +310,18 @@
     setLoading(true);
     try {
       await setDoc(doc(db, 'waitlist', email.toLowerCase().replace(/[.#$[\]]/g, '_')), {
-        firstName:  document.getElementById('firstName').value.trim(),
-        lastName:   document.getElementById('lastName').value.trim(),
-        email,
-        interesse:  document.getElementById('interesse').value,
-        mensagem:   document.getElementById('mensagem').value.trim(),
-        criadoEm:   serverTimestamp(),
-        fonte:      'en/contact.html'
+        firstName, lastName, email, interesse, mensagem,
+        criadoEm: serverTimestamp(),
+        fonte: 'en/contact.html'
       });
+
+      await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
+        from_name:  `${firstName} ${lastName}`.trim() || email,
+        from_email: email,
+        interesse,
+        mensagem:   mensagem || '(no message)',
+      });
+
       form.style.display = 'none';
       success.style.display = 'block';
     } catch (err) {

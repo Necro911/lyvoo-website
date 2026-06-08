@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="../images/og-image.jpg" type="image/jpeg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create account — Lyvoo</title>
   <meta name="description" content="Create your Lyvoo account and start your personalised preventive health programme." />
@@ -227,7 +228,15 @@
 
   function setGoogleLoading(loading) { const btn = document.getElementById('btnGoogle'); btn.style.opacity = loading ? '0.6' : '1'; btn.style.pointerEvents = loading ? 'none' : ''; }
 
-  function aoAutenticar() { window.location.href = planoEscolhido ? '../dashboard.html' : 'index.html#programme'; }
+  const STRIPE_LINK = 'https://buy.stripe.com/3cI5kCdOE95e2j57It7N600';
+
+  function aoAutenticar(user) {
+    const params = new URLSearchParams({
+      prefilled_email:     user.email || '',
+      client_reference_id: user.uid   || ''
+    });
+    window.location.href = `${STRIPE_LINK}?${params.toString()}`;
+  }
 
   const togglePw = document.getElementById('togglePw');
   const pwInput  = document.getElementById('password');
@@ -262,7 +271,7 @@
       const nome = [firstName, lastName].filter(Boolean).join(' ');
       if (nome) await updateProfile(cred.user, { displayName: nome });
       await guardarPerfil(cred.user, { firstName, lastName });
-      aoAutenticar();
+      aoAutenticar(cred.user);
     } catch (err) { setBtnLoading(false); mostrarErroGlobal(mensagemErro(err.code)); }
   });
 
@@ -275,7 +284,7 @@
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const partes = (result.user.displayName || '').trim().split(' ');
       await guardarPerfil(result.user, { firstName: partes[0] || '', lastName: partes.slice(1).join(' ') });
-      aoAutenticar();
+      aoAutenticar(result.user);
     } catch (err) { setGoogleLoading(false); if (err.code !== 'auth/popup-closed-by-user') mostrarErroGlobal(mensagemErro(err.code)); }
   });
 </script>
