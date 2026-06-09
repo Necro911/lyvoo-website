@@ -458,6 +458,17 @@
             <textarea class="form-textarea" id="g-notas" placeholder="Ex: Kit enviado em 03/06/2026 via CTT. Aguarda recolha..."></textarea>
           </div>
         </div>
+        <!-- Log de alterações -->
+        <div class="form-section" style="margin-top:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;" onclick="toggleChangeLog()">
+            <div class="form-section-title" style="margin-bottom:0">Histórico de alterações</div>
+            <span id="changelog-toggle-icon" style="font-size:12px;color:var(--txt-3)">▼</span>
+          </div>
+          <div id="changelog-wrap" style="display:none;margin-top:12px;">
+            <div id="changelog-list" style="display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;"></div>
+          </div>
+        </div>
+
         <div class="save-bar">
           <button class="btn-save" onclick="saveGeral()">Guardar</button>
           <span class="save-msg" id="msg-geral"></span>
@@ -682,7 +693,7 @@
 
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
@@ -1194,6 +1205,11 @@
     const btnArq = document.getElementById('btn-arquivar');
     if (btnArq) btnArq.textContent = allUsers.find(x=>x.uid===uid)?.arquivado ? 'Restaurar cliente' : 'Arquivar cliente';
 
+    // Render log de alterações
+    renderChangeLog(d.historicoAlteracoes || []);
+    document.getElementById('changelog-wrap').style.display = 'none';
+    document.getElementById('changelog-toggle-icon').textContent = '▼';
+
     switchTab('geral');
     clearDirty();
     // Pequeno delay para o DOM estar pronto antes de ligar os listeners
@@ -1474,7 +1490,16 @@
       // Guardar timestamp do tab actual
       const tsKey = TAB_TS_KEYS[currentTab];
       const tsUpdate = tsKey ? { [`timestamps.${tsKey}`]: serverTimestamp() } : {};
-      await updateDoc(doc(db,'users',currentUID), { ...data, ...tsUpdate, atualizadoEm: serverTimestamp() });
+      const logEntry = {
+        tab:  currentTab,
+        por:  auth.currentUser?.email || 'admin',
+        em:   new Date().toISOString(),
+      };
+      await updateDoc(doc(db,'users',currentUID), {
+        ...data, ...tsUpdate,
+        atualizadoEm: serverTimestamp(),
+        historicoAlteracoes: arrayUnion(logEntry),
+      });
       // Atualizar timestamp local
       if (tsKey) {
         currentTimestamps[tsKey] = { toDate: () => new Date() };
@@ -1681,6 +1706,39 @@
     const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
     const blob = new Blob([csv], {type:'text/csv'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lyvoo-waitlist.csv'; a.click();
+  };
+
+  // ── Log de alterações ────────────────────────────────────────────────
+  const TAB_LABELS_LOG = {
+    geral: 'Dados gerais', biomarcadores: 'Biomarcadores', plano: 'Plano alimentar',
+    suplementacao: 'Suplementação', consultas: 'Consultas', relatorio: 'Relatório',
+  };
+
+  function renderChangeLog(entries) {
+    const list = document.getElementById('changelog-list');
+    if (!entries.length) {
+      list.innerHTML = '<div style="font-size:12px;color:var(--txt-3);padding:8px 0">Sem alterações registadas.</div>';
+      return;
+    }
+    const sorted = [...entries].sort((a,b) => b.em.localeCompare(a.em)).slice(0, 30);
+    list.innerHTML = sorted.map(e => {
+      const d = new Date(e.em);
+      const dt = d.toLocaleString('pt-PT', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      const tab = TAB_LABELS_LOG[e.tab] || e.tab;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;background:var(--panel-2);font-size:12px;">
+        <span style="color:var(--txt-3);flex-shrink:0">${dt}</span>
+        <span style="flex:1;color:var(--txt-2)">${tab}</span>
+        <span style="color:var(--txt-3);font-size:11px">${e.por}</span>
+      </div>`;
+    }).join('');
+  }
+
+  window.toggleChangeLog = function() {
+    const wrap = document.getElementById('changelog-wrap');
+    const icon = document.getElementById('changelog-toggle-icon');
+    const open = wrap.style.display === 'none';
+    wrap.style.display = open ? 'block' : 'none';
+    icon.textContent = open ? '▲' : '▼';
   };
 
   // ── Confirmação para dados clínicos ──────────────────────────────────
