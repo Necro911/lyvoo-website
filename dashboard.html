@@ -98,13 +98,22 @@
     .sec-macro-bar div { height: 100%; border-radius: 999px; }
     .sec-list-section { margin-bottom: 20px; }
     /* Plano de refeições */
-    .meal-plan-list { display: flex; flex-direction: column; gap: 0; }
-    .meal-row { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .meal-row:last-child { border-bottom: none; }
-    .meal-left { width: 120px; flex-shrink: 0; }
-    .meal-name { font-size: 13px; font-weight: 600; color: var(--txt); }
-    .meal-hour { font-size: 11.5px; color: var(--cyan); margin-top: 2px; font-weight: 500; }
-    .meal-desc { font-size: 13px; color: var(--txt-2); line-height: 1.65; flex: 1; }
+    .meal-plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .meal-card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+      padding: 0; overflow: hidden; position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .meal-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+    .meal-card-accent { height: 3px; width: 100%; }
+    .meal-card-body { padding: 14px 16px 16px; }
+    .meal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
+    .meal-card-name { font-size: 13px; font-weight: 700; color: var(--txt); }
+    .meal-card-time {
+      font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .meal-card-desc { font-size: 13px; color: var(--txt-2); line-height: 1.65; }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
@@ -1224,19 +1233,34 @@
     const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
     const obs = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">Observações</div><p style="font-size:13.5px;color:var(--txt-2);line-height:1.7">${pa.obs}</p></div>` : '';
 
-    // Refeições
+    // Refeições — cor por período do dia
+    const MEAL_PALETTE = {
+      'Pequeno-almoço':  { accent: '#3DD9E8', bg: 'rgba(61,217,232,0.10)',  fg: '#3DD9E8'  },
+      'Meio da manhã':   { accent: '#3DD9E8', bg: 'rgba(61,217,232,0.10)',  fg: '#3DD9E8'  },
+      'Almoço':          { accent: '#4ADE80', bg: 'rgba(74,222,128,0.10)',  fg: '#4ADE80'  },
+      'Lanche':          { accent: '#4ADE80', bg: 'rgba(74,222,128,0.10)',  fg: '#4ADE80'  },
+      'Pré-treino':      { accent: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', fg: '#A78BFA'  },
+      'Pós-treino':      { accent: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', fg: '#A78BFA'  },
+      'Jantar':          { accent: '#FBBF24', bg: 'rgba(251,191,36,0.10)', fg: '#FBBF24'  },
+      'Ceia':            { accent: '#FBBF24', bg: 'rgba(251,191,36,0.10)', fg: '#FBBF24'  },
+    };
     const refeicoes = pa.refeicoes && pa.refeicoes.length
       ? `<div class="sec-list-section">
-          <div class="sec-list-title" style="color:var(--cyan);margin-bottom:12px">Plano de refeições</div>
-          <div class="meal-plan-list">
-            ${pa.refeicoes.map(r => `
-              <div class="meal-row">
-                <div class="meal-left">
-                  <div class="meal-name">${r.nome}</div>
-                  ${r.hora ? `<div class="meal-hour">${r.hora}</div>` : ''}
+          <div class="sec-list-title" style="color:var(--cyan);margin-bottom:14px">Plano de refeições</div>
+          <div class="meal-plan-grid">
+            ${pa.refeicoes.map(r => {
+              const p = MEAL_PALETTE[r.nome] || { accent:'#5E6C72', bg:'rgba(255,255,255,0.06)', fg:'#9DAAB0' };
+              return `<div class="meal-card">
+                <div class="meal-card-accent" style="background:${p.accent}"></div>
+                <div class="meal-card-body">
+                  <div class="meal-card-header">
+                    <div class="meal-card-name">${r.nome}</div>
+                    ${r.hora ? `<span class="meal-card-time" style="background:${p.bg};color:${p.fg}">${r.hora}</span>` : ''}
+                  </div>
+                  <div class="meal-card-desc">${r.desc||''}</div>
                 </div>
-                <div class="meal-desc">${r.desc||''}</div>
-              </div>`).join('')}
+              </div>`;
+            }).join('')}
           </div>
         </div>` : '';
 
