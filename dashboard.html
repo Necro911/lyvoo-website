@@ -1373,156 +1373,206 @@
         return false;
       }
 
-      // ── Header bar ────────────────────────────────────────────────
-      const HEADER_H = 26;
-      doc.setFillColor(...TEAL_D);
+      // ── Helper: tags/pills ───────────────────────────────────────────
+      function drawTags(items, startY, color, bg) {
+        let x = ml, yy = startY;
+        const padX = 3.2, h = 6.4, gap = 3, lineH = 9;
+        doc.setFont('helvetica','normal'); doc.setFontSize(8);
+        items.forEach(t => {
+          const tw = doc.getTextWidth(t) + padX * 2;
+          if (x + tw > ml + cw) { x = ml; yy += lineH; }
+          doc.setFillColor(...bg);
+          doc.setDrawColor(...color); doc.setLineWidth(0.22);
+          doc.roundedRect(x, yy, tw, h, h/2, h/2, 'FD');
+          doc.setTextColor(...color);
+          doc.text(t, x + padX, yy + 4.4);
+          x += tw + gap;
+        });
+        return yy + lineH;
+      }
+
+      // ── Header (logo centrado, fundo branco) ─────────────────────────
+      const HEADER_H = 32;
+      doc.setFillColor(255,255,255);
       doc.rect(0, 0, W, HEADER_H, 'F');
       try {
-        const logoDataUrl = await new Promise((ok, err) => {
-          fetch('images/logo.png')
-            .then(r => r.blob())
-            .then(blob => {
-              const reader = new FileReader();
-              reader.onload = () => ok(reader.result);
-              reader.onerror = err;
-              reader.readAsDataURL(blob);
-            })
-            .catch(err);
-        });
-        const logoW = 38, logoH = logoW * (885/2283);
-        doc.addImage(logoDataUrl, 'PNG', (W - logoW) / 2, (HEADER_H - logoH) / 2, logoW, logoH);
+        const resp  = await fetch('images/logo.png');
+        const blob  = await resp.blob();
+        const bmp   = await createImageBitmap(blob);
+        const cnv   = document.createElement('canvas');
+        cnv.width = bmp.width; cnv.height = bmp.height;
+        const ctx = cnv.getContext('2d');
+        ctx.drawImage(bmp, 0, 0);
+        const px = ctx.getImageData(0, 0, cnv.width, cnv.height).data;
+        let minX = cnv.width, minY = cnv.height, maxX = 0, maxY = 0;
+        for (let yy = 0; yy < cnv.height; yy++) {
+          for (let xx = 0; xx < cnv.width; xx++) {
+            if (px[(yy * cnv.width + xx) * 4 + 3] > 10) {
+              if (xx < minX) minX = xx; if (xx > maxX) maxX = xx;
+              if (yy < minY) minY = yy; if (yy > maxY) maxY = yy;
+            }
+          }
+        }
+        const cropW = maxX - minX + 1, cropH = maxY - minY + 1;
+        const out = document.createElement('canvas');
+        out.width = cropW; out.height = cropH;
+        out.getContext('2d').drawImage(cnv, minX, minY, cropW, cropH, 0, 0, cropW, cropH);
+
+        const logoW = 56, logoH = logoW * (cropH / cropW);
+        doc.addImage(out.toDataURL('image/png'), 'PNG', (W - logoW) / 2, (HEADER_H - logoH) / 2, logoW, logoH);
       } catch (e) {
-        doc.setFont('helvetica','bold'); doc.setFontSize(14);
-        doc.setTextColor(255,255,255);
-        doc.text('LYVOO', W / 2, HEADER_H / 2 + 3, { align:'center' });
+        doc.setFont('helvetica','bold'); doc.setFontSize(16);
+        doc.setTextColor(...TEAL_D);
+        doc.text('lyvoo', W / 2, HEADER_H / 2 + 3, { align:'center' });
       }
+      doc.setFillColor(...TEAL);
+      doc.rect(0, HEADER_H, W, 1.1, 'F');
 
-      y = HEADER_H + 8;
+      y = HEADER_H + 13;
 
-      // ── Nome + data ───────────────────────────────────────────────
+      // ── Título + nome + data ──────────────────────────────────────
       const nomeCliente = window._planoNome || '';
       const hoje = new Date().toLocaleDateString('pt-PT',{ day:'numeric', month:'long', year:'numeric' });
-      if (nomeCliente) {
-        doc.setFont('helvetica','bold'); doc.setFontSize(16);
-        doc.setTextColor(...TEXT);
-        doc.text(nomeCliente, ml, y); y += 6;
-      }
-      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-      doc.setTextColor(...TEXT2);
-      doc.text(`Gerado em ${hoje}`, ml, y); y += 9;
 
-      doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
-      doc.line(ml, y, W - mr, y); y += 7;
+      doc.setFont('helvetica','bold'); doc.setFontSize(8);
+      doc.setTextColor(...TEAL);
+      doc.text('PLANO ALIMENTAR PERSONALIZADO', ml, y);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+      doc.setTextColor(...TEXT3);
+      doc.text(hoje, W - mr, y, { align:'right' });
+      y += 8;
+
+      if (nomeCliente) {
+        doc.setFont('helvetica','bold'); doc.setFontSize(20);
+        doc.setTextColor(...TEXT);
+        doc.text(nomeCliente, ml, y); y += 4;
+      }
+      y += 6;
+
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.3);
+      doc.line(ml, y, W - mr, y); y += 9;
 
       // ── Objectivo ─────────────────────────────────────────────────
-      newPageIfNeeded(26);
-      const objDescLines = pa.objectivoDesc ? doc.splitTextToSize(pa.objectivoDesc, cw - 10) : [];
-      const objH = 16 + objDescLines.length * 4.5;
-      doc.setFillColor(...BG); doc.roundedRect(ml, y, cw, objH, 2.5, 2.5, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(7);
-      doc.setTextColor(...TEAL); doc.text('OBJECTIVO PRINCIPAL', ml + 5, y + 6);
-      doc.setFont('helvetica','bold'); doc.setFontSize(10.5);
-      doc.setTextColor(...TEXT); doc.text(pa.objectivo || '', ml + 5, y + 12);
+      newPageIfNeeded(28);
+      const objDescLines = pa.objectivoDesc ? doc.splitTextToSize(pa.objectivoDesc, cw - 12) : [];
+      const objH = 17 + objDescLines.length * 4.6;
+      doc.setFillColor(...BG);
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
+      doc.roundedRect(ml, y, cw, objH, 3, 3, 'FD');
+      doc.setFillColor(...TEAL); doc.roundedRect(ml, y, 3.2, objH, 1.6, 1.6, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      doc.setTextColor(...TEAL); doc.text('OBJECTIVO PRINCIPAL', ml + 8, y + 7);
+      doc.setFont('helvetica','bold'); doc.setFontSize(12);
+      doc.setTextColor(...TEXT); doc.text(pa.objectivo || '', ml + 8, y + 14);
       if (objDescLines.length) {
-        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT2);
-        doc.text(objDescLines, ml + 5, y + 17);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2);
+        doc.text(objDescLines, ml + 8, y + 19.5);
       }
-      y += objH + 5;
+      y += objH + 9;
 
       // ── Refeições ─────────────────────────────────────────────────
       if (pa.refeicoes && pa.refeicoes.length) {
-        newPageIfNeeded(14);
-        doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-        doc.setTextColor(...TEAL); doc.text('PLANO DE REFEIÇÕES', ml, y); y += 5;
+        newPageIfNeeded(16);
+        doc.setFillColor(...TEAL); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(11);
+        doc.setTextColor(...TEXT); doc.text('Plano de refeições', ml + 6, y);
+        y += 8;
 
         for (const r of pa.refeicoes) {
           const ops = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : []);
-          const txtW = cw - (r.hora ? 34 : 8) - 10;
+          const txtW = cw - (r.hora ? 36 : 10) - 12;
 
           // Pre-calculate height
-          let inner = 13; // name row
+          let inner = 14; // name row
           ops.forEach((op, i) => {
-            if (i > 0) inner += 5; // "ou" row
-            inner += doc.splitTextToSize(op, txtW).length * 4.6;
+            if (i > 0) inner += 5.5; // "ou" row
+            inner += doc.splitTextToSize(op, txtW).length * 4.7;
           });
-          const cardH = Math.max(inner + 6, 20);
+          const cardH = Math.max(inner + 6, 22);
 
-          newPageIfNeeded(cardH + 4);
+          newPageIfNeeded(cardH + 5);
 
           const mc = MEAL_COLORS[r.nome] || TEXT2;
-          doc.setFillColor(...BG); doc.roundedRect(ml, y, cw, cardH, 2.5, 2.5, 'F');
+          doc.setFillColor(...BG);
+          doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
+          doc.roundedRect(ml, y, cw, cardH, 3, 3, 'FD');
           // left accent strip
-          doc.setFillColor(...mc); doc.roundedRect(ml, y, 3, cardH, 1.5, 1.5, 'F');
+          doc.setFillColor(...mc); doc.roundedRect(ml, y, 3.2, cardH, 1.6, 1.6, 'F');
 
           // Meal name
-          doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(...mc);
-          doc.text(r.nome, ml + 7, y + 8);
+          doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...mc);
+          doc.text(r.nome, ml + 8, y + 9);
 
           // Time
           if (r.hora) {
-            doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...mc);
-            doc.text(r.hora, W - mr - 2, y + 9, { align:'right' });
+            doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...mc);
+            doc.text(r.hora, W - mr - 4, y + 10, { align:'right' });
           }
 
           // Options
-          let oy = y + 13;
+          let oy = y + 15;
           ops.forEach((op, i) => {
             if (i > 0) {
               doc.setFont('helvetica','bold'); doc.setFontSize(7);
-              doc.setTextColor(...TEXT3); doc.text('ou', ml + 7, oy + 1); oy += 5;
+              doc.setTextColor(...TEXT3); doc.text('OU', ml + 8, oy + 1); oy += 5.5;
             }
             doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
             const lines = doc.splitTextToSize(op, txtW);
-            doc.text(lines, ml + 7, oy);
-            oy += lines.length * 4.6;
+            doc.text(lines, ml + 8, oy);
+            oy += lines.length * 4.7;
           });
 
-          y += cardH + 3;
+          y += cardH + 4;
         }
-        y += 3;
+        y += 2;
       }
 
       // ── Priorizar / Reduzir ───────────────────────────────────────
       const prio = pa.priorizar || [], redu = pa.reduzir || [];
       if (prio.length || redu.length) {
-        newPageIfNeeded(20);
-        const prioLines = prio.length ? doc.splitTextToSize(prio.join('  ·  '), cw) : [];
-        const reduLines = redu.length ? doc.splitTextToSize(redu.join('  ·  '), cw) : [];
+        newPageIfNeeded(28);
 
         if (prio.length) {
-          doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...GREEN);
-          doc.text('✓  PRIORIZAR', ml, y); y += 5;
-          doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
-          doc.text(prioLines, ml, y); y += prioLines.length * 4.6 + 6;
+          doc.setFillColor(...GREEN); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
+          doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...TEXT);
+          doc.text('A priorizar', ml + 6, y); y += 6;
+          y = drawTags(prio, y, GREEN, [232,250,239]) + 4;
         }
         if (redu.length) {
-          newPageIfNeeded(12);
-          doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...RED);
-          doc.text('✗  REDUZIR', ml, y); y += 5;
-          doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
-          doc.text(reduLines, ml, y); y += reduLines.length * 4.6 + 6;
+          newPageIfNeeded(20);
+          doc.setFillColor(...RED); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
+          doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...TEXT);
+          doc.text('A reduzir', ml + 6, y); y += 6;
+          y = drawTags(redu, y, RED, [253,235,235]) + 4;
         }
+        y += 4;
       }
 
       // ── Observações ───────────────────────────────────────────────
       if (pa.obs) {
-        newPageIfNeeded(18);
-        doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2);
-        doc.text('OBSERVAÇÕES', ml, y); y += 5;
+        const obsL = doc.splitTextToSize(pa.obs, cw - 12);
+        const obsH = 14 + obsL.length * 4.6;
+        newPageIfNeeded(obsH + 4);
+        doc.setFillColor(...BG);
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
+        doc.roundedRect(ml, y, cw, obsH, 3, 3, 'FD');
+        doc.setFillColor(...TEXT2); doc.roundedRect(ml, y, 3.2, obsH, 1.6, 1.6, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...TEXT2);
+        doc.text('OBSERVAÇÕES', ml + 8, y + 7);
         doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
-        const obsL = doc.splitTextToSize(pa.obs, cw);
-        doc.text(obsL, ml, y);
+        doc.text(obsL, ml + 8, y + 13.5);
       }
 
       // ── Footer em todas as páginas ────────────────────────────────
       const total = doc.getNumberOfPages();
       for (let p = 1; p <= total; p++) {
         doc.setPage(p);
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
-        doc.line(ml, H - 13, W - mr, H - 13);
+        doc.setFillColor(...TEAL);
+        doc.rect(0, H - 16, W, 0.6, 'F');
+        doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...TEAL_D);
+        doc.text('Saúde personalizada . Prevenção inteligente. Impacto real.', W / 2, H - 9, { align:'center' });
         doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
-        doc.text('Saúde personalizada . Prevenção inteligente. Impacto real.', W / 2, H - 8, { align:'center' });
-        doc.text(`${p} / ${total}`, W - mr, H - 8, { align:'right' });
+        doc.text(`${p} / ${total}`, W - mr, H - 9, { align:'right' });
       }
 
       // ── Guardar ───────────────────────────────────────────────────
