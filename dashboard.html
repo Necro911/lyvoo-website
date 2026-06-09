@@ -1374,16 +1374,30 @@
       }
 
       // ── Header bar ────────────────────────────────────────────────
+      const HEADER_H = 26;
       doc.setFillColor(...TEAL_D);
-      doc.rect(0, 0, W, 13, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(11);
-      doc.setTextColor(255,255,255);
-      doc.text('LYVOO', ml, 8.5);
-      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
-      doc.setTextColor(160,220,228);
-      doc.text('Plano Alimentar', W - mr, 8.5, { align:'right' });
+      doc.rect(0, 0, W, HEADER_H, 'F');
+      try {
+        const logoDataUrl = await new Promise((ok, err) => {
+          fetch('images/logo.png')
+            .then(r => r.blob())
+            .then(blob => {
+              const reader = new FileReader();
+              reader.onload = () => ok(reader.result);
+              reader.onerror = err;
+              reader.readAsDataURL(blob);
+            })
+            .catch(err);
+        });
+        const logoW = 38, logoH = logoW * (885/2283);
+        doc.addImage(logoDataUrl, 'PNG', (W - logoW) / 2, (HEADER_H - logoH) / 2, logoW, logoH);
+      } catch (e) {
+        doc.setFont('helvetica','bold'); doc.setFontSize(14);
+        doc.setTextColor(255,255,255);
+        doc.text('LYVOO', W / 2, HEADER_H / 2 + 3, { align:'center' });
+      }
 
-      y = 21;
+      y = HEADER_H + 8;
 
       // ── Nome + data ───────────────────────────────────────────────
       const nomeCliente = window._planoNome || '';
@@ -1414,27 +1428,6 @@
         doc.text(objDescLines, ml + 5, y + 17);
       }
       y += objH + 5;
-
-      // ── Macros ────────────────────────────────────────────────────
-      newPageIfNeeded(25);
-      const cardW = (cw - 8) / 3;
-      [
-        { label:'Proteína', val:pa.proteina||0, col:TEAL },
-        { label:'Gorduras', val:pa.gordura||0,  col:VIOLET },
-        { label:'Hidratos', val:pa.hidratos||0, col:GREEN },
-      ].forEach((m, i) => {
-        const x = ml + i * (cardW + 4);
-        doc.setFillColor(...BG); doc.roundedRect(x, y, cardW, 20, 2.5, 2.5, 'F');
-        doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT2);
-        doc.text(m.label, x + cardW/2, y + 7, { align:'center' });
-        doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...m.col);
-        doc.text(`${m.val}%`, x + cardW/2, y + 15, { align:'center' });
-      });
-      if (pa.kcal) {
-        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT3);
-        doc.text(`${pa.kcal} kcal/dia`, W - mr, y + 10, { align:'right' });
-      }
-      y += 26;
 
       // ── Refeições ─────────────────────────────────────────────────
       if (pa.refeicoes && pa.refeicoes.length) {
@@ -1528,7 +1521,7 @@
         doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
         doc.line(ml, H - 13, W - mr, H - 13);
         doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
-        doc.text('lyvoo.pt — Nutrição de precisão', ml, H - 8);
+        doc.text('Saúde personalizada . Prevenção inteligente. Impacto real.', W / 2, H - 8, { align:'center' });
         doc.text(`${p} / ${total}`, W - mr, H - 8, { align:'right' });
       }
 
