@@ -387,18 +387,47 @@
 
     /* feature cards */
     .feature {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
       overflow: hidden; display: flex; flex-direction: column;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.25s, transform 0.22s, box-shadow 0.22s;
     }
-    .feature:hover { border-color: rgba(61,217,232,0.25); transform: translateY(-2px); }
-    .feature-head { padding: 20px 20px 0; font-size: 15px; font-weight: 700; color: var(--txt); }
-    .feature-img { height: 104px; margin: 14px 20px 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    .feature-img svg { width: 40px; height: 40px; color: #fff; opacity: 0.9; z-index: 1; }
+    .feature:hover { transform: translateY(-5px); box-shadow: 0 20px 48px rgba(0,0,0,0.4); border-color: var(--fc-accent, rgba(61,217,232,0.3)); }
+    .feature-head { padding: 20px 20px 0; font-size: 15px; font-weight: 700; color: var(--txt); letter-spacing: -0.01em; }
+    .feature-img {
+      height: 120px; margin: 14px 16px 0; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    /* Dot grid pattern + radial glow overlay */
+    .feature-img::before {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% 65%, rgba(255,255,255,0.16) 0%, transparent 62%),
+        radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: auto, 22px 22px;
+      transition: opacity 0.25s;
+    }
+    .feature:hover .feature-img::before { opacity: 0; }
+    .feature-img::after {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: radial-gradient(ellipse at 50% 65%, rgba(255,255,255,0.28) 0%, transparent 58%);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .feature:hover .feature-img::after { opacity: 1; }
+    .feature-img svg {
+      width: 46px; height: 46px; color: #fff; z-index: 2;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,0.45));
+      transition: filter 0.25s, transform 0.25s;
+    }
+    .feature:hover .feature-img svg {
+      filter: drop-shadow(0 4px 18px rgba(0,0,0,0.5)) drop-shadow(0 0 14px rgba(255,255,255,0.3));
+      transform: scale(1.10);
+    }
     .feature-body { padding: 14px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-    .feature-desc { font-size: 12.5px; color: var(--txt-2); line-height: 1.5; margin-bottom: 16px; flex: 1; }
+    .feature-desc { font-size: 13px; color: var(--txt-2); line-height: 1.55; margin-bottom: 16px; flex: 1; }
     .feature-cta { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--cyan); }
-    .feature-cta svg { width: 15px; height: 15px; }
+    .feature-cta svg { width: 15px; height: 15px; transition: transform 0.2s; }
+    .feature:hover .feature-cta svg { transform: translateX(5px); }
 
     /* biomarker highlights */
     .bio-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--txt-2); }
@@ -781,47 +810,47 @@
     <!-- ROW 2: feature cards -->
     <div class="grid row-4 mb">
 
-      <a href="#" class="feature" id="fc-plano" onclick="navSection('plano-alimentar');return false;">
+      <a href="#" class="feature" id="fc-plano" style="--fc-accent:rgba(74,222,128,0.35)" onclick="navSection('plano-alimentar');return false;">
         <div class="feature-head">Plano alimentar</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#1B6B3A,#0E3D24);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10M12 21V11M12 11a5 5 0 0 0 5-5 5 5 0 0 0-10 0 5 5 0 0 0 5 5Z"/><path d="M3 11h18a9 9 0 0 1-9 9 9 9 0 0 1-9-9Z"/></svg>
+        <div class="feature-img" style="background:linear-gradient(145deg,#051A0C 0%,#0D4020 45%,#1A7A40 100%);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3v7"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Nutrição personalizada com base nos seus objetivos.</div>
-          <div class="feature-cta">Ver plano <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          <div class="feature-desc">Nutrição personalizada com base nos seus biomarcadores e objetivos.</div>
+          <div class="feature-cta">Ver plano <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
-      <a href="#" class="feature" onclick="navSection('suplementacao');return false;">
+      <a href="#" class="feature" style="--fc-accent:rgba(167,139,250,0.35)" onclick="navSection('suplementacao');return false;">
         <div class="feature-head">Suplementação</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#6D4AA8,#3A2A66);">
+        <div class="feature-img" style="background:linear-gradient(145deg,#0D0520 0%,#2E1260 45%,#6D35B0 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Suplementos à medida das suas necessidades.</div>
-          <div class="feature-cta">Ver suplementos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          <div class="feature-desc">Suplementos prescritos à medida das suas necessidades.</div>
+          <div class="feature-cta">Ver suplementos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
-      <a href="#" class="feature" id="fc-bio" onclick="navSection('biomarcadores');return false;">
+      <a href="#" class="feature" id="fc-bio" style="--fc-accent:rgba(61,217,232,0.35)" onclick="navSection('biomarcadores');return false;">
         <div class="feature-head">Biomarcadores</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#0E5A63,#08323A);">
+        <div class="feature-img" style="background:linear-gradient(145deg,#020E10 0%,#062E35 45%,#0B6B78 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Acompanhe a sua evolução ao longo do tempo.</div>
-          <div class="feature-cta">Ver biomarcadores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          <div class="feature-desc">Acompanhe a evolução dos seus indicadores de saúde.</div>
+          <div class="feature-cta">Ver biomarcadores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
-      <a href="#" class="feature" onclick="navSection('consultas');return false;">
+      <a href="#" class="feature" style="--fc-accent:rgba(251,191,36,0.35)" onclick="navSection('consultas');return false;">
         <div class="feature-head">Consultas</div>
-        <div class="feature-img" style="background:linear-gradient(135deg,#3A5566,#1E2E3A);">
+        <div class="feature-img" style="background:linear-gradient(145deg,#0C0800 0%,#2E2000 45%,#7A5400 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Faça a gestão das suas consultas.</div>
-          <div class="feature-cta">Ver consultas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+          <div class="feature-desc">Gerencie e acompanhe todas as suas consultas médicas.</div>
+          <div class="feature-cta">Ver consultas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
