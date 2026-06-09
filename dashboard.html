@@ -882,7 +882,7 @@
 <script type="module">
 
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { doc, getDoc, setDoc, serverTimestamp, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   // ── Navegação entre secções ──────────────────────────────────────────
@@ -1032,6 +1032,32 @@
     tiroide:'Tiróide', hormonal:'Hormonal', hematologia:'Hematologia',
     hepatico:'Hepático', renal:'Renal'
   };
+  // ── Render: Seletor de análise histórica ─────────────────────────────
+  function renderHistoricoSelector(historico) {
+    const sub = document.getElementById('bio-sub');
+    if (!sub) return;
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px';
+    const label = document.createElement('span');
+    label.style.cssText = 'font-size:12px;color:var(--txt-3)';
+    label.textContent = 'Análise:';
+    const sel = document.createElement('select');
+    sel.style.cssText = 'font-size:12.5px;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--txt);cursor:pointer;outline:none';
+    historico.forEach((h, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = h.dataAnalise || `Análise ${historico.length - i}`;
+      if (i === 0) opt.textContent += ' (atual)';
+      sel.appendChild(opt);
+    });
+    sel.addEventListener('change', () => {
+      renderBiomarcadores(historico[+sel.value]);
+    });
+    wrap.appendChild(label);
+    wrap.appendChild(sel);
+    sub.insertAdjacentElement('afterend', wrap);
+  }
+
   function renderBiomarcadores(resultados) {
     const container = document.getElementById('bio-content');
     const sub = document.getElementById('bio-sub');
@@ -1303,6 +1329,16 @@
         if (d.resultados)     renderBioHighlights(d.resultados);
         if (d.relatorio)      renderScore(d.relatorio);
         if (d.kit)            renderKitTracking(d.kit, estadoNum);
+
+        // Carregar histórico de análises (subcoleção)
+        try {
+          const snaps = await getDocs(query(
+            collection(db, 'users', user.uid, 'analises'),
+            orderBy('criadoEm', 'desc')
+          ));
+          const historico = snaps.docs.map(s => ({ id: s.id, ...s.data() }));
+          if (historico.length > 1) renderHistoricoSelector(historico);
+        } catch(e) { /* subcoleção ainda não existe */ }
 
         // Preencher campos do perfil
         if (d.firstName) document.getElementById('pf-first').value = d.firstName;

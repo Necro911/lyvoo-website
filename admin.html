@@ -611,7 +611,7 @@
 
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { collection, getDocs, doc, getDoc, setDoc, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
@@ -1445,13 +1445,21 @@
     }
   };
 
-  window.saveBiomarcadores = function() {
-    saveDoc({
-      resultados: {
-        dataAnalise:   document.getElementById('bio-data').value.trim(),
-        biomarcadores: collectBioData(),
-      }
-    }, 'msg-bio');
+  window.saveBiomarcadores = async function() {
+    const dataAnalise   = document.getElementById('bio-data').value.trim();
+    const biomarcadores = collectBioData();
+    // 1. Atualizar documento principal (retrocompatibilidade com dashboard)
+    await saveDoc({ resultados: { dataAnalise, biomarcadores } }, 'msg-bio');
+    // 2. Guardar snapshot na subcoleção analises/ (histórico)
+    try {
+      await addDoc(collection(db, 'users', currentUID, 'analises'), {
+        dataAnalise,
+        biomarcadores,
+        criadoEm: serverTimestamp(),
+      });
+    } catch(e) {
+      console.warn('Histórico não guardado:', e.message);
+    }
   };
 
   window.savePlano = function() {
