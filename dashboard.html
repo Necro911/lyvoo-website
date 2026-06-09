@@ -603,6 +603,73 @@
       .main { padding: 20px 16px 84px; }
       .sec-wrap { padding: 20px 20px 84px; }
     }
+
+    /* ── Modal: Agendar consulta ─────────────────────────────────────── */
+    .bk-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(5,8,12,0.72); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .bk-overlay.open { display: flex; }
+    .bk-modal {
+      background: var(--panel, #11161D); border: 1px solid var(--line, rgba(255,255,255,0.08));
+      border-radius: 20px; width: 100%; max-width: 480px; max-height: 88vh;
+      overflow-y: auto; padding: 28px; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .bk-close {
+      position: absolute; top: 18px; right: 18px; width: 32px; height: 32px;
+      border-radius: 10px; border: 1px solid var(--line, rgba(255,255,255,0.08));
+      background: rgba(255,255,255,0.03); color: var(--txt-2, #a0aab8);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .bk-close:hover { background: rgba(255,255,255,0.08); }
+    .bk-title { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; color: var(--txt, #fff); margin-bottom: 4px; }
+    .bk-sub { font-size: 13px; color: var(--txt-2, #a0aab8); margin-bottom: 22px; line-height: 1.5; }
+    .bk-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt-3, #6b7686); margin: 18px 0 10px; }
+    .bk-days {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .bk-day {
+      flex: 0 0 auto; min-width: 58px; padding: 10px 6px; border-radius: 12px;
+      border: 1px solid var(--line, rgba(255,255,255,0.08)); background: rgba(255,255,255,0.02);
+      color: var(--txt, #fff); cursor: pointer; text-align: center; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .bk-day .bk-day-dow { font-size: 10px; color: var(--txt-3, #6b7686); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em; }
+    .bk-day .bk-day-num { font-size: 17px; font-weight: 800; margin-top: 2px; }
+    .bk-day .bk-day-mon { font-size: 9.5px; color: var(--txt-3, #6b7686); margin-top: 1px; }
+    .bk-day:hover { border-color: var(--cyan, #3DD9E8); }
+    .bk-day.active { background: rgba(61,217,232,0.12); border-color: var(--cyan, #3DD9E8); }
+    .bk-day.active .bk-day-dow, .bk-day.active .bk-day-mon { color: var(--cyan, #3DD9E8); }
+    .bk-times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .bk-time {
+      padding: 10px 4px; border-radius: 10px; border: 1px solid var(--line, rgba(255,255,255,0.08));
+      background: rgba(255,255,255,0.02); color: var(--txt, #fff); cursor: pointer;
+      font-size: 13px; font-weight: 600; text-align: center; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .bk-time:hover { border-color: var(--cyan, #3DD9E8); }
+    .bk-time.active { background: var(--cyan, #3DD9E8); border-color: var(--cyan, #3DD9E8); color: #04141A; }
+    .bk-time.taken { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+    .bk-empty { font-size: 13px; color: var(--txt-3, #6b7686); padding: 16px 0; text-align: center; }
+    .bk-confirm-btn {
+      width: 100%; margin-top: 24px; padding: 14px; border-radius: 12px; border: none;
+      background: var(--cyan, #3DD9E8); color: #04141A; font-size: 14.5px; font-weight: 800;
+      cursor: pointer; transition: opacity 0.15s; font-family: inherit;
+    }
+    .bk-confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .bk-msg { font-size: 13px; margin-top: 12px; text-align: center; min-height: 18px; }
+    .bk-msg.ok { color: var(--green, #22C55E); }
+    .bk-msg.err { color: var(--red, #E53935); }
+    .bk-spinner {
+      display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: var(--cyan, #3DD9E8); border-radius: 50%; animation: bk-spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes bk-spin { to { transform: rotate(360deg); } }
   </style>
   <script src="cookie-banner.js" defer></script>
 </head>
@@ -799,7 +866,11 @@
           <div style="flex:1; min-width:220px;">
             <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;">Reavaliação dos 6 meses</div>
             <div style="font-size:20px;font-weight:800;color:var(--txt);letter-spacing:-0.03em;margin-bottom:8px;">A sua reavaliação está a ser preparada.</div>
-            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
+            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;margin-bottom:14px;">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
+            <a href="#" id="reeval-agendar-btn" onclick="abrirAgendamento('reavaliacao');return false;" style="display:none;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+              Agendar reavaliação
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </a>
           </div>
           <div style="flex-shrink:0;text-align:right;">
             <div style="font-size:11px;color:var(--txt-3);margin-bottom:4px;">Progresso do programa</div>
@@ -850,7 +921,7 @@
           <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">Agende a sua consulta de nutrição</div>
           <div style="font-size:13px;color:var(--txt-2);line-height:1.6;">Os seus resultados estão prontos. Falta agendar a consulta com a sua nutricionista para traduzir os biomarcadores em ação concreta.</div>
         </div>
-        <a href="contacto.html" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        <a href="#" onclick="abrirAgendamento('nutricao');return false;" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           Agendar
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </a>
@@ -1020,7 +1091,7 @@
       <div class="panel-head"><h2>Próximas consultas</h2></div>
       <div class="appt-list" id="dash-appt-list">
         <div id="dash-appt-empty" style="padding:24px 0;text-align:center;color:var(--txt-3);font-size:13.5px;">
-          Sem consultas agendadas. <a href="contacto.html" style="color:var(--cyan)">Agendar →</a>
+          Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;">Agendar →</a>
         </div>
       </div>
       <a href="#" class="panel-link" style="display:inline-block;margin-top:16px;" onclick="navSection('consultas');return false;">Ver todas as consultas</a>
@@ -1127,10 +1198,10 @@
     <div id="sec-consultas" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div><h2 class="sec-title">Consultas</h2><p class="sec-sub">Próximas e passadas</p></div>
-        <a href="contacto.html" class="sec-btn">+ Agendar</a>
+        <a href="#" class="sec-btn" onclick="abrirAgendamento('nutricao');return false;">+ Agendar</a>
       </div>
       <div class="consult-list" id="consult-content">
-        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="contacto.html" style="color:var(--cyan)">Agende a sua consulta →</a></div>
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;">Agende a sua consulta →</a></div>
       </div>
     </div>
 
@@ -1226,7 +1297,7 @@
 <script type="module">
 
   import { onAuthStateChanged, signOut, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, addDoc, orderBy, query, where, arrayUnion, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   // ── Sino de notificações ─────────────────────────────────────────────
@@ -1319,6 +1390,176 @@
       btn.textContent = orig;
     }
   };
+
+  // ── Agendar consulta de nutrição (calendário com horários disponíveis) ──
+  const BK_HORAS = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  const BK_DOW = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let _bkSelectedDate = null;
+  let _bkSelectedTime = null;
+  let _bkBusy = {}; // { 'YYYY-MM-DD': Set('HH:MM') }
+
+  function bkFmtDate(d) {
+    const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+
+  async function bkLoadBusy(dateStrs) {
+    _bkBusy = {};
+    try {
+      const snaps = await getDocs(query(
+        collection(db, 'agendamentosNutri'),
+        where('data', '>=', dateStrs[0]),
+        where('data', '<=', dateStrs[dateStrs.length - 1])
+      ));
+      snaps.forEach(s => {
+        const a = s.data();
+        if (!_bkBusy[a.data]) _bkBusy[a.data] = new Set();
+        _bkBusy[a.data].add(a.hora);
+      });
+    } catch (e) {
+      console.error('Erro ao carregar disponibilidade:', e);
+    }
+  }
+
+  function bkRenderTimes() {
+    const wrap = document.getElementById('bk-times');
+    const confirmBtn = document.getElementById('bk-confirm');
+    if (!_bkSelectedDate) {
+      wrap.innerHTML = '<div class="bk-empty">Selecione um dia</div>';
+      confirmBtn.disabled = true;
+      return;
+    }
+    const taken = _bkBusy[_bkSelectedDate] || new Set();
+    wrap.innerHTML = BK_HORAS.map(h => {
+      const isTaken = taken.has(h);
+      return `<button type="button" class="bk-time ${isTaken?'taken':''} ${(_bkSelectedTime===h && !isTaken)?'active':''}" data-hora="${h}" ${isTaken?'disabled':''}>${h}</button>`;
+    }).join('');
+    wrap.querySelectorAll('.bk-time:not(.taken)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _bkSelectedTime = btn.dataset.hora;
+        wrap.querySelectorAll('.bk-time').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        confirmBtn.disabled = false;
+      });
+    });
+    confirmBtn.disabled = true;
+    _bkSelectedTime = null;
+  }
+
+  async function bkRenderDays() {
+    const wrap = document.getElementById('bk-days');
+    const days = [];
+    let d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + 1); // a partir de amanhã
+    while (days.length < 14) {
+      if (d.getDay() !== 0 && d.getDay() !== 6) days.push(new Date(d)); // dias úteis
+      d.setDate(d.getDate() + 1);
+    }
+    const dateStrs = days.map(bkFmtDate);
+    wrap.innerHTML = days.map((dt, i) => {
+      const ds = dateStrs[i];
+      return `<button type="button" class="bk-day" data-date="${ds}">
+        <div class="bk-day-dow">${BK_DOW[dt.getDay()]}</div>
+        <div class="bk-day-num">${dt.getDate()}</div>
+        <div class="bk-day-mon">${MESES[dt.getMonth()]}</div>
+      </button>`;
+    }).join('');
+    await bkLoadBusy(dateStrs);
+    wrap.querySelectorAll('.bk-day').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _bkSelectedDate = btn.dataset.date;
+        wrap.querySelectorAll('.bk-day').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        bkRenderTimes();
+      });
+    });
+  }
+
+  window.abrirAgendamento = async function(tipo) {
+    tipo = tipo || 'nutricao';
+    const titulo = document.getElementById('bk-title');
+    const sub = document.getElementById('bk-sub');
+    if (tipo === 'reavaliacao') {
+      titulo.textContent = 'Agendar reavaliação dos 6 meses';
+      sub.textContent = 'Escolha o dia e o horário disponível com a sua nutricionista para a consulta de reavaliação.';
+    } else {
+      titulo.textContent = 'Agendar consulta de nutrição';
+      sub.textContent = 'Escolha o dia e o horário disponível com a sua nutricionista.';
+    }
+    document.getElementById('bk-overlay').dataset.tipo = tipo;
+    document.getElementById('bk-msg').textContent = '';
+    document.getElementById('bk-msg').className = 'bk-msg';
+    _bkSelectedDate = null;
+    _bkSelectedTime = null;
+    document.getElementById('bk-confirm').disabled = true;
+    document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
+    document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
+    document.getElementById('bk-overlay').classList.add('open');
+    await bkRenderDays();
+  };
+
+  function fecharAgendamento() {
+    document.getElementById('bk-overlay').classList.remove('open');
+  }
+  document.getElementById('bk-close').addEventListener('click', fecharAgendamento);
+  document.getElementById('bk-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'bk-overlay') fecharAgendamento();
+  });
+
+  document.getElementById('bk-confirm').addEventListener('click', async () => {
+    if (!_bkSelectedDate || !_bkSelectedTime || !_currentUser) return;
+    const btn = document.getElementById('bk-confirm');
+    const msg = document.getElementById('bk-msg');
+    const tipo = document.getElementById('bk-overlay').dataset.tipo || 'nutricao';
+    const titulo = tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de Nutrição';
+    btn.disabled = true;
+    msg.className = 'bk-msg';
+    msg.innerHTML = '<span class="bk-spinner"></span> A confirmar marcação…';
+    try {
+      // Verificar novamente disponibilidade (evitar conflitos de última hora)
+      const checkSnap = await getDocs(query(
+        collection(db, 'agendamentosNutri'),
+        where('data', '==', _bkSelectedDate),
+        where('hora', '==', _bkSelectedTime)
+      ));
+      if (!checkSnap.empty) {
+        msg.className = 'bk-msg err';
+        msg.textContent = 'Este horário acabou de ser reservado. Escolha outro.';
+        await bkRenderDays();
+        return;
+      }
+      const nome = window._planoNome || _currentUser.email || '';
+      await addDoc(collection(db, 'agendamentosNutri'), {
+        uid: _currentUser.uid,
+        nome,
+        email: _currentUser.email || '',
+        tipo,
+        titulo,
+        data: _bkSelectedDate,
+        hora: _bkSelectedTime,
+        criadoEm: serverTimestamp()
+      });
+      await updateDoc(doc(db, 'users', _currentUser.uid), {
+        consultas: arrayUnion({
+          titulo,
+          data: _bkSelectedDate,
+          hora: _bkSelectedTime,
+          medico: 'Nutricionista',
+          estado: 'agendada'
+        })
+      });
+      msg.className = 'bk-msg ok';
+      msg.textContent = '✓ Consulta agendada com sucesso!';
+      setTimeout(() => {
+        fecharAgendamento();
+        carregarDados(_currentUser);
+      }, 1400);
+    } catch (e) {
+      console.error('Erro ao agendar consulta:', e);
+      msg.className = 'bk-msg err';
+      msg.textContent = 'Não foi possível agendar. Tente novamente.';
+      btn.disabled = false;
+    }
+  });
 
   // ── Download Plano Alimentar → PDF ───────────────────────────────────
   window.downloadPlanoPDF = async function() {
@@ -2397,6 +2638,18 @@
         const reevalBanner = document.getElementById('reeval-banner');
         if (reevalBanner) reevalBanner.style.display = 'block';
 
+        // Botão "Agendar reavaliação" — mostrar se não há reavaliação futura agendada
+        const reevalBtn = document.getElementById('reeval-agendar-btn');
+        if (reevalBtn) {
+          const today = new Date(); today.setHours(0,0,0,0);
+          const temReavaliacaoAgendada = (d.consultas||[]).some(c => {
+            if (!c.data) return false;
+            const dt = new Date(c.data + 'T00:00:00');
+            return dt >= today && (c.titulo||'').toLowerCase().includes('reavalia');
+          });
+          reevalBtn.style.display = temReavaliacaoAgendada ? 'none' : 'inline-flex';
+        }
+
         // Mini-timeline: usar kit se disponível para deduzir sub-estado
         const reevalTimeline = document.getElementById('reeval-timeline');
         if (reevalTimeline) {
@@ -2504,6 +2757,26 @@
     window.location.href = 'index.html';
   });
 </script>
+
+<!-- Modal: Agendar consulta -->
+<div class="bk-overlay" id="bk-overlay">
+  <div class="bk-modal">
+    <button class="bk-close" id="bk-close" aria-label="Fechar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+    </button>
+    <div class="bk-title" id="bk-title">Agendar consulta de nutrição</div>
+    <div class="bk-sub" id="bk-sub">Escolha o dia e o horário disponível com a sua nutricionista.</div>
+
+    <div class="bk-label">Dia</div>
+    <div class="bk-days" id="bk-days"></div>
+
+    <div class="bk-label">Hora</div>
+    <div class="bk-times" id="bk-times"><div class="bk-empty">Selecione um dia</div></div>
+
+    <button class="bk-confirm-btn" id="bk-confirm" disabled>Confirmar marcação</button>
+    <div class="bk-msg" id="bk-msg"></div>
+  </div>
+</div>
 
 </body>
 </html>
