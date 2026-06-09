@@ -98,22 +98,29 @@
     .sec-macro-bar div { height: 100%; border-radius: 999px; }
     .sec-list-section { margin-bottom: 20px; }
     /* Plano de refeições */
-    .meal-plan-list { display: flex; flex-direction: column; gap: 10px; }
+    .meal-plan-list { display: flex; flex-direction: column; gap: 8px; }
     .meal-card {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
-      overflow: hidden; display: flex; align-items: stretch;
-      transition: border-color 0.2s;
+      border: 1px solid var(--line); border-radius: 18px;
+      display: flex; align-items: center; gap: 20px;
+      padding: 20px 24px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.2s, transform 0.18s, box-shadow 0.18s;
     }
-    .meal-card:hover { border-color: var(--line-2); }
-    .meal-card-accent { width: 4px; flex-shrink: 0; }
-    .meal-card-body { padding: 18px 22px; flex: 1; display: flex; align-items: baseline; gap: 24px; }
-    .meal-card-left { width: 160px; flex-shrink: 0; }
-    .meal-card-name { font-size: 14px; font-weight: 700; color: var(--txt); margin-bottom: 5px; }
-    .meal-card-time {
-      display: inline-block; font-size: 11.5px; font-weight: 600;
-      padding: 3px 10px; border-radius: 999px;
+    .meal-card:hover { border-color: var(--line-2); transform: translateY(-1px); }
+    .meal-icon {
+      width: 52px; height: 52px; border-radius: 15px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; z-index: 1;
     }
-    .meal-card-desc { font-size: 14px; color: var(--txt-2); line-height: 1.7; flex: 1; }
+    .meal-icon svg { width: 22px; height: 22px; stroke-width: 1.75; }
+    .meal-body { flex: 1; min-width: 0; position: relative; z-index: 1; }
+    .meal-name { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 5px; }
+    .meal-desc { font-size: 13.5px; color: var(--txt-2); line-height: 1.65; }
+    .meal-time {
+      font-size: 22px; font-weight: 800; letter-spacing: -0.04em;
+      flex-shrink: 0; font-variant-numeric: tabular-nums;
+      position: relative; z-index: 1; opacity: 0.9;
+    }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
@@ -1233,32 +1240,54 @@
     const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
     const obs = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">Observações</div><p style="font-size:13.5px;color:var(--txt-2);line-height:1.7">${pa.obs}</p></div>` : '';
 
-    // Refeições — cor por período do dia
-    const MEAL_PALETTE = {
-      'Pequeno-almoço':  { accent: '#3DD9E8', bg: 'rgba(61,217,232,0.10)',  fg: '#3DD9E8'  },
-      'Meio da manhã':   { accent: '#3DD9E8', bg: 'rgba(61,217,232,0.10)',  fg: '#3DD9E8'  },
-      'Almoço':          { accent: '#4ADE80', bg: 'rgba(74,222,128,0.10)',  fg: '#4ADE80'  },
-      'Lanche':          { accent: '#4ADE80', bg: 'rgba(74,222,128,0.10)',  fg: '#4ADE80'  },
-      'Pré-treino':      { accent: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', fg: '#A78BFA'  },
-      'Pós-treino':      { accent: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', fg: '#A78BFA'  },
-      'Jantar':          { accent: '#FBBF24', bg: 'rgba(251,191,36,0.10)', fg: '#FBBF24'  },
-      'Ceia':            { accent: '#FBBF24', bg: 'rgba(251,191,36,0.10)', fg: '#FBBF24'  },
+    // Refeições — paleta + ícones SVG por tipo
+    const MEAL_META = {
+      'Pequeno-almoço': {
+        color:'#3DD9E8', rgba:'61,217,232',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
+      },
+      'Meio da manhã': {
+        color:'#3DD9E8', rgba:'61,217,232',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>`
+      },
+      'Almoço': {
+        color:'#4ADE80', rgba:'74,222,128',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3v7"/></svg>`
+      },
+      'Lanche': {
+        color:'#4ADE80', rgba:'74,222,128',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>`
+      },
+      'Pré-treino': {
+        color:'#A78BFA', rgba:'139,92,246',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`
+      },
+      'Pós-treino': {
+        color:'#A78BFA', rgba:'139,92,246',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 3.5h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3"/><path d="M21 3.5h-1a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h1"/></svg>`
+      },
+      'Jantar': {
+        color:'#FBBF24', rgba:'251,191,36',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
+      },
+      'Ceia': {
+        color:'#FBBF24', rgba:'251,191,36',
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>`
+      },
     };
     const refeicoes = pa.refeicoes && pa.refeicoes.length
       ? `<div class="sec-list-section">
           <div class="sec-list-title" style="color:var(--cyan);margin-bottom:14px">Plano de refeições</div>
           <div class="meal-plan-list">
             ${pa.refeicoes.map(r => {
-              const p = MEAL_PALETTE[r.nome] || { accent:'#5E6C72', bg:'rgba(255,255,255,0.06)', fg:'#9DAAB0' };
-              return `<div class="meal-card">
-                <div class="meal-card-accent" style="background:${p.accent}"></div>
-                <div class="meal-card-body">
-                  <div class="meal-card-left">
-                    <div class="meal-card-name">${r.nome}</div>
-                    ${r.hora ? `<span class="meal-card-time" style="background:${p.bg};color:${p.fg}">${r.hora}</span>` : ''}
-                  </div>
-                  <div class="meal-card-desc">${r.desc||''}</div>
+              const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>` };
+              return `<div class="meal-card" style="background:linear-gradient(105deg,rgba(${m.rgba},0.07) 0%,var(--panel) 45%);border-color:rgba(${m.rgba},0.18);box-shadow:0 0 0 0 rgba(${m.rgba},0);" onmouseenter="this.style.boxShadow='0 8px 32px rgba(${m.rgba},0.12)'" onmouseleave="this.style.boxShadow='none'">
+                <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
+                <div class="meal-body">
+                  <div class="meal-name">${r.nome}</div>
+                  <div class="meal-desc">${r.desc||''}</div>
                 </div>
+                ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
               </div>`;
             }).join('')}
           </div>
