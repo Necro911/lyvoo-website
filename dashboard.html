@@ -423,6 +423,11 @@
         Suplementação
         <svg class="sb-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </a>
+      <a href="#" class="sb-link sb-locked" id="sb-relatorio" onclick="navSection('relatorio')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Relatório médico
+        <svg class="sb-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </a>
       <a href="#" class="sb-link sb-locked" id="sb-biomarcadores" onclick="navSection('biomarcadores')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
         Biomarcadores
@@ -444,18 +449,18 @@
       </a>
     </nav>
 
-    <div class="sb-appt">
+    <div class="sb-appt" id="sb-appt-card" style="display:none;">
       <div class="sb-appt-label">A sua próxima consulta</div>
-      <div class="sb-appt-title">Follow-up de nutrição</div>
-      <div class="sb-appt-meta">
+      <div class="sb-appt-title" id="sb-appt-title">-</div>
+      <div class="sb-appt-meta" id="sb-appt-date">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        24 Jun 2026
+        -
       </div>
-      <div class="sb-appt-meta">
+      <div class="sb-appt-meta" id="sb-appt-time" style="display:none;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        11:00
+        -
       </div>
-      <a href="#" class="sb-appt-btn">Ver detalhes</a>
+      <a href="#" class="sb-appt-btn" id="sb-appt-btn">Ver detalhes</a>
     </div>
   </aside>
 
@@ -554,11 +559,11 @@
           <div class="ob-preview-desc">Análise integrada por médico e nutricionista. Cada valor contextualizado com recomendações práticas.</div>
         </div>
         <div class="ob-preview-card">
-          <div class="ob-preview-icon" style="background:rgba(74,222,128,0.08);color:var(--green);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+          <div class="ob-preview-icon" style="background:rgba(139,92,246,0.08);color:var(--violet);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-          <div class="ob-preview-name">Plano nutricional</div>
-          <div class="ob-preview-desc">Plano alimentar personalizado com base nos seus biomarcadores e objetivos de saúde.</div>
+          <div class="ob-preview-name">Consulta de nutrição</div>
+          <div class="ob-preview-desc">Assim que os resultados ficarem prontos, agendamos uma consulta com a sua nutricionista para traduzir os dados em ação.</div>
         </div>
       </div>
 
@@ -566,6 +571,48 @@
 
     <!-- ══ VISTA RESULTADOS (estado >= 4) ══ -->
     <div id="view-resultados" style="display:none">
+
+    <!-- Banner reavaliação (estado 5) -->
+    <div id="reeval-banner" style="display:none; margin:0 32px 24px;">
+
+      <!-- Card principal -->
+      <div style="background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(61,217,232,0.06)); border:1px solid rgba(139,92,246,0.30); border-radius:20px; padding:28px 32px; margin-bottom:16px;">
+        <div style="display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;">
+          <div style="width:52px;height:52px;border-radius:16px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--violet);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
+          <div style="flex:1; min-width:220px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;">Reavaliação dos 6 meses</div>
+            <div style="font-size:20px;font-weight:800;color:var(--txt);letter-spacing:-0.03em;margin-bottom:8px;">A sua reavaliação está a ser preparada.</div>
+            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
+          </div>
+          <div style="flex-shrink:0;text-align:right;">
+            <div style="font-size:11px;color:var(--txt-3);margin-bottom:4px;">Progresso do programa</div>
+            <div style="font-size:32px;font-weight:900;color:var(--violet);letter-spacing:-0.05em;line-height:1;">90<span style="font-size:16px;color:var(--txt-3);font-weight:600">%</span></div>
+          </div>
+        </div>
+
+        <!-- Mini timeline reavaliação -->
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.07);display:flex;gap:0;align-items:stretch;" id="reeval-timeline">
+          <!-- steps injetados via JS -->
+        </div>
+      </div>
+
+      <!-- Teaser comparação -->
+      <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:20px;">
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--txt-3);margin-bottom:6px;">O que vai receber</div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--txt);margin-bottom:4px;">Relatório comparativo · Baseline vs. 6 meses</div>
+          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;">Cada biomarcador comparado com o resultado inicial. Vai ver, em números, o impacto do programa na sua saúde.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;padding:0 8px;">
+          <div style="font-size:10px;color:var(--txt-3);font-weight:600;">ANTES</div>
+          <div style="width:2px;height:40px;background:linear-gradient(to bottom, var(--txt-3), var(--violet));border-radius:999px;"></div>
+          <div style="font-size:10px;color:var(--violet);font-weight:700;">DEPOIS</div>
+        </div>
+      </div>
+
+    </div>
 
     <!-- Banner resultados (estado 4 - primeira vez) -->
     <div id="results-banner" style="display:none; margin:0 32px 20px; padding:18px 24px; background:linear-gradient(135deg,rgba(74,222,128,0.09),rgba(61,217,232,0.06)); border:1px solid rgba(74,222,128,0.22); border-radius:16px; align-items:center; gap:16px;">
@@ -575,6 +622,24 @@
         <div style="font-size:13px;color:var(--txt-2);">O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.</div>
       </div>
       <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
+    </div>
+
+    <!-- CTA: Agendar consulta de nutrição (estado 4, sem consulta agendada) -->
+    <div id="nutri-cta" style="display:none; margin:0 32px 20px;">
+      <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px;">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--violet);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;">Próximo passo</div>
+          <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">Agende a sua consulta de nutrição</div>
+          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;">Os seus resultados estão prontos. Falta agendar a consulta com a sua nutricionista para traduzir os biomarcadores em ação concreta.</div>
+        </div>
+        <a href="contacto.html" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Agendar
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
 
     <!-- Banner: novidades (notificadoEm > vistoEm) -->
@@ -631,7 +696,7 @@
             <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><span class="score-name">Sono</span><span class="score-val">88<small>/100</small></span></div>
           </div>
         </div>
-        <a href="#" class="btn-ghost">Ver análise</a>
+        <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;">Ver relatório</a>
       </div>
 
     </div>
@@ -736,23 +801,11 @@
     </div>
 
     <!-- ROW 4: upcoming -->
-    <div class="panel">
+    <div class="panel" id="dash-appt-panel">
       <div class="panel-head"><h2>Próximas consultas</h2></div>
-      <div class="appt-list">
-        <div class="appt-row">
-          <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></div>
-          <div class="appt-info"><div class="appt-title">Follow-up de nutrição</div><div class="appt-meta">24 Jun 2026 · 11:00 · com Mariana Silva</div></div>
-          <a href="#" class="appt-btn">Remarcar</a>
-        </div>
-        <div class="appt-row">
-          <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-          <div class="appt-info"><div class="appt-title">Consulta de medicina preventiva</div><div class="appt-meta">7 Jul 2026 · 10:00 · com Dr. André Martins</div></div>
-          <a href="#" class="appt-btn">Remarcar</a>
-        </div>
-        <div class="appt-row">
-          <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
-          <div class="appt-info"><div class="appt-title">Reavaliação (análise ao sangue)</div><div class="appt-meta">21 Jul 2026 · kit em casa</div></div>
-          <a href="#" class="appt-btn">Ver instruções</a>
+      <div class="appt-list" id="dash-appt-list">
+        <div id="dash-appt-empty" style="padding:24px 0;text-align:center;color:var(--txt-3);font-size:13.5px;">
+          Sem consultas agendadas. <a href="contacto.html" style="color:var(--cyan)">Agendar →</a>
         </div>
       </div>
       <a href="#" class="panel-link" style="display:inline-block;margin-top:16px;" onclick="navSection('consultas');return false;">Ver todas as consultas</a>
@@ -793,6 +846,61 @@
       </div>
       <div class="supp-grid" id="supp-content">
         <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">O seu plano de suplementação ainda não está disponível. Em breve!</div>
+      </div>
+    </div>
+
+    <!-- RELATÓRIO MÉDICO -->
+    <div id="sec-relatorio" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div>
+          <h2 class="sec-title">Relatório médico</h2>
+          <p class="sec-sub" id="rel-sub">Análise integrada dos seus resultados</p>
+        </div>
+        <a id="rel-open-btn" href="#" target="_blank" rel="noopener" class="sec-btn" style="display:none;">
+          Abrir relatório PDF ↗
+        </a>
+      </div>
+
+      <!-- Score global -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;" id="rel-score-grid">
+
+        <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;align-items:center;gap:24px;">
+          <div style="position:relative;width:100px;height:100px;flex-shrink:0;">
+            <svg width="100" height="100" style="transform:rotate(-90deg)">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+              <circle id="rel-ring-fill" cx="50" cy="50" r="42" fill="none" stroke="url(#relGrad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+              <defs><linearGradient id="relGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <span id="rel-score-val" style="font-size:26px;font-weight:800;color:var(--txt);letter-spacing:-0.04em;line-height:1;">-</span>
+              <span style="font-size:10px;color:var(--txt-3);">/100</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);margin-bottom:6px;">Score global</div>
+            <div id="rel-classificacao" style="font-size:20px;font-weight:800;color:var(--green);letter-spacing:-0.03em;margin-bottom:6px;">-</div>
+            <div id="rel-data" style="font-size:12px;color:var(--txt-3);">-</div>
+          </div>
+        </div>
+
+        <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);">Sub-scores</div>
+          <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;color:var(--cyan);flex-shrink:0"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><span class="score-name">Biomarcadores</span><span class="score-val" id="rel-score-bio">-</span></div>
+          <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;color:var(--violet);flex-shrink:0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="score-name">Nutrição</span><span class="score-val" id="rel-score-nut">-</span></div>
+          <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;color:var(--green);flex-shrink:0"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><span class="score-name">Sono</span><span class="score-val" id="rel-score-sono">-</span></div>
+        </div>
+
+      </div>
+
+      <!-- Notas do relatório -->
+      <div id="rel-notas-wrap" style="display:none;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:24px;">
+        <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);margin-bottom:14px;">Notas clínicas</div>
+        <p id="rel-notas" style="font-size:14px;color:var(--txt-2);line-height:1.8;white-space:pre-line;"></p>
+      </div>
+
+      <!-- Estado: sem relatório -->
+      <div id="rel-empty" style="padding:48px 0;text-align:center;color:var(--txt-3);font-size:14px;">
+        O seu relatório ainda não está disponível. Será notificado quando estiver pronto.
       </div>
     </div>
 
@@ -896,15 +1004,16 @@
   import { auth, db } from './lyvoo-firebase.js';
 
   // ── Navegação entre secções ──────────────────────────────────────────
-  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','consultas','perfil','conta'];
+  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','perfil','conta'];
   const SECTION_TITLES = {
-    'biomarcadores': 'Biomarcadores',
-    'plano-alimentar': 'Plano alimentar',
-    'suplementacao': 'Suplementação',
-    'consultas': 'Consultas',
-    'perfil': 'Perfil',
-    'conta': 'Conta e segurança',
-    'painel': 'Painel'
+    'biomarcadores':  'Biomarcadores',
+    'plano-alimentar':'Plano alimentar',
+    'suplementacao':  'Suplementação',
+    'relatorio':      'Relatório médico',
+    'consultas':      'Consultas',
+    'perfil':         'Perfil',
+    'conta':          'Conta e segurança',
+    'painel':         'Painel'
   };
 
   window.navSection = function(name) {
@@ -1180,21 +1289,53 @@
       </div>`;
     }).join('');
 
-    // Atualizar também o sidebar (próxima consulta)
-    const proxima = sorted.find(c => {
-      if (!c.data) return false;
-      return new Date(c.data + 'T00:00:00') >= today;
-    });
+    // Painel "Próximas consultas" no dashboard (próximas 3)
+    const dashList  = document.getElementById('dash-appt-list');
+    const dashEmpty = document.getElementById('dash-appt-empty');
+    const proximas  = sorted.filter(c => c.data && new Date(c.data + 'T00:00:00') >= today).slice(0, 3);
+    if (dashList && proximas.length) {
+      if (dashEmpty) dashEmpty.style.display = 'none';
+      const ICONS = {
+        nutri:    '<path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
+        medic:    '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+        default:  '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+      };
+      proximas.forEach(c => {
+        const d    = new Date(c.data + 'T00:00:00');
+        const tit  = (c.titulo||'').toLowerCase();
+        const ico  = tit.includes('nutri') || tit.includes('alimentar') ? ICONS.nutri
+                   : tit.includes('medic') || tit.includes('preventiva') ? ICONS.medic
+                   : ICONS.default;
+        const btn  = c.link
+          ? `<a href="${c.link}" target="_blank" rel="noopener" class="appt-btn" style="background:rgba(61,217,232,0.08);border-color:rgba(61,217,232,0.25);color:var(--cyan)">Entrar</a>`
+          : `<span class="appt-btn" style="opacity:0.4;cursor:default">Agendada</span>`;
+        const row = document.createElement('div');
+        row.className = 'appt-row';
+        row.innerHTML = `
+          <div class="appt-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ico}</svg></div>
+          <div class="appt-info">
+            <div class="appt-title">${c.titulo}</div>
+            <div class="appt-meta">${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}${c.hora?' · '+c.hora:''}${c.medico?' · '+c.medico:''}</div>
+          </div>
+          ${btn}`;
+        dashList.appendChild(row);
+      });
+    }
+
+    // Sidebar — próxima consulta
+    const proxima = proximas[0];
     if (proxima) {
-      const pd = new Date(proxima.data + 'T00:00:00');
-      const sba = document.querySelector('.sb-appt-title');
-      const sbm1 = document.querySelectorAll('.sb-appt-meta')[0];
-      const sbm2 = document.querySelectorAll('.sb-appt-meta')[1];
-      if (sba) sba.textContent = proxima.titulo;
-      if (sbm1) sbm1.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${pd.getDate()} ${MESES[pd.getMonth()]} ${pd.getFullYear()}`;
-      if (sbm2 && proxima.hora) sbm2.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${proxima.hora}`;
-      const sbBtn = document.querySelector('.sb-appt-btn');
-      if (sbBtn && proxima.link) { sbBtn.href = proxima.link; sbBtn.target = '_blank'; sbBtn.textContent = 'Entrar na consulta'; }
+      const pd   = new Date(proxima.data + 'T00:00:00');
+      const card = document.getElementById('sb-appt-card');
+      if (card) card.style.display = 'block';
+      const sbt = document.getElementById('sb-appt-title');
+      const sbd = document.getElementById('sb-appt-date');
+      const sbh = document.getElementById('sb-appt-time');
+      const sbb = document.getElementById('sb-appt-btn');
+      if (sbt) sbt.textContent = proxima.titulo;
+      if (sbd) sbd.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${pd.getDate()} ${MESES[pd.getMonth()]} ${pd.getFullYear()}`;
+      if (sbh && proxima.hora) { sbh.style.display = 'flex'; sbh.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${proxima.hora}`; }
+      if (sbb && proxima.link) { sbb.href = proxima.link; sbb.target = '_blank'; sbb.textContent = 'Entrar na consulta'; }
     }
   }
 
@@ -1217,6 +1358,67 @@
         ${r.delta?`<div class="bio-trend up">${r.delta}</div>`:'<div class="bio-trend">-</div>'}
       </div>`;
     }).join('');
+  }
+
+  // ── Render: Secção Relatório médico ──────────────────────────────────
+  function renderRelatorio(relatorio) {
+    if (!relatorio) return;
+    const empty = document.getElementById('rel-empty');
+    const grid  = document.getElementById('rel-score-grid');
+
+    // Score ring
+    const score = relatorio.score;
+    if (score) {
+      if (empty) empty.style.display = 'none';
+      if (grid)  grid.style.display  = 'grid';
+      const circumference = 263.9;
+      const offset = circumference - (score / 100) * circumference;
+      const ring = document.getElementById('rel-ring-fill');
+      if (ring) ring.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      const valEl = document.getElementById('rel-score-val');
+      if (valEl) valEl.textContent = score;
+      const clsEl = document.getElementById('rel-classificacao');
+      if (clsEl) {
+        clsEl.textContent = relatorio.classificacao || 'Bom';
+        const cls = relatorio.classificacao?.toLowerCase() || '';
+        clsEl.style.color = cls.includes('excelente') ? 'var(--green)'
+                          : cls.includes('bom')        ? 'var(--cyan)'
+                          : cls.includes('moder')      ? 'var(--amber)'
+                          : 'var(--red)';
+      }
+    } else {
+      if (grid) grid.style.display = 'none';
+    }
+
+    // Data
+    if (relatorio.dataRelatorio) {
+      const d = document.getElementById('rel-data');
+      if (d) d.textContent = 'Análise de ' + relatorio.dataRelatorio;
+      const sub = document.getElementById('rel-sub');
+      if (sub) sub.textContent = 'Análise integrada · ' + relatorio.dataRelatorio;
+    }
+
+    // Sub-scores
+    const setBio  = document.getElementById('rel-score-bio');
+    const setNut  = document.getElementById('rel-score-nut');
+    const setSono = document.getElementById('rel-score-sono');
+    if (setBio  && relatorio.scoreBio)  setBio.innerHTML  = `${relatorio.scoreBio}<small style="color:var(--txt-3);font-weight:500">/100</small>`;
+    if (setNut  && relatorio.scoreNut)  setNut.innerHTML  = `${relatorio.scoreNut}<small style="color:var(--txt-3);font-weight:500">/100</small>`;
+    if (setSono && relatorio.scoreSono) setSono.innerHTML = `${relatorio.scoreSono}<small style="color:var(--txt-3);font-weight:500">/100</small>`;
+
+    // Notas clínicas
+    if (relatorio.notas) {
+      const wrap = document.getElementById('rel-notas-wrap');
+      const text = document.getElementById('rel-notas');
+      if (wrap) wrap.style.display = 'block';
+      if (text) text.textContent = relatorio.notas;
+    }
+
+    // Botão PDF
+    if (relatorio.url) {
+      const btn = document.getElementById('rel-open-btn');
+      if (btn) { btn.href = relatorio.url; btn.style.display = 'inline-flex'; }
+    }
   }
 
   // ── Render: Score de saúde no painel ─────────────────────────────────
@@ -1337,8 +1539,8 @@
         if (d.suplementacao)  renderSupplementos(d.suplementacao);
         if (d.consultas)      renderConsultas(d.consultas);
         if (d.resultados)     renderBioHighlights(d.resultados);
-        if (d.relatorio)      renderScore(d.relatorio);
-        if (d.kit)            renderKitTracking(d.kit, estadoNum);
+        if (d.relatorio)    { renderScore(d.relatorio); renderRelatorio(d.relatorio); }
+        if (d.kit)          { renderKitTracking(d.kit, estadoNum); window._kitData = d.kit; }
 
         // Carregar histórico de análises (subcoleção)
         try {
@@ -1409,7 +1611,7 @@
       viewRes.style.display = 'block';
 
       // Desbloquear sidebar
-      ['sb-plano-alimentar', 'sb-suplementacao', 'sb-biomarcadores'].forEach(id => {
+      ['sb-plano-alimentar', 'sb-suplementacao', 'sb-relatorio', 'sb-biomarcadores'].forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.classList.remove('sb-locked'); el.querySelector('.sb-lock-icon')?.remove(); }
       });
@@ -1430,6 +1632,19 @@
           <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Relatório e plano entregues</div><div class="check-state">Disponível agora</div></div></div>
           <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Reavaliação</div><div class="check-state">Em breve · 6 meses</div></div></div>`;
 
+        // CTA consulta de nutrição — mostrar se não há consulta de nutrição futura agendada
+        const nutriCta = document.getElementById('nutri-cta');
+        if (nutriCta) {
+          const today = new Date(); today.setHours(0,0,0,0);
+          const temNutriAgendada = (d.consultas||[]).some(c => {
+            if (!c.data) return false;
+            const dt = new Date(c.data + 'T00:00:00');
+            const titulo = (c.titulo||'').toLowerCase();
+            return dt >= today && (titulo.includes('nutri') || titulo.includes('alimentar'));
+          });
+          if (!temNutriAgendada) nutriCta.style.display = 'block';
+        }
+
         // Badges "Novo" nos feature cards
         ['fc-plano', 'fc-bio'].forEach(id => {
           const el = document.getElementById(id);
@@ -1442,10 +1657,53 @@
         });
       }
 
-      // Estado 5: reavaliação - 90%
+      // Estado 5: reavaliação
       if (estadoNum === 5) {
         const pctEl = document.getElementById('prog-pct');
         if (pctEl) pctEl.innerHTML = '90<small>%</small>';
+
+        // Mostrar banner de reavaliação
+        const reevalBanner = document.getElementById('reeval-banner');
+        if (reevalBanner) reevalBanner.style.display = 'block';
+
+        // Mini-timeline: usar kit se disponível para deduzir sub-estado
+        const reevalTimeline = document.getElementById('reeval-timeline');
+        if (reevalTimeline) {
+          const kitData = window._kitData || {};
+          // sub-estado: 0=preparar, 1=kit enviado, 2=amostra enviada, 3=lab a processar
+          const subEstado = kitData.tracking ? (kitData.dataRecolha ? 2 : 1) : 0;
+          const steps = [
+            { label: 'Kit a caminho',         done: subEstado >= 1, active: subEstado === 0 },
+            { label: 'Recolha em casa',        done: subEstado >= 2, active: subEstado === 1 },
+            { label: 'Laboratório',            done: subEstado >= 3, active: subEstado === 2 },
+            { label: 'Relatório comparativo',  done: false,          active: subEstado === 3 },
+          ];
+          reevalTimeline.innerHTML = steps.map((s, i) => `
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;">
+              ${i > 0 ? `<div style="position:absolute;top:12px;left:0;width:50%;height:2px;background:${s.done||s.active?'var(--violet)':'rgba(255,255,255,0.1)'};"></div>
+                         <div style="position:absolute;top:12px;right:0;width:50%;height:2px;background:${s.done?'var(--violet)':'rgba(255,255,255,0.1)'};"></div>` : `<div style="position:absolute;top:12px;right:0;width:50%;height:2px;background:${s.done?'var(--violet)':'rgba(255,255,255,0.1)'};"></div>`}
+              <div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:1;
+                background:${s.done?'var(--violet)':s.active?'rgba(139,92,246,0.2)':'rgba(255,255,255,0.05)'};
+                border:2px solid ${s.done||s.active?'var(--violet)':'rgba(255,255,255,0.1)'};
+                color:${s.done?'#fff':s.active?'var(--violet)':'var(--txt-3)'}">
+                ${s.done
+                  ? '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+                  : s.active
+                    ? '<svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="currentColor"/></svg>'
+                    : ''}
+              </div>
+              <div style="font-size:11px;font-weight:${s.active?'700':'500'};color:${s.done||s.active?'var(--txt)':'var(--txt-3)'};text-align:center;line-height:1.3;">${s.label}</div>
+              ${s.active?'<div style="font-size:10px;color:var(--violet);font-weight:600;">Em curso</div>':''}
+            </div>`).join('');
+        }
+
+        // Actualizar checklist do progresso
+        const checklist = document.getElementById('prog-checklist');
+        if (checklist) checklist.innerHTML = `
+          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
+          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Plano personalizado</div><div class="check-state">Concluído</div></div></div>
+          <div class="check-item"><div class="check-mark prog"></div><div class="check-body"><div class="check-title">Reavaliação dos 6 meses</div><div class="check-state" style="color:var(--violet)">Em curso</div></div></div>
+          <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Relatório comparativo</div><div class="check-state">Em breve</div></div></div>`;
       }
 
     } else {
