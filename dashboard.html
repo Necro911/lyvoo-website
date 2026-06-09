@@ -1547,11 +1547,12 @@
     let nome = user.displayName || user.email.split('@')[0];
     let planoNome = null;
     let estadoNum = 1;
+    let d = {};
 
     try {
       const snap = await getDoc(doc(db, 'users', user.uid));
       if (snap.exists()) {
-        const d = snap.data();
+        d = snap.data();
         const completo = [d.firstName, d.lastName].filter(Boolean).join(' ');
         if (completo) nome = completo;
         if (d.planoNome) planoNome = d.planoNome;
