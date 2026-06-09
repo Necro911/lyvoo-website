@@ -1285,7 +1285,7 @@
           <div class="meal-plan-list">
             ${pa.refeicoes.map(r => {
               const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>` };
-              return `<div class="meal-card" style="background:linear-gradient(105deg,rgba(${m.rgba},0.07) 0%,var(--panel) 45%);border-color:rgba(${m.rgba},0.18);box-shadow:0 0 0 0 rgba(${m.rgba},0);" onmouseenter="this.style.boxShadow='0 8px 32px rgba(${m.rgba},0.12)'" onmouseleave="this.style.boxShadow='none'">
+              return `<div class="meal-card" style="background:linear-gradient(105deg,rgba(61,217,232,0.07) 0%,rgba(139,92,246,0.05) 55%,var(--panel) 100%);border-color:rgba(61,217,232,0.14);box-shadow:0 0 0 0 rgba(61,217,232,0);" onmouseenter="this.style.boxShadow='0 8px 32px rgba(61,217,232,0.08)'" onmouseleave="this.style.boxShadow='none'">
                 <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
                 <div class="meal-body">
                   <div class="meal-name">${r.nome}</div>
