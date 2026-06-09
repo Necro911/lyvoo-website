@@ -330,6 +330,16 @@
           <button class="btn-notify" id="btn-notify" onclick="notificarCliente()">✉ Enviar email</button>
         </div>
 
+        <!-- Reavaliação (aparece quando estado = 5) -->
+        <div class="notify-box" id="reeval-box" style="display:none;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.06)">
+          <div style="font-size:26px;line-height:1">🔄</div>
+          <div class="notify-box-text">
+            <div class="notify-box-title" style="color:var(--violet)">Reavaliação — iniciar novo ciclo?</div>
+            <div class="notify-box-sub" id="reeval-box-sub">Os resultados atuais serão arquivados no histórico e os campos de kit/análise reiniciados para a nova ronda.</div>
+          </div>
+          <button class="btn-notify" id="btn-reeval" onclick="iniciarReavaliacao()" style="background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:var(--violet)">🔄 Iniciar novo ciclo</button>
+        </div>
+
         <div class="form-section">
           <div class="form-section-title">Estado do programa</div>
           <div class="estado-cards" id="estado-cards">
@@ -941,9 +951,10 @@
     document.querySelectorAll('.estado-card').forEach(c => c.classList.toggle('selected', +c.dataset.e === n));
     const box = document.getElementById('notify-box');
     if (!box) return;
+    const reevalBox = document.getElementById('reeval-box');
     if (n === 4) {
       box.style.display = 'flex';
-      // Verificar se já foi notificado
+      if (reevalBox) reevalBox.style.display = 'none';
       const u = allUsers.find(x => x.uid === currentUID);
       const btn = document.getElementById('btn-notify');
       const sub = box.querySelector('.notify-box-sub');
@@ -955,8 +966,12 @@
         if (sub) sub.textContent = 'O estado foi definido como 4. O cliente ainda não foi notificado por email.';
         if (btn) { btn.textContent = '✉ Enviar email'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
       }
+    } else if (n === 5) {
+      box.style.display = 'none';
+      if (reevalBox) reevalBox.style.display = 'flex';
     } else {
       box.style.display = 'none';
+      if (reevalBox) reevalBox.style.display = 'none';
     }
   };
 
@@ -1565,6 +1580,64 @@
     const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
     const blob = new Blob([csv], {type:'text/csv'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lyvoo-waitlist.csv'; a.click();
+  };
+
+  // ── Reavaliação: iniciar novo ciclo ──────────────────────────────────
+  window.iniciarReavaliacao = async function() {
+    if (!currentUID) return;
+    const u = allUsers.find(x => x.uid === currentUID);
+    if (!u) return;
+    const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || '';
+    const primeiro = nome.split(' ')[0] || 'Cliente';
+
+    if (!confirm(`Iniciar novo ciclo de análise para "${nome}"?\n\nOs resultados atuais são preservados no histórico. O kit e os campos de análise serão reiniciados.`)) return;
+
+    const btn = document.getElementById('btn-reeval');
+    if (btn) { btn.disabled = true; btn.textContent = 'A processar…'; }
+
+    try {
+      // 1. Arquivar resultados atuais na subcoleção (se existirem)
+      if (u.resultados?.biomarcadores) {
+        await addDoc(collection(db, 'users', currentUID, 'analises'), {
+          dataAnalise: u.resultados.dataAnalise || '',
+          biomarcadores: u.resultados.biomarcadores,
+          criadoEm: serverTimestamp(),
+          ciclo: 'reavaliacao',
+        });
+      }
+
+      // 2. Reiniciar campos de trabalho, manter estado 5 (admin moverá para 1 manualmente)
+      await updateDoc(doc(db, 'users', currentUID), {
+        estado:      1,
+        estadoLabel: 'Kit a ser preparado',
+        resultados:  null,
+        kit: { transportadora: '', tracking: '', dataEnvio: '', dataEntrega: '', morada: u.kit?.morada || '' },
+        notificadoEm: null,
+        notificadoPor: null,
+        atualizadoEm: serverTimestamp(),
+        cicloReavaliacao: serverTimestamp(),
+      });
+
+      // 3. Atualizar cache local
+      const idx = allUsers.findIndex(x => x.uid === currentUID);
+      if (idx !== -1) {
+        allUsers[idx] = { ...allUsers[idx], estado: 1, estadoLabel: 'Kit a ser preparado', resultados: null, notificadoEm: null };
+      }
+      selectedEstado = 1;
+      document.querySelectorAll('.estado-card').forEach(c => c.classList.toggle('selected', +c.dataset.e === 1));
+      document.getElementById('reeval-box').style.display = 'none';
+      document.getElementById('g-tracking').value = '';
+      document.getElementById('g-data-envio').value = '';
+      document.getElementById('g-data-entrega').value = '';
+
+      showMsg('msg-geral', '✓ Novo ciclo iniciado · Resultados anteriores arquivados no histórico', false);
+      applyFilters();
+
+    } catch(e) {
+      console.error(e);
+      if (btn) { btn.disabled = false; btn.textContent = '🔄 Iniciar novo ciclo'; }
+      showMsg('msg-geral', 'Erro: ' + e.message, true);
+    }
   };
 
   // ── Arquivar / restaurar cliente ─────────────────────────────────────
