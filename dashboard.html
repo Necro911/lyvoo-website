@@ -141,6 +141,22 @@
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
 
+    /* PDF download button */
+    .plano-dl-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(90deg,#0B6B78,#0D7A87);
+      color: #fff; border: none; border-radius: 12px;
+      padding: 10px 18px; font-family: 'Inter',sans-serif;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px rgba(13,122,135,0.28);
+      white-space: nowrap; text-decoration: none;
+    }
+    .plano-dl-btn:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(13,122,135,0.38); }
+    .plano-dl-btn:active { transform: translateY(0); }
+    .plano-dl-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+    .plano-dl-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
     /* Suplementação */
     .supp-grid { display: flex; flex-direction: column; gap: 10px; }
     .supp-card {
@@ -1031,6 +1047,10 @@
     <div id="sec-plano-alimentar" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div><h2 class="sec-title">Plano alimentar</h2><p class="sec-sub" id="plano-sub">Personalizado com base nos seus biomarcadores</p></div>
+        <button class="plano-dl-btn" id="plano-pdf-btn" onclick="downloadPlanoPDF()" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
       </div>
       <div id="plano-content">
         <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">O seu plano alimentar ainda não está disponível. Em breve!</div>
@@ -1275,6 +1295,230 @@
     }
   });
 
+  // ── Download Plano Alimentar → PDF ───────────────────────────────────
+  window.downloadPlanoPDF = async function() {
+    const pa = window._planoData;
+    if (!pa) return;
+
+    const btn = document.getElementById('plano-pdf-btn');
+    const origHTML = btn?.innerHTML;
+    if (btn) { btn.disabled = true; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> A gerar…'; }
+
+    try {
+      // Lazy-load jsPDF
+      if (!window.jspdf) {
+        await new Promise((ok, err) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+          s.onload = ok; s.onerror = err;
+          document.head.appendChild(s);
+        });
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      const W = 210, H = 297, ml = 18, mr = 18;
+      const cw = W - ml - mr; // 174mm
+
+      // Palette
+      const TEAL   = [11,107,120];
+      const TEAL_D = [7,75,85];
+      const TEXT   = [15,17,23];
+      const TEXT2  = [80,92,110];
+      const TEXT3  = [148,160,176];
+      const BG     = [240,244,248];
+      const LINE   = [218,226,236];
+      const GREEN  = [22,163,74];
+      const RED    = [220,38,38];
+      const VIOLET = [109,40,217];
+      const AMBER  = [180,100,5];
+
+      const MEAL_COLORS = {
+        'Pequeno-almoço':TEAL,'Meio da manhã':TEAL,
+        'Almoço':GREEN,'Lanche':GREEN,
+        'Pré-treino':VIOLET,'Pós-treino':VIOLET,
+        'Jantar':AMBER,'Ceia':AMBER
+      };
+
+      let y = 0;
+
+      function newPageIfNeeded(needed) {
+        if (y + needed > H - 18) { doc.addPage(); y = 18; return true; }
+        return false;
+      }
+
+      // ── Header bar ────────────────────────────────────────────────
+      doc.setFillColor(...TEAL_D);
+      doc.rect(0, 0, W, 13, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(11);
+      doc.setTextColor(255,255,255);
+      doc.text('LYVOO', ml, 8.5);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+      doc.setTextColor(160,220,228);
+      doc.text('Plano Alimentar', W - mr, 8.5, { align:'right' });
+
+      y = 21;
+
+      // ── Nome + data ───────────────────────────────────────────────
+      const nomeCliente = window._planoNome || '';
+      const hoje = new Date().toLocaleDateString('pt-PT',{ day:'numeric', month:'long', year:'numeric' });
+      if (nomeCliente) {
+        doc.setFont('helvetica','bold'); doc.setFontSize(16);
+        doc.setTextColor(...TEXT);
+        doc.text(nomeCliente, ml, y); y += 6;
+      }
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+      doc.setTextColor(...TEXT2);
+      doc.text(`Gerado em ${hoje}`, ml, y); y += 9;
+
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
+      doc.line(ml, y, W - mr, y); y += 7;
+
+      // ── Objectivo ─────────────────────────────────────────────────
+      newPageIfNeeded(26);
+      const objDescLines = pa.objectivoDesc ? doc.splitTextToSize(pa.objectivoDesc, cw - 10) : [];
+      const objH = 16 + objDescLines.length * 4.5;
+      doc.setFillColor(...BG); doc.roundedRect(ml, y, cw, objH, 2.5, 2.5, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(7);
+      doc.setTextColor(...TEAL); doc.text('OBJECTIVO PRINCIPAL', ml + 5, y + 6);
+      doc.setFont('helvetica','bold'); doc.setFontSize(10.5);
+      doc.setTextColor(...TEXT); doc.text(pa.objectivo || '', ml + 5, y + 12);
+      if (objDescLines.length) {
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT2);
+        doc.text(objDescLines, ml + 5, y + 17);
+      }
+      y += objH + 5;
+
+      // ── Macros ────────────────────────────────────────────────────
+      newPageIfNeeded(25);
+      const cardW = (cw - 8) / 3;
+      [
+        { label:'Proteína', val:pa.proteina||0, col:TEAL },
+        { label:'Gorduras', val:pa.gordura||0,  col:VIOLET },
+        { label:'Hidratos', val:pa.hidratos||0, col:GREEN },
+      ].forEach((m, i) => {
+        const x = ml + i * (cardW + 4);
+        doc.setFillColor(...BG); doc.roundedRect(x, y, cardW, 20, 2.5, 2.5, 'F');
+        doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT2);
+        doc.text(m.label, x + cardW/2, y + 7, { align:'center' });
+        doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...m.col);
+        doc.text(`${m.val}%`, x + cardW/2, y + 15, { align:'center' });
+      });
+      if (pa.kcal) {
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT3);
+        doc.text(`${pa.kcal} kcal/dia`, W - mr, y + 10, { align:'right' });
+      }
+      y += 26;
+
+      // ── Refeições ─────────────────────────────────────────────────
+      if (pa.refeicoes && pa.refeicoes.length) {
+        newPageIfNeeded(14);
+        doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+        doc.setTextColor(...TEAL); doc.text('PLANO DE REFEIÇÕES', ml, y); y += 5;
+
+        for (const r of pa.refeicoes) {
+          const ops = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : []);
+          const txtW = cw - (r.hora ? 34 : 8) - 10;
+
+          // Pre-calculate height
+          let inner = 13; // name row
+          ops.forEach((op, i) => {
+            if (i > 0) inner += 5; // "ou" row
+            inner += doc.splitTextToSize(op, txtW).length * 4.6;
+          });
+          const cardH = Math.max(inner + 6, 20);
+
+          newPageIfNeeded(cardH + 4);
+
+          const mc = MEAL_COLORS[r.nome] || TEXT2;
+          doc.setFillColor(...BG); doc.roundedRect(ml, y, cw, cardH, 2.5, 2.5, 'F');
+          // left accent strip
+          doc.setFillColor(...mc); doc.roundedRect(ml, y, 3, cardH, 1.5, 1.5, 'F');
+
+          // Meal name
+          doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(...mc);
+          doc.text(r.nome, ml + 7, y + 8);
+
+          // Time
+          if (r.hora) {
+            doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(...mc);
+            doc.text(r.hora, W - mr - 2, y + 9, { align:'right' });
+          }
+
+          // Options
+          let oy = y + 13;
+          ops.forEach((op, i) => {
+            if (i > 0) {
+              doc.setFont('helvetica','bold'); doc.setFontSize(7);
+              doc.setTextColor(...TEXT3); doc.text('ou', ml + 7, oy + 1); oy += 5;
+            }
+            doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
+            const lines = doc.splitTextToSize(op, txtW);
+            doc.text(lines, ml + 7, oy);
+            oy += lines.length * 4.6;
+          });
+
+          y += cardH + 3;
+        }
+        y += 3;
+      }
+
+      // ── Priorizar / Reduzir ───────────────────────────────────────
+      const prio = pa.priorizar || [], redu = pa.reduzir || [];
+      if (prio.length || redu.length) {
+        newPageIfNeeded(20);
+        const prioLines = prio.length ? doc.splitTextToSize(prio.join('  ·  '), cw) : [];
+        const reduLines = redu.length ? doc.splitTextToSize(redu.join('  ·  '), cw) : [];
+
+        if (prio.length) {
+          doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...GREEN);
+          doc.text('✓  PRIORIZAR', ml, y); y += 5;
+          doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
+          doc.text(prioLines, ml, y); y += prioLines.length * 4.6 + 6;
+        }
+        if (redu.length) {
+          newPageIfNeeded(12);
+          doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...RED);
+          doc.text('✗  REDUZIR', ml, y); y += 5;
+          doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
+          doc.text(reduLines, ml, y); y += reduLines.length * 4.6 + 6;
+        }
+      }
+
+      // ── Observações ───────────────────────────────────────────────
+      if (pa.obs) {
+        newPageIfNeeded(18);
+        doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2);
+        doc.text('OBSERVAÇÕES', ml, y); y += 5;
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
+        const obsL = doc.splitTextToSize(pa.obs, cw);
+        doc.text(obsL, ml, y);
+      }
+
+      // ── Footer em todas as páginas ────────────────────────────────
+      const total = doc.getNumberOfPages();
+      for (let p = 1; p <= total; p++) {
+        doc.setPage(p);
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
+        doc.line(ml, H - 13, W - mr, H - 13);
+        doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
+        doc.text('lyvoo.pt — Nutrição de precisão', ml, H - 8);
+        doc.text(`${p} / ${total}`, W - mr, H - 8, { align:'right' });
+      }
+
+      // ── Guardar ───────────────────────────────────────────────────
+      const slug = (window._planoNome || 'Cliente').replace(/\s+/g,'_').replace(/[^\w_]/g,'');
+      doc.save(`Lyvoo_Plano_Alimentar_${slug}.pdf`);
+
+    } catch(e) {
+      console.error('PDF error:', e);
+      alert('Erro ao gerar PDF. Tente novamente.');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+    }
+  };
+
   // ── Navegação entre secções ──────────────────────────────────────────
   const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','perfil','conta'];
   const SECTION_TITLES = {
@@ -1494,6 +1738,9 @@
   function renderPlano(pa) {
     const container = document.getElementById('plano-content');
     if (!pa || !pa.objectivo) return;
+    window._planoData = pa;
+    const dlBtn = document.getElementById('plano-pdf-btn');
+    if (dlBtn) dlBtn.style.display = 'inline-flex';
     const prot = pa.proteina||0, gord = pa.gordura||0, hidr = pa.hidratos||0;
     const prTags = (pa.priorizar||[]).map(t=>`<span>${t}</span>`).join('');
     const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
@@ -1916,6 +2163,7 @@
         if (completo) nome = completo;
         if (d.planoNome) planoNome = d.planoNome;
         if (d.estado) estadoNum = d.estado;
+        window._planoNome = nome;
 
         // Render secções com dados reais
         if (d.resultados)     renderBiomarcadores(d.resultados);
