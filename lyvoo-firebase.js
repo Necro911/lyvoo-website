@@ -20,9 +20,9 @@ const app = initializeApp(firebaseConfig);
 
 // ── App Check (reCAPTCHA v3) ──────────────────────────────────────────────────
 // Garante que só o domínio lyvoo.pt pode aceder ao Firestore e Auth.
-// SUBSTITUI 'RECAPTCHA_SITE_KEY' pela chave obtida em google.com/recaptcha/admin
+// SUBSTITUI '6LeiwBQtAAAAAPHxgJAnSv0FwV6CZiN1VQVUSAM4' pela chave obtida em google.com/recaptcha/admin
 initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('RECAPTCHA_SITE_KEY'),
+  provider: new ReCaptchaV3Provider('6LeiwBQtAAAAAPHxgJAnSv0FwV6CZiN1VQVUSAM4'),
   isTokenAutoRefreshEnabled: true   // renova o token em background automaticamente
 });
 
