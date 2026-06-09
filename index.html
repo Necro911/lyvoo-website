@@ -806,9 +806,12 @@
     /* ──────────────────────────────────────────
        CTA
     ────────────────────────────────────────── */
+    .cta-footer-wrap {
+      position: relative; overflow: hidden;
+      background: linear-gradient(150deg, #0A1415 0%, #051520 28%, #0D0820 52%, #060A0C 80%);
+    }
     .cta-section {
       padding: 130px 0; text-align: center; position: relative; overflow: hidden;
-      background: linear-gradient(140deg, #0A1415 0%, #051520 50%, #0D0820 100%);
     }
     .cta-glow {
       position: absolute; inset: 0; pointer-events: none;
@@ -1156,12 +1159,7 @@
     /* ──────────────────────────────────────────
        FOOTER
     ────────────────────────────────────────── */
-    .footer { background: #0D0820; padding: 64px 0 36px; position: relative; overflow: hidden; }
-    .footer::before {
-      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
-      background: linear-gradient(180deg, transparent 0%, #060A0C 55%);
-    }
-    .footer .container { position: relative; z-index: 1; }
+    .footer { padding: 64px 0 36px; position: relative; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
     .footer-brand-text { font-size: 14px; color: rgba(255,255,255,0.3); margin-top: 14px; max-width: 240px; line-height: 1.7; }
     .footer-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 18px; }
@@ -3438,6 +3436,7 @@
   </div>
 </section>
 
+<div class="cta-footer-wrap">
 <!-- ── CTA ── -->
 <section class="cta-section">
   <div class="cta-glow"></div>
@@ -3520,6 +3519,7 @@
     </div>
   </div>
 </footer>
+</div>
 
 <script>
   // Navbar scroll
