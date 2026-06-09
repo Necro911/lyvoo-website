@@ -1483,6 +1483,9 @@
     const btn = (typeof event !== 'undefined' && event?.target?.classList?.contains('btn-save')) ? event.target : null;
     if (btn) { btn.disabled = true; btn.textContent = 'A guardar…'; }
     try {
+      // Forçar refresh do token antes de escrever — garante que o claim admin:true
+      // está presente no JWT enviado ao Firestore (Security Rules: request.auth.token.admin == true)
+      await auth.currentUser?.getIdToken(true);
       // Guardar timestamp do tab actual
       const tsKey = TAB_TS_KEYS[currentTab];
       const tsUpdate = tsKey ? { [`timestamps.${tsKey}`]: serverTimestamp() } : {};
@@ -1862,8 +1865,8 @@
     if (!user) { window.location.href = 'login.html?next=admin.html'; return; }
 
     // Verificar custom claim { admin: true } no token JWT (server-side)
-    // Fallback para ADMIN_EMAILS enquanto os claims não estão definidos
-    const tokenResult = await user.getIdTokenResult();
+    // force:true garante que o token está actualizado com os custom claims mais recentes
+    const tokenResult = await user.getIdTokenResult(true);
     const isAdmin = tokenResult.claims.admin === true || ADMIN_EMAILS.includes(user.email);
     if (!isAdmin) { document.getElementById('access-denied').style.display = 'block'; return; }
 

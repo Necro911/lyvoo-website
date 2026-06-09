@@ -1507,23 +1507,48 @@
     card.style.display = 'block';
   }
 
-  onAuthStateChanged(auth, async (user) => {
-    clearTimeout(window._authFallback);
-    if (!user) { window.location.href = 'login.html'; return; }
+  const ESTADO_LABELS = {
+    1: 'Kit a ser preparado',
+    2: 'Kit enviado',
+    3: 'Laboratório a processar',
+    4: 'Resultados disponíveis',
+    5: 'Reavaliação'
+  };
 
-    // Valores imediatos a partir da Auth (rápido)
+  async function carregarDados(user) {
+    // Limpar vistas antes de re-renderizar
+    ['view-onboarding','view-resultados'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    ['reeval-banner','results-banner','nutri-cta','novidades-banner'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    // Reset sidebar itens bloqueados
+    ['sb-plano-alimentar','sb-suplementacao','sb-relatorio','sb-biomarcadores'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.classList.contains('sb-locked')) {
+        el.classList.add('sb-locked');
+        if (!el.querySelector('.sb-lock-icon')) {
+          const ico = document.createElementNS('http://www.w3.org/2000/svg','svg');
+          ico.setAttribute('class','sb-lock-icon');
+          ico.setAttribute('viewBox','0 0 24 24');
+          ico.setAttribute('fill','none');
+          ico.setAttribute('stroke','currentColor');
+          ico.setAttribute('stroke-width','2');
+          ico.setAttribute('stroke-linecap','round');
+          ico.setAttribute('stroke-linejoin','round');
+          ico.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>';
+          el.appendChild(ico);
+        }
+      }
+    });
+
     let nome = user.displayName || user.email.split('@')[0];
     let planoNome = null;
-
-    // Dados do Firestore (perfil + plano + estado)
     let estadoNum = 1;
-    const ESTADO_LABELS = {
-      1: 'Kit a ser preparado',
-      2: 'Kit enviado',
-      3: 'Laboratório a processar',
-      4: 'Resultados disponíveis',
-      5: 'Reavaliação'
-    };
+
     try {
       const snap = await getDoc(doc(db, 'users', user.uid));
       if (snap.exists()) {
@@ -1719,13 +1744,35 @@
     document.getElementById('navAvatar').textContent = iniciaisDe(nome);
     document.getElementById('navPlan').textContent = planoNome || 'Programa Lyvoo';
 
-    // Preencher perfil (dados já carregados do primeiro getDoc)
     document.getElementById('profileAvatar').textContent = iniciaisDe(nome);
     document.getElementById('profileName').textContent   = nome;
     document.getElementById('profileEmail').textContent  = user.email;
     document.getElementById('pf-email').value = user.email;
+  }
 
-    // Guardar perfil
+  // ── Re-carregar quando o utilizador volta ao tab ───────────────────────
+  let _currentUser = null;
+  let _lastLoad = 0;
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && _currentUser) {
+      const agora = Date.now();
+      // Re-ler só se passaram mais de 30s desde o último load
+      if (agora - _lastLoad > 30000) {
+        _lastLoad = agora;
+        carregarDados(_currentUser);
+      }
+    }
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    clearTimeout(window._authFallback);
+    if (!user) { window.location.href = 'login.html'; return; }
+
+    _currentUser = user;
+    _lastLoad = Date.now();
+    await carregarDados(user);
+
+    // Guardar perfil (listener registado uma só vez)
     document.getElementById('pf-save-btn').addEventListener('click', async () => {
       try {
         await updateDoc(doc(db, 'users', user.uid), {
@@ -1742,7 +1789,6 @@
         document.getElementById('pf-msg').textContent = 'Erro ao guardar. Tente novamente.';
       }
     });
-
   });
 
   document.getElementById('btnLogout').addEventListener('click', async () => {
