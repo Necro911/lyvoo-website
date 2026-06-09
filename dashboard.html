@@ -156,17 +156,51 @@
     .supp-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
 
     /* Consultas */
-    .consult-list { display: flex; flex-direction: column; gap: 8px; }
-    .consult-row { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: flex; align-items: center; gap: 18px; }
-    .consult-row.upcoming { border-color: rgba(61,217,232,0.15); }
-    .consult-date { text-align: center; width: 44px; flex-shrink: 0; }
-    .consult-day { font-size: 22px; font-weight: 900; color: var(--txt); line-height: 1; }
-    .consult-month { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--txt-3); }
-    .consult-info { flex: 1; }
-    .consult-title { font-size: 14px; font-weight: 600; color: var(--txt); margin-bottom: 3px; }
-    .consult-meta { font-size: 12.5px; color: var(--txt-3); }
-    .consult-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; flex-shrink: 0; background: rgba(255,255,255,0.05); color: var(--txt-3); }
-    .upcoming-tag { background: rgba(61,217,232,0.08); color: var(--cyan); }
+    .consult-list { display: flex; flex-direction: column; gap: 10px; }
+    .consult-row {
+      background: var(--panel); border: 1px solid var(--line);
+      border-radius: 18px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 20px;
+      opacity: 0.62; transition: opacity 0.2s;
+    }
+    .consult-row:hover { opacity: 0.85; }
+    .consult-row.upcoming {
+      background: linear-gradient(105deg, rgba(61,217,232,0.10) 0%, rgba(139,92,246,0.07) 50%, var(--panel) 85%);
+      border-color: rgba(61,217,232,0.22); opacity: 1;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+    .consult-row.upcoming:hover { transform: translateY(-2px); border-color: rgba(61,217,232,0.35); box-shadow: 0 8px 32px rgba(61,217,232,0.10); }
+    /* Date block */
+    .consult-date {
+      width: 58px; flex-shrink: 0; text-align: center;
+      border-radius: 14px; padding: 10px 8px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+    }
+    .consult-row.upcoming .consult-date {
+      background: rgba(61,217,232,0.08); border-color: rgba(61,217,232,0.18);
+    }
+    .consult-day { font-size: 26px; font-weight: 900; line-height: 1; color: var(--txt-3); }
+    .consult-row.upcoming .consult-day { color: var(--txt); }
+    .consult-month { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--txt-3); font-weight: 700; margin-top: 3px; }
+    .consult-row.upcoming .consult-month { color: var(--cyan); }
+    /* Info */
+    .consult-info { flex: 1; min-width: 0; }
+    .consult-title { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 4px; letter-spacing: -0.01em; }
+    .consult-meta { font-size: 13px; color: var(--txt-3); line-height: 1.5; }
+    /* Right */
+    .consult-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+    .consult-hour { font-size: 22px; font-weight: 800; letter-spacing: -0.04em; color: var(--cyan); font-variant-numeric: tabular-nums; }
+    .consult-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: rgba(255,255,255,0.05); color: var(--txt-3); white-space: nowrap; }
+    .upcoming-tag { background: rgba(61,217,232,0.08); color: var(--cyan); border: 1px solid rgba(61,217,232,0.2); }
+    .consult-enter {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--teal); color: #fff;
+      font-size: 13px; font-weight: 700; padding: 9px 18px;
+      border-radius: 10px; border: none; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s; white-space: nowrap;
+    }
+    .consult-enter:hover { opacity: 0.88; transform: translateY(-1px); }
+    .consult-enter svg { width: 13px; height: 13px; }
 
     /* Perfil */
     .profile-card { display: flex; align-items: center; gap: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; margin-bottom: 24px; }
@@ -1385,20 +1419,26 @@
       const isPast = d && d < today;
       const day = d ? d.getDate() : '-';
       const mon = d ? MESES[d.getMonth()] : '-';
-      const tagCls = isPast ? '' : 'upcoming-tag';
-      const tagLbl = isPast ? 'Realizada' : (c.estado==='confirmada'?'Confirmada':'Agendada');
-      const linkBtn = c.link && !isPast
-        ? `<a href="${c.link}" target="_blank" rel="noopener" class="appt-btn" style="background:rgba(61,217,232,0.08);border-color:rgba(61,217,232,0.25);color:var(--cyan)">Entrar</a>`
-        : `<span class="appt-btn" style="opacity:0.4;cursor:default">${isPast?'Realizada':'Sem link'}</span>`;
-      return `<div class="consult-row ${isPast?'':'upcoming'}">
+      const tagLbl = isPast ? 'Realizada' : (c.estado==='confirmada' ? 'Confirmada' : 'Agendada');
+      const metaLine = [
+        c.medico || 'Videochamada',
+        c.notas || ''
+      ].filter(Boolean).join(' · ');
+      const rightBlock = isPast
+        ? `<div class="consult-right"><span class="consult-tag">${tagLbl}</span></div>`
+        : `<div class="consult-right">
+            ${c.hora ? `<div class="consult-hour">${c.hora}</div>` : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
+            ${c.link
+              ? `<a href="${c.link}" target="_blank" rel="noopener" class="consult-enter">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
+              : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
+          </div>`;
+      return `<div class="consult-row ${isPast ? '' : 'upcoming'}">
         <div class="consult-date"><div class="consult-day">${day}</div><div class="consult-month">${mon}</div></div>
         <div class="consult-info">
           <div class="consult-title">${c.titulo}</div>
-          <div class="consult-meta">${c.hora||''}${c.hora?' · ':''}Videochamada${c.medico?' · '+c.medico:''}</div>
-          ${c.notas?`<div class="consult-meta" style="margin-top:2px;font-style:italic">${c.notas}</div>`:''}
+          <div class="consult-meta">${metaLine}</div>
         </div>
-        <span class="consult-tag ${tagCls}">${tagLbl}</span>
-        ${linkBtn}
+        ${rightBlock}
       </div>`;
     }).join('');
 
