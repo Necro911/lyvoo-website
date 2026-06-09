@@ -542,6 +542,11 @@
           </div>
         </div>
         <div class="form-section">
+          <div class="form-section-title">Refeições</div>
+          <div class="cards-editor" id="refeicoes-list"></div>
+          <button class="btn-add-card" onclick="addRefeicao()">+ Adicionar refeição</button>
+        </div>
+        <div class="form-section">
           <div class="form-section-title">Observações adicionais</div>
           <div class="form-field">
             <textarea class="form-textarea" id="pa-obs" placeholder="Notas adicionais para o cliente sobre a alimentação..."></textarea>
@@ -1172,6 +1177,7 @@
     document.getElementById('pa-obs').value       = pa.obs||'';
     buildTagsInput('priorizar-wrap', pa.priorizar||[]);
     buildTagsInput('reduzir-wrap',   pa.reduzir||[]);
+    buildRefeicaoEditor(pa.refeicoes||[]);
 
     // Suplementação
     buildSuppEditor(d.suplementacao || []);
@@ -1403,6 +1409,58 @@
 
   window.addSupp = function() { addSuppCard({}, document.getElementById('supp-list').children.length); };
 
+  // ── Refeições editor ─────────────────────────────────────────────────
+  const REFEICAO_NOMES = [
+    'Pequeno-almoço','Meio da manhã','Almoço','Lanche',
+    'Pré-treino','Pós-treino','Jantar','Ceia'
+  ];
+
+  function buildRefeicaoEditor(list) {
+    const container = document.getElementById('refeicoes-list');
+    container.innerHTML = '';
+    if (list && list.length) {
+      list.forEach(r => addRefeicaoCard(r));
+    } else {
+      addRefeicaoCard({});  // 1 card por defeito
+    }
+  }
+
+  function addRefeicaoCard(r) {
+    const container = document.getElementById('refeicoes-list');
+    const div = document.createElement('div');
+    div.className = 'card-editor';
+    const opts = REFEICAO_NOMES.map(n =>
+      `<option value="${n}" ${(r.nome||'')=== n ? 'selected' : ''}>${n}</option>`
+    ).join('');
+    div.innerHTML = `
+      <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label">Nome da refeição</label>
+          <select class="form-select" name="r-nome">${opts}</select>
+        </div>
+        <div class="form-field" style="max-width:140px">
+          <label class="form-label">Hora</label>
+          <input class="form-input" type="time" name="r-hora" value="${r.hora||''}" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Descrição da refeição</label>
+        <textarea class="form-textarea" name="r-desc" placeholder="Ex: 2 ovos mexidos, 1 fatia de pão integral, 1 peça de fruta…" style="min-height:72px">${r.desc||''}</textarea>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  window.addRefeicao = function() { addRefeicaoCard({}); };
+
+  function collectRefeicaoData() {
+    return [...document.getElementById('refeicoes-list').querySelectorAll('.card-editor')].map(card => ({
+      nome: card.querySelector('[name=r-nome]').value,
+      hora: card.querySelector('[name=r-hora]').value.trim(),
+      desc: card.querySelector('[name=r-desc]').value.trim(),
+    })).filter(r => r.desc || r.hora);
+  }
+
   function collectSuppData() {
     return [...document.getElementById('supp-list').querySelectorAll('.card-editor')].map(card => ({
       nome:     card.querySelector('[name=s-nome]').value.trim(),
@@ -1623,6 +1681,7 @@
         obs:           document.getElementById('pa-obs').value.trim(),
         priorizar:     getTagValues('priorizar-wrap'),
         reduzir:       getTagValues('reduzir-wrap'),
+        refeicoes:     collectRefeicaoData(),
       }
     }, 'msg-plano');
   };

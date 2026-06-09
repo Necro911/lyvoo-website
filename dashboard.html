@@ -97,6 +97,14 @@
     .sec-macro-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
     .sec-macro-bar div { height: 100%; border-radius: 999px; }
     .sec-list-section { margin-bottom: 20px; }
+    /* Plano de refeições */
+    .meal-plan-list { display: flex; flex-direction: column; gap: 0; }
+    .meal-row { display: flex; align-items: flex-start; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .meal-row:last-child { border-bottom: none; }
+    .meal-left { width: 120px; flex-shrink: 0; }
+    .meal-name { font-size: 13px; font-weight: 600; color: var(--txt); }
+    .meal-hour { font-size: 11.5px; color: var(--cyan); margin-top: 2px; font-weight: 500; }
+    .meal-desc { font-size: 13px; color: var(--txt-2); line-height: 1.65; flex: 1; }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
@@ -1215,6 +1223,23 @@
     const prTags = (pa.priorizar||[]).map(t=>`<span>${t}</span>`).join('');
     const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
     const obs = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">Observações</div><p style="font-size:13.5px;color:var(--txt-2);line-height:1.7">${pa.obs}</p></div>` : '';
+
+    // Refeições
+    const refeicoes = pa.refeicoes && pa.refeicoes.length
+      ? `<div class="sec-list-section">
+          <div class="sec-list-title" style="color:var(--cyan);margin-bottom:12px">Plano de refeições</div>
+          <div class="meal-plan-list">
+            ${pa.refeicoes.map(r => `
+              <div class="meal-row">
+                <div class="meal-left">
+                  <div class="meal-name">${r.nome}</div>
+                  ${r.hora ? `<div class="meal-hour">${r.hora}</div>` : ''}
+                </div>
+                <div class="meal-desc">${r.desc||''}</div>
+              </div>`).join('')}
+          </div>
+        </div>` : '';
+
     container.innerHTML = `
       <div class="sec-cards-grid">
         <div class="sec-card">
@@ -1232,6 +1257,7 @@
           </div>
         </div>
       </div>
+      ${refeicoes}
       ${prTags?`<div class="sec-list-section"><div class="sec-list-title" style="color:var(--green)">✓ Priorizar</div><div class="sec-tags">${prTags}</div></div>`:''}
       ${rdTags?`<div class="sec-list-section"><div class="sec-list-title" style="color:var(--red)">✗ Reduzir</div><div class="sec-tags">${rdTags}</div></div>`:''}
       ${obs}`;
