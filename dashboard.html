@@ -577,6 +577,16 @@
       <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
     </div>
 
+    <!-- Banner: novidades (notificadoEm > vistoEm) -->
+    <div id="novidades-banner" style="display:none; margin:0 32px 20px; padding:18px 24px; background:linear-gradient(135deg,rgba(61,217,232,0.08),rgba(11,82,90,0.06)); border:1px solid rgba(61,217,232,0.2); border-radius:16px; align-items:center; gap:16px;">
+      <div style="font-size:26px; line-height:1;">🔔</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:3px;">Tem novidades no seu painel</div>
+        <div style="font-size:13px;color:var(--txt-2);" id="novidades-banner-sub">O seu perfil foi atualizado. Explore as novidades abaixo.</div>
+      </div>
+      <button id="novidades-banner-close" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
+    </div>
+
     <!-- ROW 1: Program + Score -->
     <div class="grid row-main mb">
 
@@ -1350,6 +1360,29 @@
         if (d.resultados?.dataAnalise) {
           const sub = document.getElementById('supp-sub');
           if (sub) sub.textContent = 'Prescrita com base nos seus resultados · ' + d.resultados.dataAnalise;
+        }
+
+        // ── Banner de novidades ───────────────────────────────────────────
+        if (d.notificadoEm) {
+          const notifTs   = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
+          const vistoKey  = `lyvoo_visto_${user.uid}`;
+          const vistoTs   = parseInt(localStorage.getItem(vistoKey) || '0', 10);
+          const banner    = document.getElementById('novidades-banner');
+          const closeBtn  = document.getElementById('novidades-banner-close');
+          const sub       = document.getElementById('novidades-banner-sub');
+
+          if (notifTs > vistoTs && banner) {
+            // Personalizar mensagem conforme o estado
+            if (d.estado >= 4 && sub) {
+              const data = d.resultados?.dataAnalise ? ` · ${d.resultados.dataAnalise}` : '';
+              sub.textContent = `Os seus resultados${data} estão disponíveis. Explore as novidades abaixo.`;
+            }
+            banner.style.display = 'flex';
+            // Marcar como visto ao fechar ou ao fim de 10s
+            const marcarVisto = () => localStorage.setItem(vistoKey, Date.now());
+            closeBtn?.addEventListener('click', () => { banner.style.display = 'none'; marcarVisto(); });
+            setTimeout(() => { banner.style.display = 'none'; marcarVisto(); }, 10000);
+          }
         }
       }
     } catch (err) {
