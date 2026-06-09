@@ -804,11 +804,21 @@
       TAB_SAVE_FN[dirtyTab]?.();
       clearDirty();
     };
+    // Ponto vermelho no tab ativo
+    const activeTab = document.querySelector(`.tab.active`);
+    if (activeTab && !activeTab.querySelector('.dirty-dot')) {
+      const dot = document.createElement('span');
+      dot.className = 'dirty-dot';
+      dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:6px;vertical-align:middle;flex-shrink:0;';
+      activeTab.appendChild(dot);
+    }
   }
 
   function clearDirty() {
     dirtyTab = null;
     document.getElementById('unsaved-toast').classList.remove('show');
+    // Remover ponto vermelho de todos os tabs
+    document.querySelectorAll('.tab .dirty-dot').forEach(d => d.remove());
   }
 
   window.discardChanges = clearDirty;
