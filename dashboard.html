@@ -1491,9 +1491,32 @@
     _bkSelectedDate = null;
     _bkSelectedTime = null;
     document.getElementById('bk-confirm').disabled = true;
+    document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A verificar marcações existentes…</div>';
+    document.getElementById('bk-times').innerHTML = '';
+    document.getElementById('bk-overlay').classList.add('open');
+
+    // Limite: 1 consulta inicial de nutrição + 1 reavaliação aos 6 meses (por cliente)
+    try {
+      const snap = await getDocs(query(
+        collection(db, 'agendamentosNutri'),
+        where('uid', '==', _currentUser.uid),
+        where('tipo', '==', tipo)
+      ));
+      if (!snap.empty) {
+        const labelTipo = tipo === 'reavaliacao' ? 'a sua consulta de reavaliação dos 6 meses' : 'a sua consulta inicial de nutrição';
+        document.getElementById('bk-days').innerHTML = '';
+        document.getElementById('bk-times').innerHTML =
+          `<div class="bk-empty" style="grid-column:1/-1;">Já tem ${labelTipo} agendada. Para alterar a data, contacte a sua equipa Lyvoo.</div>`;
+        document.getElementById('bk-confirm').style.display = 'none';
+        return;
+      }
+    } catch (e) {
+      console.error('Erro ao verificar marcações existentes:', e);
+    }
+
+    document.getElementById('bk-confirm').style.display = '';
     document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
     document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
-    document.getElementById('bk-overlay').classList.add('open');
     await bkRenderDays();
   };
 
