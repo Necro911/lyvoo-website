@@ -283,6 +283,7 @@
       <button class="ef-btn" data-e="3" onclick="setEstadoFilter(3)">3 Lab</button>
       <button class="ef-btn" data-e="4" onclick="setEstadoFilter(4)">4 Prontos</button>
       <button class="ef-btn" data-e="5" onclick="setEstadoFilter(5)">5 Reavaliação</button>
+      <button class="ef-btn" data-e="arquivados" onclick="setEstadoFilter('arquivados')" style="color:var(--txt-3)">Arquivados</button>
     </div>
     <div class="user-list" id="user-list"></div>
   </aside>
@@ -404,6 +405,7 @@
         <div class="save-bar">
           <button class="btn-save" onclick="saveGeral()">Guardar</button>
           <span class="save-msg" id="msg-geral"></span>
+          <button id="btn-arquivar" onclick="arquivarCliente()" style="margin-left:auto;padding:9px 18px;border-radius:10px;border:1px solid rgba(248,113,113,0.25);background:rgba(248,113,113,0.06);color:var(--red);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.background='rgba(248,113,113,0.12)'" onmouseout="this.style.background='rgba(248,113,113,0.06)'">Arquivar cliente</button>
         </div>
       </div>
 
@@ -767,8 +769,10 @@
     renderList(allUsers.filter(u => {
       const n = [u.firstName,u.lastName].filter(Boolean).join(' ').toLowerCase();
       const matchQ = !q || n.includes(q) || (u.email||'').toLowerCase().includes(q);
+      const arquivado = !!u.arquivado;
+      if (estadoFilter === 'arquivados') return matchQ && arquivado;
       const matchE = estadoFilter === 'all' || (u.estado||1) === estadoFilter;
-      return matchQ && matchE;
+      return matchQ && matchE && !arquivado;
     }));
   }
 
@@ -964,10 +968,11 @@
     list.innerHTML = users.map(u => {
       const nome = [u.firstName,u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '-';
       const e = u.estado || 1;
+      const arquivadoBadge = u.arquivado ? `<span style="font-size:10px;color:var(--txt-3);margin-left:4px">📦</span>` : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
-        <div class="u-ava">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}</div><div class="u-email-sm">${u.email||'-'}</div></div>
-        <span class="u-estado e${e}">${e}</span>
+        <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
+        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}</div><div class="u-email-sm">${u.email||'-'}</div></div>
+        ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
   }
@@ -978,10 +983,11 @@
       allUsers = [];
       snap.forEach(d => allUsers.push({uid:d.id,...d.data()}));
       allUsers.sort((a,b) => (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0));
-      document.getElementById('s-total').textContent = allUsers.length;
-      document.getElementById('s-active').textContent = allUsers.filter(u=>u.estado>=4).length;
-      document.getElementById('s-pending').textContent = allUsers.filter(u=>(u.estado||1)<=2).length;
-      renderList(allUsers);
+      const ativos = allUsers.filter(u => !u.arquivado);
+      document.getElementById('s-total').textContent = ativos.length;
+      document.getElementById('s-active').textContent = ativos.filter(u=>u.estado>=4).length;
+      document.getElementById('s-pending').textContent = ativos.filter(u=>(u.estado||1)<=2).length;
+      renderList(ativos);
     } catch(e) { console.error(e); }
   }
 
@@ -1067,6 +1073,10 @@
     ['msg-geral','msg-bio','msg-plano','msg-supp','msg-consult','msg-rel'].forEach(id => {
       document.getElementById(id).textContent = '';
     });
+
+    // Botão arquivar/restaurar conforme estado
+    const btnArq = document.getElementById('btn-arquivar');
+    if (btnArq) btnArq.textContent = allUsers.find(x=>x.uid===uid)?.arquivado ? 'Restaurar cliente' : 'Arquivar cliente';
 
     switchTab('geral');
     clearDirty();
@@ -1555,6 +1565,37 @@
     const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
     const blob = new Blob([csv], {type:'text/csv'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lyvoo-waitlist.csv'; a.click();
+  };
+
+  // ── Arquivar / restaurar cliente ─────────────────────────────────────
+  window.arquivarCliente = async function() {
+    if (!currentUID) return;
+    const u = allUsers.find(x => x.uid === currentUID);
+    if (!u) return;
+    const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || currentUID;
+    const isArquivado = !!u.arquivado;
+    const acao = isArquivado ? 'restaurar' : 'arquivar';
+    const confirmMsg = isArquivado
+      ? `Restaurar "${nome}"? O cliente voltará a aparecer na lista ativa.`
+      : `Arquivar "${nome}"? O cliente ficará oculto da lista mas os dados são preservados.`;
+    if (!confirm(confirmMsg)) return;
+    try {
+      await updateDoc(doc(db, 'users', currentUID), {
+        arquivado: !isArquivado,
+        arquivadoEm: !isArquivado ? serverTimestamp() : null,
+      });
+      const idx = allUsers.findIndex(x => x.uid === currentUID);
+      if (idx !== -1) {
+        allUsers[idx].arquivado = !isArquivado;
+        allUsers[idx].arquivadoEm = new Date();
+      }
+      // Atualizar botão
+      const btn = document.getElementById('btn-arquivar');
+      if (btn) btn.textContent = isArquivado ? 'Arquivar cliente' : 'Restaurar cliente';
+      applyFilters();
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
   };
 
   // ── Auth ──────────────────────────────────────────────────────────────
