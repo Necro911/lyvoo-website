@@ -98,22 +98,22 @@
     .sec-macro-bar div { height: 100%; border-radius: 999px; }
     .sec-list-section { margin-bottom: 20px; }
     /* Plano de refeições */
-    .meal-plan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .meal-plan-list { display: flex; flex-direction: column; gap: 10px; }
     .meal-card {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
-      padding: 0; overflow: hidden; position: relative;
-      transition: border-color 0.2s, transform 0.2s;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+      overflow: hidden; display: flex; align-items: stretch;
+      transition: border-color 0.2s;
     }
-    .meal-card:hover { border-color: var(--line-2); transform: translateY(-2px); }
-    .meal-card-accent { height: 3px; width: 100%; }
-    .meal-card-body { padding: 14px 16px 16px; }
-    .meal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
-    .meal-card-name { font-size: 13px; font-weight: 700; color: var(--txt); }
+    .meal-card:hover { border-color: var(--line-2); }
+    .meal-card-accent { width: 4px; flex-shrink: 0; }
+    .meal-card-body { padding: 18px 22px; flex: 1; display: flex; align-items: baseline; gap: 24px; }
+    .meal-card-left { width: 160px; flex-shrink: 0; }
+    .meal-card-name { font-size: 14px; font-weight: 700; color: var(--txt); margin-bottom: 5px; }
     .meal-card-time {
-      font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
-      white-space: nowrap; flex-shrink: 0;
+      display: inline-block; font-size: 11.5px; font-weight: 600;
+      padding: 3px 10px; border-radius: 999px;
     }
-    .meal-card-desc { font-size: 13px; color: var(--txt-2); line-height: 1.65; }
+    .meal-card-desc { font-size: 14px; color: var(--txt-2); line-height: 1.7; flex: 1; }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
@@ -1247,13 +1247,13 @@
     const refeicoes = pa.refeicoes && pa.refeicoes.length
       ? `<div class="sec-list-section">
           <div class="sec-list-title" style="color:var(--cyan);margin-bottom:14px">Plano de refeições</div>
-          <div class="meal-plan-grid">
+          <div class="meal-plan-list">
             ${pa.refeicoes.map(r => {
               const p = MEAL_PALETTE[r.nome] || { accent:'#5E6C72', bg:'rgba(255,255,255,0.06)', fg:'#9DAAB0' };
               return `<div class="meal-card">
                 <div class="meal-card-accent" style="background:${p.accent}"></div>
                 <div class="meal-card-body">
-                  <div class="meal-card-header">
+                  <div class="meal-card-left">
                     <div class="meal-card-name">${r.nome}</div>
                     ${r.hora ? `<span class="meal-card-time" style="background:${p.bg};color:${p.fg}">${r.hora}</span>` : ''}
                   </div>
