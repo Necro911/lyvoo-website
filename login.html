@@ -286,9 +286,12 @@
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { auth } from './lyvoo-firebase.js';
 
-  // Se já estiver autenticado, redirecionar para dashboard
+  // Se já estiver autenticado, redirecionar conforme o role
+  const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com', 'hello@lyvoo.pt'];
   onAuthStateChanged(auth, user => {
-    if (user) window.location.replace('dashboard.html');
+    if (!user) return;
+    const dest = ADMIN_EMAILS.includes(user.email) ? 'admin.html' : 'dashboard.html';
+    window.location.replace(dest);
   });
 
   // ── Mensagens de erro em PT-PT ──
@@ -302,6 +305,7 @@
     'auth/popup-closed-by-user':    'A autenticação foi cancelada.',
     'auth/popup-blocked':           'O pop-up foi bloqueado pelo browser. Permita pop-ups para este site.',
     'auth/network-request-failed':  'Erro de ligação. Verifique a sua internet.',
+    'auth/requests-from-referer-blocked': 'Domínio não autorizado. Contacte o suporte.',
   };
 
   function mensagemErro(code) {
