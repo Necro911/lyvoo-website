@@ -45,9 +45,13 @@
     .search-input::placeholder { color:var(--txt-3); }
 
     .stats-mini { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:12px 20px; border-bottom:1px solid var(--line); }
-    .stat-mini { background:var(--panel-2); border-radius:10px; padding:10px 12px; }
+    .stat-mini { background:var(--panel-2); border-radius:10px; padding:10px 12px; cursor:pointer; transition:background 0.15s; }
+    .stat-mini:hover { background:var(--panel-3); }
+    .stat-mini.active { outline:1.5px solid var(--cyan); }
     .stat-mini-val { font-size:20px; font-weight:900; letter-spacing:-0.03em; color:var(--txt); }
     .stat-mini-lbl { font-size:10px; color:var(--txt-3); margin-top:2px; }
+    .stat-mini-bar { height:2px; border-radius:2px; margin-top:6px; background:var(--line); overflow:hidden; }
+    .stat-mini-bar-fill { height:100%; border-radius:2px; transition:width 0.4s; }
 
     .user-list { flex:1; overflow-y:auto; }
     .user-item { display:flex; align-items:center; gap:12px; padding:12px 20px; border-bottom:1px solid var(--line); cursor:pointer; transition:background 0.15s; }
@@ -285,9 +289,35 @@
       </div>
     </div>
     <div class="stats-mini">
-      <div class="stat-mini"><div class="stat-mini-val" id="s-total">-</div><div class="stat-mini-lbl">Total</div></div>
-      <div class="stat-mini"><div class="stat-mini-val" id="s-active" style="color:var(--green)">-</div><div class="stat-mini-lbl">Resultados</div></div>
-      <div class="stat-mini"><div class="stat-mini-val" id="s-pending" style="color:var(--amber)">-</div><div class="stat-mini-lbl">Pendente</div></div>
+      <div class="stat-mini" onclick="setEstadoFilter('all')" id="sc-all">
+        <div class="stat-mini-val" id="s-total">-</div>
+        <div class="stat-mini-lbl">Total ativos</div>
+      </div>
+      <div class="stat-mini" onclick="setEstadoFilter(4)" id="sc-4">
+        <div class="stat-mini-val" id="s-active" style="color:var(--green)">-</div>
+        <div class="stat-mini-lbl">Com resultados</div>
+        <div class="stat-mini-bar"><div class="stat-mini-bar-fill" id="s-bar-4" style="background:var(--green);width:0%"></div></div>
+      </div>
+      <div class="stat-mini" onclick="setEstadoFilter(1)" id="sc-1">
+        <div class="stat-mini-val" id="s-e1" style="color:var(--txt-2)">-</div>
+        <div class="stat-mini-lbl">Kit a preparar</div>
+        <div class="stat-mini-bar"><div class="stat-mini-bar-fill" id="s-bar-1" style="background:var(--txt-3);width:0%"></div></div>
+      </div>
+      <div class="stat-mini" onclick="setEstadoFilter(2)" id="sc-2">
+        <div class="stat-mini-val" id="s-e2" style="color:var(--cyan)">-</div>
+        <div class="stat-mini-lbl">Kit enviado</div>
+        <div class="stat-mini-bar"><div class="stat-mini-bar-fill" id="s-bar-2" style="background:var(--cyan);width:0%"></div></div>
+      </div>
+      <div class="stat-mini" onclick="setEstadoFilter(3)" id="sc-3">
+        <div class="stat-mini-val" id="s-e3" style="color:var(--amber)">-</div>
+        <div class="stat-mini-lbl">No laboratório</div>
+        <div class="stat-mini-bar"><div class="stat-mini-bar-fill" id="s-bar-3" style="background:var(--amber);width:0%"></div></div>
+      </div>
+      <div class="stat-mini" onclick="setEstadoFilter(5)" id="sc-5">
+        <div class="stat-mini-val" id="s-e5" style="color:var(--violet)">-</div>
+        <div class="stat-mini-lbl">Reavaliação</div>
+        <div class="stat-mini-bar"><div class="stat-mini-bar-fill" id="s-bar-5" style="background:var(--violet);width:0%"></div></div>
+      </div>
     </div>
     <div class="estado-filters" id="estado-filters">
       <button class="ef-btn active" data-e="all" onclick="setEstadoFilter('all')">Todos</button>
@@ -787,6 +817,11 @@
   window.setEstadoFilter = function(val) {
     estadoFilter = val;
     document.querySelectorAll('.ef-btn[data-e]').forEach(b => b.classList.toggle('active', b.dataset.e === String(val)));
+    // Highlight stat card
+    ['all',1,2,3,4,5].forEach(e => {
+      const card = document.getElementById(`sc-${e}`);
+      if (card) card.classList.toggle('active', String(e) === String(val));
+    });
     applyFilters();
   };
 
@@ -1041,9 +1076,20 @@
       snap.forEach(d => allUsers.push({uid:d.id,...d.data()}));
       allUsers.sort((a,b) => (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0));
       const ativos = allUsers.filter(u => !u.arquivado);
-      document.getElementById('s-total').textContent = ativos.length;
-      document.getElementById('s-active').textContent = ativos.filter(u=>u.estado>=4).length;
-      document.getElementById('s-pending').textContent = ativos.filter(u=>(u.estado||1)<=2).length;
+      const total = ativos.length || 1;
+      const counts = {1:0, 2:0, 3:0, 4:0, 5:0};
+      ativos.forEach(u => { const e = u.estado||1; if (counts[e]!==undefined) counts[e]++; });
+      document.getElementById('s-total').textContent  = ativos.length;
+      document.getElementById('s-active').textContent = counts[4];
+      document.getElementById('s-e1').textContent     = counts[1];
+      document.getElementById('s-e2').textContent     = counts[2];
+      document.getElementById('s-e3').textContent     = counts[3];
+      document.getElementById('s-e5').textContent     = counts[5];
+      // Barras de proporção
+      [1,2,3,4,5].forEach(e => {
+        const bar = document.getElementById(`s-bar-${e}`);
+        if (bar) bar.style.width = Math.round((counts[e]/total)*100) + '%';
+      });
       renderList(ativos);
     } catch(e) { console.error(e); }
   }
