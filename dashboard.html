@@ -2480,6 +2480,10 @@
   };
 
   async function carregarDados(user) {
+    // Guard contra execuções concorrentes (ex: visibilitychange + reload manual
+    // a disparar carregarDados em simultâneo, causando renderizações intercaladas)
+    const myGen = (window._loadGen = (window._loadGen || 0) + 1);
+
     // Limpar vistas antes de re-renderizar
     ['view-onboarding','view-resultados'].forEach(id => {
       const el = document.getElementById(id);
@@ -2516,6 +2520,7 @@
 
     try {
       const snap = await getDoc(doc(db, 'users', user.uid));
+      if (myGen !== window._loadGen) return; // execução mais recente já em curso, abortar
       if (snap.exists()) {
         d = snap.data();
         const completo = [d.firstName, d.lastName].filter(Boolean).join(' ');
@@ -2605,6 +2610,8 @@
     } catch (err) {
       console.warn('Não foi possível carregar o perfil:', err);
     }
+
+    if (myGen !== window._loadGen) return; // execução mais recente já em curso, abortar
 
     // Badge de estado
     const badge = document.getElementById('estadoBadge');
