@@ -182,9 +182,13 @@
     .toast-btn-disc { font-size:12px; font-weight:600; padding:6px 14px; border-radius:8px; border:1px solid var(--line-2); background:none; color:var(--txt-2); cursor:pointer; }
 
     /* Última atualização por tab */
-    .tab-meta { font-size:11px; color:var(--txt-3); padding:10px 28px 0; }
+    .tab-meta { font-size:11.5px; color:var(--txt-3); padding:10px 28px 4px; display:flex; align-items:center; gap:6px; }
+    .tab-meta svg { flex-shrink:0; opacity:0.5; }
     .tab-meta span { color:var(--txt-3); }
     .tab-meta.has-date span { color:var(--green); }
+    .tab-meta.has-date svg { opacity:0.7; color:var(--green); }
+    .tab-meta.stale span { color:var(--amber); }
+    .tab-meta.stale svg { opacity:0.7; color:var(--amber); }
 
     /* Modal alterações não guardadas ao mudar de tab */
     .unsaved-modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.65); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.2s; }
@@ -315,7 +319,10 @@
         <button class="tab" onclick="switchTab('consultas')">Consultas</button>
         <button class="tab" onclick="switchTab('relatorio')">Relatório</button>
       </div>
-      <div class="tab-meta" id="tab-meta"><span id="tab-meta-txt">-</span></div>
+      <div class="tab-meta" id="tab-meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="tab-meta-txt">-</span>
+      </div>
 
       <!-- ── TAB: GERAL ── -->
       <div class="tab-content active" id="tab-geral">
@@ -854,8 +861,11 @@
     const metaTxt = document.getElementById('tab-meta-txt');
     if (ts) {
       const d = ts.toDate ? ts.toDate() : new Date(ts);
-      metaTxt.textContent = 'Última atualização: ' + d.toLocaleString('pt-PT', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-      meta.className = 'tab-meta has-date';
+      const diffDays = Math.floor((Date.now() - d.getTime()) / 86400000);
+      const rel = diffDays === 0 ? 'hoje' : diffDays === 1 ? 'ontem' : `há ${diffDays} dias`;
+      const hora = d.toLocaleString('pt-PT', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      metaTxt.textContent = `Guardado ${rel} · ${hora}`;
+      meta.className = diffDays > 7 ? 'tab-meta stale' : 'tab-meta has-date';
     } else {
       metaTxt.textContent = 'Nunca guardado neste separador';
       meta.className = 'tab-meta';
