@@ -1562,7 +1562,13 @@
     clearTimeout(window._authFallback);
     document.getElementById('loading-state').style.display = 'none';
     if (!user) { window.location.href = 'login.html?next=admin.html'; return; }
-    if (!ADMIN_EMAILS.includes(user.email)) { document.getElementById('access-denied').style.display = 'block'; return; }
+
+    // Verificar custom claim { admin: true } no token JWT (server-side)
+    // Fallback para ADMIN_EMAILS enquanto os claims não estão definidos
+    const tokenResult = await user.getIdTokenResult();
+    const isAdmin = tokenResult.claims.admin === true || ADMIN_EMAILS.includes(user.email);
+    if (!isAdmin) { document.getElementById('access-denied').style.display = 'block'; return; }
+
     document.getElementById('admin-email').textContent = user.email;
     document.getElementById('main-layout').style.display = 'grid';
     await loadUsers();
