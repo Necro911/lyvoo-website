@@ -274,6 +274,15 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" class="search-input" id="search-input" placeholder="Nome ou email…" />
       </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:10px;">
+        <span style="font-size:11px;color:var(--txt-3);flex-shrink:0">Ordenar:</span>
+        <select id="sort-select" style="flex:1;font-size:11.5px;padding:4px 8px;border-radius:7px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--txt-2);font-family:inherit;outline:none;cursor:pointer;" onchange="applyFilters()">
+          <option value="atualizadoEm">Recentemente editados</option>
+          <option value="criadoEm">Data de registo</option>
+          <option value="estado">Estado</option>
+          <option value="nome">Nome A→Z</option>
+        </select>
+      </div>
     </div>
     <div class="stats-mini">
       <div class="stat-mini"><div class="stat-mini-val" id="s-total">-</div><div class="stat-mini-lbl">Total</div></div>
@@ -783,14 +792,27 @@
 
   function applyFilters() {
     const q = (document.getElementById('search-input').value || '').toLowerCase();
-    renderList(allUsers.filter(u => {
+    const sortBy = document.getElementById('sort-select')?.value || 'atualizadoEm';
+    let filtered = allUsers.filter(u => {
       const n = [u.firstName,u.lastName].filter(Boolean).join(' ').toLowerCase();
       const matchQ = !q || n.includes(q) || (u.email||'').toLowerCase().includes(q);
       const arquivado = !!u.arquivado;
       if (estadoFilter === 'arquivados') return matchQ && arquivado;
       const matchE = estadoFilter === 'all' || (u.estado||1) === estadoFilter;
       return matchQ && matchE && !arquivado;
-    }));
+    });
+    filtered.sort((a, b) => {
+      if (sortBy === 'atualizadoEm') return (b.atualizadoEm?.toMillis?.()??0) - (a.atualizadoEm?.toMillis?.()??0);
+      if (sortBy === 'criadoEm')    return (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0);
+      if (sortBy === 'estado')      return (a.estado||1) - (b.estado||1);
+      if (sortBy === 'nome') {
+        const na = [a.firstName,a.lastName].filter(Boolean).join(' ').toLowerCase();
+        const nb = [b.firstName,b.lastName].filter(Boolean).join(' ').toLowerCase();
+        return na.localeCompare(nb, 'pt');
+      }
+      return 0;
+    });
+    renderList(filtered);
   }
 
   // ── Detecção de alterações não guardadas ──────────────────────────────
