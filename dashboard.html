@@ -1455,16 +1455,46 @@
       // ── Objectivo ─────────────────────────────────────────────────
       newPageIfNeeded(28);
       const objDescLines = pa.objectivoDesc ? doc.splitTextToSize(pa.objectivoDesc, cw - 12) : [];
-      const objH = 19 + objDescLines.length * 4.6;
-      doc.setFillColor(...TEAL_D);
-      doc.roundedRect(ml, y, cw, objH, 3, 3, 'F');
+      const objH = Math.max(28, 24 + objDescLines.length * 4.6);
+      const NAVY = [10,22,32];
+
+      // Base card
+      doc.setFillColor(...NAVY);
+      doc.roundedRect(ml, y, cw, objH, 4, 4, 'F');
+
+      // Decorative glow blobs (clipped to rounded card)
+      doc.saveGraphicsState();
+      doc.roundedRect(ml, y, cw, objH, 4, 4).clip().discardPath();
+      doc.setGState(new doc.GState({ opacity: 0.30 }));
+      doc.setFillColor(...VIOLET);
+      doc.circle(ml + cw - 14, y + 6, 24, 'F');
+      doc.setGState(new doc.GState({ opacity: 0.22 }));
+      doc.setFillColor(...TEAL);
+      doc.circle(ml + cw - 38, y + objH + 6, 20, 'F');
+      doc.restoreGraphicsState();
+
+      // Icon badge (target)
+      const iconCx = ml + 16, iconCy = y + objH/2;
+      doc.setFillColor(255,255,255);
+      doc.saveGraphicsState();
+      doc.setGState(new doc.GState({ opacity: 0.10 }));
+      doc.circle(iconCx, iconCy, 9, 'F');
+      doc.restoreGraphicsState();
+      doc.setDrawColor(61,217,232); doc.setLineWidth(1.1);
+      doc.circle(iconCx, iconCy, 5.4, 'D');
+      doc.setFillColor(61,217,232);
+      doc.circle(iconCx, iconCy, 1.6, 'F');
+
+      // Text
+      const tx = ml + 30;
       doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.setTextColor(140,220,228); doc.text('OBJECTIVO PRINCIPAL', ml + 8, y + 8);
-      doc.setFont('helvetica','bold'); doc.setFontSize(13.5);
-      doc.setTextColor(255,255,255); doc.text(pa.objectivo || '', ml + 8, y + 16);
+      doc.setTextColor(110,210,222);
+      doc.text('O B J E C T I V O   P R I N C I P A L', tx, y + 9);
+      doc.setFont('helvetica','bold'); doc.setFontSize(15);
+      doc.setTextColor(255,255,255); doc.text(pa.objectivo || '', tx, y + 18);
       if (objDescLines.length) {
-        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(200,225,228);
-        doc.text(objDescLines, ml + 8, y + 21.5);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(185,196,210);
+        doc.text(objDescLines, tx, y + 24);
       }
       y += objH + 9;
 
