@@ -140,6 +140,17 @@
     .card-editor-del:hover { background:rgba(248,113,113,0.1); color:var(--red); }
     .btn-add-card { width:100%; padding:11px; border-radius:10px; border:1px dashed rgba(61,217,232,0.25); background:rgba(61,217,232,0.03); color:var(--cyan); font-size:13.5px; font-weight:600; cursor:pointer; transition:all 0.18s; }
     .btn-add-card:hover { background:rgba(61,217,232,0.07); border-color:rgba(61,217,232,0.4); }
+    /* Opções de refeição */
+    .opcoes-list { display:flex; flex-direction:column; gap:8px; margin-bottom:8px; }
+    .opcao-row { display:flex; align-items:flex-start; gap:10px; }
+    .opcao-ou { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-3); margin-top:10px; width:24px; flex-shrink:0; text-align:center; }
+    .opcao-ou--first { color:var(--cyan); }
+    .opcao-input { flex:1; min-height:60px; }
+    .opcao-del { background:none; border:none; color:var(--txt-3); cursor:pointer; font-size:16px; padding:6px 4px; margin-top:4px; border-radius:6px; transition:all 0.15s; flex-shrink:0; }
+    .opcao-del:hover { background:rgba(248,113,113,0.1); color:var(--red); }
+    .opcao-del-placeholder { width:28px; flex-shrink:0; }
+    .btn-add-opcao { background:none; border:1px dashed rgba(255,255,255,0.12); border-radius:8px; color:var(--txt-3); font-size:12.5px; font-weight:600; padding:7px 14px; cursor:pointer; transition:all 0.15s; width:100%; }
+    .btn-add-opcao:hover { border-color:rgba(61,217,232,0.3); color:var(--cyan); background:rgba(61,217,232,0.04); }
 
     /* Pill tags input */
     .tags-input-wrap { display:flex; flex-wrap:wrap; gap:6px; padding:8px 10px; border-radius:10px; border:1px solid var(--line-2); background:var(--panel-2); min-height:42px; align-items:center; cursor:text; }
@@ -1430,8 +1441,10 @@
     const div = document.createElement('div');
     div.className = 'card-editor';
     const opts = REFEICAO_NOMES.map(n =>
-      `<option value="${n}" ${(r.nome||'')=== n ? 'selected' : ''}>${n}</option>`
+      `<option value="${n}" ${(r.nome||'') === n ? 'selected' : ''}>${n}</option>`
     ).join('');
+    // Suporte legado: se só existe r.desc (string), converter para array
+    const opcoes = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : ['']);
     div.innerHTML = `
       <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
       <div class="form-row">
@@ -1445,20 +1458,38 @@
         </div>
       </div>
       <div class="form-field">
-        <label class="form-label">Descrição da refeição</label>
-        <textarea class="form-textarea" name="r-desc" placeholder="Ex: 2 ovos mexidos, 1 fatia de pão integral, 1 peça de fruta…" style="min-height:72px">${r.desc||''}</textarea>
+        <label class="form-label">Opções de refeição</label>
+        <div class="opcoes-list">
+          ${opcoes.map((o, i) => buildOpcaoRow(o, i === 0)).join('')}
+        </div>
+        <button type="button" class="btn-add-opcao" onclick="addOpcaoRow(this)">+ Ou isto</button>
       </div>`;
     container.appendChild(div);
   }
+
+  function buildOpcaoRow(val, isFirst) {
+    return `<div class="opcao-row">
+      ${!isFirst ? '<span class="opcao-ou">ou</span>' : '<span class="opcao-ou opcao-ou--first">→</span>'}
+      <textarea class="form-textarea opcao-input" name="r-opcao" rows="2" placeholder="Ex: 2 ovos mexidos, 1 fatia de pão integral…">${val||''}</textarea>
+      ${!isFirst ? '<button type="button" class="opcao-del" onclick="this.closest(\'.opcao-row\').remove()" title="Remover">×</button>' : '<span class="opcao-del-placeholder"></span>'}
+    </div>`;
+  }
+
+  window.addOpcaoRow = function(btn) {
+    const list = btn.previousElementSibling;
+    const isFirst = list.children.length === 0;
+    list.insertAdjacentHTML('beforeend', buildOpcaoRow('', false));
+    list.lastElementChild.querySelector('textarea').focus();
+  };
 
   window.addRefeicao = function() { addRefeicaoCard({}); };
 
   function collectRefeicaoData() {
     return [...document.getElementById('refeicoes-list').querySelectorAll('.card-editor')].map(card => ({
-      nome: card.querySelector('[name=r-nome]').value,
-      hora: card.querySelector('[name=r-hora]').value.trim(),
-      desc: card.querySelector('[name=r-desc]').value.trim(),
-    })).filter(r => r.desc || r.hora);
+      nome:   card.querySelector('[name=r-nome]').value,
+      hora:   card.querySelector('[name=r-hora]').value.trim(),
+      opcoes: [...card.querySelectorAll('[name=r-opcao]')].map(t => t.value.trim()).filter(Boolean),
+    })).filter(r => r.opcoes.length || r.hora);
   }
 
   function collectSuppData() {

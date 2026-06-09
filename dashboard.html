@@ -121,6 +121,10 @@
       flex-shrink: 0; font-variant-numeric: tabular-nums;
       position: relative; z-index: 1; opacity: 0.9;
     }
+    .meal-opcao-ou { display:flex; align-items:center; gap:10px; margin:6px 0 4px; }
+    .meal-opcao-ou span { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); white-space:nowrap; }
+    .meal-opcao-ou::before, .meal-opcao-ou::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
+    .meal-desc--alt { color:var(--txt-3); }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
@@ -1285,7 +1289,15 @@
                 <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
                 <div class="meal-body">
                   <div class="meal-name">${r.nome}</div>
-                  <div class="meal-desc">${r.desc||''}</div>
+                  ${(() => {
+                    const ops = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : []);
+                    if (!ops.length) return '';
+                    if (ops.length === 1) return `<div class="meal-desc">${ops[0]}</div>`;
+                    return ops.map((o, i) => i === 0
+                      ? `<div class="meal-desc">${o}</div>`
+                      : `<div class="meal-opcao-ou"><span>ou</span></div><div class="meal-desc meal-desc--alt">${o}</div>`
+                    ).join('');
+                  })()}
                 </div>
                 ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
               </div>`;
