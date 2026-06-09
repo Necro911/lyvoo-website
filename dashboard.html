@@ -67,21 +67,33 @@
     /* Biomarcadores */
     .bio-section { margin-bottom: 24px; }
     .bio-sec-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 12px; }
-    .bio-table { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
-    .bio-row { display: grid; grid-template-columns: 180px 110px 130px 1fr 80px 60px; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .bio-table { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+    .bio-thead { display: grid; grid-template-columns: 1fr 100px 130px 120px 76px 56px; align-items: center; gap: 12px; padding: 10px 20px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+    .bio-thead span { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--txt-3); }
+    .bio-row {
+      display: grid; grid-template-columns: 1fr 100px 130px 120px 76px 56px;
+      align-items: center; gap: 12px; padding: 14px 20px;
+      border-bottom: 1px solid var(--line); font-size: 13px;
+      transition: background 0.16s; cursor: default;
+    }
     .bio-row:last-child { border-bottom: none; }
+    .bio-row:hover { background: rgba(255,255,255,0.025); }
+    .bio-row.row-warn { box-shadow: inset 4px 0 0 var(--amber); }
+    .bio-row.row-crit { box-shadow: inset 4px 0 0 var(--red); }
+    .bio-row.row-warn:hover { background: rgba(251,191,36,0.04); }
+    .bio-row.row-crit:hover  { background: rgba(248,113,113,0.04); }
     .bio-name { font-weight: 600; color: var(--txt); }
-    .bio-val { font-weight: 700; color: var(--txt); }
+    .bio-val { font-size: 14px; font-weight: 700; color: var(--txt); }
     .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 400; }
     .bio-range { font-size: 11.5px; color: var(--txt-3); }
     .bio-bar-wrap { height: 5px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
-    .bio-bar-fill { height: 100%; border-radius: 999px; }
-    .bio-tag { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-align: center; }
-    .bio-tag.good { background: rgba(74,222,128,0.1); color: var(--green); }
-    .bio-tag.warn { background: rgba(251,191,36,0.1); color: var(--amber); }
-    .bio-tag.crit { background: rgba(248,113,113,0.1); color: var(--red); }
+    .bio-bar-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+    .bio-tag { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; text-align: center; white-space: nowrap; }
+    .bio-tag.good { background: rgba(74,222,128,0.10); color: var(--green);  border: 1px solid rgba(74,222,128,0.22); }
+    .bio-tag.warn { background: rgba(251,191,36,0.10); color: var(--amber);  border: 1px solid rgba(251,191,36,0.22); }
+    .bio-tag.crit { background: rgba(248,113,113,0.10); color: var(--red);   border: 1px solid rgba(248,113,113,0.22); }
     .bio-delta { font-size: 12px; font-weight: 600; text-align: right; }
-    .bio-delta.up { color: var(--green); }
+    .bio-delta.up   { color: var(--green); }
     .bio-delta.down { color: var(--cyan); }
 
     /* Plano alimentar */
@@ -1295,17 +1307,27 @@
       const activeRows = rows.filter(r => r.valor);
       if (!activeRows.length) return;
       html += `<div class="bio-section"><div class="bio-sec-title">${CAT_LABELS[cat]||cat}</div><div class="bio-table">`;
+      html += `<div class="bio-thead">
+        <span>Parâmetro</span><span>Valor</span><span>Referência</span>
+        <span></span><span>Estado</span><span style="text-align:right">Δ</span>
+      </div>`;
       activeRows.forEach(r => {
-        const tagCls = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
-        const tagLbl = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
+        const tagCls  = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
+        const tagLbl  = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
+        const rowCls  = r.tag==='atencao'?'row-warn':r.tag==='critico'?'row-crit':'';
         const barColor = r.tag==='otimo'?'var(--green)':r.tag==='atencao'?'var(--amber)':'var(--red)';
-        const delta = r.delta ? (r.delta.startsWith('-')||r.delta.startsWith('↓')?`<span class="bio-delta down">${r.delta}</span>`:`<span class="bio-delta up">${r.delta}</span>`) : '<span class="bio-delta">-</span>';
-        html += `<div class="bio-row">
+        const barPct   = r.tag==='otimo'?82:r.tag==='atencao'?50:22;
+        const delta = r.delta
+          ? (r.delta.startsWith('-')||r.delta.startsWith('↓')
+              ? `<span class="bio-delta down">${r.delta}</span>`
+              : `<span class="bio-delta up">${r.delta}</span>`)
+          : '<span class="bio-delta" style="color:var(--txt-3)">—</span>';
+        html += `<div class="bio-row ${rowCls}">
           <span class="bio-name">${r.nome}</span>
           <span class="bio-val">${r.valor} <small>${r.unidade||''}</small></span>
           <span class="bio-range">${r.referencia||''}</span>
-          <div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:60%;background:${barColor}"></div></div>
-          <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span>
+          <div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
+          <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'—'}</span>
           ${delta}
         </div>`;
       });
