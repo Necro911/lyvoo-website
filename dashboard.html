@@ -61,8 +61,9 @@
     .sec-sub { font-size: 13px; color: var(--txt-3); }
     .sec-legend { display: flex; align-items: center; font-size: 12px; color: var(--txt-3); flex-shrink: 0; }
     .sec-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-    .sec-btn { font-size: 13px; font-weight: 600; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); background: rgba(61,217,232,0.06); padding: 8px 16px; border-radius: 9px; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .sec-btn { font-size: 13px; font-weight: 600; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); background: rgba(61,217,232,0.06); padding: 8px 16px; border-radius: 9px; text-decoration: none; transition: background 0.2s; white-space: nowrap; cursor: pointer; font-family: 'Inter', sans-serif; }
     .sec-btn:hover { background: rgba(61,217,232,0.12); }
+    .sec-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Biomarcadores */
     .bio-section { margin-bottom: 24px; }
@@ -1172,8 +1173,8 @@
       </div>
       <div class="account-section">
         <div class="account-item">
-          <div><div class="account-item-title">Palavra-passe</div><div class="account-item-desc">Alterar a sua palavra-passe de acesso</div></div>
-          <a href="login.html" class="sec-btn">Alterar</a>
+          <div><div class="account-item-title">Palavra-passe</div><div class="account-item-desc" id="pw-desc">Enviaremos um email com um link para definir uma nova palavra-passe</div></div>
+          <button class="sec-btn" id="pw-reset-btn" onclick="enviarResetPassword()">Alterar</button>
         </div>
         <div class="account-item">
           <div><div class="account-item-title">Política de Privacidade</div><div class="account-item-desc">Como tratamos os seus dados de saúde</div></div>
@@ -1224,7 +1225,7 @@
 
 <script type="module">
 
-  import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+  import { onAuthStateChanged, signOut, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
@@ -1294,6 +1295,30 @@
       document.getElementById('bell-popover')?.classList.remove('open');
     }
   });
+
+  // ── Alterar palavra-passe (email de reset) ───────────────────────────
+  window.enviarResetPassword = async function() {
+    const btn  = document.getElementById('pw-reset-btn');
+    const desc = document.getElementById('pw-desc');
+    const email = auth.currentUser?.email;
+    if (!email) return;
+
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = 'A enviar…';
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      desc.textContent = `Email enviado para ${email}. Verifique a sua caixa de entrada (e spam).`;
+      btn.textContent = 'Email enviado';
+      setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 30000);
+    } catch (e) {
+      console.error('Erro ao enviar reset de password:', e);
+      desc.textContent = 'Não foi possível enviar o email. Tente novamente mais tarde.';
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+  };
 
   // ── Download Plano Alimentar → PDF ───────────────────────────────────
   window.downloadPlanoPDF = async function() {
