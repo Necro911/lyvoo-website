@@ -1389,8 +1389,10 @@
     wrap.style.display = 'block';
   }
 
-  window.saveGeral = function() {
-    saveDoc({
+  window.saveGeral = async function() {
+    const u = allUsers.find(x => x.uid === currentUID);
+    const estadoAnterior = u?.estado ?? null;
+    const data = {
       estado:      selectedEstado,
       estadoLabel: ESTADO_LABELS[selectedEstado],
       firstName:   document.getElementById('g-first').value.trim(),
@@ -1406,7 +1408,41 @@
         dataEntrega:    document.getElementById('g-data-entrega').value,
         morada:         document.getElementById('g-morada').value.trim(),
       },
-    }, 'msg-geral');
+    };
+    await saveDoc(data, 'msg-geral');
+
+    // ── Email automático quando estado passa a 4 (Resultados prontos) ──
+    const passou_a_4 = selectedEstado === 4 && estadoAnterior !== 4;
+    const ja_notificado = !!u?.notificadoEm;
+    if (passou_a_4 && !ja_notificado) {
+      const nome = [data.firstName, data.lastName].filter(Boolean).join(' ') || u?.email?.split('@')[0] || '';
+      const primeiro = nome.split(' ')[0] || 'Cliente';
+      try {
+        await emailjs.send(EJS.svc, EJS.tpl, {
+          to_email:      u.email,
+          to_name:       nome,
+          name:          nome,
+          email:         u.email,
+          primeiro_nome: primeiro,
+          dashboard_url: 'https://lyvoo.pt/dashboard.html',
+        });
+        await setDoc(doc(db, 'users', currentUID), {
+          notificadoEm:  serverTimestamp(),
+          notificadoPor: 'auto',
+        }, { merge: true });
+        // Atualizar cache local e UI
+        const idx = allUsers.findIndex(x => x.uid === currentUID);
+        if (idx !== -1) allUsers[idx].notificadoEm = new Date();
+        const sub = document.querySelector('#notify-box .notify-box-sub');
+        if (sub) sub.textContent = '✓ Email enviado automaticamente ao guardar.';
+        const btn = document.getElementById('btn-notify');
+        if (btn) { btn.textContent = 'Reenviar'; btn.disabled = false; }
+        showMsg('msg-geral', '✓ Guardado · Email enviado ao cliente', false);
+      } catch(err) {
+        console.error('Auto-email error:', err);
+        showMsg('msg-geral', '✓ Guardado · Falha no email automático — notifique manualmente', true);
+      }
+    }
   };
 
   window.saveBiomarcadores = function() {
