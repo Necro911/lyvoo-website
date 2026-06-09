@@ -372,7 +372,42 @@
     .topbar-right { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
     .bell { position: relative; color: var(--txt-2); cursor: pointer; transition: color 0.2s; }
     .bell:hover { color: var(--txt); }
-    .bell .dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg); }
+    .bell .dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg); transition: opacity 0.3s; }
+    /* Notification popover */
+    .bell-popover {
+      position: absolute; top: calc(100% + 14px); right: -12px;
+      width: 310px; background: var(--panel-2);
+      border: 1px solid var(--line-2); border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      z-index: 200; overflow: hidden;
+      opacity: 0; pointer-events: none;
+      transform: translateY(-6px) scale(0.98);
+      transition: opacity 0.18s, transform 0.18s;
+      transform-origin: top right;
+    }
+    .bell-popover.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    .bell-pop-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+    .bell-pop-title { font-size: 13px; font-weight: 700; color: var(--txt); }
+    .bell-pop-mark { font-size: 11.5px; font-weight: 600; color: var(--cyan); cursor: pointer; background: none; border: none; font-family: inherit; }
+    .bell-pop-mark:hover { text-decoration: underline; }
+    .bell-notif {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px; border-bottom: 1px solid var(--line); cursor: default;
+      transition: background 0.15s;
+    }
+    .bell-notif:last-child { border-bottom: none; }
+    .bell-notif:hover { background: rgba(255,255,255,0.03); }
+    .bell-notif-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bell-notif-icon svg { width: 16px; height: 16px; }
+    .bell-notif-body { flex: 1; min-width: 0; }
+    .bell-notif-title { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 2px; }
+    .bell-notif-sub { font-size: 12px; color: var(--txt-3); line-height: 1.5; }
+    .bell-notif-time { font-size: 11px; color: var(--txt-3); margin-top: 4px; }
+    .bell-notif.unread .bell-notif-title::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); margin-right: 6px; vertical-align: middle; position: relative; top: -1px; }
+    .bell-empty { padding: 32px 16px; text-align: center; color: var(--txt-3); font-size: 13px; }
     .user { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px; border-radius: 10px; transition: background 0.2s; }
     .user:hover { background: rgba(255,255,255,0.04); }
     .user-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #3DD9E8, #8B5CF6); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0; }
@@ -629,9 +664,18 @@
         <p>Acompanhe a sua saúde. Melhore o seu futuro.</p>
       </div>
       <div class="topbar-right">
-        <div class="bell">
+        <div class="bell" id="bell-btn" onclick="toggleBellPopover()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="dot"></span>
+          <span class="dot" id="bell-dot" style="display:none"></span>
+          <div class="bell-popover" id="bell-popover">
+            <div class="bell-pop-head">
+              <span class="bell-pop-title">Notificações</span>
+              <button class="bell-pop-mark" onclick="marcarNotificacoesVistas(event)">Marcar como visto</button>
+            </div>
+            <div id="bell-notif-list">
+              <div class="bell-empty">Sem notificações novas</div>
+            </div>
+          </div>
         </div>
         <div class="user">
           <div class="user-avatar" id="navAvatar">?</div>
@@ -1163,6 +1207,73 @@
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
+
+  // ── Sino de notificações ─────────────────────────────────────────────
+  let _bellNotifs = [];   // { title, sub, time, unread }
+
+  window.toggleBellPopover = function() {
+    const pop = document.getElementById('bell-popover');
+    const isOpen = pop.classList.contains('open');
+    if (isOpen) { pop.classList.remove('open'); return; }
+    pop.classList.add('open');
+  };
+
+  window.marcarNotificacoesVistas = function(e) {
+    e.stopPropagation();
+    const uid = window._currentUser?.uid;
+    if (uid) localStorage.setItem(`lyvoo_visto_${uid}`, Date.now());
+    // Remover dot e badge unread
+    document.getElementById('bell-dot').style.display = 'none';
+    document.querySelectorAll('.bell-notif.unread').forEach(el => el.classList.remove('unread'));
+    document.getElementById('bell-popover').classList.remove('open');
+    // Esconder banner novidades se visível
+    const banner = document.getElementById('novidades-banner');
+    if (banner) banner.style.display = 'none';
+  };
+
+  function buildBellNotifs(d, uid) {
+    const list = document.getElementById('bell-notif-list');
+    const dot  = document.getElementById('bell-dot');
+    _bellNotifs = [];
+
+    if (d.notificadoEm) {
+      const notifTs = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
+      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const isNew   = notifTs > vistoTs;
+      const dataStr = new Date(notifTs).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const titulo  = d.estado >= 4 ? 'Resultados disponíveis' : 'O seu painel foi atualizado';
+      const sub     = d.estado >= 4
+        ? 'O seu relatório médico, biomarcadores e plano estão prontos.'
+        : 'Consulte as novidades no seu painel.';
+      _bellNotifs.push({ titulo, sub, data: dataStr, unread: isNew });
+      if (isNew) dot.style.display = 'block';
+    }
+
+    if (!_bellNotifs.length) {
+      list.innerHTML = '<div class="bell-empty">Sem notificações novas</div>';
+      return;
+    }
+
+    list.innerHTML = _bellNotifs.map(n => `
+      <div class="bell-notif ${n.unread ? 'unread' : ''}">
+        <div class="bell-notif-icon" style="background:rgba(61,217,232,0.10);color:var(--cyan)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="bell-notif-body">
+          <div class="bell-notif-title">${n.titulo}</div>
+          <div class="bell-notif-sub">${n.sub}</div>
+          <div class="bell-notif-time">${n.data}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Fechar popover ao clicar fora
+  document.addEventListener('click', e => {
+    const bell = document.getElementById('bell-btn');
+    if (bell && !bell.contains(e.target)) {
+      document.getElementById('bell-popover')?.classList.remove('open');
+    }
+  });
 
   // ── Navegação entre secções ──────────────────────────────────────────
   const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','perfil','conta'];
@@ -1837,24 +1948,27 @@
           if (sub) sub.textContent = 'Prescrita com base nos seus resultados · ' + d.resultados.dataAnalise;
         }
 
-        // ── Banner de novidades ───────────────────────────────────────────
+        // ── Sino + Banner de novidades ────────────────────────────────────
+        buildBellNotifs(d, user.uid);
+
         if (d.notificadoEm) {
-          const notifTs   = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
-          const vistoKey  = `lyvoo_visto_${user.uid}`;
-          const vistoTs   = parseInt(localStorage.getItem(vistoKey) || '0', 10);
-          const banner    = document.getElementById('novidades-banner');
-          const closeBtn  = document.getElementById('novidades-banner-close');
-          const sub       = document.getElementById('novidades-banner-sub');
+          const notifTs  = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
+          const vistoTs  = parseInt(localStorage.getItem(`lyvoo_visto_${user.uid}`) || '0', 10);
+          const banner   = document.getElementById('novidades-banner');
+          const closeBtn = document.getElementById('novidades-banner-close');
+          const sub      = document.getElementById('novidades-banner-sub');
 
           if (notifTs > vistoTs && banner) {
-            // Personalizar mensagem conforme o estado
             if (d.estado >= 4 && sub) {
               const data = d.resultados?.dataAnalise ? ` · ${d.resultados.dataAnalise}` : '';
               sub.textContent = `Os seus resultados${data} estão disponíveis. Explore as novidades abaixo.`;
             }
             banner.style.display = 'flex';
-            // Marcar como visto ao fechar ou ao fim de 10s
-            const marcarVisto = () => localStorage.setItem(vistoKey, Date.now());
+            const marcarVisto = () => {
+              localStorage.setItem(`lyvoo_visto_${user.uid}`, Date.now());
+              document.getElementById('bell-dot').style.display = 'none';
+              document.querySelectorAll('.bell-notif.unread').forEach(el => el.classList.remove('unread'));
+            };
             closeBtn?.addEventListener('click', () => { banner.style.display = 'none'; marcarVisto(); });
             setTimeout(() => { banner.style.display = 'none'; marcarVisto(); }, 10000);
           }
