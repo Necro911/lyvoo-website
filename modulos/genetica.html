@@ -28,7 +28,6 @@
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
-    .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
 
     /* HERO */
     .hero {
@@ -41,10 +40,6 @@
     .hero .mod-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
     .hero h1 { font-size: clamp(32px, 5vw, 58px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 18px; line-height: 1.1; }
     .hero .hero-desc { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 520px; margin: 0 auto 36px; line-height: 1.7; }
-    .hero-price-wrap { display: inline-flex; align-items: baseline; gap: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px 28px; margin-bottom: 32px; }
-    .hero-price-cur { font-size: 20px; font-weight: 700; color: rgba(255,255,255,0.6); }
-    .hero-price-val { font-size: 52px; font-weight: 900; letter-spacing: -0.05em; color: #fff; line-height: 1; }
-    .hero-price-note { font-size: 13px; color: rgba(255,255,255,0.35); align-self: flex-end; padding-bottom: 4px; }
     .hero-badge-soon { display: inline-block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 8px 22px; margin-bottom: 32px; }
 
     /* CONTENT */
@@ -105,9 +100,7 @@
     @media (max-width: 700px) {
       .nav-links { gap: 8px; }
       .nav-links > li { display: none; }
-      .nav-links > li.lang-toggle,
-      .nav-links > li:has(> .nav-cta) { display: flex; }
-      .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; }
+      .nav-links > li.lang-toggle { display: flex; }
     }      @media (max-width: 700px) {
       .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
       .lf-bottom { flex-direction: column; gap: 14px; text-align: center; }

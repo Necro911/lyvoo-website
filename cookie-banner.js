@@ -199,7 +199,7 @@
     const el = document.getElementById('lc-banner');
     if (!el) return;
     el.style.opacity = '0';
-    el.style.transform = 'translateX(-50%) translateY(130%)';
+    el.style.transform = 'translateY(130%)';
     setTimeout(() => el.remove(), 300);
   }
 
