@@ -1455,18 +1455,16 @@
       // ── Objectivo ─────────────────────────────────────────────────
       newPageIfNeeded(28);
       const objDescLines = pa.objectivoDesc ? doc.splitTextToSize(pa.objectivoDesc, cw - 12) : [];
-      const objH = 17 + objDescLines.length * 4.6;
-      doc.setFillColor(...BG);
-      doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
-      doc.roundedRect(ml, y, cw, objH, 3, 3, 'FD');
-      doc.setFillColor(...TEAL); doc.roundedRect(ml, y, 3.2, objH, 1.6, 1.6, 'F');
+      const objH = 19 + objDescLines.length * 4.6;
+      doc.setFillColor(...TEAL_D);
+      doc.roundedRect(ml, y, cw, objH, 3, 3, 'F');
       doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
-      doc.setTextColor(...TEAL); doc.text('OBJECTIVO PRINCIPAL', ml + 8, y + 7);
-      doc.setFont('helvetica','bold'); doc.setFontSize(12);
-      doc.setTextColor(...TEXT); doc.text(pa.objectivo || '', ml + 8, y + 14);
+      doc.setTextColor(140,220,228); doc.text('OBJECTIVO PRINCIPAL', ml + 8, y + 8);
+      doc.setFont('helvetica','bold'); doc.setFontSize(13.5);
+      doc.setTextColor(255,255,255); doc.text(pa.objectivo || '', ml + 8, y + 16);
       if (objDescLines.length) {
-        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2);
-        doc.text(objDescLines, ml + 8, y + 19.5);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(200,225,228);
+        doc.text(objDescLines, ml + 8, y + 21.5);
       }
       y += objH + 9;
 
