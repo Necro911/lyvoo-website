@@ -882,7 +882,7 @@
 <script type="module">
 
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc, setDoc, serverTimestamp, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   // ── Navegação entre secções ──────────────────────────────────────────
@@ -1437,13 +1437,13 @@
     // Guardar perfil
     document.getElementById('pf-save-btn').addEventListener('click', async () => {
       try {
-        await setDoc(doc(db, 'users', user.uid), {
+        await updateDoc(doc(db, 'users', user.uid), {
           firstName: document.getElementById('pf-first').value.trim(),
           lastName:  document.getElementById('pf-last').value.trim(),
           phone:     document.getElementById('pf-phone').value.trim(),
           dob:       document.getElementById('pf-dob').value,
           atualizadoEm: serverTimestamp()
-        }, { merge: true });
+        });
         const msg = document.getElementById('pf-msg');
         msg.textContent = '✓ Guardado com sucesso';
         setTimeout(() => msg.textContent = '', 3000);

@@ -611,7 +611,7 @@
 
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { collection, getDocs, doc, getDoc, setDoc, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
@@ -908,10 +908,10 @@
       });
 
       // Guardar registo no Firestore
-      await setDoc(doc(db, 'users', currentUID), {
+      await updateDoc(doc(db, 'users', currentUID), {
         notificadoEm: serverTimestamp(),
         notificadoPor: 'admin',
-      }, { merge: true });
+      });
 
       btn.textContent = '✓ Email enviado';
       btn.style.background = 'rgba(74,222,128,0.15)';
@@ -1348,7 +1348,7 @@
       // Guardar timestamp do tab actual
       const tsKey = TAB_TS_KEYS[currentTab];
       const tsUpdate = tsKey ? { [`timestamps.${tsKey}`]: serverTimestamp() } : {};
-      await setDoc(doc(db,'users',currentUID), { ...data, ...tsUpdate, atualizadoEm: serverTimestamp() }, { merge: true });
+      await updateDoc(doc(db,'users',currentUID), { ...data, ...tsUpdate, atualizadoEm: serverTimestamp() });
       // Atualizar timestamp local
       if (tsKey) {
         currentTimestamps[tsKey] = { toDate: () => new Date() };
@@ -1426,10 +1426,10 @@
           primeiro_nome: primeiro,
           dashboard_url: 'https://lyvoo.pt/dashboard.html',
         });
-        await setDoc(doc(db, 'users', currentUID), {
+        await updateDoc(doc(db, 'users', currentUID), {
           notificadoEm:  serverTimestamp(),
           notificadoPor: 'auto',
-        }, { merge: true });
+        });
         // Atualizar cache local e UI
         const idx = allUsers.findIndex(x => x.uid === currentUID);
         if (idx !== -1) allUsers[idx].notificadoEm = new Date();
