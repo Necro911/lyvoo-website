@@ -386,8 +386,9 @@
 
     setBtnLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, emailVal, pwVal);
-      window.location.href = 'dashboard.html';
+      const cred = await signInWithEmailAndPassword(auth, emailVal, pwVal);
+      const dest = ADMIN_EMAILS.includes(cred.user.email) ? 'admin.html' : 'dashboard.html';
+      window.location.href = dest;
     } catch (err) {
       mostrarMensagem(mensagemErro(err.code));
       setBtnLoading(false);
@@ -399,8 +400,9 @@
     limparMensagem();
     setGoogleLoading(true);
     try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-      window.location.href = 'dashboard.html';
+      const cred = await signInWithPopup(auth, new GoogleAuthProvider());
+      const dest = ADMIN_EMAILS.includes(cred.user.email) ? 'admin.html' : 'dashboard.html';
+      window.location.href = dest;
     } catch (err) {
       if (err.code !== 'auth/popup-closed-by-user') {
         mostrarMensagem(mensagemErro(err.code));
