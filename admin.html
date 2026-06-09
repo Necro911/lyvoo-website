@@ -490,7 +490,7 @@
         </div>
         <div id="bio-categories"></div>
         <div class="save-bar">
-          <button class="btn-save" onclick="saveBiomarcadores()">Guardar biomarcadores</button>
+          <button class="btn-save" onclick="clinicalConfirm('biomarcadores','Guardar biomarcadores','Estás prestes a sobrescrever os biomarcadores e resultados de análise deste cliente.')">Guardar biomarcadores</button>
           <span class="save-msg" id="msg-bio"></span>
         </div>
       </div>
@@ -538,7 +538,7 @@
           </div>
         </div>
         <div class="save-bar">
-          <button class="btn-save" onclick="savePlano()">Guardar plano</button>
+          <button class="btn-save" onclick="clinicalConfirm('plano','Guardar plano alimentar','Estás prestes a sobrescrever o plano alimentar deste cliente.')">Guardar plano</button>
           <span class="save-msg" id="msg-plano"></span>
         </div>
       </div>
@@ -548,7 +548,7 @@
         <div class="cards-editor" id="supp-list"></div>
         <button class="btn-add-card" onclick="addSupp()">+ Adicionar suplemento</button>
         <div class="save-bar" style="margin-top:20px">
-          <button class="btn-save" onclick="saveSupp()">Guardar suplementação</button>
+          <button class="btn-save" onclick="clinicalConfirm('supp','Guardar suplementação','Estás prestes a sobrescrever o plano de suplementação deste cliente.')">Guardar suplementação</button>
           <span class="save-msg" id="msg-supp"></span>
         </div>
       </div>
@@ -558,7 +558,7 @@
         <div class="cards-editor" id="consult-list"></div>
         <button class="btn-add-card" onclick="addConsult()">+ Adicionar consulta</button>
         <div class="save-bar" style="margin-top:20px">
-          <button class="btn-save" onclick="saveConsultas()">Guardar consultas</button>
+          <button class="btn-save" onclick="clinicalConfirm('consultas','Guardar consultas','Estás prestes a sobrescrever as consultas agendadas deste cliente.')">Guardar consultas</button>
           <span class="save-msg" id="msg-consult"></span>
         </div>
       </div>
@@ -606,7 +606,7 @@
           </div>
         </div>
         <div class="save-bar">
-          <button class="btn-save" onclick="saveRelatorio()">Guardar relatório</button>
+          <button class="btn-save" onclick="clinicalConfirm('relatorio','Guardar relatório','Estás prestes a sobrescrever o relatório e score de saúde deste cliente.')">Guardar relatório</button>
           <span class="save-msg" id="msg-rel"></span>
         </div>
       </div>
@@ -637,6 +637,19 @@
   <div class="unsaved-toast-btns">
     <button class="toast-btn-save" id="toast-save-btn">Guardar</button>
     <button class="toast-btn-disc" onclick="discardChanges()">Descartar</button>
+  </div>
+</div>
+
+<!-- Modal de confirmação para dados clínicos -->
+<div id="clinical-confirm-overlay" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.65);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+  <div style="background:var(--panel);border:1px solid rgba(61,217,232,0.2);border-radius:16px;padding:28px;width:min(400px,90vw);box-shadow:0 20px 60px rgba(0,0,0,0.6);">
+    <div style="font-size:28px;margin-bottom:12px">⚕️</div>
+    <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:6px" id="clinical-confirm-title">Confirmar alteração</div>
+    <div style="font-size:13px;color:var(--txt-2);line-height:1.6;margin-bottom:20px" id="clinical-confirm-sub">Estás prestes a sobrescrever dados clínicos deste cliente. Esta ação não pode ser desfeita.</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button id="clinical-confirm-btn" style="padding:11px 16px;border-radius:10px;border:none;background:var(--teal);color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;">Confirmar e guardar</button>
+      <button onclick="closeClinicalConfirm()" style="padding:11px 16px;border-radius:10px;border:1px solid var(--line-2);background:none;color:var(--txt-2);font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;">Cancelar</button>
+    </div>
   </div>
 </div>
 
@@ -1669,6 +1682,35 @@
     const blob = new Blob([csv], {type:'text/csv'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lyvoo-waitlist.csv'; a.click();
   };
+
+  // ── Confirmação para dados clínicos ──────────────────────────────────
+  const CLINICAL_SAVE_FN = {
+    biomarcadores: () => saveBiomarcadores(),
+    plano:         () => savePlano(),
+    supp:          () => saveSupp(),
+    consultas:     () => saveConsultas(),
+    relatorio:     () => saveRelatorio(),
+  };
+
+  window.clinicalConfirm = function(tipo, titulo, sub) {
+    const overlay = document.getElementById('clinical-confirm-overlay');
+    document.getElementById('clinical-confirm-title').textContent = titulo;
+    document.getElementById('clinical-confirm-sub').textContent   = sub;
+    document.getElementById('clinical-confirm-btn').onclick = () => {
+      closeClinicalConfirm();
+      CLINICAL_SAVE_FN[tipo]?.();
+    };
+    overlay.style.display = 'flex';
+  };
+
+  window.closeClinicalConfirm = function() {
+    document.getElementById('clinical-confirm-overlay').style.display = 'none';
+  };
+
+  // Fechar ao clicar fora
+  document.getElementById('clinical-confirm-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeClinicalConfirm();
+  });
 
   // ── Reavaliação: iniciar novo ciclo ──────────────────────────────────
   window.iniciarReavaliacao = async function() {
