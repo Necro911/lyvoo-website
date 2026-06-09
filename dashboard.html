@@ -1297,7 +1297,7 @@
 <script type="module">
 
   import { onAuthStateChanged, signOut, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, addDoc, orderBy, query, where, arrayUnion, Timestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, addDoc, orderBy, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   // ── Sino de notificações ─────────────────────────────────────────────
@@ -1538,15 +1538,9 @@
         hora: _bkSelectedTime,
         criadoEm: serverTimestamp()
       });
-      await updateDoc(doc(db, 'users', _currentUser.uid), {
-        consultas: arrayUnion({
-          titulo,
-          data: _bkSelectedDate,
-          hora: _bkSelectedTime,
-          medico: 'Nutricionista',
-          estado: 'agendada'
-        })
-      });
+      // Nota: o campo "consultas" do utilizador é um campo clínico só editável
+      // pelo admin, por isso a marcação fica registada em "agendamentosNutri"
+      // e é combinada com d.consultas em carregarDados/renderConsultas.
       msg.className = 'bk-msg ok';
       msg.textContent = '✓ Consulta agendada com sucesso!';
       setTimeout(() => {
@@ -2506,7 +2500,28 @@
         if (d.resultados)     renderBiomarcadores(d.resultados);
         if (d.planoAlimentar) renderPlano(d.planoAlimentar);
         if (d.suplementacao)  renderSupplementos(d.suplementacao);
-        if (d.consultas)      renderConsultas(d.consultas);
+        // Combinar consultas geridas pela equipa (d.consultas) com marcações
+        // feitas pelo próprio cliente via modal de agendamento
+        let consultasFinal = d.consultas || [];
+        try {
+          const agSnaps = await getDocs(query(
+            collection(db, 'agendamentosNutri'),
+            where('uid', '==', user.uid)
+          ));
+          const minhasMarcacoes = agSnaps.docs.map(s => {
+            const a = s.data();
+            return { titulo: a.titulo, data: a.data, hora: a.hora, medico: 'Nutricionista', estado: 'agendada' };
+          });
+          // Evitar duplicados (mesma data+hora+titulo já presentes em d.consultas)
+          const existentes = new Set((d.consultas||[]).map(c => `${c.titulo}|${c.data}|${c.hora}`));
+          minhasMarcacoes.forEach(m => {
+            const key = `${m.titulo}|${m.data}|${m.hora}`;
+            if (!existentes.has(key)) consultasFinal.push(m);
+          });
+        } catch (e) {
+          console.error('Erro ao carregar agendamentos do cliente:', e);
+        }
+        if (consultasFinal.length) renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
         if (d.relatorio)    { renderScore(d.relatorio); renderRelatorio(d.relatorio); }
         if (d.kit)          { renderKitTracking(d.kit, estadoNum); window._kitData = d.kit; }
@@ -2608,7 +2623,7 @@
         const nutriCta = document.getElementById('nutri-cta');
         if (nutriCta) {
           const today = new Date(); today.setHours(0,0,0,0);
-          const temNutriAgendada = (d.consultas||[]).some(c => {
+          const temNutriAgendada = (consultasFinal||[]).some(c => {
             if (!c.data) return false;
             const dt = new Date(c.data + 'T00:00:00');
             const titulo = (c.titulo||'').toLowerCase();
@@ -2642,7 +2657,7 @@
         const reevalBtn = document.getElementById('reeval-agendar-btn');
         if (reevalBtn) {
           const today = new Date(); today.setHours(0,0,0,0);
-          const temReavaliacaoAgendada = (d.consultas||[]).some(c => {
+          const temReavaliacaoAgendada = (consultasFinal||[]).some(c => {
             if (!c.data) return false;
             const dt = new Date(c.data + 'T00:00:00');
             return dt >= today && (c.titulo||'').toLowerCase().includes('reavalia');
