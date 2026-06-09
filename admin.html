@@ -1123,11 +1123,7 @@
   // ── Open user detail ──────────────────────────────────────────────────
   window.openUser = async function(uid) {
     currentUID = uid;
-    renderList(allUsers.filter(u => {
-      const q = document.getElementById('search-input').value.toLowerCase();
-      const n = [u.firstName,u.lastName].filter(Boolean).join(' ').toLowerCase();
-      return !q || n.includes(q) || (u.email||'').toLowerCase().includes(q);
-    }));
+    applyFilters();
 
     document.getElementById('detail-empty').style.display = 'none';
     document.getElementById('detail-content').style.display = 'block';
