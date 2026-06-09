@@ -9,12 +9,12 @@
  *   node set-admin-claims.js
  */
 
-const admin = require('firebase-admin');
+const { initializeApp, cert } = require('firebase-admin/app');
+const { getAuth } = require('firebase-admin/auth');
 const serviceAccount = require('./serviceAccountKey.json');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+initializeApp({ credential: cert(serviceAccount) });
+const auth = getAuth();
 
 // ── Emails dos administradores ───────────────────────────────────────────────
 const ADMIN_EMAILS = [
@@ -25,8 +25,8 @@ const ADMIN_EMAILS = [
 async function setAdminClaims() {
   for (const email of ADMIN_EMAILS) {
     try {
-      const user = await admin.auth().getUserByEmail(email);
-      await admin.auth().setCustomUserClaims(user.uid, { admin: true });
+      const user = await auth.getUserByEmail(email);
+      await auth.setCustomUserClaims(user.uid, { admin: true });
       console.log(`✓ admin claim definida para ${email} (uid: ${user.uid})`);
     } catch (err) {
       if (err.code === 'auth/user-not-found') {
