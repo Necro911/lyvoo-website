@@ -1902,8 +1902,13 @@
       const estado = window._estadoActual || 1;
       const viewOn  = document.getElementById('view-onboarding');
       const viewRes = document.getElementById('view-resultados');
-      if (estado >= 4) { viewRes.style.display = 'block'; }
-      else { viewOn.style.display = 'block'; }
+      if (estado >= 4) {
+        viewRes.style.display = 'block';
+      } else {
+        viewOn.style.display = 'block';
+        // Garantir que o conteúdo está preenchido (evita placeholders "-" ao voltar ao painel)
+        renderOnboarding(estado, window._obNome || (window._planoNome || '').split(' ')[0] || '');
+      }
     } else {
       const el = document.getElementById('sec-' + name);
       if (el) el.style.display = 'block';
@@ -2736,6 +2741,7 @@
     }
 
     window._estadoActual = estadoNum;
+    window._obNome = primeiro;
     document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
     document.getElementById('navName').textContent  = nome;
     document.getElementById('navAvatar').textContent = iniciaisDe(nome);
