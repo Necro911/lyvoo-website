@@ -1486,6 +1486,7 @@
       ));
       snaps.forEach(s => {
         const a = s.data();
+        if (a.estado === 'cancelada') return; // horário cancelado volta a ficar livre
         if (!_bkBusy[a.data]) _bkBusy[a.data] = new Set();
         _bkBusy[a.data].add(a.hora);
       });
@@ -1620,7 +1621,8 @@
         where('data', '==', _bkSelectedDate),
         where('hora', '==', _bkSelectedTime)
       ));
-      if (!checkSnap.empty) {
+      const ocupado = checkSnap.docs.some(s => s.data().estado !== 'cancelada');
+      if (ocupado) {
         msg.className = 'bk-msg err';
         msg.textContent = 'Este horário acabou de ser reservado. Escolha outro.';
         await bkRenderDays(window._convite);
@@ -2431,10 +2433,12 @@
     const container = document.getElementById('consult-content');
     if (!list || !list.length) return;
     const today = new Date(); today.setHours(0,0,0,0);
-    const sorted = [...list].sort((a,b) => (a.data||'').localeCompare(b.data||''));
+    const sorted = [...list].filter(c => c.estado !== 'cancelada')
+      .sort((a,b) => (a.data||'').localeCompare(b.data||''));
+    if (!sorted.length) return;
     container.innerHTML = sorted.map(c => {
       const d = c.data ? new Date(c.data + 'T00:00:00') : null;
-      const isPast = d && d < today;
+      const isPast = (d && d < today) || c.estado === 'realizada';
       const day = d ? d.getDate() : '-';
       const mon = d ? MESES[d.getMonth()] : '-';
       const tagLbl = isPast ? 'Realizada' : (c.estado==='confirmada' ? 'Confirmada' : 'Agendada');
@@ -2463,7 +2467,7 @@
     // Painel "Próximas consultas" no dashboard (próximas 3)
     const dashList  = document.getElementById('dash-appt-list');
     const dashEmpty = document.getElementById('dash-appt-empty');
-    const proximas  = sorted.filter(c => c.data && new Date(c.data + 'T00:00:00') >= today).slice(0, 3);
+    const proximas  = sorted.filter(c => c.data && c.estado !== 'realizada' && new Date(c.data + 'T00:00:00') >= today).slice(0, 3);
     if (dashList) dashList.querySelectorAll('.appt-row').forEach(r => r.remove());
     if (dashEmpty) dashEmpty.style.display = proximas.length ? 'none' : '';
     if (dashList && proximas.length) {
@@ -2559,7 +2563,9 @@
     if (!relatorio) return;
     const empty = document.getElementById('rel-empty');
     const grid  = document.getElementById('rel-score-grid');
-    if (empty && (relatorio.score || relatorio.notas || relatorio.url)) empty.style.display = 'none';
+    // Admin grava o texto em "resumo"; aceitar também "notas" (retrocompatibilidade)
+    const notasClinicas = relatorio.notas || relatorio.resumo;
+    if (empty && (relatorio.score || notasClinicas || relatorio.url)) empty.style.display = 'none';
 
     // Score ring
     const score = relatorio.score;
@@ -2598,11 +2604,11 @@
     }
 
     // Notas clínicas
-    if (relatorio.notas) {
+    if (notasClinicas) {
       const wrap = document.getElementById('rel-notas-wrap');
       const text = document.getElementById('rel-notas');
       if (wrap) wrap.style.display = 'block';
-      if (text) text.textContent = relatorio.notas;
+      if (text) text.textContent = notasClinicas;
     }
 
     // Botão PDF
@@ -2756,8 +2762,8 @@
           ));
           const minhasMarcacoes = agSnaps.docs.map(s => {
             const a = s.data();
-            return { titulo: a.titulo, data: a.data, hora: a.hora, medico: 'Nutricionista', estado: 'agendada' };
-          });
+            return { titulo: a.titulo || 'Consulta de Nutrição', data: a.data, hora: a.hora, medico: 'Nutricionista', estado: a.estado || 'agendada' };
+          }).filter(m => m.estado !== 'cancelada');
           // Evitar duplicados (mesma data+hora+titulo já presentes em d.consultas)
           const existentes = new Set((d.consultas||[]).map(c => `${c.titulo}|${c.data}|${c.hora}`));
           minhasMarcacoes.forEach(m => {

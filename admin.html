@@ -450,6 +450,10 @@
               <label class="form-label">Data de entrega prevista</label>
               <input class="form-input" id="g-data-entrega" type="date" />
             </div>
+            <div class="form-field">
+              <label class="form-label">Data de recolha (amostra)</label>
+              <input class="form-input" id="g-data-recolha" type="date" />
+            </div>
           </div>
           <div class="form-field">
             <label class="form-label">Morada de entrega</label>
@@ -1200,6 +1204,7 @@
     document.getElementById('g-tracking').value       = kit.tracking||'';
     document.getElementById('g-data-envio').value     = kit.dataEnvio||'';
     document.getElementById('g-data-entrega').value   = kit.dataEntrega||'';
+    document.getElementById('g-data-recolha').value   = kit.dataRecolha||'';
     document.getElementById('g-morada').value         = kit.morada||d.morada||'';
     updateTrackingLink();
     document.getElementById('g-tracking').addEventListener('input', updateTrackingLink);
@@ -1903,6 +1908,7 @@
         tracking:       document.getElementById('g-tracking').value.trim(),
         dataEnvio:      document.getElementById('g-data-envio').value,
         dataEntrega:    document.getElementById('g-data-entrega').value,
+        dataRecolha:    document.getElementById('g-data-recolha').value,
         morada:         document.getElementById('g-morada').value.trim(),
       },
     };
@@ -2159,6 +2165,7 @@
       document.getElementById('g-tracking').value = '';
       document.getElementById('g-data-envio').value = '';
       document.getElementById('g-data-entrega').value = '';
+      document.getElementById('g-data-recolha').value = '';
 
       showMsg('msg-geral', '✓ Novo ciclo iniciado · Resultados anteriores arquivados no histórico', false);
       applyFilters();
