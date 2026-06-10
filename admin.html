@@ -1773,9 +1773,9 @@
         },
         notificadoEm: serverTimestamp()
       });
+      await loadConvite(_conviteUid);
       msg.style.color = 'var(--green)';
       msg.textContent = '✓ Convite enviado ao cliente';
-      document.getElementById('convite-status').textContent = 'Convite pendente - o cliente ainda não escolheu data.';
     } catch(e) {
       console.error(e);
       msg.style.color = 'var(--red)';
