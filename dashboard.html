@@ -80,16 +80,6 @@
     .body-map-bar { flex: 0 0 70px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
     .body-map-bar-fill { height: 100%; border-radius: 999px; }
 
-    .body-map-figure { position: relative; width: 170px; flex: 0 0 170px; margin: 0 auto; }
-    .body-map-figure svg { width: 100%; height: auto; display: block; }
-    .body-map-dot {
-      position: absolute; width: 14px; height: 14px; border-radius: 50%;
-      transform: translate(-50%, -50%); border: 2px solid var(--bg, #060A0C);
-      box-shadow: 0 0 0 2px rgba(255,255,255,0.08); cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .body-map-dot:hover { transform: translate(-50%, -50%) scale(1.2); }
-    .body-map-dot.active { transform: translate(-50%, -50%) scale(1.35); box-shadow: 0 0 0 3px rgba(61,217,232,0.35); }
 
     .body-map-detail { flex: 1; min-width: 220px; }
     .body-map-detail-title { font-size: 14px; font-weight: 800; color: var(--txt); margin-bottom: 2px; letter-spacing: -0.02em; }
@@ -1471,11 +1461,6 @@
   let _bkBusy = {}; // { 'YYYY-MM-DD': Set('HH:MM') }
   let _bkConviteSlots = []; // [{ data:'YYYY-MM-DD', horas:['09:00',...] }]
 
-  function bkFmtDate(d) {
-    const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
-    return `${y}-${m}-${day}`;
-  }
-
   async function bkLoadBusy(dateStrs) {
     _bkBusy = {};
     try {
@@ -2177,14 +2162,14 @@
 
   // ── Render: Mapa corporal (relatório) ────────────────────────────────
   const BODY_MAP_META = {
-    tiroide:        { label: 'Tiroide',     x: 50, y: 13 },
-    cardiovascular: { label: 'Coração',     x: 43, y: 25 },
-    hepatico:       { label: 'Fígado',      x: 61, y: 33 },
-    metabolico:     { label: 'Metabolismo', x: 50, y: 37 },
-    nutricional:    { label: 'Nutrição',    x: 64, y: 39 },
-    renal:          { label: 'Rins',        x: 36, y: 40 },
-    hormonal:       { label: 'Hormonas',    x: 50, y: 45 },
-    hematologia:    { label: 'Sangue',      x: 21, y: 27 },
+    tiroide:        { label: 'Tiroide' },
+    cardiovascular: { label: 'Coração' },
+    hepatico:       { label: 'Fígado' },
+    metabolico:     { label: 'Metabolismo' },
+    nutricional:    { label: 'Nutrição' },
+    renal:          { label: 'Rins' },
+    hormonal:       { label: 'Hormonas' },
+    hematologia:    { label: 'Sangue' },
   };
   const BODY_TAG_SCORE = { otimo: 100, atencao: 60, critico: 25 };
 
