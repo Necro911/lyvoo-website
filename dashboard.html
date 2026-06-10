@@ -84,13 +84,6 @@
     .rel-hero-ring svg { transform: rotate(-90deg); }
     .rel-hero-ring circle { transition: stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1); }
     .rel-hero-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .rel-substats { display: flex; gap: 28px; flex-wrap: wrap; margin-left: auto; position: relative; }
-    .rel-substat { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .rel-substat-ring { position: relative; width: 64px; height: 64px; }
-    .rel-substat-ring svg { transform: rotate(-90deg); }
-    .rel-substat-ring circle { transition: stroke-dashoffset 1.2s cubic-bezier(0.22,1,0.36,1); }
-    .rel-substat-val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: var(--txt); letter-spacing: -0.03em; }
-    .rel-substat-name { font-size: 11px; font-weight: 600; color: var(--txt-3); letter-spacing: 0.04em; text-transform: uppercase; }
 
     /* Relatório — sistemas do corpo */
     .body-map-wrap { margin-bottom: 20px; animation: relFadeUp 0.5s 0.1s ease both; }
@@ -131,7 +124,6 @@
     .sys-range-ref { font-size: 10.5px; color: var(--txt-3); text-align: right; white-space: nowrap; }
     @media (max-width: 640px) {
       .rel-hero { padding: 24px; gap: 24px; }
-      .rel-substats { margin-left: 0; }
       .sys-detail-row { grid-template-columns: 1fr auto; }
       .sys-detail-row .sys-range-cell { display: none; }
     }
@@ -542,12 +534,6 @@
     .check-state { font-size: 12px; color: var(--txt-3); }
 
     /* score breakdown */
-    .score-list { flex: 1; display: flex; flex-direction: column; gap: 16px; }
-    .score-item { display: flex; align-items: center; gap: 12px; font-size: 13.5px; }
-    .score-item svg { width: 17px; height: 17px; color: var(--cyan); flex-shrink: 0; }
-    .score-name { flex: 1; color: var(--txt-2); }
-    .score-val { font-weight: 700; color: var(--txt); }
-    .score-val small { color: var(--txt-3); font-weight: 500; }
 
     .btn-ghost {
       display: inline-block; margin-top: 22px; padding: 10px 18px;
@@ -1064,13 +1050,10 @@
           <div class="ring">
             <svg width="132" height="132">
               <circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
-              <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="45.7"/>
+              <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
               <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
             </svg>
-            <div class="ring-center"><div class="ring-val">87<small>/100</small></div><div class="ring-sub good">Excelente</div></div>
-          </div>
-          <div class="score-list">
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><span class="score-name">Biomarcadores</span><span class="score-val">82<small>/100</small></span></div>
+            <div class="ring-center"><div class="ring-val">-<small>/100</small></div><div class="ring-sub">Aguarda análise</div></div>
           </div>
         </div>
         <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;">Ver relatório</a>
@@ -1259,18 +1242,6 @@
           <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);margin-bottom:8px;">Score global de saúde</div>
           <div id="rel-classificacao" style="font-size:26px;font-weight:800;color:var(--green);letter-spacing:-0.03em;margin-bottom:6px;">-</div>
           <div id="rel-data" style="font-size:12.5px;color:var(--txt-3);">-</div>
-        </div>
-        <div class="rel-substats">
-          <div class="rel-substat">
-            <div class="rel-substat-ring">
-              <svg width="64" height="64">
-                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5"/>
-                <circle id="rel-ring-bio" cx="32" cy="32" r="26" fill="none" stroke="var(--cyan)" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
-              </svg>
-              <span class="rel-substat-val" id="rel-score-bio">-</span>
-            </div>
-            <span class="rel-substat-name">Biomarcadores</span>
-          </div>
         </div>
       </div>
 
@@ -2550,6 +2521,17 @@
     }).join('');
   }
 
+  // ── Score global calculado a partir dos biomarcadores ────────────────
+  function computeBioScore(resultados) {
+    if (!resultados?.biomarcadores) return null;
+    const rows = Object.values(resultados.biomarcadores).flat().filter(r => r && r.valor);
+    return bodyMapScore(rows);
+  }
+
+  function scoreClassLabel(score) {
+    return score >= 85 ? 'Excelente' : score >= 70 ? 'Bom' : score >= 50 ? 'Moderado' : 'Atenção';
+  }
+
   // ── Render: Secção Relatório médico ──────────────────────────────────
   function relCountUp(el, target, dur = 1100) {
     const start = performance.now();
@@ -2591,23 +2573,17 @@
       if (grid) grid.style.display = 'none';
     }
 
-    // Data
-    if (relatorio.dataRelatorio) {
+    // Data (admin grava em dataEntrega, formato YYYY-MM-DD)
+    const dataRel = relatorio.dataEntrega || relatorio.dataRelatorio;
+    if (dataRel) {
+      let fmt = dataRel;
+      try {
+        fmt = new Date(dataRel + 'T00:00:00').toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
+      } catch (e) {}
       const d = document.getElementById('rel-data');
-      if (d) d.textContent = 'Análise de ' + relatorio.dataRelatorio;
+      if (d) d.textContent = 'Análise de ' + fmt;
       const sub = document.getElementById('rel-sub');
-      if (sub) sub.textContent = 'Análise integrada · ' + relatorio.dataRelatorio;
-    }
-
-    // Sub-score (mini-anel)
-    if (relatorio.scoreBio) {
-      const txt = document.getElementById('rel-score-bio');
-      if (txt) relCountUp(txt, relatorio.scoreBio);
-      const ring = document.getElementById('rel-ring-bio');
-      if (ring) {
-        const c = 163.4;
-        requestAnimationFrame(() => ring.setAttribute('stroke-dashoffset', (c - (relatorio.scoreBio / 100) * c).toFixed(1)));
-      }
+      if (sub) sub.textContent = 'Análise integrada · ' + fmt;
     }
 
     // Notas clínicas
@@ -2638,12 +2614,6 @@
     if (valEl) valEl.innerHTML = `${scoreVal}<small>/100</small>`;
     const subEl = document.querySelector('#view-resultados .ring-center .ring-sub');
     if (subEl) { subEl.textContent = cls; subEl.className = 'ring-sub good'; }
-
-    // Sub-scores
-    const scoreItems = document.querySelectorAll('#view-resultados .score-item .score-val');
-    if (scoreItems.length && relatorio.scoreBio) {
-      scoreItems[0].innerHTML = `${relatorio.scoreBio}<small>/100</small>`;
-    }
 
     // Progresso
     if (relatorio.progresso) {
@@ -2796,7 +2766,12 @@
         }
         if (consultasFinal.length) renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
-        if (d.relatorio)    { renderScore(d.relatorio); renderRelatorio(d.relatorio); }
+        if (d.relatorio || d.resultados?.biomarcadores) {
+          const rel = Object.assign({}, d.relatorio);
+          const calc = computeBioScore(d.resultados);
+          if (calc !== null) { rel.score = calc; rel.classificacao = scoreClassLabel(calc); }
+          renderScore(rel); renderRelatorio(rel);
+        }
         if (d.resultados)   renderBodyMap(d.resultados);
         if (d.kit)          { renderKitTracking(d.kit, estadoNum); window._kitData = d.kit; }
 

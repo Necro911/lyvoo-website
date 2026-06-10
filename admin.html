@@ -652,22 +652,9 @@
         </div>
         <div class="form-section">
           <div class="form-section-title">Score de saúde</div>
+          <div style="font-size:12px;color:var(--txt-3);margin-bottom:12px;">O score global é calculado automaticamente na dashboard a partir das classificações dos biomarcadores (Ótimo = 100 · Atenção = 60 · Crítico = 25).</div>
           <div class="form-row-3">
-            <div class="form-field"><label class="form-label">Score global (0-100)</label><input class="form-input" id="rel-score" type="number" min="0" max="100" placeholder="87" /></div>
-            <div class="form-field"><label class="form-label">Classificação</label>
-              <select class="form-select" id="rel-class">
-                <option value="">- Selecionar -</option>
-                <option value="Excelente">Excelente</option>
-                <option value="Muito bom">Muito bom</option>
-                <option value="Bom">Bom</option>
-                <option value="A melhorar">A melhorar</option>
-                <option value="Atenção">Atenção</option>
-              </select>
-            </div>
             <div class="form-field"><label class="form-label">Progresso do programa %</label><input class="form-input" id="rel-prog" type="number" min="0" max="100" placeholder="80" /></div>
-          </div>
-          <div class="form-row-3">
-            <div class="form-field"><label class="form-label">Score Biomarcadores</label><input class="form-input" id="rel-s-bio" type="number" min="0" max="100" placeholder="82" /></div>
           </div>
         </div>
         <div class="form-section">
@@ -1247,10 +1234,7 @@
     const rel = d.relatorio || {};
     document.getElementById('rel-url').value    = rel.url||'';
     document.getElementById('rel-data').value   = rel.dataEntrega||'';
-    document.getElementById('rel-score').value  = rel.score||'';
-    document.getElementById('rel-class').value  = rel.classificacao||'';
     document.getElementById('rel-prog').value   = rel.progresso||'';
-    document.getElementById('rel-s-bio').value  = rel.scoreBio||'';
     document.getElementById('rel-resumo').value = rel.resumo||'';
 
     // Limpar mensagens
@@ -2005,10 +1989,7 @@
       relatorio: {
         url:            document.getElementById('rel-url').value.trim(),
         dataEntrega:    document.getElementById('rel-data').value,
-        score:          +document.getElementById('rel-score').value || null,
-        classificacao:  document.getElementById('rel-class').value,
         progresso:      +document.getElementById('rel-prog').value || null,
-        scoreBio:       +document.getElementById('rel-s-bio').value || null,
         resumo:         document.getElementById('rel-resumo').value.trim(),
       }
     }, 'msg-rel');
