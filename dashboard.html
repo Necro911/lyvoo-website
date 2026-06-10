@@ -1358,7 +1358,7 @@
     <div id="sec-consultas" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div><h2 class="sec-title">Consultas</h2><p class="sec-sub">Próximas e passadas</p></div>
-        <a href="#" class="sec-btn" onclick="abrirAgendamento('nutricao');return false;">+ Agendar</a>
+        <a href="#" id="consultas-agendar-btn" class="sec-btn" onclick="abrirAgendamento('nutricao');return false;">+ Agendar</a>
       </div>
       <div class="consult-list" id="consult-content">
         <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;">Agende a sua consulta →</a></div>
@@ -2867,6 +2867,10 @@
     const dashList  = document.getElementById('dash-appt-list');
     const dashEmpty = document.getElementById('dash-appt-empty');
     const proximas  = sorted.filter(c => c.data && c.estado !== 'realizada' && new Date(c.data + 'T00:00:00') >= today).slice(0, 3);
+
+    // Esconde "+ Agendar" se já existe uma consulta agendada futura
+    const agendarBtn = document.getElementById('consultas-agendar-btn');
+    if (agendarBtn) agendarBtn.style.display = proximas.length ? 'none' : '';
     if (dashList) dashList.querySelectorAll('.appt-row').forEach(r => r.remove());
     if (dashEmpty) dashEmpty.style.display = proximas.length ? 'none' : '';
     if (dashList && proximas.length) {
