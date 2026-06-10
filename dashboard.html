@@ -1705,6 +1705,15 @@
             canceladoPor: 'cliente',
             canceladoEm: serverTimestamp()
           });
+          // Reabrir o convite de agendamento, se esta era a marcação associada
+          if (c.tipo && window._convite?.tipo === c.tipo && window._convite?.estado === 'agendado') {
+            await updateDoc(doc(db, 'users', _currentUser.uid), {
+              'agendamentoConvite.estado': 'pendente',
+              'agendamentoConvite.escolha': null
+            });
+            window._convite.estado = 'pendente';
+            window._convite.escolha = null;
+          }
           msg.textContent = '✓ Consulta cancelada.';
           msg.className = 'bk-msg ok';
           setTimeout(() => { fecharDetalheConsulta(); carregarDados(_currentUser); }, 1200);
@@ -3025,7 +3034,7 @@
           ));
           const minhasMarcacoes = agSnaps.docs.map(s => {
             const a = s.data();
-            return { id: s.id, source: 'agendamento', titulo: a.titulo || 'Consulta de Nutrição', data: a.data, hora: a.hora, link: a.link, medico: 'Nutricionista', estado: a.estado || 'agendada' };
+            return { id: s.id, source: 'agendamento', tipo: a.tipo, titulo: a.titulo || 'Consulta de Nutrição', data: a.data, hora: a.hora, link: a.link, medico: 'Nutricionista', estado: a.estado || 'agendada' };
           }).filter(m => m.estado !== 'cancelada');
           // Evitar duplicados (mesma data+hora+titulo já presentes em d.consultas)
           const existentes = new Set((d.consultas||[]).map(c => `${c.titulo}|${c.data}|${c.hora}`));
