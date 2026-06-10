@@ -1251,13 +1251,14 @@
           <div class="body-map-list" id="body-map-list"></div>
         </div>
         <div class="body-map-figure" id="body-map-figure">
-          <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="32" r="26" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-            <rect x="58" y="60" width="84" height="140" rx="30" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-            <rect x="28" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-            <rect x="146" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-            <rect x="65" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-            <rect x="103" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+          <svg viewBox="0 0 200 440" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="34" r="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M89,58 L111,58 L111,72 L89,72 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M70,72 C58,76 52,88 52,102 L52,176 C52,198 62,214 80,216 L120,216 C138,214 148,198 148,176 L148,102 C148,88 142,76 130,72 C121,68 111,66 100,66 C89,66 79,68 70,72 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M52,92 C40,98 34,114 34,134 L37,210 C37,220 45,227 54,225 C61,223 65,216 65,207 L62,134 C62,114 59,100 52,92 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M148,92 C160,98 166,114 166,134 L163,210 C163,220 155,227 146,225 C139,223 135,216 135,207 L138,134 C138,114 141,100 148,92 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M80,216 L98,216 L96,422 C95,431 90,438 83,438 L80,438 C73,438 68,431 69,423 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <path d="M120,216 L102,216 L104,423 C105,431 110,438 117,438 L120,438 C127,438 132,431 131,423 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
           </svg>
           <div id="body-map-dots"></div>
         </div>
@@ -2188,14 +2189,14 @@
 
   // ── Render: Mapa corporal (relatório) ────────────────────────────────
   const BODY_MAP_META = {
-    tiroide:        { label: 'Tiroide',     x: 50, y: 14 },
-    cardiovascular: { label: 'Coração',     x: 43, y: 28 },
-    hepatico:       { label: 'Fígado',      x: 61, y: 36 },
-    metabolico:     { label: 'Metabolismo', x: 50, y: 41 },
-    nutricional:    { label: 'Nutrição',    x: 64, y: 43 },
-    renal:          { label: 'Rins',        x: 36, y: 44 },
-    hormonal:       { label: 'Hormonas',    x: 50, y: 49 },
-    hematologia:    { label: 'Sangue',      x: 21, y: 30 },
+    tiroide:        { label: 'Tiroide',     x: 50, y: 13 },
+    cardiovascular: { label: 'Coração',     x: 43, y: 25 },
+    hepatico:       { label: 'Fígado',      x: 61, y: 33 },
+    metabolico:     { label: 'Metabolismo', x: 50, y: 37 },
+    nutricional:    { label: 'Nutrição',    x: 64, y: 39 },
+    renal:          { label: 'Rins',        x: 36, y: 40 },
+    hormonal:       { label: 'Hormonas',    x: 50, y: 45 },
+    hematologia:    { label: 'Sangue',      x: 21, y: 27 },
   };
   const BODY_TAG_SCORE = { otimo: 100, atencao: 60, critico: 25 };
 
