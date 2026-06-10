@@ -2611,14 +2611,22 @@
 
   // ── Render: Consultas ─────────────────────────────────────────────────
   const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const CONSULT_EMPTY_HTML = '<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento(\'nutricao\');return false;">Agende a sua consulta →</a></div>';
+
   function renderConsultas(list) {
     const container = document.getElementById('consult-content');
-    if (!list || !list.length) return;
     const today = new Date(); today.setHours(0,0,0,0);
-    const sorted = [...list].filter(c => c.estado !== 'cancelada')
+    const sorted = [...(list||[])].filter(c => c.estado !== 'cancelada')
       .sort((a,b) => (a.data||'').localeCompare(b.data||''));
-    if (!sorted.length) return;
     window._consultasList = sorted;
+    if (!sorted.length) {
+      container.innerHTML = CONSULT_EMPTY_HTML;
+      const dashList  = document.getElementById('dash-appt-list');
+      const dashEmpty = document.getElementById('dash-appt-empty');
+      if (dashList) dashList.querySelectorAll('.appt-row').forEach(r => r.remove());
+      if (dashEmpty) dashEmpty.style.display = '';
+      return;
+    }
     container.innerHTML = sorted.map((c, idx) => {
       const d = c.data ? new Date(c.data + 'T00:00:00') : null;
       const isPast = (d && d < today) || c.estado === 'realizada';
@@ -3028,7 +3036,7 @@
         } catch (e) {
           console.error('Erro ao carregar agendamentos do cliente:', e);
         }
-        if (consultasFinal.length) renderConsultas(consultasFinal);
+        renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
         if (d.relatorio || d.resultados?.biomarcadores) {
           const rel = Object.assign({}, d.relatorio);
