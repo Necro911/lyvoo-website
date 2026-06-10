@@ -1829,9 +1829,10 @@
     rows += `<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-value">${c.estado === 'confirmada' ? 'Confirmada' : 'Agendada'}</span></div>`;
 
     let extra = '';
-    if (c.link) {
-      const linkHref = /^https?:\/\//i.test(c.link) ? c.link : `https://${c.link}`;
-      extra += `<a href="${linkHref}" target="_blank" rel="noopener" class="cd-enter-btn">Entrar na consulta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
+    if (c.link && podeEntrar(c)) {
+      extra += `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="cd-enter-btn">Entrar na consulta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
+    } else if (c.link) {
+      extra += `<div class="cd-note">O botão "Entrar na consulta" fica disponível 5 minutos antes da hora marcada.</div>`;
     } else {
       extra += `<div class="cd-note">O link da videochamada será disponibilizado aqui antes da consulta.</div>`;
     }
@@ -2804,6 +2805,16 @@
 
   // ── Render: Consultas ─────────────────────────────────────────────────
   const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  function normLink(link) {
+    return /^https?:\/\//i.test(link) ? link : `https://${link}`;
+  }
+  // O botão "Entrar" só fica ativo a partir de 5 min antes da hora marcada
+  function podeEntrar(c) {
+    if (!c.data || !c.hora) return true;
+    const inicio = new Date(`${c.data}T${c.hora}:00`);
+    if (isNaN(inicio.getTime())) return true;
+    return Date.now() >= inicio.getTime() - 5 * 60 * 1000;
+  }
   const CONSULT_EMPTY_HTML = '<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento(\'nutricao\');return false;">Agende a sua consulta →</a></div>';
 
   function renderConsultas(list) {
@@ -2834,9 +2845,11 @@
         ? `<div class="consult-right"><span class="consult-tag">${tagLbl}</span></div>`
         : `<div class="consult-right">
             ${c.hora ? `<div class="consult-hour">${c.hora}</div>` : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
-            ${c.link
-              ? `<a href="${c.link}" target="_blank" rel="noopener" class="consult-enter" onclick="event.stopPropagation()">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
-              : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
+            ${c.link && podeEntrar(c)
+              ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="consult-enter" onclick="event.stopPropagation()">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
+              : c.link
+                ? `<span class="consult-tag upcoming-tag" title="Disponível 5 min antes da consulta">${tagLbl}</span>`
+                : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
           </div>`;
       const clickAttr = isPast ? '' : ` onclick="abrirDetalheConsulta(${idx})" style="cursor:pointer"`;
       return `<div class="consult-row ${isPast ? '' : 'upcoming'}"${clickAttr}>
@@ -2867,9 +2880,11 @@
         const ico  = tit.includes('nutri') || tit.includes('alimentar') ? ICONS.nutri
                    : tit.includes('medic') || tit.includes('preventiva') ? ICONS.medic
                    : ICONS.default;
-        const btn  = c.link
-          ? `<a href="${c.link}" target="_blank" rel="noopener" class="appt-btn" style="background:rgba(61,217,232,0.08);border-color:rgba(61,217,232,0.25);color:var(--cyan)">Entrar</a>`
-          : `<span class="appt-btn" style="opacity:0.4;cursor:default">Agendada</span>`;
+        const btn  = c.link && podeEntrar(c)
+          ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="appt-btn" style="background:rgba(61,217,232,0.08);border-color:rgba(61,217,232,0.25);color:var(--cyan)">Entrar</a>`
+          : c.link
+            ? `<span class="appt-btn" style="opacity:0.4;cursor:default" title="Disponível 5 min antes da consulta">Agendada</span>`
+            : `<span class="appt-btn" style="opacity:0.4;cursor:default">Agendada</span>`;
         const row = document.createElement('div');
         row.className = 'appt-row';
         row.innerHTML = `
@@ -2897,11 +2912,17 @@
       if (sbd) sbd.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${pd.getDate()} ${MESES[pd.getMonth()]} ${pd.getFullYear()}`;
       if (sbh && proxima.hora) { sbh.style.display = 'flex'; sbh.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${proxima.hora}`; }
       if (sbb) {
-        if (proxima.link) {
-          sbb.href = proxima.link; sbb.target = '_blank'; sbb.textContent = 'Entrar na consulta';
+        if (proxima.link && podeEntrar(proxima)) {
+          sbb.href = normLink(proxima.link); sbb.target = '_blank'; sbb.textContent = 'Entrar na consulta';
+          sbb.classList.remove('disabled');
           sbb.onclick = null;
+        } else if (proxima.link) {
+          sbb.href = '#'; sbb.removeAttribute('target'); sbb.textContent = 'Disponível 5 min antes';
+          sbb.classList.add('disabled');
+          sbb.onclick = (e) => e.preventDefault();
         } else {
           sbb.href = '#'; sbb.removeAttribute('target'); sbb.textContent = 'Ver detalhes';
+          sbb.classList.remove('disabled');
           sbb.onclick = (e) => { e.preventDefault(); navSection('consultas'); };
         }
       }
