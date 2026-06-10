@@ -65,6 +65,28 @@
     .sec-btn:hover { background: rgba(61,217,232,0.12); }
     .sec-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
+    /* Mapa corporal (relatório) */
+    .body-map-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin-bottom: 24px; display: flex; gap: 32px; flex-wrap: wrap; align-items: center; }
+    .body-map-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 16px; }
+    .body-map-figure { position: relative; width: 180px; flex-shrink: 0; margin: 0 auto; }
+    .body-map-figure svg { width: 100%; height: auto; display: block; }
+    .body-map-dot {
+      position: absolute; width: 16px; height: 16px; border-radius: 50%;
+      transform: translate(-50%, -50%); border: 2px solid var(--bg, #060A0C);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.08); cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .body-map-dot:hover { transform: translate(-50%, -50%) scale(1.25); }
+    .body-map-legend { flex: 1; min-width: 220px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 20px; }
+    .body-map-item {
+      display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px;
+      border: 1px solid var(--line); background: var(--panel-2); cursor: pointer; transition: border-color 0.15s;
+    }
+    .body-map-item:hover { border-color: rgba(61,217,232,0.3); }
+    .body-map-item-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .body-map-item-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--txt); }
+    .body-map-item-score { font-size: 12.5px; font-weight: 700; color: var(--txt-2); }
+
     /* Biomarcadores */
     .bio-section { margin-bottom: 24px; }
     .bio-sec-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 12px; }
@@ -1205,6 +1227,25 @@
 
       </div>
 
+      <!-- Mapa corporal -->
+      <div id="body-map-wrap" class="body-map-wrap" style="display:none;">
+        <div style="flex:0 0 auto;">
+          <div class="body-map-title">Mapa do seu corpo</div>
+          <div class="body-map-figure" id="body-map-figure">
+            <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="32" r="26" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+              <rect x="58" y="60" width="84" height="140" rx="30" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+              <rect x="28" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+              <rect x="146" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+              <rect x="65" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+              <rect x="103" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            </svg>
+            <div id="body-map-dots"></div>
+          </div>
+        </div>
+        <div class="body-map-legend" id="body-map-legend"></div>
+      </div>
+
       <!-- Notas do relatório -->
       <div id="rel-notas-wrap" style="display:none;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:24px;">
         <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);margin-bottom:14px;">Notas clínicas</div>
@@ -2095,7 +2136,7 @@
       if (!rows || !rows.length) return;
       const activeRows = rows.filter(r => r.valor);
       if (!activeRows.length) return;
-      html += `<div class="bio-section"><div class="bio-sec-title">${CAT_LABELS[cat]||cat}</div><div class="bio-table">`;
+      html += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${CAT_LABELS[cat]||cat}</div><div class="bio-table">`;
       html += `<div class="bio-thead">
         <span>Parâmetro</span><span>Valor</span><span>Referência</span>
         <span></span><span>Estado</span><span style="text-align:right">Δ</span>
@@ -2123,6 +2164,64 @@
       html += '</div></div>';
     });
     if (html) container.innerHTML = html;
+  }
+
+  // ── Render: Mapa corporal (relatório) ────────────────────────────────
+  const BODY_MAP_META = {
+    tiroide:        { label: 'Tiroide',     x: 50, y: 14 },
+    cardiovascular: { label: 'Coração',     x: 43, y: 28 },
+    hepatico:       { label: 'Fígado',      x: 61, y: 36 },
+    metabolico:     { label: 'Metabolismo', x: 50, y: 41 },
+    nutricional:    { label: 'Nutrição',    x: 64, y: 43 },
+    renal:          { label: 'Rins',        x: 36, y: 44 },
+    hormonal:       { label: 'Hormonas',    x: 50, y: 49 },
+    hematologia:    { label: 'Sangue',      x: 21, y: 30 },
+  };
+  const BODY_TAG_SCORE = { otimo: 100, atencao: 60, critico: 25 };
+
+  function bodyMapScore(rows) {
+    const scored = (rows || []).filter(r => r.valor && r.tag);
+    if (!scored.length) return null;
+    const total = scored.reduce((sum, r) => sum + (BODY_TAG_SCORE[r.tag] ?? 60), 0);
+    return Math.round(total / scored.length);
+  }
+
+  function renderBodyMap(resultados) {
+    const wrap = document.getElementById('body-map-wrap');
+    if (!wrap || !resultados?.biomarcadores) return;
+    const bio = resultados.biomarcadores;
+    const dotsWrap = document.getElementById('body-map-dots');
+    const legend = document.getElementById('body-map-legend');
+    let dotsHtml = '', legendHtml = '', any = false;
+
+    Object.entries(BODY_MAP_META).forEach(([cat, meta]) => {
+      const score = bodyMapScore(bio[cat]);
+      if (score === null) return;
+      any = true;
+      const color = score >= 80 ? 'var(--green)' : score >= 55 ? 'var(--amber)' : 'var(--red)';
+      dotsHtml += `<div class="body-map-dot" style="left:${meta.x}%;top:${meta.y}%;background:${color}" data-cat="${cat}" title="${meta.label} · ${score}/100"></div>`;
+      legendHtml += `<div class="body-map-item" data-cat="${cat}">
+        <span class="body-map-item-dot" style="background:${color}"></span>
+        <span class="body-map-item-name">${meta.label}</span>
+        <span class="body-map-item-score">${score}/100</span>
+      </div>`;
+    });
+
+    if (!any) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'flex';
+    dotsWrap.innerHTML = dotsHtml;
+    legend.innerHTML = legendHtml;
+
+    wrap.querySelectorAll('[data-cat]').forEach(el => {
+      el.addEventListener('click', () => {
+        const cat = el.dataset.cat;
+        navSection('biomarcadores');
+        setTimeout(() => {
+          const target = document.querySelector(`#bio-content .bio-section[data-cat="${cat}"]`);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      });
+    });
   }
 
   // ── Render: Plano alimentar ───────────────────────────────────────────
@@ -2591,6 +2690,7 @@
         if (consultasFinal.length) renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
         if (d.relatorio)    { renderScore(d.relatorio); renderRelatorio(d.relatorio); }
+        if (d.resultados)   renderBodyMap(d.resultados);
         if (d.kit)          { renderKitTracking(d.kit, estadoNum); window._kitData = d.kit; }
 
         // Carregar histórico de análises (subcoleção)
