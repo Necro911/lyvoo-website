@@ -581,6 +581,38 @@
 
       <!-- ── TAB: CONSULTAS ── -->
       <div class="tab-content" id="tab-consultas">
+        <div class="form-section" id="convite-section">
+          <div class="form-section-title">Convite de agendamento</div>
+          <div id="convite-status" style="font-size:12.5px;color:var(--txt-3);margin-bottom:12px;">A carregar…</div>
+          <div class="form-row">
+            <div class="form-field">
+              <label class="form-label">Tipo de consulta</label>
+              <select class="form-select" id="convite-tipo">
+                <option value="nutricao">Consulta de nutrição (inicial)</option>
+                <option value="reavaliacao">Reavaliação dos 6 meses</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row" style="align-items:flex-end;">
+            <div class="form-field" style="flex:0 0 160px;">
+              <label class="form-label">Adicionar dia</label>
+              <input class="form-input" type="date" id="convite-data-input" />
+            </div>
+            <div class="form-field" style="flex:1;">
+              <label class="form-label">Horários disponíveis nesse dia</label>
+              <div id="convite-horas-checks" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+            </div>
+            <div class="form-field" style="flex:0 0 auto;">
+              <button type="button" class="ef-btn" id="convite-add-day-btn">+ Adicionar dia</button>
+            </div>
+          </div>
+          <div id="convite-slots-list" style="display:flex;flex-direction:column;gap:6px;margin:6px 0 14px;"></div>
+          <div class="save-bar">
+            <button type="button" class="btn-save" id="convite-send-btn">Enviar convite ao cliente</button>
+            <button type="button" class="ef-btn" id="convite-cancel-btn" style="display:none;">Cancelar convite</button>
+            <span class="save-msg" id="msg-convite"></span>
+          </div>
+        </div>
         <div class="form-section" id="agendamentos-section">
           <div class="form-section-title">Marcações feitas pelo cliente</div>
           <div id="agendamentos-list" style="display:flex;flex-direction:column;gap:8px;"></div>
@@ -1200,6 +1232,7 @@
     // Consultas
     buildConsultEditor(d.consultas || []);
     loadAgendamentos(uid);
+    loadConvite(uid);
 
     // Relatório
     const rel = d.relatorio || {};
@@ -1507,6 +1540,148 @@
       ativo:    card.querySelector('[name=s-ativo]').value === 'ativo',
     })).filter(s => s.nome);
   }
+
+  // ── Convite de agendamento (calendário enviado pelo admin) ─────────────
+  const BK_HORAS = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  let _conviteUid = null;
+  let _conviteSlots = [];
+
+  function renderConviteHorasChecks() {
+    const wrap = document.getElementById('convite-horas-checks');
+    wrap.innerHTML = BK_HORAS.map(h => `
+      <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--txt-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 8px;cursor:pointer;">
+        <input type="checkbox" value="${h}" style="margin:0;" /> ${h}
+      </label>
+    `).join('');
+  }
+
+  function renderConviteSlotsList() {
+    const wrap = document.getElementById('convite-slots-list');
+    if (!_conviteSlots.length) {
+      wrap.innerHTML = '<div style="font-size:12.5px;color:var(--txt-3)">Nenhum dia adicionado.</div>';
+      return;
+    }
+    const sorted = [..._conviteSlots].sort((a,b) => a.data.localeCompare(b.data));
+    wrap.innerHTML = sorted.map(s => `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel-2);flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;font-size:13px;font-weight:600;">${fmtDate(s.data)}</div>
+        <div style="font-size:12px;color:var(--txt-3);flex:2;min-width:160px;">${s.horas.join(', ')}</div>
+        <button type="button" class="ef-btn convite-remove-slot" data-data="${s.data}" style="font-size:11px;">Remover</button>
+      </div>
+    `).join('');
+    wrap.querySelectorAll('.convite-remove-slot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _conviteSlots = _conviteSlots.filter(s => s.data !== btn.dataset.data);
+        renderConviteSlotsList();
+      });
+    });
+  }
+
+  document.getElementById('convite-add-day-btn').addEventListener('click', () => {
+    const dataInput = document.getElementById('convite-data-input');
+    const data = dataInput.value;
+    if (!data) return;
+    const horas = [...document.querySelectorAll('#convite-horas-checks input:checked')].map(c => c.value);
+    if (!horas.length) return;
+    _conviteSlots = _conviteSlots.filter(s => s.data !== data);
+    _conviteSlots.push({ data, horas });
+    renderConviteSlotsList();
+    dataInput.value = '';
+    document.querySelectorAll('#convite-horas-checks input:checked').forEach(c => c.checked = false);
+  });
+
+  async function loadConvite(uid) {
+    _conviteUid = uid;
+    _conviteSlots = [];
+    renderConviteHorasChecks();
+    renderConviteSlotsList();
+    const status = document.getElementById('convite-status');
+    const cancelBtn = document.getElementById('convite-cancel-btn');
+    status.textContent = 'A carregar…';
+    cancelBtn.style.display = 'none';
+    try {
+      const snap = await getDoc(doc(db,'users',uid));
+      const convite = snap.exists() ? snap.data().agendamentoConvite : null;
+      if (!convite) {
+        status.textContent = 'Sem convite enviado.';
+        document.getElementById('convite-tipo').value = 'nutricao';
+        return;
+      }
+      document.getElementById('convite-tipo').value = convite.tipo || 'nutricao';
+      _conviteSlots = (convite.slots || []).map(s => ({ data: s.data, horas: [...(s.horas||[])] }));
+      renderConviteSlotsList();
+      if (convite.estado === 'agendado') {
+        const esc = convite.escolha || {};
+        status.textContent = `Cliente já agendou: ${fmtDate(esc.data)} · ${esc.hora||'-'}`;
+        cancelBtn.style.display = '';
+      } else {
+        status.textContent = 'Convite pendente — o cliente ainda não escolheu data.';
+        cancelBtn.style.display = '';
+      }
+    } catch(e) {
+      console.error(e);
+      status.textContent = 'Erro ao carregar convite.';
+    }
+  }
+
+  document.getElementById('convite-send-btn').addEventListener('click', async () => {
+    if (!_conviteUid) return;
+    const msg = document.getElementById('msg-convite');
+    if (!_conviteSlots.length) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Adicione pelo menos um dia disponível.';
+      setTimeout(() => msg.textContent = '', 2500);
+      return;
+    }
+    const tipo = document.getElementById('convite-tipo').value;
+    const btn = document.getElementById('convite-send-btn');
+    btn.disabled = true;
+    try {
+      await auth.currentUser?.getIdToken(true);
+      await updateDoc(doc(db,'users',_conviteUid), {
+        agendamentoConvite: {
+          tipo,
+          slots: _conviteSlots,
+          estado: 'pendente',
+          criadoEm: serverTimestamp()
+        },
+        notificadoEm: serverTimestamp()
+      });
+      msg.style.color = 'var(--green)';
+      msg.textContent = '✓ Convite enviado ao cliente';
+      document.getElementById('convite-status').textContent = 'Convite pendente — o cliente ainda não escolheu data.';
+      document.getElementById('convite-cancel-btn').style.display = '';
+    } catch(e) {
+      console.error(e);
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Erro ao enviar convite.';
+    }
+    btn.disabled = false;
+    setTimeout(() => msg.textContent = '', 3000);
+  });
+
+  document.getElementById('convite-cancel-btn').addEventListener('click', async () => {
+    if (!_conviteUid) return;
+    const msg = document.getElementById('msg-convite');
+    const btn = document.getElementById('convite-cancel-btn');
+    btn.disabled = true;
+    try {
+      await auth.currentUser?.getIdToken(true);
+      await updateDoc(doc(db,'users',_conviteUid), { agendamentoConvite: null });
+      _conviteSlots = [];
+      renderConviteSlotsList();
+      document.getElementById('convite-status').textContent = 'Sem convite enviado.';
+      btn.style.display = 'none';
+      msg.style.color = 'var(--green)';
+      msg.textContent = '✓ Convite cancelado';
+    } catch(e) {
+      console.error(e);
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Erro ao cancelar convite.';
+    }
+    btn.disabled = false;
+    setTimeout(() => msg.textContent = '', 3000);
+  });
 
   // ── Marcações feitas pelo cliente (agendamentosNutri) ──────────────────
   const AG_TIPO_LABEL = { nutricao: 'Consulta de nutrição (inicial)', reavaliacao: 'Reavaliação dos 6 meses' };

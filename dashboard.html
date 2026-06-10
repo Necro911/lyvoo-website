@@ -915,6 +915,24 @@
       <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
     </div>
 
+    <!-- Banner: convite de agendamento enviado pelo admin -->
+    <div id="convite-banner" style="display:none; margin:0 32px 20px;">
+      <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px; flex-wrap:wrap;">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--violet);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;">Próximo passo</div>
+          <div id="convite-banner-title" style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">Agende a sua consulta</div>
+          <div id="convite-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;">A equipa Lyvoo disponibilizou horários para a sua consulta.</div>
+        </div>
+        <a href="#" id="convite-banner-btn" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Agendar
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
     <!-- CTA: Agendar consulta de nutrição (estado 4, sem consulta agendada) -->
     <div id="nutri-cta" style="display:none; margin:0 32px 20px;">
       <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px;">
@@ -1396,12 +1414,12 @@
     }
   };
 
-  // ── Agendar consulta de nutrição (calendário com horários disponíveis) ──
-  const BK_HORAS = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  // ── Agendar consulta de nutrição (calendário disponibilizado pela equipa) ──
   const BK_DOW = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   let _bkSelectedDate = null;
   let _bkSelectedTime = null;
   let _bkBusy = {}; // { 'YYYY-MM-DD': Set('HH:MM') }
+  let _bkConviteSlots = []; // [{ data:'YYYY-MM-DD', horas:['09:00',...] }]
 
   function bkFmtDate(d) {
     const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
@@ -1434,8 +1452,10 @@
       confirmBtn.disabled = true;
       return;
     }
+    const slot = _bkConviteSlots.find(s => s.data === _bkSelectedDate);
+    const horas = slot ? slot.horas : [];
     const taken = _bkBusy[_bkSelectedDate] || new Set();
-    wrap.innerHTML = BK_HORAS.map(h => {
+    wrap.innerHTML = horas.map(h => {
       const isTaken = taken.has(h);
       return `<button type="button" class="bk-time ${isTaken?'taken':''} ${(_bkSelectedTime===h && !isTaken)?'active':''}" data-hora="${h}" ${isTaken?'disabled':''}>${h}</button>`;
     }).join('');
@@ -1451,18 +1471,24 @@
     _bkSelectedTime = null;
   }
 
-  async function bkRenderDays() {
+  async function bkRenderDays(convite) {
     const wrap = document.getElementById('bk-days');
-    const days = [];
-    let d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + 1); // a partir de amanhã
-    while (days.length < 14) {
-      if (d.getDay() !== 0 && d.getDay() !== 6) days.push(new Date(d)); // dias úteis
-      d.setDate(d.getDate() + 1);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const slots = (convite.slots || [])
+      .filter(s => s.data && (s.horas||[]).length && new Date(s.data + 'T00:00:00') >= today)
+      .sort((a,b) => a.data.localeCompare(b.data));
+    _bkConviteSlots = slots;
+    if (!slots.length) {
+      wrap.innerHTML = '';
+      document.getElementById('bk-times').innerHTML =
+        '<div class="bk-empty" style="grid-column:1/-1;">Sem dias disponíveis de momento.</div>';
+      document.getElementById('bk-confirm').style.display = 'none';
+      return;
     }
-    const dateStrs = days.map(bkFmtDate);
-    wrap.innerHTML = days.map((dt, i) => {
-      const ds = dateStrs[i];
-      return `<button type="button" class="bk-day" data-date="${ds}">
+    const dateStrs = slots.map(s => s.data);
+    wrap.innerHTML = slots.map(s => {
+      const dt = new Date(s.data + 'T00:00:00');
+      return `<button type="button" class="bk-day" data-date="${s.data}">
         <div class="bk-day-dow">${BK_DOW[dt.getDay()]}</div>
         <div class="bk-day-num">${dt.getDate()}</div>
         <div class="bk-day-mon">${MESES[dt.getMonth()]}</div>
@@ -1485,44 +1511,34 @@
     const sub = document.getElementById('bk-sub');
     if (tipo === 'reavaliacao') {
       titulo.textContent = 'Agendar reavaliação dos 6 meses';
-      sub.textContent = 'Escolha o dia e o horário disponível com a sua nutricionista para a consulta de reavaliação.';
     } else {
       titulo.textContent = 'Agendar consulta de nutrição';
-      sub.textContent = 'Escolha o dia e o horário disponível com a sua nutricionista.';
     }
+    sub.textContent = 'Escolha um dos horários disponibilizados pela sua equipa Lyvoo.';
     document.getElementById('bk-overlay').dataset.tipo = tipo;
     document.getElementById('bk-msg').textContent = '';
     document.getElementById('bk-msg').className = 'bk-msg';
     _bkSelectedDate = null;
     _bkSelectedTime = null;
+    _bkConviteSlots = [];
     document.getElementById('bk-confirm').disabled = true;
-    document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A verificar marcações existentes…</div>';
+    document.getElementById('bk-confirm').style.display = '';
+    document.getElementById('bk-days').innerHTML = '';
     document.getElementById('bk-times').innerHTML = '';
     document.getElementById('bk-overlay').classList.add('open');
 
-    // Limite: 1 consulta inicial de nutrição + 1 reavaliação aos 6 meses (por cliente)
-    try {
-      const snap = await getDocs(query(
-        collection(db, 'agendamentosNutri'),
-        where('uid', '==', _currentUser.uid),
-        where('tipo', '==', tipo)
-      ));
-      if (!snap.empty) {
-        const labelTipo = tipo === 'reavaliacao' ? 'a sua consulta de reavaliação dos 6 meses' : 'a sua consulta inicial de nutrição';
-        document.getElementById('bk-days').innerHTML = '';
-        document.getElementById('bk-times').innerHTML =
-          `<div class="bk-empty" style="grid-column:1/-1;">Já tem ${labelTipo} agendada. Para alterar a data, contacte a sua equipa Lyvoo.</div>`;
-        document.getElementById('bk-confirm').style.display = 'none';
-        return;
-      }
-    } catch (e) {
-      console.error('Erro ao verificar marcações existentes:', e);
+    const convite = window._convite;
+    if (!convite || convite.tipo !== tipo || convite.estado !== 'pendente' || !(convite.slots||[]).length) {
+      document.getElementById('bk-days').innerHTML = '';
+      document.getElementById('bk-times').innerHTML =
+        '<div class="bk-empty" style="grid-column:1/-1;">A sua equipa Lyvoo ainda não disponibilizou horários para esta consulta. Vai receber uma notificação assim que estiverem disponíveis.</div>';
+      document.getElementById('bk-confirm').style.display = 'none';
+      return;
     }
 
-    document.getElementById('bk-confirm').style.display = '';
     document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
     document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
-    await bkRenderDays();
+    await bkRenderDays(convite);
   };
 
   function fecharAgendamento() {
@@ -1552,7 +1568,7 @@
       if (!checkSnap.empty) {
         msg.className = 'bk-msg err';
         msg.textContent = 'Este horário acabou de ser reservado. Escolha outro.';
-        await bkRenderDays();
+        await bkRenderDays(window._convite);
         return;
       }
       const nome = window._planoNome || _currentUser.email || '';
@@ -1569,6 +1585,18 @@
       // Nota: o campo "consultas" do utilizador é um campo clínico só editável
       // pelo admin, por isso a marcação fica registada em "agendamentosNutri"
       // e é combinada com d.consultas em carregarDados/renderConsultas.
+      try {
+        await updateDoc(doc(db, 'users', _currentUser.uid), {
+          'agendamentoConvite.estado': 'agendado',
+          'agendamentoConvite.escolha': { data: _bkSelectedDate, hora: _bkSelectedTime }
+        });
+        if (window._convite) {
+          window._convite.estado = 'agendado';
+          window._convite.escolha = { data: _bkSelectedDate, hora: _bkSelectedTime };
+        }
+      } catch (e) {
+        console.error('Erro ao atualizar convite:', e);
+      }
       msg.className = 'bk-msg ok';
       msg.textContent = '✓ Consulta agendada com sucesso!';
       setTimeout(() => {
@@ -2491,7 +2519,7 @@
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
-    ['reeval-banner','results-banner','nutri-cta','novidades-banner'].forEach(id => {
+    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
@@ -2531,6 +2559,7 @@
         if (d.planoNome) planoNome = d.planoNome;
         if (d.estado) estadoNum = d.estado;
         window._planoNome = nome;
+        window._convite = d.agendamentoConvite || null;
 
         // Render secções com dados reais
         if (d.resultados)     renderBiomarcadores(d.resultados);
@@ -2641,6 +2670,21 @@
         const el = document.getElementById(id);
         if (el) { el.classList.remove('sb-locked'); el.querySelector('.sb-lock-icon')?.remove(); }
       });
+
+      // Banner: convite de agendamento enviado pelo admin (a aguardar escolha do cliente)
+      if (window._convite?.estado === 'pendente' && (window._convite.slots||[]).length) {
+        const conviteBanner = document.getElementById('convite-banner');
+        if (conviteBanner) {
+          const tipo = window._convite.tipo;
+          document.getElementById('convite-banner-title').textContent =
+            tipo === 'reavaliacao' ? 'Agende a sua reavaliação dos 6 meses' : 'Agende a sua consulta de nutrição';
+          document.getElementById('convite-banner-sub').textContent =
+            'A equipa Lyvoo disponibilizou horários para a sua consulta. Escolha o que melhor lhe convém.';
+          const btn = document.getElementById('convite-banner-btn');
+          btn.onclick = (e) => { e.preventDefault(); abrirAgendamento(tipo); };
+          conviteBanner.style.display = 'flex';
+        }
+      }
 
       // Banner "resultados prontos" (estado 4 inicial)
       if (estadoNum === 4) {
