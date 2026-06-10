@@ -612,7 +612,8 @@
               <label class="form-label">Horários disponíveis nesses dias</label>
               <div id="convite-horas-checks" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
             </div>
-            <div class="form-field" style="flex:0 0 auto;">
+            <div class="form-field" style="flex:0 0 auto;display:flex;gap:8px;">
+              <button type="button" class="ef-btn" id="convite-clear-days-btn">Limpar dias</button>
               <button type="button" class="ef-btn" id="convite-add-day-btn">+ Adicionar dias</button>
             </div>
           </div>
@@ -1623,6 +1624,11 @@
       _conviteSlots = _conviteSlots.filter(s => s.data !== data);
       _conviteSlots.push({ data, horas: [...horas] });
     });
+    renderConviteSlotsList();
+  });
+
+  document.getElementById('convite-clear-days-btn').addEventListener('click', () => {
+    _conviteSlots = [];
     renderConviteSlotsList();
   });
 
