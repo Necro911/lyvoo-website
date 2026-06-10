@@ -591,7 +591,20 @@
 
           <div id="convite-agendado-box" style="display:none;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.22);border-radius:10px;padding:14px 16px;margin-bottom:14px;">
             <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">✓ Consulta marcada</div>
-            <div id="convite-agendado-detalhe" style="font-size:13px;color:var(--txt-2);"></div>
+            <div id="convite-agendado-detalhe" style="font-size:13px;color:var(--txt-2);margin-bottom:12px;"></div>
+            <div class="form-row" style="align-items:flex-end;">
+              <div class="form-field" style="flex:0 0 150px;">
+                <label class="form-label">Nova data</label>
+                <input class="form-input" type="date" id="convite-resched-data" />
+              </div>
+              <div class="form-field" style="flex:0 0 120px;">
+                <label class="form-label">Nova hora</label>
+                <input class="form-input" type="time" id="convite-resched-hora" />
+              </div>
+              <div class="form-field" style="flex:0 0 auto;">
+                <button type="button" class="ef-btn" id="convite-resched-btn">Guardar nova data/hora</button>
+              </div>
+            </div>
             <div class="save-bar" style="margin-top:12px;">
               <button type="button" class="ef-btn" id="convite-cancel-btn">Cancelar convite</button>
               <button type="button" class="ef-btn" id="convite-edit-btn">Editar / enviar novo convite</button>
@@ -1660,6 +1673,8 @@
         status.textContent = '';
         document.getElementById('convite-agendado-detalhe').textContent =
           `${tipoLbl} · ${fmtDate(esc.data)} às ${esc.hora || '-'}`;
+        document.getElementById('convite-resched-data').value = esc.data || '';
+        document.getElementById('convite-resched-hora').value = esc.hora || '';
         agendadoBox.style.display = 'block';
         formFields.style.display = 'none';
       } else {
@@ -1729,6 +1744,58 @@
     }
     btn.disabled = false;
     setTimeout(() => msg.textContent = '', 3000);
+  });
+
+  document.getElementById('convite-resched-btn').addEventListener('click', async () => {
+    if (!_conviteUid) return;
+    const msg = document.getElementById('msg-convite-agendado');
+    const novaData = document.getElementById('convite-resched-data').value;
+    const novaHora = document.getElementById('convite-resched-hora').value;
+    if (!novaData || !novaHora) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Preencha data e hora.';
+      setTimeout(() => msg.textContent = '', 2500);
+      return;
+    }
+    const btn = document.getElementById('convite-resched-btn');
+    btn.disabled = true;
+    try {
+      await auth.currentUser?.getIdToken(true);
+      const snap = await getDoc(doc(db,'users',_conviteUid));
+      const convite = snap.data().agendamentoConvite;
+      const escAntiga = convite.escolha || {};
+      const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
+
+      // Atualizar a marcação correspondente em agendamentosNutri
+      const agSnap = await getDocs(query(
+        collection(db,'agendamentosNutri'),
+        where('uid','==',_conviteUid),
+        where('data','==',escAntiga.data),
+        where('hora','==',escAntiga.hora)
+      ));
+      for (const d of agSnap.docs) {
+        if (d.data().estado !== 'cancelada') {
+          await updateDoc(doc(db,'agendamentosNutri',d.id), { data: novaData, hora: novaHora });
+        }
+      }
+
+      // Atualizar convite + notificar cliente
+      await updateDoc(doc(db,'users',_conviteUid), {
+        'agendamentoConvite.escolha': { data: novaData, hora: novaHora },
+        consultaAlterada: { tipo: convite.tipo, data: novaData, hora: novaHora, alteradoEm: serverTimestamp() }
+      });
+
+      document.getElementById('convite-agendado-detalhe').textContent =
+        `${tipoLbl} · ${fmtDate(novaData)} às ${novaHora}`;
+      msg.style.color = 'var(--green)';
+      msg.textContent = '✓ Consulta reagendada e cliente notificado';
+    } catch(e) {
+      console.error(e);
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Erro ao reagendar.';
+    }
+    btn.disabled = false;
+    setTimeout(() => msg.textContent = '', 4000);
   });
 
   document.getElementById('convite-edit-btn').addEventListener('click', () => {

@@ -1468,6 +1468,21 @@
       if (isNew) dot.style.display = 'block';
     }
 
+    if (d.consultaAlterada?.alteradoEm) {
+      const ts = d.consultaAlterada.alteradoEm.toDate ? d.consultaAlterada.alteradoEm.toDate().getTime() : new Date(d.consultaAlterada.alteradoEm).getTime();
+      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const isNew   = ts > vistoTs;
+      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const ed = d.consultaAlterada.data ? new Date(d.consultaAlterada.data + 'T00:00:00') : null;
+      const novaDataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '-';
+      _bellNotifs.push({
+        titulo: 'Consulta reagendada',
+        sub: `A sua consulta foi alterada para ${novaDataStr}${d.consultaAlterada.hora ? ' às ' + d.consultaAlterada.hora : ''}.`,
+        data: dataStr, unread: isNew
+      });
+      if (isNew) dot.style.display = 'block';
+    }
+
     if (!_bellNotifs.length) {
       list.innerHTML = '<div class="bell-empty">Sem notificações novas</div>';
       return;
