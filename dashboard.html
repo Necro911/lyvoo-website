@@ -1899,16 +1899,12 @@
 
     // Mostrar secção pedida
     if (name === 'painel') {
-      const estado = window._estadoActual || 1;
-      const viewOn  = document.getElementById('view-onboarding');
-      const viewRes = document.getElementById('view-resultados');
-      if (estado >= 4) {
-        viewRes.style.display = 'block';
-      } else {
-        viewOn.style.display = 'block';
-        // Garantir que o conteúdo está preenchido (evita placeholders "-" ao voltar ao painel)
-        renderOnboarding(estado, window._obNome || (window._planoNome || '').split(' ')[0] || '');
-      }
+      // Mostrar exatamente a vista (onboarding ou resultados) que carregarDados
+      // determinou e já preencheu — evita re-derivar o estado e mostrar
+      // conteúdo por preencher.
+      const activeId = window._activeMainView || 'view-onboarding';
+      const el = document.getElementById(activeId);
+      if (el) el.style.display = 'block';
     } else {
       const el = document.getElementById('sec-' + name);
       if (el) el.style.display = 'block';
@@ -2631,6 +2627,7 @@
       // Mostrar dashboard completo
       viewOn.style.display  = 'none';
       viewRes.style.display = 'block';
+      window._activeMainView = 'view-resultados';
 
       // Desbloquear sidebar
       ['sb-plano-alimentar', 'sb-suplementacao', 'sb-relatorio', 'sb-biomarcadores'].forEach(id => {
@@ -2745,6 +2742,7 @@
       viewOn.style.display  = 'block';
       viewRes.style.display = 'none';
       renderOnboarding(estadoNum, primeiro);
+      window._activeMainView = 'view-onboarding';
     }
 
     window._estadoActual = estadoNum;
