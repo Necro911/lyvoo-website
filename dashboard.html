@@ -2157,7 +2157,38 @@
     sub.insertAdjacentElement('afterend', wrap);
   }
 
+  // ── Avaliação automática: valor vs. intervalo de referência ──────────
+  // Usada quando o admin não definiu manualmente a tag (Ótimo/Atenção/Crítico).
+  // Dentro do intervalo → Ótimo; fora até 15% da amplitude → Atenção; além → Crítico.
+  function autoTag(r) {
+    if (r.tag === 'otimo' || r.tag === 'atencao' || r.tag === 'critico') return r.tag;
+    const val = parseFloat(String(r.valor ?? '').replace(',', '.'));
+    const ref = String(r.referencia || '').replace(/,/g, '.');
+    const nums = ref.match(/\d+(\.\d+)?/g);
+    if (isNaN(val) || !nums || !nums.length) return '';
+    let min = null, max = null;
+    if (nums.length >= 2)        { min = +nums[0]; max = +nums[1]; }
+    else if (/[<≤]/.test(ref))   { max = +nums[0]; }
+    else if (/[>≥]/.test(ref))   { min = +nums[0]; }
+    else return '';
+    const span = (min !== null && max !== null) ? (max - min) : Math.abs(max ?? min) || 1;
+    const tol  = Math.abs(span) * 0.15 || 1;
+    const desvio = Math.max(min !== null ? min - val : -Infinity,
+                            max !== null ? val - max : -Infinity);
+    if (desvio <= 0)  return 'otimo';
+    return desvio <= tol ? 'atencao' : 'critico';
+  }
+
+  // Normaliza todas as linhas: preenche r.tag automaticamente quando em falta
+  function normalizeResultados(resultados) {
+    if (!resultados?.biomarcadores) return resultados;
+    Object.values(resultados.biomarcadores).forEach(rows =>
+      (rows || []).forEach(r => { if (r) r.tag = autoTag(r); }));
+    return resultados;
+  }
+
   function renderBiomarcadores(resultados) {
+    normalizeResultados(resultados);
     const container = document.getElementById('bio-content');
     const sub = document.getElementById('bio-sub');
     if (!resultados || !resultados.biomarcadores) return;
@@ -2212,12 +2243,10 @@
   const BODY_TAG_SCORE = { otimo: 100, atencao: 60, critico: 25 };
 
   function bodyMapScore(rows) {
-    const scored = (rows || []).filter(r => r.valor);
+    // Só linhas com classificação (manual ou automática); não avaliáveis ficam de fora
+    const scored = (rows || []).filter(r => r.valor && BODY_TAG_SCORE[autoTag(r)]);
     if (!scored.length) return null;
-    const total = scored.reduce((sum, r) => {
-      const t = r.tag === 'otimo' ? 'otimo' : r.tag === 'atencao' ? 'atencao' : 'critico';
-      return sum + BODY_TAG_SCORE[t];
-    }, 0);
+    const total = scored.reduce((sum, r) => sum + BODY_TAG_SCORE[autoTag(r)], 0);
     return Math.round(total / scored.length);
   }
 
@@ -2243,6 +2272,7 @@
   }
 
   function renderBodyMap(resultados) {
+    normalizeResultados(resultados);
     const wrap = document.getElementById('body-map-wrap');
     if (!wrap || !resultados?.biomarcadores) return;
     const bio = resultados.biomarcadores;
@@ -2531,6 +2561,7 @@
 
   // ── Render: Highlights biomarcadores no painel ────────────────────────
   function renderBioHighlights(resultados) {
+    normalizeResultados(resultados);
     const grid = document.querySelector('.bio-grid');
     if (!grid || !resultados?.biomarcadores) return;
     const allRows = Object.values(resultados.biomarcadores).flat().filter(r => r.valor);
@@ -2553,6 +2584,7 @@
   // ── Score global calculado a partir dos biomarcadores ────────────────
   function computeBioScore(resultados) {
     if (!resultados?.biomarcadores) return null;
+    normalizeResultados(resultados);
     const rows = Object.values(resultados.biomarcadores).flat().filter(r => r && r.valor);
     return bodyMapScore(rows);
   }
@@ -2652,10 +2684,11 @@
     // Distribuição real dos biomarcadores por classificação
     const dist = document.getElementById('hs-dist');
     if (dist && resultados?.biomarcadores) {
-      const rows = Object.values(resultados.biomarcadores).flat().filter(r => r && r.valor);
+      const rows = Object.values(resultados.biomarcadores).flat()
+        .filter(r => r && r.valor && ['otimo','atencao','critico'].includes(autoTag(r)));
       if (rows.length) {
         const n = { otimo: 0, atencao: 0, critico: 0 };
-        rows.forEach(r => { n[r.tag === 'otimo' ? 'otimo' : r.tag === 'atencao' ? 'atencao' : 'critico']++; });
+        rows.forEach(r => { n[autoTag(r)]++; });
         const total = rows.length;
         const META = [
           { k: 'otimo',   label: 'Ótimo',   color: 'var(--green)' },
