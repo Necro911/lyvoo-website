@@ -674,6 +674,11 @@
   <script src="cookie-banner.js" defer></script>
 </head>
 <body>
+  <div id="page-loading-mask" style="position:fixed;inset:0;z-index:99999;background:#060A0C;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--txt-3);transition:opacity 0.3s ease;">
+    <div style="width:34px;height:34px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--cyan);border-radius:50%;animation:dash-spin 0.8s linear infinite;"></div>
+    <div style="font-size:13px;">A carregar o seu painel…</div>
+  </div>
+  <style>@keyframes dash-spin { to { transform: rotate(360deg); } }</style>
 
 <div class="shell" id="shell">
 
@@ -2783,6 +2788,13 @@
     _currentUser = user;
     _lastLoad = Date.now();
     await carregarDados(user);
+
+    // Esconder a máscara de loading agora que o painel está pronto
+    const pageMask = document.getElementById('page-loading-mask');
+    if (pageMask) {
+      pageMask.style.opacity = '0';
+      setTimeout(() => { pageMask.style.display = 'none'; }, 300);
+    }
 
     // Guardar perfil (listener registado uma só vez)
     document.getElementById('pf-save-btn').addEventListener('click', async () => {
