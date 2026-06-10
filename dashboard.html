@@ -522,6 +522,17 @@
     .ring-sub.good { color: var(--green); font-weight: 600; }
     .ring-sub.warn { color: var(--amber); font-weight: 600; }
     .ring-sub.crit { color: var(--red); font-weight: 600; }
+    #hs-ring-fill, #prog-ring-fill { transition: stroke-dashoffset 1.2s cubic-bezier(0.22,1,0.36,1); }
+    #hs-ring-fill { filter: drop-shadow(0 0 12px rgba(139,92,246,0.3)); }
+    .hs-dist { display:flex; flex-direction:column; justify-content:center; gap:14px; flex:1; min-width:150px; }
+    .hs-dist-empty { font-size:12.5px; color:var(--txt-3); line-height:1.6; }
+    .hs-dist-row { display:flex; align-items:center; gap:10px; }
+    .hs-dist-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; box-shadow:0 0 8px currentColor; }
+    .hs-dist-label { font-size:12.5px; color:var(--txt-2); width:62px; flex-shrink:0; }
+    .hs-dist-bar { flex:1; height:5px; border-radius:3px; background:rgba(255,255,255,0.06); overflow:hidden; }
+    .hs-dist-bar > span { display:block; height:100%; border-radius:3px; width:0; transition:width 1.2s cubic-bezier(0.22,1,0.36,1); }
+    .hs-dist-n { font-size:13px; font-weight:700; width:24px; text-align:right; flex-shrink:0; }
+    .hs-dist-total { font-size:11.5px; color:var(--txt-3); margin-top:2px; }
 
     /* checklist */
     .checklist { flex: 1; display: flex; flex-direction: column; gap: 14px; }
@@ -1057,6 +1068,9 @@
               <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
             </svg>
             <div class="ring-center"><div class="ring-val" id="hs-val">-<small>/100</small></div><div class="ring-sub" id="hs-sub">Aguarda análise</div></div>
+          </div>
+          <div class="hs-dist" id="hs-dist">
+            <div class="hs-dist-empty">A distribuição dos seus biomarcadores aparece aqui após a primeira análise.</div>
           </div>
         </div>
         <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;">Ver relatório</a>
@@ -2619,18 +2633,47 @@
   }
 
   // ── Render: Score de saúde no painel ─────────────────────────────────
-  function renderScore(relatorio) {
+  function renderScore(relatorio, resultados) {
     if (!relatorio?.score) return;
     const scoreVal = relatorio.score;
     const cls = relatorio.classificacao || 'Bom';
     const circumference = 351.9;
     const offset = circumference - (scoreVal / 100) * circumference;
     const ringEl = document.getElementById('hs-ring-fill');
-    if (ringEl) ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    if (ringEl) requestAnimationFrame(() => ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1)));
     const valEl = document.getElementById('hs-val');
-    if (valEl) valEl.innerHTML = `${scoreVal}<small>/100</small>`;
+    if (valEl) {
+      valEl.innerHTML = `<span id="hs-val-n">0</span><small>/100</small>`;
+      relCountUp(document.getElementById('hs-val-n'), scoreVal);
+    }
     const subEl = document.getElementById('hs-sub');
     if (subEl) { subEl.textContent = cls; subEl.className = 'ring-sub ' + (scoreVal >= 70 ? 'good' : scoreVal >= 50 ? 'warn' : 'crit'); }
+
+    // Distribuição real dos biomarcadores por classificação
+    const dist = document.getElementById('hs-dist');
+    if (dist && resultados?.biomarcadores) {
+      const rows = Object.values(resultados.biomarcadores).flat().filter(r => r && r.valor);
+      if (rows.length) {
+        const n = { otimo: 0, atencao: 0, critico: 0 };
+        rows.forEach(r => { n[r.tag === 'otimo' ? 'otimo' : r.tag === 'atencao' ? 'atencao' : 'critico']++; });
+        const total = rows.length;
+        const META = [
+          { k: 'otimo',   label: 'Ótimo',   color: 'var(--green)' },
+          { k: 'atencao', label: 'Atenção', color: 'var(--amber)' },
+          { k: 'critico', label: 'Crítico', color: 'var(--red)'   },
+        ];
+        dist.innerHTML = META.map(m => `
+          <div class="hs-dist-row">
+            <span class="hs-dist-dot" style="background:${m.color};color:${m.color}"></span>
+            <span class="hs-dist-label">${m.label}</span>
+            <span class="hs-dist-bar"><span data-w="${((n[m.k] / total) * 100).toFixed(0)}" style="background:${m.color}"></span></span>
+            <span class="hs-dist-n" style="color:${m.color}">${n[m.k]}</span>
+          </div>`).join('') +
+          `<div class="hs-dist-total">${total} biomarcadores analisados</div>`;
+        requestAnimationFrame(() => requestAnimationFrame(() =>
+          dist.querySelectorAll('.hs-dist-bar > span').forEach(b => b.style.width = b.dataset.w + '%')));
+      }
+    }
 
     // Progresso
     if (relatorio.progresso) {
@@ -2779,7 +2822,7 @@
           const rel = Object.assign({}, d.relatorio);
           const calc = computeBioScore(d.resultados);
           if (calc !== null) { rel.score = calc; rel.classificacao = scoreClassLabel(calc); }
-          renderScore(rel); renderRelatorio(rel);
+          renderScore(rel, d.resultados); renderRelatorio(rel);
         }
         if (d.resultados)   renderBodyMap(d.resultados);
         if (d.kit)          { renderKitTracking(d.kit, estadoNum); window._kitData = d.kit; }
