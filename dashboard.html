@@ -2180,9 +2180,12 @@
   const BODY_TAG_SCORE = { otimo: 100, atencao: 60, critico: 25 };
 
   function bodyMapScore(rows) {
-    const scored = (rows || []).filter(r => r.valor && r.tag);
+    const scored = (rows || []).filter(r => r.valor);
     if (!scored.length) return null;
-    const total = scored.reduce((sum, r) => sum + (BODY_TAG_SCORE[r.tag] ?? 60), 0);
+    const total = scored.reduce((sum, r) => {
+      const t = r.tag === 'otimo' ? 'otimo' : r.tag === 'atencao' ? 'atencao' : 'critico';
+      return sum + BODY_TAG_SCORE[t];
+    }, 0);
     return Math.round(total / scored.length);
   }
 
