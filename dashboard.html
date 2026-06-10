@@ -437,21 +437,6 @@
     .estado-badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pls 2s infinite; }
     @keyframes pls { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* next appointment card */
-    .sb-appt {
-      margin-top: auto; background: var(--panel); border: 1px solid var(--line);
-      border-radius: 16px; padding: 18px;
-    }
-    .sb-appt-label { font-size: 11px; color: var(--txt-3); margin-bottom: 6px; }
-    .sb-appt-title { font-size: 15px; font-weight: 700; color: var(--txt); margin-bottom: 12px; }
-    .sb-appt-meta { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--txt-2); margin-bottom: 6px; }
-    .sb-appt-meta svg { width: 13px; height: 13px; color: var(--cyan); }
-    .sb-appt-btn {
-      display: block; text-align: center; margin-top: 14px; padding: 9px;
-      border-radius: 10px; border: 1px solid var(--line-2);
-      font-size: 13px; font-weight: 600; color: var(--cyan); transition: background 0.18s;
-    }
-    .sb-appt-btn:hover { background: rgba(61,217,232,0.08); }
 
     /* ── MAIN ── */
     .main { padding: 28px 32px 64px; max-width: 1320px; }
@@ -829,19 +814,6 @@
       </a>
     </nav>
 
-    <div class="sb-appt" id="sb-appt-card" style="display:none;">
-      <div class="sb-appt-label">A sua próxima consulta</div>
-      <div class="sb-appt-title" id="sb-appt-title">-</div>
-      <div class="sb-appt-meta" id="sb-appt-date">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        -
-      </div>
-      <div class="sb-appt-meta" id="sb-appt-time" style="display:none;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        -
-      </div>
-      <a href="#" class="sb-appt-btn" id="sb-appt-btn">Ver detalhes</a>
-    </div>
   </aside>
 
   <!-- ── MAIN ── -->
@@ -2901,36 +2873,6 @@
           ${btn}`;
         dashList.appendChild(row);
       });
-    }
-
-    // Sidebar — próxima consulta
-    const proxima = proximas[0];
-    const sbCard = document.getElementById('sb-appt-card');
-    if (sbCard) sbCard.style.display = proxima ? 'block' : 'none';
-    if (proxima) {
-      const pd   = new Date(proxima.data + 'T00:00:00');
-      const sbt = document.getElementById('sb-appt-title');
-      const sbd = document.getElementById('sb-appt-date');
-      const sbh = document.getElementById('sb-appt-time');
-      const sbb = document.getElementById('sb-appt-btn');
-      if (sbt) sbt.textContent = proxima.titulo;
-      if (sbd) sbd.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${pd.getDate()} ${MESES[pd.getMonth()]} ${pd.getFullYear()}`;
-      if (sbh && proxima.hora) { sbh.style.display = 'flex'; sbh.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${proxima.hora}`; }
-      if (sbb) {
-        if (proxima.link && podeEntrar(proxima)) {
-          sbb.href = normLink(proxima.link); sbb.target = '_blank'; sbb.textContent = 'Entrar na consulta';
-          sbb.classList.remove('disabled');
-          sbb.onclick = null;
-        } else if (proxima.link) {
-          sbb.href = '#'; sbb.removeAttribute('target'); sbb.textContent = 'Disponível 5 min antes';
-          sbb.classList.add('disabled');
-          sbb.onclick = (e) => e.preventDefault();
-        } else {
-          sbb.href = '#'; sbb.removeAttribute('target'); sbb.textContent = 'Ver detalhes';
-          sbb.classList.remove('disabled');
-          sbb.onclick = (e) => { e.preventDefault(); navSection('consultas'); };
-        }
-      }
     }
   }
 
