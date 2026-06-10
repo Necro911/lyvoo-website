@@ -581,6 +581,10 @@
 
       <!-- ── TAB: CONSULTAS ── -->
       <div class="tab-content" id="tab-consultas">
+        <div class="form-section" id="agendamentos-section">
+          <div class="form-section-title">Marcações feitas pelo cliente</div>
+          <div id="agendamentos-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
         <div class="cards-editor" id="consult-list"></div>
         <button class="btn-add-card" onclick="addConsult()">+ Adicionar consulta</button>
         <div class="save-bar" style="margin-top:20px">
@@ -708,7 +712,7 @@
 
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
@@ -1195,6 +1199,7 @@
 
     // Consultas
     buildConsultEditor(d.consultas || []);
+    loadAgendamentos(uid);
 
     // Relatório
     const rel = d.relatorio || {};
@@ -1501,6 +1506,62 @@
       razao:    card.querySelector('[name=s-razao]').value.trim(),
       ativo:    card.querySelector('[name=s-ativo]').value === 'ativo',
     })).filter(s => s.nome);
+  }
+
+  // ── Marcações feitas pelo cliente (agendamentosNutri) ──────────────────
+  const AG_TIPO_LABEL = { nutricao: 'Consulta de nutrição (inicial)', reavaliacao: 'Reavaliação dos 6 meses' };
+  const AG_ESTADOS = ['agendada','confirmada','realizada','cancelada'];
+
+  async function loadAgendamentos(uid) {
+    const wrap = document.getElementById('agendamentos-list');
+    wrap.innerHTML = '<div style="font-size:12.5px;color:var(--txt-3)">A carregar…</div>';
+    try {
+      const snap = await getDocs(query(collection(db,'agendamentosNutri'), where('uid','==',uid)));
+      if (snap.empty) {
+        wrap.innerHTML = '<div style="font-size:12.5px;color:var(--txt-3)">Sem marcações feitas pelo cliente.</div>';
+        return;
+      }
+      const items = snap.docs.map(s => ({ id: s.id, ...s.data() }))
+        .sort((a,b) => (a.data||'').localeCompare(b.data||'') || (a.hora||'').localeCompare(b.hora||''));
+      wrap.innerHTML = '';
+      items.forEach(a => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel-2);flex-wrap:wrap;';
+        row.innerHTML = `
+          <div style="flex:1;min-width:180px;">
+            <div style="font-size:13px;font-weight:600;">${AG_TIPO_LABEL[a.tipo]||a.titulo||'Consulta'}</div>
+            <div style="font-size:12px;color:var(--txt-3)">${fmtDate(a.data)} · ${a.hora||'-'}</div>
+          </div>
+          <select class="form-select ag-estado-select" style="width:auto;flex:0 0 150px;">
+            ${AG_ESTADOS.map(e => `<option value="${e}" ${(a.estado||'agendada')===e?'selected':''}>${e[0].toUpperCase()+e.slice(1)}</option>`).join('')}
+          </select>
+          <button class="ef-btn ag-save-btn" style="font-size:11px">Guardar</button>
+          <span class="save-msg ag-msg" style="font-size:12px"></span>
+        `;
+        const sel = row.querySelector('.ag-estado-select');
+        const btn = row.querySelector('.ag-save-btn');
+        const msg = row.querySelector('.ag-msg');
+        btn.addEventListener('click', async () => {
+          btn.disabled = true;
+          try {
+            await auth.currentUser?.getIdToken(true);
+            await updateDoc(doc(db,'agendamentosNutri',a.id), { estado: sel.value });
+            msg.textContent = '✓ Guardado';
+            msg.style.color = 'var(--green)';
+          } catch(e) {
+            console.error(e);
+            msg.textContent = 'Erro ao guardar';
+            msg.style.color = 'var(--red)';
+          }
+          btn.disabled = false;
+          setTimeout(() => { msg.textContent = ''; }, 2500);
+        });
+        wrap.appendChild(row);
+      });
+    } catch(e) {
+      console.error(e);
+      wrap.innerHTML = '<div style="font-size:12.5px;color:var(--red)">Erro ao carregar marcações.</div>';
+    }
   }
 
   // ── Consultas editor ──────────────────────────────────────────────────
