@@ -1631,15 +1631,23 @@
   }
 
   document.getElementById('convite-add-day-btn').addEventListener('click', () => {
+    const msg = document.getElementById('msg-convite');
     const deInput = document.getElementById('convite-data-de');
     const ateInput = document.getElementById('convite-data-ate');
     const de = deInput.value;
     const ate = ateInput.value || de;
-    if (!de) return;
     const horas = [...document.querySelectorAll('#convite-horas-checks input:checked')].map(c => c.value);
-    if (!horas.length) return;
     const dows = new Set([...document.querySelectorAll('#convite-dow-checks input:checked')].map(c => Number(c.value)));
-    if (!dows.size) return;
+
+    const avisar = (texto) => {
+      msg.style.color = 'var(--red)';
+      msg.textContent = texto;
+      setTimeout(() => msg.textContent = '', 3000);
+    };
+
+    if (!de)          return avisar('Preencha a data "De".');
+    if (!horas.length) return avisar('Selecione pelo menos um horário.');
+    if (!dows.size)   return avisar('Selecione pelo menos um dia da semana.');
 
     const start = new Date(de + 'T00:00:00');
     const end = new Date(ate + 'T00:00:00');
@@ -1650,7 +1658,7 @@
         datas.push(`${y}-${m}-${day}`);
       }
     }
-    if (!datas.length) return;
+    if (!datas.length) return avisar('Nenhum dos dias da semana selecionados ocorre no intervalo de datas indicado.');
     datas.forEach(data => {
       _conviteSlots = _conviteSlots.filter(s => s.data !== data);
       _conviteSlots.push({ data, horas: [...horas] });
