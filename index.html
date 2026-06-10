@@ -2373,40 +2373,53 @@
             <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório comparativo baseline vs. 6 meses</li>
           </ul>
         </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F); padding:0; border-color:rgba(61,217,232,0.15);">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="cfTrail4" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient>
-              <radialGradient id="cfGlowDot4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.9"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></radialGradient>
-              <filter id="cfGlow4"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            </defs>
-            <!-- Ambient glow -->
-            <ellipse cx="240" cy="200" rx="220" ry="140" fill="rgba(13,92,101,0.16)"/>
-            <!-- Ascending trajectory: evolução do score -->
-            <path d="M70,290 C150,290 170,210 250,180 C320,154 360,140 410,95" fill="none" stroke="#3DD9E8" stroke-width="10" stroke-linecap="round" opacity="0.12" filter="url(#cfGlow4)"/>
-            <path d="M70,290 C150,290 170,210 250,180 C320,154 360,140 410,95" fill="none" stroke="url(#cfTrail4)" stroke-width="3" stroke-linecap="round"/>
-            <!-- Checkpoints -->
-            <circle cx="70"  cy="290" r="4" fill="rgba(255,255,255,0.3)"/>
-            <text x="70"  y="312" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Baseline</text>
-            <circle cx="180" cy="232" r="4" fill="rgba(255,255,255,0.5)"/>
-            <text x="180" y="254" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.3)">Mês 6</text>
-            <circle cx="410" cy="95" r="22" fill="url(#cfGlowDot4)"/>
-            <circle cx="410" cy="95" r="7" fill="#3DD9E8" filter="url(#cfGlow4)"/>
-            <!-- End label -->
-            <rect x="246" y="68" width="120" height="38" rx="14" fill="rgba(61,217,232,0.15)" stroke="rgba(61,217,232,0.3)" stroke-width="1"/>
-            <text x="306" y="92" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="#3DD9E8">↑ +12 pts</text>
-            <!-- Improvement cards -->
-            <rect x="54" y="56" width="86" height="48" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <text x="97" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">LDL</text>
-            <text x="97" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#4ADE80">−18%</text>
-            <rect x="148" y="56" width="86" height="48" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-            <text x="191" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">PCR</text>
-            <text x="191" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#4ADE80">−34%</text>
-            <!-- Score badge -->
-            <rect x="290" y="246" width="150" height="50" rx="14" fill="rgba(61,217,232,0.1)" stroke="rgba(61,217,232,0.2)" stroke-width="1"/>
-            <text x="365" y="266" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Score de saúde</text>
-            <text x="365" y="285" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#3DD9E8">87 → 99</text>
-          </svg>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F); padding:0; border-color:rgba(61,217,232,0.15); display:flex; align-items:center; justify-content:center;">
+          <div class="chart-visual" style="background:transparent; width:100%; max-width:380px; padding:32px;">
+            <div class="chart-header">
+              <div class="chart-title">Evolução comparativa - 6 meses</div>
+              <div class="chart-sub">Baseline vs. Reavaliação · Ricardo M.</div>
+            </div>
+            <div class="chart-legend">
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:rgba(255,255,255,0.25)"></div>Baseline</div>
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#3DD9E8"></div>6 meses</div>
+            </div>
+            <div class="chart-area">
+              <svg class="line-chart" viewBox="0 0 300 100" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lineGrad4" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#3DD9E8"/>
+                    <stop offset="100%" stop-color="#8B5CF6"/>
+                  </linearGradient>
+                </defs>
+                <polyline points="0,70 60,68 120,72 180,65 240,70 300,68" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="5,4"/>
+                <polyline points="0,70 60,60 120,52 180,44 240,36 300,30" fill="none" stroke="url(#lineGrad4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="300" cy="30" r="4" fill="#3DD9E8"/>
+                <circle cx="0" cy="70" r="3" fill="rgba(255,255,255,0.3)"/>
+              </svg>
+            </div>
+            <div class="chart-labels">
+              <span class="chart-label">Jan</span>
+              <span class="chart-label">Fev</span>
+              <span class="chart-label">Mar</span>
+              <span class="chart-label">Abr</span>
+              <span class="chart-label">Mai</span>
+              <span class="chart-label">Jun</span>
+            </div>
+            <div class="chart-improvements">
+              <div class="chart-imp-card">
+                <div class="imp-name">LDL</div>
+                <div class="imp-change imp-neg">-18%</div>
+              </div>
+              <div class="chart-imp-card">
+                <div class="imp-name">PCR</div>
+                <div class="imp-change imp-neg">-34%</div>
+              </div>
+              <div class="chart-imp-card">
+                <div class="imp-name">Score</div>
+                <div class="imp-change imp-pos">+12 pts</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
