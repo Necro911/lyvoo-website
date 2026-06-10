@@ -790,6 +790,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Consultas
       </a>
+      <a href="#" class="sb-link" id="sb-chat" onclick="navSection('chat')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+        <span id="chat-badge-dot" style="display:none;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:auto;"></span>
+      </a>
 
       <div class="sb-section">Dados pessoais</div>
       <a href="#" class="sb-link" id="sb-perfil" onclick="navSection('perfil')">
@@ -1314,6 +1319,22 @@
       </div>
     </div>
 
+    <!-- CHAT -->
+    <div id="sec-chat" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Chat</h2><p class="sec-sub">Converse diretamente com a equipa Lyvoo</p></div>
+      </div>
+      <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;height:60vh;min-height:420px;">
+        <div id="chat-messages" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;">
+          <div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">A carregar mensagens…</div>
+        </div>
+        <form id="chat-form" style="display:flex;gap:10px;padding:14px;border-top:1px solid var(--line);">
+          <input type="text" id="chat-input" autocomplete="off" placeholder="Escreva uma mensagem..." style="flex:1;background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;padding:11px 14px;color:var(--txt);font-size:13.5px;" />
+          <button type="submit" class="sec-btn" id="chat-send-btn">Enviar</button>
+        </form>
+      </div>
+    </div>
+
     <!-- PERFIL -->
     <div id="sec-perfil" class="sec-wrap" style="display:none">
       <div class="sec-header">
@@ -1407,8 +1428,69 @@
 <script type="module">
 
   import { onAuthStateChanged, signOut, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, addDoc, orderBy, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, addDoc, orderBy, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
+
+  // ── Chat com a equipa Lyvoo ──────────────────────────────────────────
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  function initChat(uid) {
+    const msgsEl = document.getElementById('chat-messages');
+    const form   = document.getElementById('chat-form');
+    const input  = document.getElementById('chat-input');
+    if (!msgsEl || !form || !input) return;
+
+    const q = query(collection(db, 'chats', uid, 'mensagens'), orderBy('criadoEm', 'asc'));
+    onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        msgsEl.innerHTML = '<div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">Ainda não há mensagens. Envie a sua primeira mensagem à equipa Lyvoo.</div>';
+        const dot = document.getElementById('chat-badge-dot');
+        if (dot) dot.style.display = 'none';
+        return;
+      }
+      let lastAdminTs = 0;
+      msgsEl.innerHTML = snap.docs.map(d => {
+        const m = d.data();
+        const isAdmin = m.de === 'admin';
+        const ts = m.criadoEm?.toDate ? m.criadoEm.toDate().getTime() : (m.criadoEm ? new Date(m.criadoEm).getTime() : 0);
+        if (isAdmin && ts > lastAdminTs) lastAdminTs = ts;
+        const hora = ts ? new Date(ts).toLocaleString('pt-PT', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '';
+        return `<div style="align-self:${isAdmin ? 'flex-start' : 'flex-end'};max-width:75%;background:${isAdmin ? 'var(--panel-2)' : 'rgba(61,217,232,0.12)'};border:1px solid ${isAdmin ? 'var(--line-2)' : 'rgba(61,217,232,0.25)'};border-radius:12px;padding:10px 14px;">
+          <div style="font-size:13.5px;color:var(--txt);white-space:pre-wrap;word-break:break-word;">${escapeHtml(m.texto || '')}</div>
+          ${hora ? `<div style="font-size:10.5px;color:var(--txt-3);margin-top:4px;text-align:right;">${hora}</div>` : ''}
+        </div>`;
+      }).join('');
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+
+      const vistoTs = parseInt(localStorage.getItem(`lyvoo_chat_visto_${uid}`) || '0', 10);
+      const dot = document.getElementById('chat-badge-dot');
+      if (dot) dot.style.display = (lastAdminTs > vistoTs) ? 'block' : 'none';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const texto = input.value.trim();
+      if (!texto) return;
+      input.value = '';
+      try {
+        await addDoc(collection(db, 'chats', uid, 'mensagens'), {
+          de: 'cliente', texto, criadoEm: serverTimestamp()
+        });
+        await setDoc(doc(db, 'chats', uid), {
+          uid,
+          nome: window._planoNome || auth.currentUser?.email || '',
+          email: auth.currentUser?.email || '',
+          ultimaMensagem: texto,
+          ultimaMensagemEm: serverTimestamp(),
+          ultimoDe: 'cliente'
+        }, { merge: true });
+      } catch (err) {
+        console.error('Erro ao enviar mensagem:', err);
+      }
+    });
+  }
 
   // ── Sino de notificações ─────────────────────────────────────────────
   let _bellNotifs = [];   // { title, sub, time, unread }
@@ -2224,7 +2306,7 @@
   };
 
   // ── Navegação entre secções ──────────────────────────────────────────
-  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','perfil','conta'];
+  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','chat','perfil','conta'];
   const SECTION_TITLES = {
     'biomarcadores':  'Biomarcadores',
     'plano-alimentar':'Plano alimentar',
@@ -2258,6 +2340,13 @@
     } else {
       const el = document.getElementById('sec-' + name);
       if (el) el.style.display = 'block';
+    }
+
+    // Marcar chat como visto
+    if (name === 'chat' && window._currentUser) {
+      localStorage.setItem(`lyvoo_chat_visto_${window._currentUser.uid}`, Date.now());
+      const dot = document.getElementById('chat-badge-dot');
+      if (dot) dot.style.display = 'none';
     }
 
     // Atualizar sidebar ativo
@@ -3463,7 +3552,9 @@
     if (!user) { window.location.href = 'login.html?next=dashboard.html'; return; }
 
     _currentUser = user;
+    window._currentUser = user;
     _lastLoad = Date.now();
+    initChat(user.uid);
     await carregarDados(user);
 
     // Esconder a máscara de loading agora que o painel está pronto

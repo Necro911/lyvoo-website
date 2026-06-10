@@ -367,6 +367,7 @@
         <button class="tab" onclick="switchTab('suplementacao')">Suplementação</button>
         <button class="tab" onclick="switchTab('consultas')">Consultas</button>
         <button class="tab" onclick="switchTab('relatorio')">Relatório</button>
+        <button class="tab" onclick="switchTab('chat')">Chat<span id="chat-tab-dot" style="display:none;width:7px;height:7px;border-radius:50%;background:var(--cyan);margin-left:6px;"></span></button>
       </div>
       <div class="tab-meta" id="tab-meta">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -723,6 +724,19 @@
         </div>
       </div>
 
+      <!-- ── TAB: CHAT ── -->
+      <div class="tab-content" id="tab-chat">
+        <div class="form-section" style="display:flex;flex-direction:column;height:60vh;min-height:420px;padding:0;overflow:hidden;">
+          <div id="chat-admin-messages" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;">
+            <div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">A carregar mensagens…</div>
+          </div>
+          <form id="chat-admin-form" style="display:flex;gap:10px;padding:14px;border-top:1px solid var(--line);">
+            <input type="text" id="chat-admin-input" autocomplete="off" placeholder="Escreva uma mensagem..." class="form-input" style="flex:1;" />
+            <button type="submit" class="ef-btn" id="chat-admin-send-btn">Enviar</button>
+          </form>
+        </div>
+      </div>
+
     </div><!-- /detail-content -->
   </div><!-- /detail -->
 
@@ -794,7 +808,7 @@
 
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where, onSnapshot, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
@@ -887,6 +901,84 @@
   };
 
   let allUsers = [];
+  let _chatMeta = {};
+  let _chatUnsubMsgs = null;
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  function temChatNaoLido(uid) {
+    const meta = _chatMeta[uid];
+    if (!meta || meta.ultimoDe !== 'cliente') return false;
+    const msgTs = meta.ultimaMensagemEm?.toDate ? meta.ultimaMensagemEm.toDate().getTime() : (meta.ultimaMensagemEm ? new Date(meta.ultimaMensagemEm).getTime() : 0);
+    const vistoTs = meta.vistoAdminEm?.toDate ? meta.vistoAdminEm.toDate().getTime() : (meta.vistoAdminEm ? new Date(meta.vistoAdminEm).getTime() : 0);
+    return msgTs > vistoTs;
+  }
+
+  // Abre o chat do cliente atual: liga listener às mensagens e marca como visto
+  function initAdminChat(uid) {
+    const msgsEl = document.getElementById('chat-admin-messages');
+    const form   = document.getElementById('chat-admin-input');
+    if (_chatUnsubMsgs) { _chatUnsubMsgs(); _chatUnsubMsgs = null; }
+    if (!msgsEl) return;
+
+    const q = query(collection(db, 'chats', uid, 'mensagens'), orderBy('criadoEm', 'asc'));
+    _chatUnsubMsgs = onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        msgsEl.innerHTML = '<div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">Ainda não há mensagens deste cliente.</div>';
+        return;
+      }
+      msgsEl.innerHTML = snap.docs.map(d => {
+        const m = d.data();
+        const isAdmin = m.de === 'admin';
+        const ts = m.criadoEm?.toDate ? m.criadoEm.toDate().getTime() : (m.criadoEm ? new Date(m.criadoEm).getTime() : 0);
+        const hora = ts ? new Date(ts).toLocaleString('pt-PT', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '';
+        return `<div style="align-self:${isAdmin ? 'flex-end' : 'flex-start'};max-width:75%;background:${isAdmin ? 'rgba(61,217,232,0.12)' : 'var(--panel-2)'};border:1px solid ${isAdmin ? 'rgba(61,217,232,0.25)' : 'var(--line-2)'};border-radius:12px;padding:10px 14px;">
+          <div style="font-size:13.5px;color:var(--txt);white-space:pre-wrap;word-break:break-word;">${escapeHtml(m.texto || '')}</div>
+          ${hora ? `<div style="font-size:10.5px;color:var(--txt-3);margin-top:4px;text-align:right;">${hora}</div>` : ''}
+        </div>`;
+      }).join('');
+      msgsEl.scrollTop = msgsEl.scrollHeight;
+    });
+
+    // Marcar como visto
+    updateDoc(doc(db, 'chats', uid), { vistoAdminEm: serverTimestamp() }).catch(() => {
+      setDoc(doc(db, 'chats', uid), { vistoAdminEm: serverTimestamp() }, { merge: true });
+    });
+    const dot = document.getElementById('chat-tab-dot');
+    if (dot) dot.style.display = 'none';
+  }
+
+  document.getElementById('chat-admin-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentUID) return;
+    const input = document.getElementById('chat-admin-input');
+    const texto = input.value.trim();
+    if (!texto) return;
+    input.value = '';
+    try {
+      await addDoc(collection(db, 'chats', currentUID, 'mensagens'), {
+        de: 'admin', texto, criadoEm: serverTimestamp()
+      });
+      await setDoc(doc(db, 'chats', currentUID), {
+        uid: currentUID,
+        ultimaMensagem: texto,
+        ultimaMensagemEm: serverTimestamp(),
+        ultimoDe: 'admin',
+        vistoAdminEm: serverTimestamp()
+      }, { merge: true });
+    } catch (err) {
+      console.error('Erro ao enviar mensagem:', err);
+    }
+  });
+
+  // Listener global: estado de mensagens não lidas por cliente, para a lista lateral
+  onSnapshot(collection(db, 'chats'), (snap) => {
+    _chatMeta = {};
+    snap.forEach(d => { _chatMeta[d.id] = d.data(); });
+    applyFilters();
+  });
   let allWaitlist = [];
   let currentUID = null;
   let selectedEstado = 1;
@@ -1015,6 +1107,7 @@
   function attachDirtyListeners() {
     // Qualquer input/textarea/select dentro dos tab-contents marca como dirty
     document.querySelectorAll('.tab-content input, .tab-content textarea, .tab-content select').forEach(el => {
+      if (el.id === 'chat-admin-input') return;
       el.addEventListener('input', markDirty, { once: false });
       el.addEventListener('change', markDirty, { once: false });
     });
@@ -1031,10 +1124,11 @@
   // Executa efectivamente a mudança de tab (sem verificação de dirty)
   function doSwitchTab(name) {
     currentTab = name;
-    const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio'];
+    const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio','chat'];
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabs[i] === name));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'chat' && currentUID) initAdminChat(currentUID);
     clearDirty();
     // Mostrar timestamp deste tab
     const tsKey = TAB_TS_KEYS[name];
@@ -1186,9 +1280,10 @@
       const nome = [u.firstName,u.lastName].filter(Boolean).join(' ') || u.email?.split('@')[0] || '-';
       const e = u.estado || 1;
       const arquivadoBadge = u.arquivado ? `<span style="font-size:10px;color:var(--txt-3);margin-left:4px">📦</span>` : '';
+      const chatDot = temChatNaoLido(u.uid) ? `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:6px;flex-shrink:0;"></span>` : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
         <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}</div><div class="u-email-sm">${u.email||'-'}</div></div>
+        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}</div><div class="u-email-sm">${u.email||'-'}</div></div>
         ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
@@ -1223,6 +1318,7 @@
 
   // ── Open user detail ──────────────────────────────────────────────────
   window.openUser = async function(uid) {
+    if (_chatUnsubMsgs) { _chatUnsubMsgs(); _chatUnsubMsgs = null; }
     currentUID = uid;
     applyFilters();
 
@@ -1284,6 +1380,11 @@
     buildConsultEditor(d.consultas || []);
     loadAgendamentos(uid);
     loadConvite(uid);
+
+    // Chat
+    document.getElementById('chat-admin-messages').innerHTML = '<div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">A carregar mensagens…</div>';
+    const chatDot = document.getElementById('chat-tab-dot');
+    if (chatDot) chatDot.style.display = temChatNaoLido(uid) ? 'inline-block' : 'none';
 
     // Relatório
     const rel = d.relatorio || {};
