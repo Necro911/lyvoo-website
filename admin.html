@@ -594,16 +594,26 @@
             </div>
           </div>
           <div class="form-row" style="align-items:flex-end;">
-            <div class="form-field" style="flex:0 0 160px;">
-              <label class="form-label">Adicionar dia</label>
-              <input class="form-input" type="date" id="convite-data-input" />
+            <div class="form-field" style="flex:0 0 150px;">
+              <label class="form-label">De</label>
+              <input class="form-input" type="date" id="convite-data-de" />
+            </div>
+            <div class="form-field" style="flex:0 0 150px;">
+              <label class="form-label">Até</label>
+              <input class="form-input" type="date" id="convite-data-ate" />
             </div>
             <div class="form-field" style="flex:1;">
-              <label class="form-label">Horários disponíveis nesse dia</label>
+              <label class="form-label">Dias da semana</label>
+              <div id="convite-dow-checks" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+            </div>
+          </div>
+          <div class="form-row" style="align-items:flex-end;">
+            <div class="form-field" style="flex:1;">
+              <label class="form-label">Horários disponíveis nesses dias</label>
               <div id="convite-horas-checks" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
             </div>
             <div class="form-field" style="flex:0 0 auto;">
-              <button type="button" class="ef-btn" id="convite-add-day-btn">+ Adicionar dia</button>
+              <button type="button" class="ef-btn" id="convite-add-day-btn">+ Adicionar dias</button>
             </div>
           </div>
           <div id="convite-slots-list" style="display:flex;flex-direction:column;gap:6px;margin:6px 0 14px;"></div>
@@ -1546,11 +1556,22 @@
   let _conviteUid = null;
   let _conviteSlots = [];
 
+  const BK_DOW_LABELS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
   function renderConviteHorasChecks() {
     const wrap = document.getElementById('convite-horas-checks');
     wrap.innerHTML = BK_HORAS.map(h => `
       <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--txt-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 8px;cursor:pointer;">
         <input type="checkbox" value="${h}" style="margin:0;" /> ${h}
+      </label>
+    `).join('');
+  }
+
+  function renderConviteDowChecks() {
+    const wrap = document.getElementById('convite-dow-checks');
+    wrap.innerHTML = BK_DOW_LABELS.map((label, i) => `
+      <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--txt-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 8px;cursor:pointer;">
+        <input type="checkbox" value="${i}" style="margin:0;" ${(i>=1 && i<=5)?'checked':''} /> ${label}
       </label>
     `).join('');
   }
@@ -1578,22 +1599,40 @@
   }
 
   document.getElementById('convite-add-day-btn').addEventListener('click', () => {
-    const dataInput = document.getElementById('convite-data-input');
-    const data = dataInput.value;
-    if (!data) return;
+    const deInput = document.getElementById('convite-data-de');
+    const ateInput = document.getElementById('convite-data-ate');
+    const de = deInput.value;
+    const ate = ateInput.value || de;
+    if (!de) return;
     const horas = [...document.querySelectorAll('#convite-horas-checks input:checked')].map(c => c.value);
     if (!horas.length) return;
-    _conviteSlots = _conviteSlots.filter(s => s.data !== data);
-    _conviteSlots.push({ data, horas });
+    const dows = new Set([...document.querySelectorAll('#convite-dow-checks input:checked')].map(c => Number(c.value)));
+    if (!dows.size) return;
+
+    const start = new Date(de + 'T00:00:00');
+    const end = new Date(ate + 'T00:00:00');
+    const datas = [];
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      if (dows.has(d.getDay())) {
+        const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+        datas.push(`${y}-${m}-${day}`);
+      }
+    }
+    if (!datas.length) return;
+    datas.forEach(data => {
+      _conviteSlots = _conviteSlots.filter(s => s.data !== data);
+      _conviteSlots.push({ data, horas: [...horas] });
+    });
     renderConviteSlotsList();
-    dataInput.value = '';
-    document.querySelectorAll('#convite-horas-checks input:checked').forEach(c => c.checked = false);
+    deInput.value = '';
+    ateInput.value = '';
   });
 
   async function loadConvite(uid) {
     _conviteUid = uid;
     _conviteSlots = [];
     renderConviteHorasChecks();
+    renderConviteDowChecks();
     renderConviteSlotsList();
     const status = document.getElementById('convite-status');
     const cancelBtn = document.getElementById('convite-cancel-btn');
