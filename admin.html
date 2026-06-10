@@ -599,7 +599,7 @@
           </div>
 
           <div id="convite-aceite-box" style="display:none;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.22);border-radius:10px;padding:14px 16px;margin-bottom:14px;">
-            <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">✓ Cliente aceitou a nova data</div>
+            <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">✓ Cliente confirmou a consulta</div>
             <div id="convite-aceite-detalhe" style="font-size:13px;color:var(--txt-2);margin-bottom:12px;"></div>
             <div class="save-bar">
               <button type="button" class="ef-btn" id="convite-aceite-dismiss-btn">Marcar como visto</button>
@@ -1686,14 +1686,14 @@
         const tipoLbl = cc.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
         const dt = cc.data ? new Date(cc.data + 'T00:00:00') : null;
         document.getElementById('convite-cancelada-detalhe').textContent =
-          `${tipoLbl} · estava marcada para ${dt ? fmtDate(cc.data) : '-'}${cc.hora ? ' às ' + cc.hora : ''}`;
+          `${tipoLbl} · estava marcada para ${dt ? fmtDate(cc.data) : '-'}${cc.hora ? ' às ' + cc.hora : ''}. O cliente aguarda nova sugestão de datas.`;
         document.getElementById('convite-cancelada-box').style.display = 'block';
       }
       const rc = dados.respostaCliente;
       if (rc && rc.tipo === 'aceite' && !rc.visto) {
         const dt = rc.data ? new Date(rc.data + 'T00:00:00') : null;
         document.getElementById('convite-aceite-detalhe').textContent =
-          `O cliente aceitou a consulta para ${dt ? fmtDate(rc.data) : '-'}${rc.hora ? ' às ' + rc.hora : ''}.`;
+          `O cliente confirmou a consulta para ${dt ? fmtDate(rc.data) : '-'}${rc.hora ? ' às ' + rc.hora : ''}.`;
         document.getElementById('convite-aceite-box').style.display = 'block';
       }
       const convite = dados.agendamentoConvite;
@@ -1741,6 +1741,8 @@
         document.getElementById('convite-aceitar-sugestao-btn').style.display = '';
         agendadoBox.style.display = 'block';
         formFields.style.display = 'none';
+      } else if (convite.estado === 'cancelado_cliente') {
+        status.textContent = '↩ O cliente cancelou a consulta e pediu nova sugestão de datas — envie nova disponibilidade abaixo.';
       } else {
         status.textContent = 'Convite pendente - o cliente ainda não escolheu data.';
       }
@@ -1771,6 +1773,9 @@
           estado: 'pendente',
           criadoEm: serverTimestamp()
         },
+        // limpar notificações do ciclo anterior para não confundir o cliente
+        respostaCliente: null,
+        consultaAlterada: null,
         notificadoEm: serverTimestamp()
       });
       await loadConvite(_conviteUid);
@@ -1789,14 +1794,22 @@
     if (!_conviteUid) return;
     const msg = document.getElementById('msg-convite-agendado');
     const btn = document.getElementById('convite-cancel-btn');
-    if (!confirm('Cancelar este convite/marcação? O cliente perderá a consulta agendada.')) return;
+    const motivo = prompt('Motivo do cancelamento (será mostrado ao cliente):');
+    if (motivo === null) return;
+    if (!motivo.trim()) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Indique o motivo do cancelamento.';
+      setTimeout(() => msg.textContent = '', 3000);
+      return;
+    }
     btn.disabled = true;
     try {
       await auth.currentUser?.getIdToken(true);
       // Cancelar também a marcação correspondente em agendamentosNutri,
       // senão a consulta continua visível na dashboard do cliente
       const userSnap = await getDoc(doc(db,'users',_conviteUid));
-      const esc = userSnap.data()?.agendamentoConvite?.escolha;
+      const conviteAtual = userSnap.data()?.agendamentoConvite;
+      const esc = conviteAtual?.escolha;
       if (esc?.data) {
         const agSnap = await getDocs(query(
           collection(db,'agendamentosNutri'),
@@ -1814,14 +1827,24 @@
           }
         }
       }
-      await updateDoc(doc(db,'users',_conviteUid), { agendamentoConvite: null });
+      await updateDoc(doc(db,'users',_conviteUid), {
+        agendamentoConvite: null,
+        consultaCanceladaAdmin: {
+          tipo: conviteAtual?.tipo || null,
+          data: esc?.data || null,
+          hora: esc?.hora || null,
+          motivo: motivo.trim(),
+          em: serverTimestamp(),
+          visto: false
+        }
+      });
       _conviteSlots = [];
       renderConviteSlotsList();
-      document.getElementById('convite-status').textContent = 'Sem convite enviado.';
+      document.getElementById('convite-status').textContent = 'Consulta cancelada — envie nova margem de datas ao cliente abaixo.';
       document.getElementById('convite-agendado-box').style.display = 'none';
       document.getElementById('convite-form-fields').style.display = '';
       msg.style.color = 'var(--green)';
-      msg.textContent = '✓ Convite cancelado';
+      msg.textContent = '✓ Cancelada — cliente notificado com o motivo';
     } catch(e) {
       console.error(e);
       msg.style.color = 'var(--red)';

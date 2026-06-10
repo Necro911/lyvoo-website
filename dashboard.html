@@ -1053,6 +1053,21 @@
       </div>
     </div>
 
+    <!-- Banner: consulta cancelada pela equipa Lyvoo (com motivo) -->
+    <div id="cancelada-banner" style="display:none; margin:0 32px 20px;">
+      <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(248,113,113,0.10),rgba(61,217,232,0.04)); border:1px solid rgba(248,113,113,0.28); border-radius:16px; padding:20px 24px; flex-wrap:wrap;">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--red);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:4px;">Consulta cancelada</div>
+          <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">A sua consulta foi cancelada pela equipa Lyvoo</div>
+          <div id="cancelada-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;"></div>
+        </div>
+        <a href="#" id="cancelada-banner-ok-btn" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Entendido</a>
+      </div>
+    </div>
+
     <!-- CTA: Agendar consulta de nutrição (estado 4, sem consulta agendada) -->
     <div id="nutri-cta" style="display:none; margin:0 32px 20px;">
       <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px;">
@@ -1501,6 +1516,36 @@
       if (isNew) dot.style.display = 'block';
     }
 
+    if (d.agendamentoConvite?.estado === 'pendente' && (d.agendamentoConvite.slots||[]).length && d.agendamentoConvite.criadoEm) {
+      const cv = d.agendamentoConvite;
+      const ts = cv.criadoEm.toDate ? cv.criadoEm.toDate().getTime() : new Date(cv.criadoEm).getTime();
+      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const isNew   = ts > vistoTs;
+      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      _bellNotifs.push({
+        titulo: cv.tipo === 'reavaliacao' ? 'Agende a sua reavaliação' : 'Agende a sua consulta de nutrição',
+        sub: 'A equipa Lyvoo disponibilizou datas para a sua consulta. Escolha o horário que melhor lhe convém.',
+        data: dataStr, unread: isNew
+      });
+      if (isNew) dot.style.display = 'block';
+    }
+
+    if (d.consultaCanceladaAdmin?.em) {
+      const ca = d.consultaCanceladaAdmin;
+      const ts = ca.em.toDate ? ca.em.toDate().getTime() : new Date(ca.em).getTime();
+      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const isNew   = ts > vistoTs;
+      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const ed = ca.data ? new Date(ca.data + 'T00:00:00') : null;
+      const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+      _bellNotifs.push({
+        titulo: 'Consulta cancelada',
+        sub: `A sua consulta${ed ? ' de ' + ed.getDate() + ' ' + MESES[ed.getMonth()] : ''}${ca.hora ? ' às ' + ca.hora : ''} foi cancelada pela equipa Lyvoo.${ca.motivo ? ' Motivo: ' + escHtml(ca.motivo) : ''}`,
+        data: dataStr, unread: isNew
+      });
+      if (isNew) dot.style.display = 'block';
+    }
+
     if (!_bellNotifs.length) {
       list.innerHTML = '<div class="bell-empty">Sem notificações novas</div>';
       return;
@@ -1665,7 +1710,9 @@
     const convite = window._convite;
     if (!convite || convite.tipo !== tipo || convite.estado !== 'pendente' || !(convite.slots||[]).length) {
       let aviso = 'A sua equipa Lyvoo ainda não disponibilizou horários para esta consulta. Vai receber uma notificação assim que estiverem disponíveis.';
-      if (convite && convite.tipo === tipo && convite.estado === 'agendado' && convite.escolha?.data) {
+      if (convite && convite.estado === 'cancelado_cliente') {
+        aviso = 'O seu pedido de novas datas foi enviado. A equipa Lyvoo irá disponibilizar nova margem de datas em breve.';
+      } else if (convite && convite.tipo === tipo && convite.estado === 'agendado' && convite.escolha?.data) {
         const ed = new Date(convite.escolha.data + 'T00:00:00');
         aviso = `Já tem esta consulta agendada para ${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}${convite.escolha.hora ? ' às ' + convite.escolha.hora : ''}.`;
       }
@@ -1792,15 +1839,18 @@
             canceladoPor: 'cliente',
             canceladoEm: serverTimestamp()
           });
-          // Reabrir o convite de agendamento, se esta era a marcação associada
+          // Pedir nova sugestão de datas ao admin: a margem antiga deixa de
+          // ter efeito (podem entretanto existir horários ocupados por outros)
           const userUpdate = {
             consultaCancelada: { tipo: c.tipo || null, data: c.data || null, hora: c.hora || null, canceladoEm: serverTimestamp() }
           };
           if (c.tipo && window._convite?.tipo === c.tipo && window._convite?.estado === 'agendado') {
-            userUpdate['agendamentoConvite.estado'] = 'pendente';
+            userUpdate['agendamentoConvite.estado'] = 'cancelado_cliente';
             userUpdate['agendamentoConvite.escolha'] = null;
-            window._convite.estado = 'pendente';
+            userUpdate['agendamentoConvite.slots'] = [];
+            window._convite.estado = 'cancelado_cliente';
             window._convite.escolha = null;
+            window._convite.slots = [];
           }
           await updateDoc(doc(db, 'users', _currentUser.uid), userUpdate);
           msg.textContent = '✓ Consulta cancelada.';
@@ -1884,7 +1934,8 @@
       try {
         await updateDoc(doc(db, 'users', _currentUser.uid), {
           'agendamentoConvite.estado': 'agendado',
-          'agendamentoConvite.escolha': { data: _bkSelectedDate, hora: _bkSelectedTime }
+          'agendamentoConvite.escolha': { data: _bkSelectedDate, hora: _bkSelectedTime },
+          respostaCliente: { tipo: 'aceite', data: _bkSelectedDate, hora: _bkSelectedTime, em: serverTimestamp(), visto: false }
         });
         if (window._convite) {
           window._convite.estado = 'agendado';
@@ -3093,7 +3144,7 @@
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
-    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner','reagendar-banner'].forEach(id => {
+    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner','reagendar-banner','cancelada-banner'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
@@ -3167,12 +3218,14 @@
           if (!aindaExiste) {
             try {
               await updateDoc(doc(db, 'users', user.uid), {
-                'agendamentoConvite.estado': 'pendente',
-                'agendamentoConvite.escolha': null
+                'agendamentoConvite.estado': 'cancelado_cliente',
+                'agendamentoConvite.escolha': null,
+                'agendamentoConvite.slots': []
               });
             } catch (e) { console.error('Erro ao reabrir convite:', e); }
-            window._convite.estado = 'pendente';
+            window._convite.estado = 'cancelado_cliente';
             window._convite.escolha = null;
+            window._convite.slots = [];
           }
         }
         renderConsultas(consultasFinal);
@@ -3277,8 +3330,41 @@
           document.getElementById('convite-banner-sub').textContent =
             'A equipa Lyvoo disponibilizou horários para a sua consulta. Escolha o que melhor lhe convém.';
           const btn = document.getElementById('convite-banner-btn');
+          btn.style.display = '';
           btn.onclick = (e) => { e.preventDefault(); abrirAgendamento(tipo); };
           conviteBanner.style.display = 'flex';
+        }
+      }
+
+      // Banner: cliente cancelou e aguarda nova margem de datas do admin
+      if (window._convite?.estado === 'cancelado_cliente') {
+        const conviteBanner = document.getElementById('convite-banner');
+        if (conviteBanner) {
+          document.getElementById('convite-banner-title').textContent = 'Aguarda novas datas';
+          document.getElementById('convite-banner-sub').textContent =
+            'O seu pedido foi enviado à equipa Lyvoo. Receberá uma notificação assim que novas datas estiverem disponíveis para agendar a sua consulta.';
+          document.getElementById('convite-banner-btn').style.display = 'none';
+          conviteBanner.style.display = 'flex';
+        }
+      }
+
+      // Banner: consulta cancelada pela equipa Lyvoo (com motivo escrito pelo admin)
+      if (d.consultaCanceladaAdmin && !d.consultaCanceladaAdmin.visto) {
+        const banner = document.getElementById('cancelada-banner');
+        if (banner) {
+          const ca = d.consultaCanceladaAdmin;
+          const ed = ca.data ? new Date(ca.data + 'T00:00:00') : null;
+          const dataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '';
+          document.getElementById('cancelada-banner-sub').textContent =
+            `A consulta${dataStr ? ' de ' + dataStr : ''}${ca.hora ? ' às ' + ca.hora : ''} foi cancelada.${ca.motivo ? ' Motivo: ' + ca.motivo : ''} A equipa irá enviar novas datas em breve.`;
+          document.getElementById('cancelada-banner-ok-btn').onclick = async (e) => {
+            e.preventDefault();
+            banner.style.display = 'none';
+            try {
+              await updateDoc(doc(db, 'users', user.uid), { 'consultaCanceladaAdmin.visto': true });
+            } catch (err) { console.error('Erro ao marcar cancelamento como visto:', err); }
+          };
+          banner.style.display = 'flex';
         }
       }
 
@@ -3328,7 +3414,8 @@
           const conviteCobreNutri = window._convite?.estado === 'pendente'
             && (window._convite.slots||[]).length
             && window._convite.tipo === 'nutricao';
-          if (!temNutriAgendada && !conviteCobreNutri) nutriCta.style.display = 'block';
+          const aguardaNovasDatas = window._convite?.estado === 'cancelado_cliente';
+          if (!temNutriAgendada && !conviteCobreNutri && !aguardaNovasDatas) nutriCta.style.display = 'block';
         }
 
         // Badges "Novo" nos feature cards
