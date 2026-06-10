@@ -3045,6 +3045,21 @@
         } catch (e) {
           console.error('Erro ao carregar agendamentos do cliente:', e);
         }
+        // Corrigir convite "agendado" órfão (consulta cancelada mas convite não foi reaberto)
+        if (window._convite?.estado === 'agendado' && window._convite.escolha) {
+          const esc = window._convite.escolha;
+          const aindaExiste = consultasFinal.some(c => c.data === esc.data && c.hora === esc.hora);
+          if (!aindaExiste) {
+            try {
+              await updateDoc(doc(db, 'users', user.uid), {
+                'agendamentoConvite.estado': 'pendente',
+                'agendamentoConvite.escolha': null
+              });
+            } catch (e) { console.error('Erro ao reabrir convite:', e); }
+            window._convite.estado = 'pendente';
+            window._convite.escolha = null;
+          }
+        }
         renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
         if (d.relatorio || d.resultados?.biomarcadores) {
