@@ -668,8 +668,6 @@
           </div>
           <div class="form-row-3">
             <div class="form-field"><label class="form-label">Score Biomarcadores</label><input class="form-input" id="rel-s-bio" type="number" min="0" max="100" placeholder="82" /></div>
-            <div class="form-field"><label class="form-label">Score Nutrição</label><input class="form-input" id="rel-s-nut" type="number" min="0" max="100" placeholder="85" /></div>
-            <div class="form-field"><label class="form-label">Score Sono</label><input class="form-input" id="rel-s-sono" type="number" min="0" max="100" placeholder="88" /></div>
           </div>
         </div>
         <div class="form-section">
@@ -1253,8 +1251,6 @@
     document.getElementById('rel-class').value  = rel.classificacao||'';
     document.getElementById('rel-prog').value   = rel.progresso||'';
     document.getElementById('rel-s-bio').value  = rel.scoreBio||'';
-    document.getElementById('rel-s-nut').value  = rel.scoreNut||'';
-    document.getElementById('rel-s-sono').value = rel.scoreSono||'';
     document.getElementById('rel-resumo').value = rel.resumo||'';
 
     // Limpar mensagens
@@ -2013,8 +2009,6 @@
         classificacao:  document.getElementById('rel-class').value,
         progresso:      +document.getElementById('rel-prog').value || null,
         scoreBio:       +document.getElementById('rel-s-bio').value || null,
-        scoreNut:       +document.getElementById('rel-s-nut').value || null,
-        scoreSono:      +document.getElementById('rel-s-sono').value || null,
         resumo:         document.getElementById('rel-resumo').value.trim(),
       }
     }, 'msg-rel');

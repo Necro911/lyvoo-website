@@ -1072,8 +1072,6 @@
           <div class="score-list">
             <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><span class="score-name">Biomarcadores</span><span class="score-val">82<small>/100</small></span></div>
             <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span class="score-name">Estilo de vida</span><span class="score-val">90<small>/100</small></span></div>
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg><span class="score-name">Nutrição</span><span class="score-val">85<small>/100</small></span></div>
-            <div class="score-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><span class="score-name">Sono</span><span class="score-val">88<small>/100</small></span></div>
           </div>
         </div>
         <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;">Ver relatório</a>
@@ -1273,26 +1271,6 @@
               <span class="rel-substat-val" id="rel-score-bio">-</span>
             </div>
             <span class="rel-substat-name">Biomarcadores</span>
-          </div>
-          <div class="rel-substat">
-            <div class="rel-substat-ring">
-              <svg width="64" height="64">
-                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5"/>
-                <circle id="rel-ring-nut" cx="32" cy="32" r="26" fill="none" stroke="var(--violet)" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
-              </svg>
-              <span class="rel-substat-val" id="rel-score-nut">-</span>
-            </div>
-            <span class="rel-substat-name">Nutrição</span>
-          </div>
-          <div class="rel-substat">
-            <div class="rel-substat-ring">
-              <svg width="64" height="64">
-                <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5"/>
-                <circle id="rel-ring-sono" cx="32" cy="32" r="26" fill="none" stroke="var(--green)" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
-              </svg>
-              <span class="rel-substat-val" id="rel-score-sono">-</span>
-            </div>
-            <span class="rel-substat-name">Sono</span>
           </div>
         </div>
       </div>
@@ -2622,17 +2600,16 @@
       if (sub) sub.textContent = 'Análise integrada · ' + relatorio.dataRelatorio;
     }
 
-    // Sub-scores (mini-anéis)
-    [['bio', relatorio.scoreBio], ['nut', relatorio.scoreNut], ['sono', relatorio.scoreSono]].forEach(([key, val]) => {
-      if (!val) return;
-      const txt = document.getElementById('rel-score-' + key);
-      if (txt) relCountUp(txt, val);
-      const ring = document.getElementById('rel-ring-' + key);
+    // Sub-score (mini-anel)
+    if (relatorio.scoreBio) {
+      const txt = document.getElementById('rel-score-bio');
+      if (txt) relCountUp(txt, relatorio.scoreBio);
+      const ring = document.getElementById('rel-ring-bio');
       if (ring) {
         const c = 163.4;
-        requestAnimationFrame(() => ring.setAttribute('stroke-dashoffset', (c - (val / 100) * c).toFixed(1)));
+        requestAnimationFrame(() => ring.setAttribute('stroke-dashoffset', (c - (relatorio.scoreBio / 100) * c).toFixed(1)));
       }
-    });
+    }
 
     // Notas clínicas
     if (relatorio.notas) {
@@ -2665,10 +2642,8 @@
 
     // Sub-scores
     const scoreItems = document.querySelectorAll('#view-resultados .score-item .score-val');
-    if (scoreItems.length >= 4) {
-      if (relatorio.scoreBio)  scoreItems[0].innerHTML = `${relatorio.scoreBio}<small>/100</small>`;
-      if (relatorio.scoreNut)  scoreItems[2].innerHTML = `${relatorio.scoreNut}<small>/100</small>`;
-      if (relatorio.scoreSono) scoreItems[3].innerHTML = `${relatorio.scoreSono}<small>/100</small>`;
+    if (scoreItems.length && relatorio.scoreBio) {
+      scoreItems[0].innerHTML = `${relatorio.scoreBio}<small>/100</small>`;
     }
 
     // Progresso
