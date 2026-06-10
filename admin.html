@@ -1793,6 +1793,27 @@
     btn.disabled = true;
     try {
       await auth.currentUser?.getIdToken(true);
+      // Cancelar também a marcação correspondente em agendamentosNutri,
+      // senão a consulta continua visível na dashboard do cliente
+      const userSnap = await getDoc(doc(db,'users',_conviteUid));
+      const esc = userSnap.data()?.agendamentoConvite?.escolha;
+      if (esc?.data) {
+        const agSnap = await getDocs(query(
+          collection(db,'agendamentosNutri'),
+          where('uid','==',_conviteUid),
+          where('data','==',esc.data),
+          where('hora','==',esc.hora || '')
+        ));
+        for (const d of agSnap.docs) {
+          if (d.data().estado !== 'cancelada') {
+            await updateDoc(doc(db,'agendamentosNutri',d.id), {
+              estado: 'cancelada',
+              canceladoPor: 'admin',
+              canceladoEm: serverTimestamp()
+            });
+          }
+        }
+      }
       await updateDoc(doc(db,'users',_conviteUid), { agendamentoConvite: null });
       _conviteSlots = [];
       renderConviteSlotsList();
