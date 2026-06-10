@@ -598,8 +598,17 @@
             </div>
           </div>
 
+          <div id="convite-aceite-box" style="display:none;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.22);border-radius:10px;padding:14px 16px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">✓ Cliente aceitou a nova data</div>
+            <div id="convite-aceite-detalhe" style="font-size:13px;color:var(--txt-2);margin-bottom:12px;"></div>
+            <div class="save-bar">
+              <button type="button" class="ef-btn" id="convite-aceite-dismiss-btn">Marcar como visto</button>
+              <span class="save-msg" id="msg-convite-aceite"></span>
+            </div>
+          </div>
+
           <div id="convite-agendado-box" style="display:none;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.22);border-radius:10px;padding:14px 16px;margin-bottom:14px;">
-            <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">✓ Consulta marcada</div>
+            <div id="convite-agendado-titulo" style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:2px;">✓ Consulta marcada</div>
             <div id="convite-agendado-detalhe" style="font-size:13px;color:var(--txt-2);margin-bottom:12px;"></div>
             <div class="form-row" style="align-items:flex-end;">
               <div class="form-field" style="flex:0 0 150px;">
@@ -615,6 +624,7 @@
               </div>
             </div>
             <div class="save-bar" style="margin-top:12px;">
+              <button type="button" class="ef-btn" id="convite-aceitar-sugestao-btn" style="display:none;">Aceitar sugestão</button>
               <button type="button" class="ef-btn" id="convite-cancel-btn">Cancelar convite</button>
               <button type="button" class="ef-btn" id="convite-edit-btn">Editar / enviar novo convite</button>
               <span class="save-msg" id="msg-convite-agendado"></span>
@@ -1666,6 +1676,8 @@
     agendadoBox.style.display = 'none';
     formFields.style.display = '';
     document.getElementById('convite-cancelada-box').style.display = 'none';
+    document.getElementById('convite-aceite-box').style.display = 'none';
+    document.getElementById('convite-aceitar-sugestao-btn').style.display = 'none';
     try {
       const snap = await getDoc(doc(db,'users',uid));
       const dados = snap.exists() ? snap.data() : {};
@@ -1677,6 +1689,13 @@
           `${tipoLbl} · estava marcada para ${dt ? fmtDate(cc.data) : '-'}${cc.hora ? ' às ' + cc.hora : ''}`;
         document.getElementById('convite-cancelada-box').style.display = 'block';
       }
+      const rc = dados.respostaCliente;
+      if (rc && rc.tipo === 'aceite' && !rc.visto) {
+        const dt = rc.data ? new Date(rc.data + 'T00:00:00') : null;
+        document.getElementById('convite-aceite-detalhe').textContent =
+          `O cliente aceitou a consulta para ${dt ? fmtDate(rc.data) : '-'}${rc.hora ? ' às ' + rc.hora : ''}.`;
+        document.getElementById('convite-aceite-box').style.display = 'block';
+      }
       const convite = dados.agendamentoConvite;
       if (!convite) {
         status.textContent = 'Sem convite enviado.';
@@ -1686,14 +1705,40 @@
       document.getElementById('convite-tipo').value = convite.tipo || 'nutricao';
       _conviteSlots = (convite.slots || []).map(s => ({ data: s.data, horas: [...(s.horas||[])] }));
       renderConviteSlotsList();
+      const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
+      const titEl = document.getElementById('convite-agendado-titulo');
       if (convite.estado === 'agendado') {
         const esc = convite.escolha || {};
-        const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
         status.textContent = '';
+        titEl.textContent = '✓ Consulta marcada';
+        titEl.style.color = 'var(--green)';
         document.getElementById('convite-agendado-detalhe').textContent =
           `${tipoLbl} · ${fmtDate(esc.data)} às ${esc.hora || '-'}`;
         document.getElementById('convite-resched-data').value = esc.data || '';
         document.getElementById('convite-resched-hora').value = esc.hora || '';
+        agendadoBox.style.display = 'block';
+        formFields.style.display = 'none';
+      } else if (convite.estado === 'alterado_admin') {
+        const esc = convite.escolha || {};
+        status.textContent = '';
+        titEl.textContent = '⏳ Aguarda confirmação do cliente';
+        titEl.style.color = 'var(--amber)';
+        document.getElementById('convite-agendado-detalhe').textContent =
+          `${tipoLbl} · nova data proposta: ${fmtDate(esc.data)} às ${esc.hora || '-'} (aguarda resposta do cliente)`;
+        document.getElementById('convite-resched-data').value = esc.data || '';
+        document.getElementById('convite-resched-hora').value = esc.hora || '';
+        agendadoBox.style.display = 'block';
+        formFields.style.display = 'none';
+      } else if (convite.estado === 'sugerido_cliente') {
+        const esc = convite.escolha || {};
+        status.textContent = '';
+        titEl.textContent = '↩ Cliente sugeriu nova data';
+        titEl.style.color = 'var(--amber)';
+        document.getElementById('convite-agendado-detalhe').textContent =
+          `${tipoLbl} · sugestão do cliente: ${fmtDate(esc.data)} às ${esc.hora || '-'}`;
+        document.getElementById('convite-resched-data').value = esc.data || '';
+        document.getElementById('convite-resched-hora').value = esc.hora || '';
+        document.getElementById('convite-aceitar-sugestao-btn').style.display = '';
         agendadoBox.style.display = 'block';
         formFields.style.display = 'none';
       } else {
@@ -1817,14 +1862,20 @@
 
       // Atualizar convite + notificar cliente
       await updateDoc(doc(db,'users',_conviteUid), {
+        'agendamentoConvite.estado': 'alterado_admin',
         'agendamentoConvite.escolha': { data: novaData, hora: novaHora },
-        consultaAlterada: { tipo: convite.tipo, data: novaData, hora: novaHora, alteradoEm: serverTimestamp() }
+        consultaAlterada: { tipo: convite.tipo, data: novaData, hora: novaHora, alteradoEm: serverTimestamp() },
+        respostaCliente: null
       });
 
+      const titEl = document.getElementById('convite-agendado-titulo');
+      titEl.textContent = '⏳ Aguarda confirmação do cliente';
+      titEl.style.color = 'var(--amber)';
+      document.getElementById('convite-aceitar-sugestao-btn').style.display = 'none';
       document.getElementById('convite-agendado-detalhe').textContent =
-        `${tipoLbl} · ${fmtDate(novaData)} às ${novaHora}`;
+        `${tipoLbl} · nova data proposta: ${fmtDate(novaData)} às ${novaHora} (aguarda resposta do cliente)`;
       msg.style.color = 'var(--green)';
-      msg.textContent = '✓ Consulta reagendada e cliente notificado';
+      msg.textContent = '✓ Nova data proposta e cliente notificado';
     } catch(e) {
       console.error(e);
       msg.style.color = 'var(--red)';
@@ -1838,6 +1889,57 @@
     document.getElementById('convite-agendado-box').style.display = 'none';
     document.getElementById('convite-form-fields').style.display = '';
     document.getElementById('convite-status').textContent = 'A editar convite — o convite atual será substituído ao enviar.';
+  });
+
+  document.getElementById('convite-aceitar-sugestao-btn').addEventListener('click', async () => {
+    if (!_conviteUid) return;
+    const msg = document.getElementById('msg-convite-agendado');
+    const btn = document.getElementById('convite-aceitar-sugestao-btn');
+    btn.disabled = true;
+    try {
+      await auth.currentUser?.getIdToken(true);
+      const snap = await getDoc(doc(db,'users',_conviteUid));
+      const convite = snap.data().agendamentoConvite;
+      const esc = convite.escolha || {};
+      const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
+
+      await updateDoc(doc(db,'users',_conviteUid), {
+        'agendamentoConvite.estado': 'agendado',
+        respostaCliente: null
+      });
+
+      const titEl = document.getElementById('convite-agendado-titulo');
+      titEl.textContent = '✓ Consulta marcada';
+      titEl.style.color = 'var(--green)';
+      document.getElementById('convite-agendado-detalhe').textContent =
+        `${tipoLbl} · ${fmtDate(esc.data)} às ${esc.hora || '-'}`;
+      btn.style.display = 'none';
+      msg.style.color = 'var(--green)';
+      msg.textContent = '✓ Sugestão aceite — consulta confirmada';
+    } catch(e) {
+      console.error(e);
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Erro ao aceitar sugestão.';
+    }
+    btn.disabled = false;
+    setTimeout(() => msg.textContent = '', 4000);
+  });
+
+  document.getElementById('convite-aceite-dismiss-btn').addEventListener('click', async () => {
+    if (!_conviteUid) return;
+    const btn = document.getElementById('convite-aceite-dismiss-btn');
+    const msg = document.getElementById('msg-convite-aceite');
+    btn.disabled = true;
+    try {
+      await auth.currentUser?.getIdToken(true);
+      await updateDoc(doc(db,'users',_conviteUid), { 'respostaCliente.visto': true });
+      document.getElementById('convite-aceite-box').style.display = 'none';
+    } catch(e) {
+      console.error(e);
+      msg.style.color = 'var(--red)';
+      msg.textContent = 'Erro.';
+      btn.disabled = false;
+    }
   });
 
   // ── Marcações feitas pelo cliente (agendamentosNutri) ──────────────────

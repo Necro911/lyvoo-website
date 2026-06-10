@@ -1035,6 +1035,24 @@
       </div>
     </div>
 
+    <!-- Banner: admin propôs nova data para a consulta -->
+    <div id="reagendar-banner" style="display:none; margin:0 32px 20px;">
+      <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(251,191,36,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(251,191,36,0.28); border-radius:16px; padding:20px 24px; flex-wrap:wrap;">
+        <div style="width:48px;height:48px;border-radius:14px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--amber);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div style="flex:1;min-width:220px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;">Nova data proposta</div>
+          <div id="reagendar-banner-title" style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">A sua equipa Lyvoo propôs uma nova data para a sua consulta</div>
+          <div id="reagendar-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;"></div>
+        </div>
+        <div style="display:flex; gap:10px; flex-shrink:0;">
+          <a href="#" id="reagendar-aceitar-btn" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#0A1F0A;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Aceitar</a>
+          <a href="#" id="reagendar-sugerir-btn" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Sugerir outra data</a>
+        </div>
+      </div>
+    </div>
+
     <!-- CTA: Agendar consulta de nutrição (estado 4, sem consulta agendada) -->
     <div id="nutri-cta" style="display:none; margin:0 32px 20px;">
       <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px;">
@@ -1631,6 +1649,7 @@
     }
     sub.textContent = 'Escolha um dos horários disponibilizados pela sua equipa Lyvoo.';
     document.getElementById('bk-overlay').dataset.tipo = tipo;
+    document.getElementById('bk-overlay').dataset.mode = 'novo';
     document.getElementById('bk-msg').textContent = '';
     document.getElementById('bk-msg').className = 'bk-msg';
     _bkSelectedDate = null;
@@ -1638,6 +1657,7 @@
     _bkConviteSlots = [];
     document.getElementById('bk-confirm').disabled = true;
     document.getElementById('bk-confirm').style.display = '';
+    document.getElementById('bk-confirm').textContent = 'Confirmar marcação';
     document.getElementById('bk-days').innerHTML = '';
     document.getElementById('bk-times').innerHTML = '';
     document.getElementById('bk-overlay').classList.add('open');
@@ -1660,6 +1680,58 @@
     document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
     await bkRenderDays(convite);
   };
+
+  window.abrirSugestaoNovaData = async function() {
+    const convite = window._convite;
+    if (!convite) return;
+    const tipo = convite.tipo || 'nutricao';
+    const titulo = document.getElementById('bk-title');
+    const sub = document.getElementById('bk-sub');
+    titulo.textContent = 'Sugerir nova data';
+    sub.textContent = 'Escolha uma das datas disponibilizadas pela sua equipa Lyvoo.';
+    document.getElementById('bk-overlay').dataset.tipo = tipo;
+    document.getElementById('bk-overlay').dataset.mode = 'sugestao';
+    document.getElementById('bk-msg').textContent = '';
+    document.getElementById('bk-msg').className = 'bk-msg';
+    _bkSelectedDate = null;
+    _bkSelectedTime = null;
+    _bkConviteSlots = [];
+    document.getElementById('bk-confirm').disabled = true;
+    document.getElementById('bk-confirm').style.display = '';
+    document.getElementById('bk-confirm').textContent = 'Sugerir esta data';
+    document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
+    document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
+    document.getElementById('bk-overlay').classList.add('open');
+    await bkRenderDays(convite);
+  };
+
+  document.getElementById('reagendar-aceitar-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!_currentUser || !window._convite?.escolha) return;
+    const btn = e.currentTarget;
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0.6';
+    try {
+      const esc = window._convite.escolha;
+      await auth.currentUser?.getIdToken(true);
+      await updateDoc(doc(db, 'users', _currentUser.uid), {
+        'agendamentoConvite.estado': 'agendado',
+        respostaCliente: { tipo: 'aceite', data: esc.data || null, hora: esc.hora || null, em: serverTimestamp(), visto: false }
+      });
+      window._convite.estado = 'agendado';
+      document.getElementById('reagendar-banner').style.display = 'none';
+      carregarDados(_currentUser);
+    } catch (err) {
+      console.error('Erro ao aceitar nova data:', err);
+      btn.style.pointerEvents = '';
+      btn.style.opacity = '';
+    }
+  });
+
+  document.getElementById('reagendar-sugerir-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    abrirSugestaoNovaData();
+  });
 
   function fecharAgendamento() {
     document.getElementById('bk-overlay').classList.remove('open');
@@ -1752,9 +1824,10 @@
     const msg = document.getElementById('bk-msg');
     const tipo = document.getElementById('bk-overlay').dataset.tipo || 'nutricao';
     const titulo = tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de Nutrição';
+    const modo = document.getElementById('bk-overlay').dataset.mode || 'novo';
     btn.disabled = true;
     msg.className = 'bk-msg';
-    msg.innerHTML = '<span class="bk-spinner"></span> A confirmar marcação…';
+    msg.innerHTML = '<span class="bk-spinner"></span> A confirmar…';
     try {
       // Verificar novamente disponibilidade (evitar conflitos de última hora)
       const checkSnap = await getDocs(query(
@@ -1769,6 +1842,31 @@
         await bkRenderDays(window._convite);
         return;
       }
+
+      if (modo === 'sugestao') {
+        const atual = (window._consultasList || []).find(c => c.source === 'agendamento' && c.tipo === tipo && c.estado !== 'cancelada');
+        if (atual?.id) {
+          await updateDoc(doc(db, 'agendamentosNutri', atual.id), { data: _bkSelectedDate, hora: _bkSelectedTime });
+        }
+        await updateDoc(doc(db, 'users', _currentUser.uid), {
+          'agendamentoConvite.estado': 'sugerido_cliente',
+          'agendamentoConvite.escolha': { data: _bkSelectedDate, hora: _bkSelectedTime },
+          respostaCliente: { tipo: 'sugestao', data: _bkSelectedDate, hora: _bkSelectedTime, em: serverTimestamp(), visto: false }
+        });
+        if (window._convite) {
+          window._convite.estado = 'sugerido_cliente';
+          window._convite.escolha = { data: _bkSelectedDate, hora: _bkSelectedTime };
+        }
+        document.getElementById('reagendar-banner').style.display = 'none';
+        msg.className = 'bk-msg ok';
+        msg.textContent = '✓ Sugestão enviada à sua equipa Lyvoo!';
+        setTimeout(() => {
+          fecharAgendamento();
+          carregarDados(_currentUser);
+        }, 1400);
+        return;
+      }
+
       const nome = window._planoNome || _currentUser.email || '';
       await addDoc(collection(db, 'agendamentosNutri'), {
         uid: _currentUser.uid,
@@ -2995,7 +3093,7 @@
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
-    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner'].forEach(id => {
+    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner','reagendar-banner'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
@@ -3181,6 +3279,19 @@
           const btn = document.getElementById('convite-banner-btn');
           btn.onclick = (e) => { e.preventDefault(); abrirAgendamento(tipo); };
           conviteBanner.style.display = 'flex';
+        }
+      }
+
+      // Banner: a equipa Lyvoo propôs uma nova data para a consulta já marcada
+      if (window._convite?.estado === 'alterado_admin' && window._convite.escolha) {
+        const banner = document.getElementById('reagendar-banner');
+        if (banner) {
+          const esc = window._convite.escolha;
+          const ed = esc.data ? new Date(esc.data + 'T00:00:00') : null;
+          const dataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '-';
+          document.getElementById('reagendar-banner-sub').textContent =
+            `Nova proposta: ${dataStr}${esc.hora ? ' às ' + esc.hora : ''}. Pode aceitar ou sugerir outra data.`;
+          banner.style.display = 'flex';
         }
       }
 
