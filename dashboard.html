@@ -3038,7 +3038,9 @@
 
     // Guardar perfil (onclick: nunca duplica mesmo que o auth dispare de novo)
     document.getElementById('pf-save-btn').onclick = async () => {
+      const msg = document.getElementById('pf-msg');
       try {
+        await auth.currentUser?.getIdToken(true); // garantir token fresco
         await updateDoc(doc(db, 'users', user.uid), {
           firstName: document.getElementById('pf-first').value.trim(),
           lastName:  document.getElementById('pf-last').value.trim(),
@@ -3046,11 +3048,13 @@
           dob:       document.getElementById('pf-dob').value,
           atualizadoEm: serverTimestamp()
         });
-        const msg = document.getElementById('pf-msg');
+        msg.style.color = 'var(--green)';
         msg.textContent = '✓ Guardado com sucesso';
         setTimeout(() => msg.textContent = '', 3000);
       } catch(e) {
-        document.getElementById('pf-msg').textContent = 'Erro ao guardar. Tente novamente.';
+        console.error('Erro ao guardar perfil:', e);
+        msg.style.color = 'var(--red)';
+        msg.textContent = `Erro ao guardar${e?.code ? ' (' + e.code + ')' : ''}. Tente novamente.`;
       }
     };
   });
