@@ -520,6 +520,8 @@
     .ring-val small { font-size: 14px; color: var(--txt-3); font-weight: 600; }
     .ring-sub { font-size: 11px; color: var(--txt-2); margin-top: 4px; }
     .ring-sub.good { color: var(--green); font-weight: 600; }
+    .ring-sub.warn { color: var(--amber); font-weight: 600; }
+    .ring-sub.crit { color: var(--red); font-weight: 600; }
 
     /* checklist */
     .checklist { flex: 1; display: flex; flex-direction: column; gap: 14px; }
@@ -599,6 +601,7 @@
     .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 500; }
     .bio-trend { font-size: 11px; color: var(--txt-2); margin-top: 2px; }
     .bio-trend.up { color: var(--green); }
+    .bio-trend.down { color: var(--cyan); }
     .bio-spark { margin-top: 10px; }
 
     /* upcoming list */
@@ -1028,7 +1031,7 @@
           <div class="ring">
             <svg width="132" height="132">
               <circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
-              <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="204.1"/>
+              <circle id="prog-ring-fill" cx="66" cy="66" r="56" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="204.1"/>
               <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#0D7A87"/></linearGradient></defs>
             </svg>
             <div class="ring-center"><div class="ring-val" id="prog-pct">42<small>%</small></div><div class="ring-sub">progresso 6 meses</div></div>
@@ -1040,7 +1043,7 @@
             <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Reavaliação</div><div class="check-state">Em breve</div></div></div>
           </div>
         </div>
-        <a href="#" class="btn-ghost">Ver plano completo</a>
+        <a href="#" class="btn-ghost" onclick="navSection('plano-alimentar');return false;">Ver plano completo</a>
       </div>
 
       <!-- Health score -->
@@ -1050,10 +1053,10 @@
           <div class="ring">
             <svg width="132" height="132">
               <circle cx="66" cy="66" r="56" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
-              <circle cx="66" cy="66" r="56" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+              <circle id="hs-ring-fill" cx="66" cy="66" r="56" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
               <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
             </svg>
-            <div class="ring-center"><div class="ring-val">-<small>/100</small></div><div class="ring-sub">Aguarda análise</div></div>
+            <div class="ring-center"><div class="ring-val" id="hs-val">-<small>/100</small></div><div class="ring-sub" id="hs-sub">Aguarda análise</div></div>
           </div>
         </div>
         <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;">Ver relatório</a>
@@ -1576,9 +1579,14 @@
 
     const convite = window._convite;
     if (!convite || convite.tipo !== tipo || convite.estado !== 'pendente' || !(convite.slots||[]).length) {
+      let aviso = 'A sua equipa Lyvoo ainda não disponibilizou horários para esta consulta. Vai receber uma notificação assim que estiverem disponíveis.';
+      if (convite && convite.tipo === tipo && convite.estado === 'agendado' && convite.escolha?.data) {
+        const ed = new Date(convite.escolha.data + 'T00:00:00');
+        aviso = `Já tem esta consulta agendada para ${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}${convite.escolha.hora ? ' às ' + convite.escolha.hora : ''}.`;
+      }
       document.getElementById('bk-days').innerHTML = '';
       document.getElementById('bk-times').innerHTML =
-        '<div class="bk-empty" style="grid-column:1/-1;">A sua equipa Lyvoo ainda não disponibilizou horários para esta consulta. Vai receber uma notificação assim que estiverem disponíveis.</div>';
+        `<div class="bk-empty" style="grid-column:1/-1;">${aviso}</div>`;
       document.getElementById('bk-confirm').style.display = 'none';
       return;
     }
@@ -2109,7 +2117,9 @@
   function renderHistoricoSelector(historico) {
     const sub = document.getElementById('bio-sub');
     if (!sub) return;
+    document.getElementById('bio-hist-selector')?.remove();
     const wrap = document.createElement('div');
+    wrap.id = 'bio-hist-selector';
     wrap.style.cssText = 'display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px';
     const label = document.createElement('span');
     label.style.cssText = 'font-size:12px;color:var(--txt-3)';
@@ -2454,8 +2464,9 @@
     const dashList  = document.getElementById('dash-appt-list');
     const dashEmpty = document.getElementById('dash-appt-empty');
     const proximas  = sorted.filter(c => c.data && new Date(c.data + 'T00:00:00') >= today).slice(0, 3);
+    if (dashList) dashList.querySelectorAll('.appt-row').forEach(r => r.remove());
+    if (dashEmpty) dashEmpty.style.display = proximas.length ? 'none' : '';
     if (dashList && proximas.length) {
-      if (dashEmpty) dashEmpty.style.display = 'none';
       const ICONS = {
         nutri:    '<path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
         medic:    '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
@@ -2485,10 +2496,10 @@
 
     // Sidebar — próxima consulta
     const proxima = proximas[0];
+    const sbCard = document.getElementById('sb-appt-card');
+    if (sbCard) sbCard.style.display = proxima ? 'block' : 'none';
     if (proxima) {
       const pd   = new Date(proxima.data + 'T00:00:00');
-      const card = document.getElementById('sb-appt-card');
-      if (card) card.style.display = 'block';
       const sbt = document.getElementById('sb-appt-title');
       const sbd = document.getElementById('sb-appt-date');
       const sbh = document.getElementById('sb-appt-time');
@@ -2516,7 +2527,7 @@
       return `<div class="bio-card">
         <div class="bio-top"><span class="bio-name">${r.nome}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span></div>
         <div class="bio-val">${r.valor} <small>${r.unidade||''}</small></div>
-        ${r.delta?`<div class="bio-trend up">${r.delta}</div>`:'<div class="bio-trend">-</div>'}
+        ${r.delta?`<div class="bio-trend ${deltaDir}">${r.delta}</div>`:'<div class="bio-trend">-</div>'}
       </div>`;
     }).join('');
   }
@@ -2548,11 +2559,11 @@
     if (!relatorio) return;
     const empty = document.getElementById('rel-empty');
     const grid  = document.getElementById('rel-score-grid');
+    if (empty && (relatorio.score || relatorio.notas || relatorio.url)) empty.style.display = 'none';
 
     // Score ring
     const score = relatorio.score;
     if (score) {
-      if (empty) empty.style.display = 'none';
       if (grid)  grid.style.display  = 'flex';
       const circumference = 402.1;
       const offset = circumference - (score / 100) * circumference;
@@ -2608,31 +2619,23 @@
     const cls = relatorio.classificacao || 'Bom';
     const circumference = 351.9;
     const offset = circumference - (scoreVal / 100) * circumference;
-    const ringEl = document.querySelector('#view-resultados .ring svg circle:nth-child(2)');
+    const ringEl = document.getElementById('hs-ring-fill');
     if (ringEl) ringEl.setAttribute('stroke-dashoffset', offset.toFixed(1));
-    const valEl = document.querySelector('#view-resultados .ring-center .ring-val');
+    const valEl = document.getElementById('hs-val');
     if (valEl) valEl.innerHTML = `${scoreVal}<small>/100</small>`;
-    const subEl = document.querySelector('#view-resultados .ring-center .ring-sub');
-    if (subEl) { subEl.textContent = cls; subEl.className = 'ring-sub good'; }
+    const subEl = document.getElementById('hs-sub');
+    if (subEl) { subEl.textContent = cls; subEl.className = 'ring-sub ' + (scoreVal >= 70 ? 'good' : scoreVal >= 50 ? 'warn' : 'crit'); }
 
     // Progresso
     if (relatorio.progresso) {
       const pctEl = document.getElementById('prog-pct');
       if (pctEl) pctEl.innerHTML = `${relatorio.progresso}<small>%</small>`;
-      const progCircle = document.querySelector('#view-resultados .ring:first-child circle:nth-child(2)');
+      const progCircle = document.getElementById('prog-ring-fill');
       if (progCircle) {
-        const off = circumference - (relatorio.progresso / 100) * circumference;
+        const c = 351.9;
+        const off = c - (relatorio.progresso / 100) * c;
         progCircle.setAttribute('stroke-dashoffset', off.toFixed(1));
       }
-    }
-
-    // Link relatório
-    if (relatorio.url) {
-      document.querySelectorAll('#view-resultados .btn-ghost').forEach(btn => {
-        if (btn.textContent.includes('plano') || btn.textContent.includes('análise')) {
-          btn.href = relatorio.url; btn.target = '_blank';
-        }
-      });
     }
   }
 
@@ -2818,8 +2821,9 @@
               document.getElementById('bell-dot').style.display = 'none';
               document.querySelectorAll('.bell-notif.unread').forEach(el => el.classList.remove('unread'));
             };
-            closeBtn?.addEventListener('click', () => { banner.style.display = 'none'; marcarVisto(); });
-            setTimeout(() => { banner.style.display = 'none'; marcarVisto(); }, 10000);
+            if (closeBtn) closeBtn.onclick = () => { banner.style.display = 'none'; marcarVisto(); };
+            clearTimeout(window._novidadesTimer);
+            window._novidadesTimer = setTimeout(() => { banner.style.display = 'none'; marcarVisto(); }, 10000);
           }
         }
       }
@@ -2875,9 +2879,13 @@
         const banner = document.getElementById('results-banner');
         if (banner) banner.style.display = 'flex';
 
-        // Progress: 80% + checklist atualizado
-        const pctEl = document.getElementById('prog-pct');
-        if (pctEl) pctEl.innerHTML = '80<small>%</small>';
+        // Progress: 80% (fallback quando o admin não definiu progresso) + checklist
+        if (!d.relatorio?.progresso) {
+          const pctEl = document.getElementById('prog-pct');
+          if (pctEl) pctEl.innerHTML = '80<small>%</small>';
+          const pr = document.getElementById('prog-ring-fill');
+          if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * 0.2).toFixed(1));
+        }
 
         const checklist = document.getElementById('prog-checklist');
         if (checklist) checklist.innerHTML = `
@@ -2913,8 +2921,12 @@
 
       // Estado 5: reavaliação
       if (estadoNum === 5) {
-        const pctEl = document.getElementById('prog-pct');
-        if (pctEl) pctEl.innerHTML = '90<small>%</small>';
+        if (!d.relatorio?.progresso) {
+          const pctEl = document.getElementById('prog-pct');
+          if (pctEl) pctEl.innerHTML = '90<small>%</small>';
+          const pr = document.getElementById('prog-ring-fill');
+          if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * 0.1).toFixed(1));
+        }
 
         // Mostrar banner de reavaliação
         const reevalBanner = document.getElementById('reeval-banner');
@@ -3024,8 +3036,8 @@
       setTimeout(() => { pageMask.style.display = 'none'; }, 300);
     }
 
-    // Guardar perfil (listener registado uma só vez)
-    document.getElementById('pf-save-btn').addEventListener('click', async () => {
+    // Guardar perfil (onclick: nunca duplica mesmo que o auth dispare de novo)
+    document.getElementById('pf-save-btn').onclick = async () => {
       try {
         await updateDoc(doc(db, 'users', user.uid), {
           firstName: document.getElementById('pf-first').value.trim(),
