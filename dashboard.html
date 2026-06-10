@@ -743,7 +743,7 @@
     <!-- TOPBAR -->
     <div class="topbar">
       <div class="greeting">
-        <h1 id="greeting">Olá 👋</h1>
+        <h1 id="greeting">Olá</h1>
         <span id="pageTitle" style="display:none"></span>
         <p>Acompanhe a sua saúde. Melhore o seu futuro.</p>
       </div>
@@ -2513,6 +2513,7 @@
     let planoNome = null;
     let estadoNum = 1;
     let d = {};
+    let consultasFinal = [];
 
     try {
       const snap = await getDoc(doc(db, 'users', user.uid));
@@ -2531,7 +2532,7 @@
         if (d.suplementacao)  renderSupplementos(d.suplementacao);
         // Combinar consultas geridas pela equipa (d.consultas) com marcações
         // feitas pelo próprio cliente via modal de agendamento
-        let consultasFinal = d.consultas || [];
+        consultasFinal = d.consultas || [];
         try {
           const agSnaps = await getDocs(query(
             collection(db, 'agendamentosNutri'),
@@ -2747,7 +2748,7 @@
 
     window._estadoActual = estadoNum;
     window._obNome = primeiro;
-    document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro} 👋`;
+    document.getElementById('greeting').textContent = `${saudacao()}, ${primeiro}`;
     document.getElementById('navName').textContent  = nome;
     document.getElementById('navAvatar').textContent = iniciaisDe(nome);
     document.getElementById('navPlan').textContent = planoNome || 'Programa Lyvoo';
