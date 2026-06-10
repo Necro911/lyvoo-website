@@ -746,6 +746,26 @@
     .bk-msg { font-size: 13px; margin-top: 12px; text-align: center; min-height: 18px; }
     .bk-msg.ok { color: var(--green, #22C55E); }
     .bk-msg.err { color: var(--red, #E53935); }
+
+    /* ── Modal: Detalhe da consulta ──────────────────────────────────── */
+    .cd-row { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; }
+    .cd-row:last-of-type { border-bottom:none; }
+    .cd-label { color: var(--txt-3); }
+    .cd-value { color: var(--txt); font-weight:600; text-align:right; }
+    .cd-enter-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      background: var(--cyan, #3DD9E8); color:#06262A; font-weight:700; font-size:13.5px;
+      padding:12px; border-radius:10px; text-decoration:none; margin-top:18px; transition:opacity 0.2s;
+    }
+    .cd-enter-btn:hover { opacity:0.85; }
+    .cd-cancel-btn {
+      width:100%; display:flex; align-items:center; justify-content:center; gap:8px;
+      background: rgba(248,113,113,0.08); color: var(--red, #E53935); border:1px solid rgba(248,113,113,0.2);
+      font-weight:700; font-size:13.5px; padding:12px; border-radius:10px; cursor:pointer; margin-top:10px; transition:opacity 0.2s;
+    }
+    .cd-cancel-btn:hover { opacity:0.85; }
+    .cd-cancel-btn:disabled { opacity:0.4; cursor:not-allowed; }
+    .cd-note { font-size:12px; color:var(--txt-3); margin-top:14px; line-height:1.6; }
     .bk-spinner {
       display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2);
       border-top-color: var(--cyan, #3DD9E8); border-radius: 50%; animation: bk-spin 0.7s linear infinite;
@@ -1633,6 +1653,72 @@
   document.getElementById('bk-overlay').addEventListener('click', (e) => {
     if (e.target.id === 'bk-overlay') fecharAgendamento();
   });
+
+  // ── Modal: Detalhe / cancelamento de consulta ────────────────────────
+  function fecharDetalheConsulta() {
+    document.getElementById('cd-overlay').classList.remove('open');
+  }
+  document.getElementById('cd-close').addEventListener('click', fecharDetalheConsulta);
+  document.getElementById('cd-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'cd-overlay') fecharDetalheConsulta();
+  });
+
+  window.abrirDetalheConsulta = function(idx) {
+    const c = (window._consultasList || [])[idx];
+    if (!c) return;
+    const d = c.data ? new Date(c.data + 'T00:00:00') : null;
+    document.getElementById('cd-title').textContent = c.titulo || 'Consulta';
+    document.getElementById('cd-msg').textContent = '';
+    document.getElementById('cd-msg').className = 'bk-msg';
+
+    let rows = '';
+    if (d) rows += `<div class="cd-row"><span class="cd-label">Data</span><span class="cd-value">${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}</span></div>`;
+    if (c.hora) rows += `<div class="cd-row"><span class="cd-label">Hora</span><span class="cd-value">${c.hora}</span></div>`;
+    rows += `<div class="cd-row"><span class="cd-label">Com</span><span class="cd-value">${c.medico || 'Nutricionista'}</span></div>`;
+    rows += `<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-value">${c.estado === 'confirmada' ? 'Confirmada' : 'Agendada'}</span></div>`;
+
+    let extra = '';
+    if (c.link) {
+      extra += `<a href="${c.link}" target="_blank" rel="noopener" class="cd-enter-btn">Entrar na consulta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
+    } else {
+      extra += `<div class="cd-note">O link da videochamada será disponibilizado aqui antes da consulta.</div>`;
+    }
+
+    if (c.source === 'agendamento' && c.id) {
+      extra += `<button class="cd-cancel-btn" id="cd-cancel-btn">Cancelar consulta</button>`;
+    } else {
+      extra += `<div class="cd-note">Para alterar ou cancelar esta consulta, contacte hello@lyvoo.pt.</div>`;
+    }
+
+    document.getElementById('cd-body').innerHTML = rows + extra;
+
+    const cancelBtn = document.getElementById('cd-cancel-btn');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', async () => {
+        if (!confirm('Tem a certeza que quer cancelar esta consulta?')) return;
+        cancelBtn.disabled = true;
+        const msg = document.getElementById('cd-msg');
+        try {
+          await auth.currentUser?.getIdToken(true);
+          await updateDoc(doc(db, 'agendamentosNutri', c.id), {
+            estado: 'cancelada',
+            canceladoPor: 'cliente',
+            canceladoEm: serverTimestamp()
+          });
+          msg.textContent = '✓ Consulta cancelada.';
+          msg.className = 'bk-msg ok';
+          setTimeout(() => { fecharDetalheConsulta(); carregarDados(_currentUser); }, 1200);
+        } catch (e) {
+          console.error(e);
+          msg.textContent = 'Erro ao cancelar. Tente novamente.';
+          msg.className = 'bk-msg err';
+          cancelBtn.disabled = false;
+        }
+      });
+    }
+
+    document.getElementById('cd-overlay').classList.add('open');
+  };
 
   document.getElementById('bk-confirm').addEventListener('click', async () => {
     if (!_bkSelectedDate || !_bkSelectedTime || !_currentUser) return;
@@ -2532,7 +2618,8 @@
     const sorted = [...list].filter(c => c.estado !== 'cancelada')
       .sort((a,b) => (a.data||'').localeCompare(b.data||''));
     if (!sorted.length) return;
-    container.innerHTML = sorted.map(c => {
+    window._consultasList = sorted;
+    container.innerHTML = sorted.map((c, idx) => {
       const d = c.data ? new Date(c.data + 'T00:00:00') : null;
       const isPast = (d && d < today) || c.estado === 'realizada';
       const day = d ? d.getDate() : '-';
@@ -2547,10 +2634,11 @@
         : `<div class="consult-right">
             ${c.hora ? `<div class="consult-hour">${c.hora}</div>` : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
             ${c.link
-              ? `<a href="${c.link}" target="_blank" rel="noopener" class="consult-enter">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
+              ? `<a href="${c.link}" target="_blank" rel="noopener" class="consult-enter" onclick="event.stopPropagation()">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
               : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
           </div>`;
-      return `<div class="consult-row ${isPast ? '' : 'upcoming'}">
+      const clickAttr = isPast ? '' : ` onclick="abrirDetalheConsulta(${idx})" style="cursor:pointer"`;
+      return `<div class="consult-row ${isPast ? '' : 'upcoming'}"${clickAttr}>
         <div class="consult-date"><div class="consult-day">${day}</div><div class="consult-month">${mon}</div></div>
         <div class="consult-info">
           <div class="consult-title">${c.titulo}</div>
@@ -2921,7 +3009,7 @@
         if (d.suplementacao)  renderSupplementos(d.suplementacao);
         // Combinar consultas geridas pela equipa (d.consultas) com marcações
         // feitas pelo próprio cliente via modal de agendamento
-        consultasFinal = d.consultas || [];
+        consultasFinal = (d.consultas || []).map(c => ({ ...c, source: 'manual' }));
         try {
           const agSnaps = await getDocs(query(
             collection(db, 'agendamentosNutri'),
@@ -2929,7 +3017,7 @@
           ));
           const minhasMarcacoes = agSnaps.docs.map(s => {
             const a = s.data();
-            return { titulo: a.titulo || 'Consulta de Nutrição', data: a.data, hora: a.hora, medico: 'Nutricionista', estado: a.estado || 'agendada' };
+            return { id: s.id, source: 'agendamento', titulo: a.titulo || 'Consulta de Nutrição', data: a.data, hora: a.hora, link: a.link, medico: 'Nutricionista', estado: a.estado || 'agendada' };
           }).filter(m => m.estado !== 'cancelada');
           // Evitar duplicados (mesma data+hora+titulo já presentes em d.consultas)
           const existentes = new Set((d.consultas||[]).map(c => `${c.titulo}|${c.data}|${c.hora}`));
@@ -3255,6 +3343,17 @@
 
     <button class="bk-confirm-btn" id="bk-confirm" disabled>Confirmar marcação</button>
     <div class="bk-msg" id="bk-msg"></div>
+  </div>
+</div>
+
+<div class="bk-overlay" id="cd-overlay">
+  <div class="bk-modal">
+    <button class="bk-close" id="cd-close" aria-label="Fechar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+    </button>
+    <div class="bk-title" id="cd-title">Consulta</div>
+    <div id="cd-body"></div>
+    <div class="bk-msg" id="cd-msg"></div>
   </div>
 </div>
 
