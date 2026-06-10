@@ -1301,7 +1301,7 @@
         <table class="bio-tbl">
           <colgroup><col style="width:20%"><col style="width:10%"><col style="width:10%"><col style="width:18%"><col style="width:12%"><col style="width:14%"><col style="width:10%"><col style="width:6%"></colgroup>
           <thead><tr>
-            <th>Biomarcador</th><th>Valor</th><th>Unidade</th><th>Referência</th><th>Tag</th><th>Δ (variação)</th><th title="Mostrar no painel do cliente">⭐ Destaque</th><th></th>
+            <th>Biomarcador</th><th>Valor</th><th>Unidade</th><th>Referência</th><th title="Zona ótima Lyvoo (opcional) - se preenchida, o estado e o score são avaliados contra esta zona">Intervalo ótimo</th><th>Tag</th><th>Δ (variação)</th><th title="Mostrar no painel do cliente">⭐ Destaque</th><th></th>
           </tr></thead>
           <tbody id="biotbody-${catKey}">
             ${allRows.map(r => bioRow(r)).join('')}
@@ -1319,6 +1319,7 @@
       <td><input type="text" value="${r.valor||''}" placeholder="-" style="width:72px" /></td>
       <td><input type="text" value="${r.unidade||''}" placeholder="mg/dL" /></td>
       <td><input type="text" value="${r.referencia||''}" placeholder="referência" /></td>
+      <td><input type="text" value="${r.refOtima||''}" placeholder="ex: 40-60" /></td>
       <td><select>
         <option value="">Auto</option>
         <option value="otimo" ${r.tag==='otimo'?'selected':''}>Ótimo</option>
@@ -1410,8 +1411,9 @@
           valor:      inputs[1].value.trim(),
           unidade:    inputs[2].value.trim(),
           referencia: inputs[3].value.trim(),
+          refOtima:   inputs[4].value.trim(),
           tag:        sel.value,
-          delta:      inputs[4].value.trim(),
+          delta:      inputs[5].value.trim(),
           destaque:   cb ? cb.checked : false,
         });
       });

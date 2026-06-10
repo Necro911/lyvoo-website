@@ -129,6 +129,8 @@
     .sys-detail-val small { color: var(--txt-3); font-weight: 500; }
     .sys-range { position: relative; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.08); min-width: 90px; }
     .sys-range-zone { position: absolute; top: 0; bottom: 0; border-radius: 999px; background: rgba(74,222,128,0.25); }
+    .sys-range-zone.dim { background: rgba(255,255,255,0.10); }
+    .sys-range-zone.ot { background: rgba(74,222,128,0.45); }
     .sys-range-dot { position: absolute; top: 50%; width: 11px; height: 11px; border-radius: 50%; transform: translate(-50%, -50%); border: 2px solid #0D1317; box-shadow: 0 0 6px rgba(0,0,0,0.4); }
     .sys-range-ref { font-size: 10.5px; color: var(--txt-3); text-align: right; white-space: nowrap; }
     @media (max-width: 640px) {
@@ -2173,23 +2175,45 @@
   // ── Avaliação automática: valor vs. intervalo de referência ──────────
   // Usada quando o admin não definiu manualmente a tag (Ótimo/Atenção/Crítico).
   // Dentro do intervalo → Ótimo; fora até 15% da amplitude → Atenção; além → Crítico.
+  // Interpreta um intervalo textual: "40-60", "< 100", "> 50" → {min, max} ou null
+  function parseRefRange(str) {
+    const ref = String(str || '').replace(/,/g, '.');
+    const nums = ref.match(/\d+(\.\d+)?/g);
+    if (!nums || !nums.length) return null;
+    if (nums.length >= 2)      return { min: +nums[0], max: +nums[1] };
+    if (/[<≤]/.test(ref))      return { min: null, max: +nums[0] };
+    if (/[>≥]/.test(ref))      return { min: +nums[0], max: null };
+    return null;
+  }
+
+  function inRange(val, rg) {
+    return (rg.min === null || val >= rg.min) && (rg.max === null || val <= rg.max);
+  }
+
+  // Severidade quando o valor está fora de um intervalo (15% de tolerância = atenção)
+  function outsideSeverity(val, rg) {
+    const span = (rg.min !== null && rg.max !== null) ? (rg.max - rg.min) : Math.abs(rg.max ?? rg.min) || 1;
+    const tol  = Math.abs(span) * 0.15 || 1;
+    const desvio = Math.max(rg.min !== null ? rg.min - val : -Infinity,
+                            rg.max !== null ? val - rg.max : -Infinity);
+    return desvio <= tol ? 'atencao' : 'critico';
+  }
+
   function autoTag(r) {
     if (r.tag === 'otimo' || r.tag === 'atencao' || r.tag === 'critico') return r.tag;
     const val = parseFloat(String(r.valor ?? '').replace(',', '.'));
-    const ref = String(r.referencia || '').replace(/,/g, '.');
-    const nums = ref.match(/\d+(\.\d+)?/g);
-    if (isNaN(val) || !nums || !nums.length) return '';
-    let min = null, max = null;
-    if (nums.length >= 2)        { min = +nums[0]; max = +nums[1]; }
-    else if (/[<≤]/.test(ref))   { max = +nums[0]; }
-    else if (/[>≥]/.test(ref))   { min = +nums[0]; }
-    else return '';
-    const span = (min !== null && max !== null) ? (max - min) : Math.abs(max ?? min) || 1;
-    const tol  = Math.abs(span) * 0.15 || 1;
-    const desvio = Math.max(min !== null ? min - val : -Infinity,
-                            max !== null ? val - max : -Infinity);
-    if (desvio <= 0)  return 'otimo';
-    return desvio <= tol ? 'atencao' : 'critico';
+    if (isNaN(val)) return '';
+    const ot = parseRefRange(r.refOtima);
+    const rf = parseRefRange(r.referencia);
+    // Avaliação em dois níveis: zona ótima Lyvoo (apertada) dentro da referência laboratorial
+    if (ot) {
+      if (inRange(val, ot)) return 'otimo';
+      if (rf) return inRange(val, rf) ? 'atencao' : outsideSeverity(val, rf);
+      return outsideSeverity(val, ot);
+    }
+    if (!rf) return '';
+    if (inRange(val, rf)) return 'otimo';
+    return outsideSeverity(val, rf);
   }
 
   // Normaliza todas as linhas: preenche r.tag automaticamente quando em falta
@@ -2231,7 +2255,7 @@
         html += `<div class="bio-row ${rowCls}">
           <span class="bio-name">${r.nome}</span>
           <span class="bio-val">${r.valor} <small>${r.unidade||''}</small></span>
-          <span class="bio-range">${r.referencia||''}</span>
+          <span class="bio-range">${r.referencia||''}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${r.refOtima}</small>` : ''}</span>
           <div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
           <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span>
           ${delta}
@@ -2266,20 +2290,24 @@
   // Barra de posição do valor face ao intervalo de referência
   function sysRangeBar(r, color) {
     const val = parseFloat(String(r.valor).replace(',', '.'));
-    const nums = String(r.referencia || '').replace(/,/g, '.').match(/\d+(\.\d+)?/g);
-    if (isNaN(val) || !nums || nums.length < 1) return '<span></span>';
-    let min, max;
-    const ref = String(r.referencia);
-    if (nums.length >= 2) { min = parseFloat(nums[0]); max = parseFloat(nums[1]); }
-    else if (/[<≤]/.test(ref)) { min = 0; max = parseFloat(nums[0]); }
-    else if (/[>≥]/.test(ref)) { min = parseFloat(nums[0]); max = min * 2 || min + 1; }
-    else return '<span></span>';
-    if (!(max > min)) return '<span></span>';
-    const span = max - min;
-    const lo = min - span * 0.35, hi = max + span * 0.35;
+    const norm = (rg) => {
+      if (!rg) return null;
+      let { min, max } = rg;
+      if (min === null) min = 0;
+      if (max === null) max = min * 2 || min + 1;
+      return max > min ? { min, max } : null;
+    };
+    const rf = norm(parseRefRange(r.referencia));
+    const ot = norm(parseRefRange(r.refOtima));
+    const base = rf || ot;
+    if (isNaN(val) || !base) return '<span></span>';
+    const span = base.max - base.min;
+    const lo = base.min - span * 0.35, hi = base.max + span * 0.35;
     const pct = (x) => Math.max(2, Math.min(98, ((x - lo) / (hi - lo)) * 100));
+    // Zona de referência (suave) + zona ótima Lyvoo (destacada) + valor
     return `<span class="sys-range sys-range-cell">
-      <span class="sys-range-zone" style="left:${pct(min)}%;right:${(100 - pct(max)).toFixed(1)}%"></span>
+      ${rf ? `<span class="sys-range-zone${ot ? ' dim' : ''}" style="left:${pct(rf.min)}%;right:${(100 - pct(rf.max)).toFixed(1)}%"></span>` : ''}
+      ${ot ? `<span class="sys-range-zone ot" style="left:${pct(ot.min)}%;right:${(100 - pct(ot.max)).toFixed(1)}%"></span>` : ''}
       <span class="sys-range-dot" style="left:${pct(val).toFixed(1)}%;background:${color}"></span>
     </span>`;
   }
@@ -2346,7 +2374,7 @@
             <span class="sys-detail-val" style="border-left:2px solid ${rc};padding-left:8px;">${r.valor} <small>${r.unidade||''}</small></span>
             <span style="display:flex;flex-direction:column;gap:4px;align-items:stretch;">
               ${sysRangeBar(r, rc)}
-              <span class="sys-range-ref">${r.referencia||''}</span>
+              <span class="sys-range-ref">${r.refOtima ? 'Ótimo ' + r.refOtima : (r.referencia||'')}</span>
             </span>
           </div>`;
         }).join('')}
@@ -2657,8 +2685,10 @@
           if (fraseEl) {
             const fora = n.atencao + n.critico;
             fraseEl.textContent = fora === 0
-              ? `Todos os ${rows.length} biomarcadores analisados estão em níveis ótimos.`
-              : `${n.otimo} de ${rows.length} biomarcadores em níveis ótimos. ${n.critico ? n.critico + (n.critico === 1 ? ' requer' : ' requerem') + ' intervenção prioritária' : n.atencao + ' a necessitar de atenção'} - explore os sistemas abaixo.`;
+              ? `Todos os ${rows.length} biomarcadores analisados estão na zona ótima - excelente ponto de partida. O seu plano foca-se agora em manter estes níveis e otimizar performance e longevidade.`
+              : score >= 85
+                ? `${n.otimo} de ${rows.length} biomarcadores na zona ótima. Há ${fora} com margem de otimização - o seu plano foca-se em fechar essa diferença e manter o que já está bem.`
+                : `${n.otimo} de ${rows.length} biomarcadores na zona ótima. ${n.critico ? n.critico + (n.critico === 1 ? ' requer' : ' requerem') + ' intervenção prioritária' : n.atencao + ' a necessitar de atenção'} - explore os sistemas abaixo.`;
             fraseEl.style.display = 'block';
           }
           const chipsEl = document.getElementById('rel-chips');
