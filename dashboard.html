@@ -1830,7 +1830,8 @@
 
     let extra = '';
     if (c.link) {
-      extra += `<a href="${c.link}" target="_blank" rel="noopener" class="cd-enter-btn">Entrar na consulta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
+      const linkHref = /^https?:\/\//i.test(c.link) ? c.link : `https://${c.link}`;
+      extra += `<a href="${linkHref}" target="_blank" rel="noopener" class="cd-enter-btn">Entrar na consulta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
     } else {
       extra += `<div class="cd-note">O link da videochamada será disponibilizado aqui antes da consulta.</div>`;
     }
