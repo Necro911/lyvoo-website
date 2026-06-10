@@ -2227,13 +2227,13 @@
           ? (r.delta.startsWith('-')||r.delta.startsWith('↓')
               ? `<span class="bio-delta down">${r.delta}</span>`
               : `<span class="bio-delta up">${r.delta}</span>`)
-          : '<span class="bio-delta" style="color:var(--txt-3)">—</span>';
+          : '<span class="bio-delta" style="color:var(--txt-3)">-</span>';
         html += `<div class="bio-row ${rowCls}">
           <span class="bio-name">${r.nome}</span>
           <span class="bio-val">${r.valor} <small>${r.unidade||''}</small></span>
           <span class="bio-range">${r.referencia||''}</span>
           <div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
-          <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'—'}</span>
+          <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span>
           ${delta}
         </div>`;
       });
@@ -2658,7 +2658,7 @@
             const fora = n.atencao + n.critico;
             fraseEl.textContent = fora === 0
               ? `Todos os ${rows.length} biomarcadores analisados estão em níveis ótimos.`
-              : `${n.otimo} de ${rows.length} biomarcadores em níveis ótimos. ${n.critico ? n.critico + (n.critico === 1 ? ' requer' : ' requerem') + ' intervenção prioritária' : n.atencao + ' a necessitar de atenção'} — explore os sistemas abaixo.`;
+              : `${n.otimo} de ${rows.length} biomarcadores em níveis ótimos. ${n.critico ? n.critico + (n.critico === 1 ? ' requer' : ' requerem') + ' intervenção prioritária' : n.atencao + ' a necessitar de atenção'} - explore os sistemas abaixo.`;
             fraseEl.style.display = 'block';
           }
           const chipsEl = document.getElementById('rel-chips');

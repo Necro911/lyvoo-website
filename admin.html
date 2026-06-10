@@ -390,7 +390,7 @@
         <div class="notify-box" id="reeval-box" style="display:none;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.06)">
           <div style="font-size:26px;line-height:1">🔄</div>
           <div class="notify-box-text">
-            <div class="notify-box-title" style="color:var(--violet)">Reavaliação — iniciar novo ciclo?</div>
+            <div class="notify-box-title" style="color:var(--violet)">Reavaliação - iniciar novo ciclo?</div>
             <div class="notify-box-sub" id="reeval-box-sub">Os resultados atuais serão arquivados no histórico e os campos de kit/análise reiniciados para a nova ronda.</div>
           </div>
           <button class="btn-notify" id="btn-reeval" onclick="iniciarReavaliacao()" style="background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:var(--violet)">🔄 Iniciar novo ciclo</button>
@@ -1643,7 +1643,7 @@
         status.textContent = `Cliente já agendou: ${fmtDate(esc.data)} · ${esc.hora||'-'}`;
         cancelBtn.style.display = '';
       } else {
-        status.textContent = 'Convite pendente — o cliente ainda não escolheu data.';
+        status.textContent = 'Convite pendente - o cliente ainda não escolheu data.';
         cancelBtn.style.display = '';
       }
     } catch(e) {
@@ -1677,7 +1677,7 @@
       });
       msg.style.color = 'var(--green)';
       msg.textContent = '✓ Convite enviado ao cliente';
-      document.getElementById('convite-status').textContent = 'Convite pendente — o cliente ainda não escolheu data.';
+      document.getElementById('convite-status').textContent = 'Convite pendente - o cliente ainda não escolheu data.';
       document.getElementById('convite-cancel-btn').style.display = '';
     } catch(e) {
       console.error(e);
@@ -1943,7 +1943,7 @@
         showMsg('msg-geral', '✓ Guardado · Email enviado ao cliente', false);
       } catch(err) {
         console.error('Auto-email error:', err);
-        showMsg('msg-geral', '✓ Guardado · Falha no email automático — notifique manualmente', true);
+        showMsg('msg-geral', '✓ Guardado · Falha no email automático - notifique manualmente', true);
       }
     }
   };
