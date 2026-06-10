@@ -66,26 +66,43 @@
     .sec-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Mapa corporal (relatório) */
-    .body-map-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin-bottom: 24px; display: flex; gap: 32px; flex-wrap: wrap; align-items: center; }
+    .body-map-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin-bottom: 24px; display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
     .body-map-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 16px; }
-    .body-map-figure { position: relative; width: 180px; flex-shrink: 0; margin: 0 auto; }
+
+    .body-map-list { flex: 0 0 200px; display: flex; flex-direction: column; gap: 4px; }
+    .body-map-list-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 12.5px;
+      color: var(--txt-2); border: 1px solid transparent; transition: all 0.15s;
+    }
+    .body-map-list-item:hover { color: var(--txt); }
+    .body-map-list-item.active { background: rgba(61,217,232,0.08); border-color: rgba(61,217,232,0.2); color: var(--txt); font-weight: 600; }
+    .body-map-bar { flex: 0 0 70px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .body-map-bar-fill { height: 100%; border-radius: 999px; }
+
+    .body-map-figure { position: relative; width: 170px; flex: 0 0 170px; margin: 0 auto; }
     .body-map-figure svg { width: 100%; height: auto; display: block; }
     .body-map-dot {
-      position: absolute; width: 16px; height: 16px; border-radius: 50%;
+      position: absolute; width: 14px; height: 14px; border-radius: 50%;
       transform: translate(-50%, -50%); border: 2px solid var(--bg, #060A0C);
       box-shadow: 0 0 0 2px rgba(255,255,255,0.08); cursor: pointer;
-      transition: transform 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .body-map-dot:hover { transform: translate(-50%, -50%) scale(1.25); }
-    .body-map-legend { flex: 1; min-width: 220px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 20px; }
-    .body-map-item {
-      display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px;
-      border: 1px solid var(--line); background: var(--panel-2); cursor: pointer; transition: border-color 0.15s;
+    .body-map-dot:hover { transform: translate(-50%, -50%) scale(1.2); }
+    .body-map-dot.active { transform: translate(-50%, -50%) scale(1.35); box-shadow: 0 0 0 3px rgba(61,217,232,0.35); }
+
+    .body-map-detail { flex: 1; min-width: 220px; }
+    .body-map-detail-title { font-size: 14px; font-weight: 800; color: var(--txt); margin-bottom: 2px; letter-spacing: -0.02em; }
+    .body-map-detail-score { font-size: 12px; color: var(--txt-3); margin-bottom: 14px; }
+    .body-map-detail-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 12.5px;
     }
-    .body-map-item:hover { border-color: rgba(61,217,232,0.3); }
-    .body-map-item-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .body-map-item-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--txt); }
-    .body-map-item-score { font-size: 12.5px; font-weight: 700; color: var(--txt-2); }
+    .body-map-detail-row:last-child { border-bottom: none; }
+    .body-map-detail-name { color: var(--txt-2); }
+    .body-map-detail-val { color: var(--txt); font-weight: 700; flex-shrink: 0; }
+    .body-map-detail-val small { color: var(--txt-3); font-weight: 500; }
+    .body-map-detail-ref { color: var(--txt-3); font-size: 11.5px; flex-shrink: 0; }
 
     /* Biomarcadores */
     .bio-section { margin-bottom: 24px; }
@@ -1229,21 +1246,24 @@
 
       <!-- Mapa corporal -->
       <div id="body-map-wrap" class="body-map-wrap" style="display:none;">
-        <div style="flex:0 0 auto;">
+        <div>
           <div class="body-map-title">Mapa do seu corpo</div>
-          <div class="body-map-figure" id="body-map-figure">
-            <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="100" cy="32" r="26" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-              <rect x="58" y="60" width="84" height="140" rx="30" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-              <rect x="28" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-              <rect x="146" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-              <rect x="65" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-              <rect x="103" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-            </svg>
-            <div id="body-map-dots"></div>
-          </div>
+          <div class="body-map-list" id="body-map-list"></div>
         </div>
-        <div class="body-map-legend" id="body-map-legend"></div>
+        <div class="body-map-figure" id="body-map-figure">
+          <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="32" r="26" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            <rect x="58" y="60" width="84" height="140" rx="30" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            <rect x="28" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            <rect x="146" y="70" width="26" height="120" rx="13" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            <rect x="65" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+            <rect x="103" y="195" width="32" height="160" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+          </svg>
+          <div id="body-map-dots"></div>
+        </div>
+        <div class="body-map-detail" id="body-map-detail">
+          <div style="font-size:13px;color:var(--txt-3);">Selecione um sistema para ver os detalhes.</div>
+        </div>
       </div>
 
       <!-- Notas do relatório -->
@@ -2194,37 +2214,53 @@
     if (!wrap || !resultados?.biomarcadores) return;
     const bio = resultados.biomarcadores;
     const dotsWrap = document.getElementById('body-map-dots');
-    const legend = document.getElementById('body-map-legend');
-    let dotsHtml = '', legendHtml = '', any = false;
+    const listWrap = document.getElementById('body-map-list');
+    let dotsHtml = '', listHtml = '', firstCat = null;
+    const cats = {};
 
     Object.entries(BODY_MAP_META).forEach(([cat, meta]) => {
       const score = bodyMapScore(bio[cat]);
       if (score === null) return;
-      any = true;
+      if (!firstCat) firstCat = cat;
+      cats[cat] = { meta, score, rows: (bio[cat]||[]).filter(r => r.valor) };
       const color = score >= 80 ? 'var(--green)' : score >= 55 ? 'var(--amber)' : 'var(--red)';
       dotsHtml += `<div class="body-map-dot" style="left:${meta.x}%;top:${meta.y}%;background:${color}" data-cat="${cat}" title="${meta.label} · ${score}/100"></div>`;
-      legendHtml += `<div class="body-map-item" data-cat="${cat}">
-        <span class="body-map-item-dot" style="background:${color}"></span>
-        <span class="body-map-item-name">${meta.label}</span>
-        <span class="body-map-item-score">${score}/100</span>
+      listHtml += `<div class="body-map-list-item" data-cat="${cat}">
+        <span>${meta.label}</span>
+        <span class="body-map-bar"><span class="body-map-bar-fill" style="width:${score}%;background:${color}"></span></span>
       </div>`;
     });
 
-    if (!any) { wrap.style.display = 'none'; return; }
+    if (!firstCat) { wrap.style.display = 'none'; return; }
     wrap.style.display = 'flex';
     dotsWrap.innerHTML = dotsHtml;
-    legend.innerHTML = legendHtml;
+    listWrap.innerHTML = listHtml;
+
+    function selectCat(cat) {
+      const c = cats[cat];
+      if (!c) return;
+      wrap.querySelectorAll('[data-cat]').forEach(el => {
+        el.classList.toggle('active', el.dataset.cat === cat);
+      });
+      const detail = document.getElementById('body-map-detail');
+      const color = c.score >= 80 ? 'var(--green)' : c.score >= 55 ? 'var(--amber)' : 'var(--red)';
+      detail.innerHTML = `
+        <div class="body-map-detail-title">${c.meta.label}</div>
+        <div class="body-map-detail-score" style="color:${color}">${c.score}/100</div>
+        ${c.rows.map(r => `
+          <div class="body-map-detail-row">
+            <span class="body-map-detail-name">${r.nome}</span>
+            <span class="body-map-detail-val">${r.valor} <small>${r.unidade||''}</small></span>
+            <span class="body-map-detail-ref">${r.referencia||''}</span>
+          </div>
+        `).join('')}
+      `;
+    }
 
     wrap.querySelectorAll('[data-cat]').forEach(el => {
-      el.addEventListener('click', () => {
-        const cat = el.dataset.cat;
-        navSection('biomarcadores');
-        setTimeout(() => {
-          const target = document.querySelector(`#bio-content .bio-section[data-cat="${cat}"]`);
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-      });
+      el.addEventListener('click', () => selectCat(el.dataset.cat));
     });
+    selectCat(firstCat);
   }
 
   // ── Render: Plano alimentar ───────────────────────────────────────────
