@@ -4,3 +4,6 @@ Thumbs.db
 node_modules/
 .claude/
 serviceAccountKey.json
+set-admin-claims.js
+package.json
+package-lock.json
