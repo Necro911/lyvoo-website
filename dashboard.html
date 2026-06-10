@@ -1721,14 +1721,16 @@
             canceladoEm: serverTimestamp()
           });
           // Reabrir o convite de agendamento, se esta era a marcação associada
+          const userUpdate = {
+            consultaCancelada: { tipo: c.tipo || null, data: c.data || null, hora: c.hora || null, canceladoEm: serverTimestamp() }
+          };
           if (c.tipo && window._convite?.tipo === c.tipo && window._convite?.estado === 'agendado') {
-            await updateDoc(doc(db, 'users', _currentUser.uid), {
-              'agendamentoConvite.estado': 'pendente',
-              'agendamentoConvite.escolha': null
-            });
+            userUpdate['agendamentoConvite.estado'] = 'pendente';
+            userUpdate['agendamentoConvite.escolha'] = null;
             window._convite.estado = 'pendente';
             window._convite.escolha = null;
           }
+          await updateDoc(doc(db, 'users', _currentUser.uid), userUpdate);
           msg.textContent = '✓ Consulta cancelada.';
           msg.className = 'bk-msg ok';
           setTimeout(() => { fecharDetalheConsulta(); carregarDados(_currentUser); }, 1200);
