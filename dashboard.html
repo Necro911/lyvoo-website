@@ -2041,6 +2041,17 @@
     const activeMob = document.getElementById('mn-' + name);
     if (activeMob) activeMob.classList.add('active');
 
+    // Marcar secção como visitada (remove badge "Novo")
+    const seenKey = 'lyvoo_seen_' + name;
+    if (!localStorage.getItem(seenKey)) {
+      localStorage.setItem(seenKey, '1');
+      const fcId = { 'plano-alimentar': 'fc-plano', 'biomarcadores': 'fc-bio' }[name];
+      if (fcId) {
+        const badge = document.querySelector('#' + fcId + ' .feature-new');
+        if (badge) badge.remove();
+      }
+    }
+
     // Atualizar título da página (usado em topbar)
     document.getElementById('pageTitle').textContent = SECTION_TITLES[name] || '';
 
@@ -3070,9 +3081,9 @@
         }
 
         // Badges "Novo" nos feature cards
-        ['fc-plano', 'fc-bio'].forEach(id => {
+        [{id:'fc-plano', sec:'plano-alimentar'}, {id:'fc-bio', sec:'biomarcadores'}].forEach(({id, sec}) => {
           const el = document.getElementById(id);
-          if (el && !el.querySelector('.feature-new')) {
+          if (el && !localStorage.getItem('lyvoo_seen_' + sec) && !el.querySelector('.feature-new')) {
             const badge = document.createElement('span');
             badge.className = 'feature-new';
             badge.textContent = 'Novo';
