@@ -1449,9 +1449,10 @@
 
 <script>
   // Fallback independente - redireciona para login se o módulo falhar
+  // (15s para tolerar redes lentas a carregar o SDK Firebase do CDN)
   window._authFallback = setTimeout(function() {
-    window.location.href = 'login.html';
-  }, 6000);
+    window.location.href = 'login.html?next=dashboard.html';
+  }, 15000);
 </script>
 
 <script type="module">
@@ -3534,7 +3535,7 @@
 
   onAuthStateChanged(auth, async (user) => {
     clearTimeout(window._authFallback);
-    if (!user) { window.location.href = 'login.html'; return; }
+    if (!user) { window.location.href = 'login.html?next=dashboard.html'; return; }
 
     _currentUser = user;
     _lastLoad = Date.now();
