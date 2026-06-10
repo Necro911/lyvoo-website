@@ -71,10 +71,19 @@
       position: relative; overflow: hidden;
       background: linear-gradient(135deg, rgba(61,217,232,0.07), rgba(139,92,246,0.06) 55%, transparent);
       border: 1px solid var(--line); border-radius: 20px;
-      padding: 32px; margin-bottom: 20px;
-      display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+      padding: 24px 28px; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
       animation: relFadeUp 0.5s ease both;
     }
+    .rel-hero-info { position: relative; flex: 1; min-width: 220px; }
+    .rel-frase { font-size: 13px; color: var(--txt-2); line-height: 1.65; max-width: 460px; margin-bottom: 12px; }
+    .rel-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .rel-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 600; padding: 5px 12px;
+      border-radius: 999px; border: 1px solid; white-space: nowrap;
+    }
+    .rel-chip i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 7px currentColor; }
     .rel-hero::before {
       content: ''; position: absolute; width: 380px; height: 380px; border-radius: 50%;
       background: radial-gradient(circle, rgba(61,217,232,0.12), transparent 65%);
@@ -1255,10 +1264,14 @@
             <span style="font-size:11px;color:var(--txt-3);margin-top:2px;">/100</span>
           </div>
         </div>
-        <div style="position:relative;">
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);margin-bottom:8px;">Score global de saúde</div>
-          <div id="rel-classificacao" style="font-size:26px;font-weight:800;color:var(--green);letter-spacing:-0.03em;margin-bottom:6px;">-</div>
-          <div id="rel-data" style="font-size:12.5px;color:var(--txt-3);">-</div>
+        <div class="rel-hero-info">
+          <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);">Score global de saúde</span>
+            <span id="rel-data" style="font-size:12px;color:var(--txt-3);"></span>
+          </div>
+          <div id="rel-classificacao" style="font-size:26px;font-weight:800;color:var(--green);letter-spacing:-0.03em;margin-bottom:8px;">-</div>
+          <div class="rel-frase" id="rel-frase" style="display:none;"></div>
+          <div class="rel-chips" id="rel-chips"></div>
         </div>
       </div>
 
@@ -2605,7 +2618,7 @@
     requestAnimationFrame(tick);
   }
 
-  function renderRelatorio(relatorio) {
+  function renderRelatorio(relatorio, resultados) {
     if (!relatorio) return;
     const empty = document.getElementById('rel-empty');
     const grid  = document.getElementById('rel-score-grid');
@@ -2631,6 +2644,35 @@
                           : cls.includes('bom')        ? 'var(--cyan)'
                           : cls.includes('moder')      ? 'var(--amber)'
                           : 'var(--red)';
+      }
+
+      // Frase-resumo + chips com a distribuição real dos biomarcadores
+      if (resultados?.biomarcadores) {
+        const rows = Object.values(resultados.biomarcadores).flat()
+          .filter(r => r && r.valor && ['otimo','atencao','critico'].includes(autoTag(r)));
+        if (rows.length) {
+          const n = { otimo: 0, atencao: 0, critico: 0 };
+          rows.forEach(r => { n[autoTag(r)]++; });
+          const fraseEl = document.getElementById('rel-frase');
+          if (fraseEl) {
+            const fora = n.atencao + n.critico;
+            fraseEl.textContent = fora === 0
+              ? `Todos os ${rows.length} biomarcadores analisados estão em níveis ótimos.`
+              : `${n.otimo} de ${rows.length} biomarcadores em níveis ótimos. ${n.critico ? n.critico + (n.critico === 1 ? ' requer' : ' requerem') + ' intervenção prioritária' : n.atencao + ' a necessitar de atenção'} — explore os sistemas abaixo.`;
+            fraseEl.style.display = 'block';
+          }
+          const chipsEl = document.getElementById('rel-chips');
+          if (chipsEl) {
+            const CH = [
+              { k:'otimo',   l:'Ótimo',   c:'var(--green)', bg:'rgba(74,222,128,0.08)',  bd:'rgba(74,222,128,0.25)'  },
+              { k:'atencao', l:'Atenção', c:'var(--amber)', bg:'rgba(251,191,36,0.08)',  bd:'rgba(251,191,36,0.25)'  },
+              { k:'critico', l:'Crítico', c:'var(--red)',   bg:'rgba(248,113,113,0.08)', bd:'rgba(248,113,113,0.25)' },
+            ];
+            chipsEl.innerHTML = CH.filter(ch => n[ch.k] > 0)
+              .map(ch => `<span class="rel-chip" style="color:${ch.c};background:${ch.bg};border-color:${ch.bd}"><i></i>${n[ch.k]} ${ch.l}</span>`)
+              .join('');
+          }
+        }
       }
     } else {
       if (grid) grid.style.display = 'none';
@@ -2855,7 +2897,7 @@
           const rel = Object.assign({}, d.relatorio);
           const calc = computeBioScore(d.resultados);
           if (calc !== null) { rel.score = calc; rel.classificacao = scoreClassLabel(calc); }
-          renderScore(rel, d.resultados); renderRelatorio(rel);
+          renderScore(rel, d.resultados); renderRelatorio(rel, d.resultados);
         }
         if (d.resultados)   renderBodyMap(d.resultados);
         if (d.kit)          { renderKitTracking(d.kit, estadoNum); window._kitData = d.kit; }
