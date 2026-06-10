@@ -1132,21 +1132,21 @@
     .tst-result svg { width: 13px; height: 13px; }
 
     /* Testemunhos em fundo branco */
-    .layer-white .tst-header h2 { color: var(--ink); }
-    .layer-white .tst-header p { color: var(--ink-2); }
-    .layer-white .tst-card {
+    .layer-white .tst-header h2, .layer-off .tst-header h2 { color: var(--ink); }
+    .layer-white .tst-header p, .layer-off .tst-header p { color: var(--ink-2); }
+    .layer-white .tst-card, .layer-off .tst-card {
       background: #fff; border-color: var(--border);
       box-shadow: 0 4px 24px rgba(11,82,90,0.06);
     }
-    .layer-white .tst-card:hover { border-color: rgba(11,82,90,0.2); background: #FAFCFC; }
-    .layer-white .tst-card.feature {
+    .layer-white .tst-card:hover, .layer-off .tst-card:hover { border-color: rgba(11,82,90,0.2); background: #FAFCFC; }
+    .layer-white .tst-card.feature, .layer-off .tst-card.feature {
       background: linear-gradient(135deg, #F0F9FA, #EEF4FF);
       border-color: rgba(11,82,90,0.12);
     }
-    .layer-white .tst-quote { color: var(--ink-2); }
-    .layer-white .tst-card.feature .tst-quote { color: var(--ink); }
-    .layer-white .tst-name { color: var(--ink); }
-    .layer-white .tst-meta { color: var(--ink-3); }
+    .layer-white .tst-quote, .layer-off .tst-quote { color: var(--ink-2); }
+    .layer-white .tst-card.feature .tst-quote, .layer-off .tst-card.feature .tst-quote { color: var(--ink); }
+    .layer-white .tst-name, .layer-off .tst-name { color: var(--ink); }
+    .layer-white .tst-meta, .layer-off .tst-meta { color: var(--ink-3); }
 
     /* ── FAQ ── */
     .faq-wrap { max-width: 780px; margin: 0 auto; }
