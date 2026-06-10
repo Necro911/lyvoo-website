@@ -1594,6 +1594,8 @@
           window._convite.estado = 'agendado';
           window._convite.escolha = { data: _bkSelectedDate, hora: _bkSelectedTime };
         }
+        const conviteBanner = document.getElementById('convite-banner');
+        if (conviteBanner) conviteBanner.style.display = 'none';
       } catch (e) {
         console.error('Erro ao atualizar convite:', e);
       }
