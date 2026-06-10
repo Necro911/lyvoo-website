@@ -1502,6 +1502,22 @@
       if (isNew) dot.style.display = 'block';
     }
 
+    if (d.consultaConfirmada?.confirmadoEm) {
+      const cf = d.consultaConfirmada;
+      const ts = cf.confirmadoEm.toDate ? cf.confirmadoEm.toDate().getTime() : new Date(cf.confirmadoEm).getTime();
+      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const isNew   = ts > vistoTs;
+      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const ed = cf.data ? new Date(cf.data + 'T00:00:00') : null;
+      const novaDataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '-';
+      _bellNotifs.push({
+        titulo: 'Consulta confirmada',
+        sub: `A sua consulta foi confirmada para ${novaDataStr}${cf.hora ? ' às ' + cf.hora : ''}.${cf.link ? ' Já tem o link de acesso disponível.' : ''}`,
+        data: dataStr, unread: isNew
+      });
+      if (isNew) dot.style.display = 'block';
+    }
+
     if (d.consultaAlterada?.alteradoEm) {
       const ts = d.consultaAlterada.alteradoEm.toDate ? d.consultaAlterada.alteradoEm.toDate().getTime() : new Date(d.consultaAlterada.alteradoEm).getTime();
       const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);

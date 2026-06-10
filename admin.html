@@ -612,15 +612,21 @@
             <div id="convite-agendado-detalhe" style="font-size:13px;color:var(--txt-2);margin-bottom:12px;"></div>
             <div class="form-row" style="align-items:flex-end;">
               <div class="form-field" style="flex:0 0 150px;">
-                <label class="form-label">Nova data</label>
+                <label class="form-label">Data</label>
                 <input class="form-input" type="date" id="convite-resched-data" />
               </div>
               <div class="form-field" style="flex:0 0 120px;">
-                <label class="form-label">Nova hora</label>
+                <label class="form-label">Hora</label>
                 <input class="form-input" type="time" id="convite-resched-hora" />
               </div>
+            </div>
+            <div class="form-row" style="align-items:flex-end;">
+              <div class="form-field" style="flex:1;">
+                <label class="form-label">Link da consulta</label>
+                <input class="form-input" type="url" id="convite-link" placeholder="https://meet.google.com/..." />
+              </div>
               <div class="form-field" style="flex:0 0 auto;">
-                <button type="button" class="ef-btn" id="convite-resched-btn">Guardar nova data/hora</button>
+                <button type="button" class="ef-btn" id="convite-resched-btn">Confirmar consulta</button>
               </div>
             </div>
             <div class="save-bar" style="margin-top:12px;">
@@ -1715,6 +1721,21 @@
       renderConviteSlotsList();
       const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
       const titEl = document.getElementById('convite-agendado-titulo');
+      const linkInput = document.getElementById('convite-link');
+      linkInput.value = '';
+      const carregarLink = async (esc) => {
+        if (!esc?.data) return;
+        try {
+          const agSnap = await getDocs(query(
+            collection(db,'agendamentosNutri'),
+            where('uid','==',uid),
+            where('data','==',esc.data),
+            where('hora','==',esc.hora || '')
+          ));
+          const ag = agSnap.docs.find(d => d.data().estado !== 'cancelada');
+          if (ag) linkInput.value = ag.data().link || '';
+        } catch (e) { console.error('Erro ao carregar link da consulta:', e); }
+      };
       if (convite.estado === 'agendado') {
         const esc = convite.escolha || {};
         status.textContent = '';
@@ -1726,6 +1747,7 @@
         document.getElementById('convite-resched-hora').value = esc.hora || '';
         agendadoBox.style.display = 'block';
         formFields.style.display = 'none';
+        carregarLink(esc);
       } else if (convite.estado === 'alterado_admin') {
         const esc = convite.escolha || {};
         status.textContent = '';
@@ -1737,6 +1759,7 @@
         document.getElementById('convite-resched-hora').value = esc.hora || '';
         agendadoBox.style.display = 'block';
         formFields.style.display = 'none';
+        carregarLink(esc);
       } else if (convite.estado === 'sugerido_cliente') {
         const esc = convite.escolha || {};
         status.textContent = '';
@@ -1749,6 +1772,7 @@
         document.getElementById('convite-aceitar-sugestao-btn').style.display = '';
         agendadoBox.style.display = 'block';
         formFields.style.display = 'none';
+        carregarLink(esc);
       } else if (convite.estado === 'cancelado_cliente') {
         status.textContent = '↩ O cliente cancelou a consulta e pediu nova sugestão de datas — envie nova disponibilidade abaixo.';
       } else {
@@ -1884,6 +1908,7 @@
     const msg = document.getElementById('msg-convite-agendado');
     const novaData = document.getElementById('convite-resched-data').value;
     const novaHora = document.getElementById('convite-resched-hora').value;
+    const link = document.getElementById('convite-link').value.trim();
     if (!novaData || !novaHora) {
       msg.style.color = 'var(--red)';
       msg.textContent = 'Preencha data e hora.';
@@ -1904,34 +1929,49 @@
         collection(db,'agendamentosNutri'),
         where('uid','==',_conviteUid),
         where('data','==',escAntiga.data),
-        where('hora','==',escAntiga.hora)
+        where('hora','==',escAntiga.hora || '')
       ));
+      let atualizou = false;
       for (const d of agSnap.docs) {
         if (d.data().estado !== 'cancelada') {
-          await updateDoc(doc(db,'agendamentosNutri',d.id), { data: novaData, hora: novaHora });
+          await updateDoc(doc(db,'agendamentosNutri',d.id), { data: novaData, hora: novaHora, link, estado: 'confirmada' });
+          atualizou = true;
         }
+      }
+      if (!atualizou) {
+        await addDoc(collection(db,'agendamentosNutri'), {
+          uid: _conviteUid,
+          tipo: convite.tipo,
+          titulo: tipoLbl,
+          data: novaData,
+          hora: novaHora,
+          link,
+          estado: 'confirmada',
+          criadoEm: serverTimestamp()
+        });
       }
 
       // Atualizar convite + notificar cliente
       await updateDoc(doc(db,'users',_conviteUid), {
-        'agendamentoConvite.estado': 'alterado_admin',
+        'agendamentoConvite.estado': 'agendado',
         'agendamentoConvite.escolha': { data: novaData, hora: novaHora },
-        consultaAlterada: { tipo: convite.tipo, data: novaData, hora: novaHora, alteradoEm: serverTimestamp() },
+        consultaConfirmada: { tipo: convite.tipo, data: novaData, hora: novaHora, link, confirmadoEm: serverTimestamp(), visto: false },
+        consultaAlterada: null,
         respostaCliente: null
       });
 
       const titEl = document.getElementById('convite-agendado-titulo');
-      titEl.textContent = '⏳ Aguarda confirmação do cliente';
-      titEl.style.color = 'var(--amber)';
+      titEl.textContent = '✓ Consulta marcada';
+      titEl.style.color = 'var(--green)';
       document.getElementById('convite-aceitar-sugestao-btn').style.display = 'none';
       document.getElementById('convite-agendado-detalhe').textContent =
-        `${tipoLbl} · nova data proposta: ${fmtDate(novaData)} às ${novaHora} (aguarda resposta do cliente)`;
+        `${tipoLbl} · ${fmtDate(novaData)} às ${novaHora}`;
       msg.style.color = 'var(--green)';
-      msg.textContent = '✓ Nova data proposta e cliente notificado';
+      msg.textContent = '✓ Consulta confirmada e cliente notificado';
     } catch(e) {
       console.error(e);
       msg.style.color = 'var(--red)';
-      msg.textContent = 'Erro ao reagendar.';
+      msg.textContent = 'Erro ao confirmar consulta.';
     }
     btn.disabled = false;
     setTimeout(() => msg.textContent = '', 4000);
