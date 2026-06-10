@@ -3197,7 +3197,10 @@
             const titulo = (c.titulo||'').toLowerCase();
             return dt >= today && (titulo.includes('nutri') || titulo.includes('alimentar'));
           });
-          if (!temNutriAgendada) nutriCta.style.display = 'block';
+          const conviteCobreNutri = window._convite?.estado === 'pendente'
+            && (window._convite.slots||[]).length
+            && window._convite.tipo === 'nutricao';
+          if (!temNutriAgendada && !conviteCobreNutri) nutriCta.style.display = 'block';
         }
 
         // Badges "Novo" nos feature cards
