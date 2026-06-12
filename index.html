@@ -1318,7 +1318,7 @@
     .ba-filters { display: flex; gap: 14px; flex-wrap: wrap; width: 100%; align-items: flex-start; justify-content: space-between; }
     .ba-filters-group { display: flex; gap: 5px; flex-wrap: wrap; }
     .ba-filters-group:first-child { flex-direction: column; align-items: flex-start; }
-    .ba-filters-group:last-child { justify-content: flex-end; flex: 1; max-width: 560px; margin-left: auto; }
+    .ba-filters-group:last-child { display: grid; grid-template-columns: repeat(3, max-content); gap: 5px; justify-content: flex-end; margin-left: auto; }
     .ba-filter {
       padding: 5px 13px; border-radius: 999px; font-size: 11px; font-weight: 700;
       letter-spacing: 0.07em; text-transform: uppercase; cursor: pointer;
@@ -1927,11 +1927,11 @@
             <div class="ba-filters-group">
               <button class="ba-filter" data-cat="vitaminas">Vitaminas</button>
               <button class="ba-filter" data-cat="hormonal-masculino">Hormonal Masculino</button>
-              <button class="ba-filter" data-cat="dst-ist">DST/IST Completo</button>
               <button class="ba-filter" data-cat="hormonal-feminino">Hormonal Feminino</button>
-              <button class="ba-filter" data-cat="fertilidade">Fertilidade</button>
               <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
+              <button class="ba-filter" data-cat="dst-ist">DST/IST Completo</button>
               <button class="ba-filter" data-cat="hepatite-b">Hepatite B</button>
+              <button class="ba-filter" data-cat="fertilidade">Fertilidade</button>
               <button class="ba-filter" data-cat="tiroide-completo">Tiroide Completo</button>
               <button class="ba-filter" data-cat="stress">Stress</button>
             </div>
@@ -3712,6 +3712,19 @@
     { id:'lh',        name:'LH',                full:'Hormona Luteinizante',           cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variável por fase/sexo', desc:'Hormona hipofisária que regula a ovulação e a produção de testosterona. Essencial na avaliação de fertilidade e ciclo.' },
     { id:'shbg',      name:'SHBG',              full:'Sex Hormone Binding Globulin',   cats:['hormonal-masculino','hormonal-feminino'], range:'10-80 nmol/L', desc:'Proteína transportadora de hormonas sexuais. Afeta a disponibilidade de testosterona e estradiol livre no organismo.' },
 
+    // ── Módulo: Fertilidade (+AMH) ──
+    { id:'amh',       name:'AMH',               full:'Hormona Anti-Mülleriana',        cats:['fertilidade'],           range:'Variável por idade',     desc:'Reflete a reserva ovárica. Um dos marcadores mais usados na avaliação de fertilidade feminina.' },
+
+    // ── Módulo: Cardio Avançado (Lp(a) + NT-proBNP) ──
+    { id:'ntprobnp',  name:'NT-proBNP',         full:'Peptídeo Natriurético tipo B',   cats:['cardio-avancado'],       range:'< 125 pg/mL',             desc:'Marcador de função cardíaca. Elevado em sobrecarga ou insuficiência cardíaca, mesmo em fases iniciais.' },
+
+    // ── Módulo: Tiroide Completo (FT4 + T3) ──
+    { id:'ft4',       name:'FT4',               full:'Tiroxina Livre',                 cats:['tiroide-completo'],      range:'1.0-1.5 ng/dL',           desc:'Pró-hormona tiroideia convertida em FT3 nos tecidos. Avalia a capacidade secretora da glândula.' },
+    { id:'t3',        name:'T3',                full:'Triiodotironina',                cats:['tiroide-completo'],      range:'80-200 ng/dL',            desc:'Forma ativa da hormona tiroideia. Afeta metabolismo, energia e temperatura corporal. Completa a avaliação tiroideia.' },
+
+    // ── Módulo: Stress (Cortisol) ──
+    { id:'cortisol',  name:'Cortisol',          full:'Cortisol matinal',               cats:['stress'],                range:'6-23 µg/dL (manhã)',      desc:'Hormona do stress. Cronicamente elevado compromete o sono, imunidade e metabolismo. Fundamental avaliar em esgotamento.' },
+
     // ── Módulo: Teste DST/IST Completo ──
     { id:'aghbsdst',  name:'AgHBs',             full:'Antigénio de Superfície da Hepatite B', cats:['dst-ist'],         range:'Não reativo',             desc:'Marcador de infeção pelo vírus da Hepatite B, pesquisado por colheita de sangue no painel de DST/IST.' },
     { id:'hiv',       name:'Anti-HIV 1 e 2',    full:'Anticorpos Anti-VIH 1 e 2',      cats:['dst-ist'],               range:'Não reativo',             desc:'Rastreio do vírus da imunodeficiência humana (HIV 1 e 2), por colheita de sangue.' },
@@ -3727,21 +3740,8 @@
     { id:'uparvum',   name:'Ureaplasma parvum', full:'PCR Ureaplasma parvum',          cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR de Ureaplasma parvum, por colheita de urina.' },
     { id:'hducreyi',  name:'Haemophilus ducreyi', full:'PCR Haemophilus ducreyi',      cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR de Haemophilus ducreyi, bactéria responsável pelo cancroide, por colheita de urina.' },
 
-    // ── Módulo: Fertilidade (+AMH) ──
-    { id:'amh',       name:'AMH',               full:'Hormona Anti-Mülleriana',        cats:['fertilidade'],           range:'Variável por idade',     desc:'Reflete a reserva ovárica. Um dos marcadores mais usados na avaliação de fertilidade feminina.' },
-
-    // ── Módulo: Cardio Avançado (Lp(a) + NT-proBNP) ──
-    { id:'ntprobnp',  name:'NT-proBNP',         full:'Peptídeo Natriurético tipo B',   cats:['cardio-avancado'],       range:'< 125 pg/mL',             desc:'Marcador de função cardíaca. Elevado em sobrecarga ou insuficiência cardíaca, mesmo em fases iniciais.' },
-
     // ── Módulo: Hepatite B (AgHBs) ──
     { id:'aghbs',     name:'AgHBs',             full:'Antigénio de Superfície da Hepatite B', cats:['hepatite-b'],     range:'Não reativo',             desc:'Marcador de infeção pelo vírus da Hepatite B. Um resultado reativo indica infeção ativa ou portador do vírus.' },
-
-    // ── Módulo: Tiroide Completo (FT4 + T3) ──
-    { id:'ft4',       name:'FT4',               full:'Tiroxina Livre',                 cats:['tiroide-completo'],      range:'1.0-1.5 ng/dL',           desc:'Pró-hormona tiroideia convertida em FT3 nos tecidos. Avalia a capacidade secretora da glândula.' },
-    { id:'t3',        name:'T3',                full:'Triiodotironina',                cats:['tiroide-completo'],      range:'80-200 ng/dL',            desc:'Forma ativa da hormona tiroideia. Afeta metabolismo, energia e temperatura corporal. Completa a avaliação tiroideia.' },
-
-    // ── Módulo: Stress (Cortisol) ──
-    { id:'cortisol',  name:'Cortisol',          full:'Cortisol matinal',               cats:['stress'],                range:'6-23 µg/dL (manhã)',      desc:'Hormona do stress. Cronicamente elevado compromete o sono, imunidade e metabolismo. Fundamental avaliar em esgotamento.' },
   ];
 
   function initAtlas() {
