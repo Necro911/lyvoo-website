@@ -1925,7 +1925,7 @@
             <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
             <button class="ba-filter" data-cat="dst-ist">DST/IST Completo</button>
             <button class="ba-filter" data-cat="hepatite-b">Hepatite B</button>
-            <span></span>
+            <button class="ba-filter" data-cat="intolerancias">Intolerâncias Alimentares</button>
             <button class="ba-filter" data-cat="fertilidade">Fertilidade</button>
             <button class="ba-filter" data-cat="tiroide-completo">Tiroide Completo</button>
             <button class="ba-filter" data-cat="stress">Stress</button>
@@ -2030,6 +2030,13 @@
         <div class="mod-name">Stress</div>
         <div class="mod-desc">Cortisol matinal. Avalie o impacto do stress crónico no sono, imunidade e metabolismo.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/stress.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+
+      <div class="module-card fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div class="mod-name">Teste de Intolerâncias Alimentares</div>
+        <div class="mod-desc">Resposta imunitária (IgG) a 59 alimentos, organizados por grupo: laticínios, ovos, frutos, grãos, vegetais, carne, peixe, especiarias, sementes e nozes.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/intolerancias-alimentares.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
     </div>
@@ -3413,7 +3420,7 @@
             </div>
           </div>
         </div>
-        <p class="sp-bio-note">20 biomarcadores essenciais incluídos no painel base. Módulos opcionais disponíveis: Vitaminas (D, B12, Folato), Hormonal Masculino, Hormonal Feminino, Fertilidade, Cardio Avançado, Hepatite B, Tiroide Completo, Stress e Teste DST/IST Completo.</p>
+        <p class="sp-bio-note">20 biomarcadores essenciais incluídos no painel base. Módulos opcionais disponíveis: Vitaminas (D, B12, Folato), Hormonal Masculino, Hormonal Feminino, Fertilidade, Cardio Avançado, Hepatite B, Tiroide Completo, Stress, Teste DST/IST Completo e Teste de Intolerâncias Alimentares.</p>
       </div>
 
     </div>
@@ -3642,6 +3649,7 @@
     'tiroide-completo':   '#A78BFA',
     stress:               '#FB923C',
     'dst-ist':            '#22D3EE',
+    intolerancias:        '#84CC16',
   };
 
   const CAT_LABELS = {
@@ -3661,6 +3669,7 @@
     'tiroide-completo':   'Tiroide Completo',
     stress:               'Stress',
     'dst-ist':            'DST/IST Completo',
+    intolerancias:        'Intolerâncias Alimentares',
   };
 
   const BIOMARKERS = [
@@ -3736,6 +3745,54 @@
 
     // ── Módulo: Hepatite B (AgHBs) ──
     { id:'aghbs',     name:'AgHBs',             full:'Antigénio de Superfície da Hepatite B', cats:['hepatite-b'],     range:'',             desc:'Marcador de infeção pelo vírus da Hepatite B. Um resultado reativo indica infeção ativa ou portador do vírus.' },
+
+    // ── Módulo: Teste de Intolerâncias Alimentares (IgG, 46 alimentos) ──
+    { id:'igg_leite',     name:'Leite (vaca)',          full:'IgG - Leite (vaca)',                cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao leite de vaca, no grupo dos laticínios.' },
+    { id:'igg_ovo',       name:'Ovo total',             full:'IgG - Ovo total (Gema e Clara)',    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao ovo (gema e clara), no grupo dos ovos.' },
+    { id:'igg_morango',   name:'Morango',               full:'IgG - Morango',                     cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao morango, no grupo dos frutos.' },
+    { id:'igg_laranjalimao', name:'Laranja e Limão',    full:'IgG - Laranja e Limão',              cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à laranja e limão, no grupo dos frutos.' },
+    { id:'igg_toranja',   name:'Toranja',               full:'IgG - Toranja',                     cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à toranja, no grupo dos frutos.' },
+    { id:'igg_tomate',    name:'Tomate',                full:'IgG - Tomate',                      cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao tomate, no grupo dos frutos.' },
+    { id:'igg_maca',      name:'Maçã',                  full:'IgG - Maçã',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à maçã, no grupo dos frutos.' },
+    { id:'igg_groselha',  name:'Groselha',              full:'IgG - Groselha',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à groselha, no grupo dos frutos.' },
+    { id:'igg_meloes',    name:'Mistura de melões',     full:'IgG - Mistura de melões',           cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG a uma mistura de melões, no grupo dos frutos.' },
+    { id:'igg_aveia',     name:'Aveia',                 full:'IgG - Aveia',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à aveia, no grupo dos grãos.' },
+    { id:'igg_gluten',    name:'Glúten',                full:'IgG - Glúten',                      cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao glúten, no grupo dos grãos.' },
+    { id:'igg_semolatrigo', name:'Sêmola de trigo duro', full:'IgG - Sêmola de trigo duro',       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à sêmola de trigo duro, no grupo dos grãos.' },
+    { id:'igg_trigo',     name:'Trigo',                 full:'IgG - Trigo',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao trigo, no grupo dos grãos.' },
+    { id:'igg_arroz',     name:'Arroz',                 full:'IgG - Arroz',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao arroz, no grupo dos grãos.' },
+    { id:'igg_fermento',  name:'Fermento',              full:'IgG - Fermento',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao fermento, no grupo dos grãos.' },
+    { id:'igg_centeio',   name:'Centeio',               full:'IgG - Centeio',                     cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao centeio, no grupo dos grãos.' },
+    { id:'igg_milho',     name:'Milho',                 full:'IgG - Milho',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao milho, no grupo dos vegetais.' },
+    { id:'igg_cenoura',   name:'Cenoura',               full:'IgG - Cenoura',                     cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à cenoura, no grupo dos vegetais.' },
+    { id:'igg_batata',    name:'Batata',                full:'IgG - Batata',                      cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à batata, no grupo dos vegetais.' },
+    { id:'igg_aipo',      name:'Aipo',                  full:'IgG - Aipo',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao aipo, no grupo dos vegetais.' },
+    { id:'igg_pepino',    name:'Pepino',                full:'IgG - Pepino',                      cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao pepino, no grupo dos vegetais.' },
+    { id:'igg_pimentos',  name:'Pimentos',              full:'IgG - Pimentos',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG aos pimentos, no grupo dos vegetais.' },
+    { id:'igg_leguminosas', name:'Mistura de leguminosas', full:'IgG - Mistura de leguminosas', cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG a uma mistura de leguminosas, no grupo dos vegetais.' },
+    { id:'igg_alhofrances', name:'Alho francês',        full:'IgG - Alho francês',                cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao alho francês, no grupo dos vegetais.' },
+    { id:'igg_cogumelos', name:'Cogumelos',             full:'IgG - Cogumelos',                   cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG aos cogumelos, no grupo dos vegetais.' },
+    { id:'igg_brocolos',  name:'Brócolos',              full:'IgG - Brócolos',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG aos brócolos, no grupo dos vegetais.' },
+    { id:'igg_couve',     name:'Couve',                 full:'IgG - Couve',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à couve, no grupo dos vegetais.' },
+    { id:'igg_alho',      name:'Alho',                  full:'IgG - Alho',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao alho, no grupo dos vegetais.' },
+    { id:'igg_azeitona',  name:'Azeitona',              full:'IgG - Azeitona',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à azeitona, no grupo dos vegetais.' },
+    { id:'igg_soja',      name:'Soja',                  full:'IgG - Soja',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à soja, no grupo dos vegetais.' },
+    { id:'igg_porco',     name:'Porco',                 full:'IgG - Porco',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à carne de porco, no grupo das carnes.' },
+    { id:'igg_vaca',      name:'Vaca',                  full:'IgG - Vaca',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à carne de vaca, no grupo das carnes.' },
+    { id:'igg_frango',    name:'Frango',                full:'IgG - Frango',                      cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à carne de frango, no grupo das carnes.' },
+    { id:'igg_borrego',   name:'Borrego',               full:'IgG - Borrego',                     cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à carne de borrego, no grupo das carnes.' },
+    { id:'igg_marisco',   name:'Mistura de marisco',    full:'IgG - Mistura de marisco',          cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG a uma mistura de marisco, no grupo do peixe.' },
+    { id:'igg_peixeaguadoce', name:'Mistura de peixes de água doce', full:'IgG - Mistura de peixes de água doce', cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG a uma mistura de peixes de água doce, no grupo do peixe.' },
+    { id:'igg_peixebranco', name:'Mistura de peixe branco', full:'IgG - Mistura de peixe branco', cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG a uma mistura de peixe branco, no grupo do peixe.' },
+    { id:'igg_atum',      name:'Atum',                  full:'IgG - Atum',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao atum, no grupo do peixe.' },
+    { id:'igg_gengibre',  name:'Gengibre',              full:'IgG - Gengibre',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao gengibre, no grupo das especiarias.' },
+    { id:'igg_cacau',     name:'Cacau',                 full:'IgG - Cacau',                       cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao cacau, no grupo das especiarias.' },
+    { id:'igg_cha',       name:'Chá',                   full:'IgG - Chá',                         cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao chá, no grupo das especiarias.' },
+    { id:'igg_amendoas',  name:'Amêndoas',              full:'IgG - Amêndoas',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG às amêndoas, no grupo das sementes e nozes.' },
+    { id:'igg_nozbrasil', name:'Noz-do-brasil',         full:'IgG - Noz-do-brasil',               cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à noz-do-brasil, no grupo das sementes e nozes.' },
+    { id:'igg_noz',       name:'Noz',                   full:'IgG - Noz',                         cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG à noz, no grupo das sementes e nozes.' },
+    { id:'igg_caju',      name:'Caju',                  full:'IgG - Caju',                        cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao caju, no grupo das sementes e nozes.' },
+    { id:'igg_amendoim',  name:'Amendoim',              full:'IgG - Amendoim',                    cats:['intolerancias'], range:'', desc:'Resposta imunitária IgG ao amendoim, no grupo das sementes e nozes.' },
   ];
 
   function initAtlas() {
