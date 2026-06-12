@@ -3774,9 +3774,12 @@
       el.className = 'ba-item';
       el.dataset.cats = b.cats.join(',');
       const color = CAT_COLORS[b.cats[0]] || '#aaa';
+      const dotStyle = (b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino'))
+        ? `background:linear-gradient(135deg, ${CAT_COLORS['hormonal-masculino']} 50%, ${CAT_COLORS['hormonal-feminino']} 50%)`
+        : `background:${color}`;
       el.innerHTML = `
         <div class="ba-item-row">
-          <span class="ba-dot" style="background:${color}"></span>
+          <span class="ba-dot" style="${dotStyle}"></span>
           <span class="ba-name">${b.name}</span>
         </div>
         <div class="ba-catname">${CAT_LABELS[b.cats[0]] || b.cats[0]}</div>`;
