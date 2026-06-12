@@ -3774,15 +3774,17 @@
       el.className = 'ba-item';
       el.dataset.cats = b.cats.join(',');
       const color = CAT_COLORS[b.cats[0]] || '#aaa';
-      const dotStyle = (b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino'))
+      const isUnissexo = b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino');
+      const dotStyle = isUnissexo
         ? `background:linear-gradient(135deg, ${CAT_COLORS['hormonal-masculino']} 50%, ${CAT_COLORS['hormonal-feminino']} 50%)`
         : `background:${color}`;
+      const catLabel = isUnissexo ? 'Hormonal Unissexo' : (CAT_LABELS[b.cats[0]] || b.cats[0]);
       el.innerHTML = `
         <div class="ba-item-row">
           <span class="ba-dot" style="${dotStyle}"></span>
           <span class="ba-name">${b.name}</span>
         </div>
-        <div class="ba-catname">${CAT_LABELS[b.cats[0]] || b.cats[0]}</div>`;
+        <div class="ba-catname">${catLabel}</div>`;
       el.addEventListener('click', () => selectBiomarker(b, el));
       grid.appendChild(el);
     });
@@ -3810,10 +3812,12 @@
     document.querySelectorAll('.ba-item').forEach(i => i.classList.remove('selected'));
     el.classList.add('selected');
     const color = CAT_COLORS[b.cats[0]] || '#aaa';
+    const isUnissexo = b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino');
+    const catLabel = isUnissexo ? 'Hormonal Unissexo' : (CAT_LABELS[b.cats[0]] || b.cats[0]);
     const detail = document.getElementById('baDetail');
     detail.innerHTML = `
       <div class="ba-detail-content">
-        <div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${CAT_LABELS[b.cats[0]] || b.cats[0]}</span></div>
+        <div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${catLabel}</span></div>
         <div>
           <div class="ba-detail-name">${b.full}</div>
           <div class="ba-detail-full">${b.name}</div>
