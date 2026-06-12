@@ -97,6 +97,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://lyvoo.pt/modulos/dst-ist.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://lyvoo.pt/modulos/consulta-medica.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -155,6 +160,11 @@
   </url>
   <url>
     <loc>https://lyvoo.pt/en/modulos/stress.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/dst-ist.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
