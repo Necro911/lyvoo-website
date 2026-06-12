@@ -934,6 +934,9 @@
         </div>`;
       }).join('');
       msgsEl.scrollTop = msgsEl.scrollHeight;
+    }, (err) => {
+      console.error('Erro ao carregar mensagens do chat:', err);
+      msgsEl.innerHTML = `<div style="text-align:center;color:var(--red);font-size:13px;padding:24px 0;">Não foi possível carregar o chat (${err.code || 'erro'}). Verifique as regras do Firestore para a coleção "chats".</div>`;
     });
 
     // Marcar como visto
@@ -967,12 +970,21 @@
     }
   });
 
-  // Listener global: estado de mensagens não lidas por cliente, para a lista lateral
-  onSnapshot(collection(db, 'chats'), (snap) => {
-    _chatMeta = {};
-    snap.forEach(d => { _chatMeta[d.id] = d.data(); });
-    applyFilters();
-  });
+  // Listener global: estado de mensagens não lidas por cliente, para a lista lateral.
+  // Só pode arrancar DEPOIS do login: antes da autenticação as regras do Firestore
+  // negam a leitura e o onSnapshot é cancelado definitivamente (sem retry).
+  let _chatsMetaUnsub = null;
+  function initChatsMetaListener() {
+    if (_chatsMetaUnsub) return;
+    _chatsMetaUnsub = onSnapshot(collection(db, 'chats'), (snap) => {
+      _chatMeta = {};
+      snap.forEach(d => { _chatMeta[d.id] = d.data(); });
+      applyFilters();
+    }, (err) => {
+      _chatsMetaUnsub = null;
+      console.error('Listener de chats falhou — verifique as Firestore Rules da coleção "chats":', err);
+    });
+  }
   let allWaitlist = [];
   let currentUID = null;
   let selectedEstado = 1;
@@ -2679,6 +2691,7 @@
 
     document.getElementById('admin-email').textContent = user.email;
     document.getElementById('main-layout').style.display = 'grid';
+    initChatsMetaListener();
     await loadUsers();
   });
 

@@ -1467,6 +1467,9 @@
       const vistoTs = parseInt(localStorage.getItem(`lyvoo_chat_visto_${uid}`) || '0', 10);
       const dot = document.getElementById('chat-badge-dot');
       if (dot) dot.style.display = (lastAdminTs > vistoTs) ? 'block' : 'none';
+    }, (err) => {
+      console.error('Erro ao carregar o chat:', err);
+      msgsEl.innerHTML = '<div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">Não foi possível carregar o chat. Tente novamente mais tarde.</div>';
     });
 
     form.addEventListener('submit', async (e) => {
