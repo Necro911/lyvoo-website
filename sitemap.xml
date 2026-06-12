@@ -47,6 +47,16 @@
 
   <!-- Módulos PT -->
   <url>
+    <loc>https://lyvoo.pt/modulos/genetica.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/modulos/microbioma.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://lyvoo.pt/modulos/vitaminas.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -98,6 +108,16 @@
   </url>
 
   <!-- Módulos EN -->
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/genetica.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/microbioma.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://lyvoo.pt/en/modulos/vitaminas.html</loc>
     <changefreq>monthly</changefreq>
