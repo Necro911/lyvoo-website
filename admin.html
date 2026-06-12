@@ -362,6 +362,7 @@
       <!-- Tabs -->
       <div class="tabs">
         <button class="tab active" onclick="switchTab('geral')">Geral</button>
+        <button class="tab" onclick="switchTab('anamnese')">Anamnese</button>
         <button class="tab" onclick="switchTab('biomarcadores')">Biomarcadores</button>
         <button class="tab" onclick="switchTab('plano')">Plano alimentar</button>
         <button class="tab" onclick="switchTab('suplementacao')">Suplementação</button>
@@ -488,6 +489,61 @@
           <button class="btn-save" onclick="saveGeral()">Guardar</button>
           <span class="save-msg" id="msg-geral"></span>
           <button id="btn-arquivar" onclick="arquivarCliente()" style="margin-left:auto;padding:9px 18px;border-radius:10px;border:1px solid rgba(248,113,113,0.25);background:rgba(248,113,113,0.06);color:var(--red);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.background='rgba(248,113,113,0.12)'" onmouseout="this.style.background='rgba(248,113,113,0.06)'">Arquivar cliente</button>
+        </div>
+      </div>
+
+      <!-- ── TAB: ANAMNESE ── -->
+      <div class="tab-content" id="tab-anamnese">
+        <div class="form-section">
+          <div class="form-section-title">Anamnese</div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label">Data</label><input class="form-input" id="an-data" type="date" /></div>
+            <div class="form-field"><label class="form-label">Idade</label><input class="form-input" id="an-idade" type="text" disabled style="opacity:0.6" placeholder="Calculada a partir da data de nascimento" /></div>
+          </div>
+          <div class="form-row-3">
+            <div class="form-field"><label class="form-label">Peso (kg)</label><input class="form-input" id="an-peso" type="text" placeholder="Ex: 72" /></div>
+            <div class="form-field"><label class="form-label">% Massa Gorda</label><input class="form-input" id="an-bf" type="text" placeholder="Ex: 18%" /></div>
+            <div class="form-field"><label class="form-label">Massa Muscular</label><input class="form-input" id="an-mm" type="text" placeholder="Ex: 58%" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label">Gordura Visceral</label><input class="form-input" id="an-gvisc" type="text" placeholder="Ex: 7" /></div>
+            <div class="form-field"><label class="form-label">Profissão</label><input class="form-input" id="an-profissao" type="text" /></div>
+          </div>
+          <div class="form-field"><label class="form-label">Objetivo</label><textarea class="form-textarea" id="an-objetivo"></textarea></div>
+          <div class="form-field"><label class="form-label">Doenças</label><textarea class="form-textarea" id="an-doencas"></textarea></div>
+          <div class="form-field"><label class="form-label">Medicação</label><textarea class="form-textarea" id="an-medicacao"></textarea></div>
+          <div class="form-field"><label class="form-label">Intolerâncias e alergias alimentares</label><textarea class="form-textarea" id="an-intolerancias"></textarea></div>
+          <div class="form-field"><label class="form-label">Suplementação</label><textarea class="form-textarea" id="an-suplementacao"></textarea></div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label">Função intestinal</label><input class="form-input" id="an-intestinal" type="text" /></div>
+            <div class="form-field"><label class="form-label">Qualidade do sono</label><input class="form-input" id="an-sono" type="text" /></div>
+          </div>
+          <div class="form-row-3">
+            <div class="form-field"><label class="form-label">Atividade física? Qual?</label><input class="form-input" id="an-af-qual" type="text" /></div>
+            <div class="form-field"><label class="form-label">Frequência</label><input class="form-input" id="an-af-freq" type="text" placeholder="Ex: 3x/semana" /></div>
+            <div class="form-field"><label class="form-label">Horas de treino</label><input class="form-input" id="an-af-horas" type="text" /></div>
+          </div>
+          <div class="form-field"><label class="form-label">Onde faz compras alimentares</label><input class="form-input" id="an-compras" type="text" /></div>
+          <div class="form-field"><label class="form-label">Observações</label><textarea class="form-textarea" id="an-obs"></textarea></div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Diário Alimentar</div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label">Acorda às</label><input class="form-input" id="an-acorda" type="time" /></div>
+            <div class="form-field"><label class="form-label">Deita-se às</label><input class="form-input" id="an-deita" type="time" /></div>
+          </div>
+          <div class="cards-editor" id="diario-list"></div>
+          <button class="btn-add-card" onclick="addDiarioRefeicao()">+ Adicionar refeição</button>
+          <div class="form-row" style="margin-top:16px">
+            <div class="form-field"><label class="form-label">O que bebe às refeições</label><input class="form-input" id="an-bebida-refeicoes" type="text" /></div>
+            <div class="form-field"><label class="form-label">Ingestão hídrica diária</label><input class="form-input" id="an-agua" type="text" placeholder="Ex: 1.5L" /></div>
+          </div>
+        </div>
+
+        <div class="save-bar">
+          <button class="btn-save" onclick="clinicalConfirm('anamnese','Guardar anamnese','Estás prestes a sobrescrever a anamnese e o diário alimentar deste cliente.')">Guardar anamnese</button>
+          <span class="save-msg" id="msg-anamnese"></span>
         </div>
       </div>
 
@@ -1076,6 +1132,7 @@
   // ── Detecção de alterações não guardadas ──────────────────────────────
   const TAB_SAVE_FN = {
     geral: () => saveGeral(),
+    anamnese: () => saveAnamnese(),
     biomarcadores: () => saveBiomarcadores(),
     plano: () => savePlano(),
     suplementacao: () => saveSupp(),
@@ -1121,7 +1178,7 @@
 
   // ── Tab switching ─────────────────────────────────────────────────────
   const TAB_TS_KEYS = {
-    geral:'tsGeral', biomarcadores:'tsBio', plano:'tsPlano',
+    geral:'tsGeral', anamnese:'tsAnamnese', biomarcadores:'tsBio', plano:'tsPlano',
     suplementacao:'tsSupp', consultas:'tsConsult', relatorio:'tsRelatorio'
   };
   let currentTimestamps = {};
@@ -1130,7 +1187,7 @@
   // Executa efectivamente a mudança de tab (sem verificação de dirty)
   function doSwitchTab(name) {
     currentTab = name;
-    const tabs = ['geral','biomarcadores','plano','suplementacao','consultas','relatorio','chat'];
+    const tabs = ['geral','anamnese','biomarcadores','plano','suplementacao','consultas','relatorio','chat'];
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabs[i] === name));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
@@ -1362,6 +1419,34 @@
     document.getElementById('g-tracking').addEventListener('input', updateTrackingLink);
     document.getElementById('g-transportadora').addEventListener('change', updateTrackingLink);
 
+    // Anamnese
+    const an = d.anamnese || {};
+    document.getElementById('an-data').value          = an.data||'';
+    document.getElementById('an-peso').value          = an.peso||'';
+    document.getElementById('an-bf').value            = an.bf||'';
+    document.getElementById('an-mm').value            = an.mm||'';
+    document.getElementById('an-gvisc').value         = an.gvisc||'';
+    document.getElementById('an-profissao').value     = an.profissao||'';
+    document.getElementById('an-objetivo').value      = an.objetivo||'';
+    document.getElementById('an-doencas').value       = an.doencas||'';
+    document.getElementById('an-medicacao').value     = an.medicacao||'';
+    document.getElementById('an-intolerancias').value = an.intolerancias||'';
+    document.getElementById('an-suplementacao').value = an.suplementacao||'';
+    document.getElementById('an-intestinal').value    = an.intestinal||'';
+    document.getElementById('an-sono').value          = an.sono||'';
+    document.getElementById('an-af-qual').value       = an.afQual||'';
+    document.getElementById('an-af-freq').value       = an.afFreq||'';
+    document.getElementById('an-af-horas').value      = an.afHoras||'';
+    document.getElementById('an-compras').value       = an.compras||'';
+    document.getElementById('an-obs').value           = an.obs||'';
+    document.getElementById('an-acorda').value        = an.acorda||'';
+    document.getElementById('an-deita').value         = an.deita||'';
+    document.getElementById('an-bebida-refeicoes').value = an.bebidaRefeicoes||'';
+    document.getElementById('an-agua').value          = an.agua||'';
+    buildDiarioEditor(an.diario||[]);
+    updateIdadeFromDob();
+    document.getElementById('g-dob').addEventListener('change', updateIdadeFromDob);
+
     // Biomarcadores
     document.getElementById('bio-data').value = d.resultados?.dataAnalise || '';
     buildBioEditor(d.resultados?.biomarcadores || {});
@@ -1400,7 +1485,7 @@
     document.getElementById('rel-resumo').value = rel.resumo||'';
 
     // Limpar mensagens
-    ['msg-geral','msg-bio','msg-plano','msg-supp','msg-consult','msg-rel'].forEach(id => {
+    ['msg-geral','msg-anamnese','msg-bio','msg-plano','msg-supp','msg-consult','msg-rel'].forEach(id => {
       document.getElementById(id).textContent = '';
     });
 
@@ -1676,6 +1761,66 @@
   };
 
   window.addRefeicao = function() { addRefeicaoCard({}); };
+
+  // ── Diário alimentar (Anamnese) ────────────────────────────────────────
+  const DIARIO_NOMES = [
+    'Pequeno-almoço','Meio da manhã','Almoço','Lanche','Jantar','Ceia'
+  ];
+
+  function buildDiarioEditor(list) {
+    const container = document.getElementById('diario-list');
+    container.innerHTML = '';
+    if (list && list.length) {
+      list.forEach(r => addDiarioCard(r));
+    } else {
+      DIARIO_NOMES.forEach(nome => addDiarioCard({ nome }));
+    }
+  }
+
+  function addDiarioCard(r) {
+    const container = document.getElementById('diario-list');
+    const div = document.createElement('div');
+    div.className = 'card-editor';
+    const opts = DIARIO_NOMES.map(n =>
+      `<option value="${n}" ${(r.nome||'') === n ? 'selected' : ''}>${n}</option>`
+    ).join('');
+    div.innerHTML = `
+      <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
+      <div class="form-row-3">
+        <div class="form-field">
+          <label class="form-label">Refeição</label>
+          <select class="form-select" name="dr-nome">${opts}</select>
+        </div>
+        <div class="form-field" style="max-width:140px">
+          <label class="form-label">Hora</label>
+          <input class="form-input" type="time" name="dr-hora" value="${r.hora||''}" />
+        </div>
+        <div class="form-field" style="max-width:160px">
+          <label class="form-label">Casa ou Fora</label>
+          <select class="form-select" name="dr-local">
+            <option value="">-</option>
+            <option value="Casa" ${r.local==='Casa'?'selected':''}>Casa</option>
+            <option value="Fora" ${r.local==='Fora'?'selected':''}>Fora</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Descrição</label>
+        <textarea class="form-textarea" name="dr-desc" rows="2">${r.descricao||''}</textarea>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  window.addDiarioRefeicao = function() { addDiarioCard({}); };
+
+  function collectDiarioData() {
+    return [...document.getElementById('diario-list').querySelectorAll('.card-editor')].map(card => ({
+      nome:      card.querySelector('[name=dr-nome]').value,
+      hora:      card.querySelector('[name=dr-hora]').value.trim(),
+      local:     card.querySelector('[name=dr-local]').value,
+      descricao: card.querySelector('[name=dr-desc]').value.trim(),
+    })).filter(r => r.hora || r.local || r.descricao);
+  }
 
   function collectRefeicaoData() {
     return [...document.getElementById('refeicoes-list').querySelectorAll('.card-editor')].map(card => ({
@@ -2455,6 +2600,49 @@
     saveDoc({ suplementacao: collectSuppData() }, 'msg-supp');
   };
 
+  window.saveAnamnese = function() {
+    saveDoc({
+      anamnese: {
+        data:            document.getElementById('an-data').value,
+        peso:            document.getElementById('an-peso').value.trim(),
+        bf:              document.getElementById('an-bf').value.trim(),
+        mm:              document.getElementById('an-mm').value.trim(),
+        gvisc:           document.getElementById('an-gvisc').value.trim(),
+        profissao:       document.getElementById('an-profissao').value.trim(),
+        objetivo:        document.getElementById('an-objetivo').value.trim(),
+        doencas:         document.getElementById('an-doencas').value.trim(),
+        medicacao:       document.getElementById('an-medicacao').value.trim(),
+        intolerancias:   document.getElementById('an-intolerancias').value.trim(),
+        suplementacao:   document.getElementById('an-suplementacao').value.trim(),
+        intestinal:      document.getElementById('an-intestinal').value.trim(),
+        sono:            document.getElementById('an-sono').value.trim(),
+        afQual:          document.getElementById('an-af-qual').value.trim(),
+        afFreq:          document.getElementById('an-af-freq').value.trim(),
+        afHoras:         document.getElementById('an-af-horas').value.trim(),
+        compras:         document.getElementById('an-compras').value.trim(),
+        obs:             document.getElementById('an-obs').value.trim(),
+        acorda:          document.getElementById('an-acorda').value,
+        deita:           document.getElementById('an-deita').value,
+        bebidaRefeicoes: document.getElementById('an-bebida-refeicoes').value.trim(),
+        agua:            document.getElementById('an-agua').value.trim(),
+        diario:          collectDiarioData(),
+      }
+    }, 'msg-anamnese');
+  };
+
+  // ── Idade calculada a partir da data de nascimento ─────────────────────
+  function updateIdadeFromDob() {
+    const dob = document.getElementById('g-dob').value;
+    const out = document.getElementById('an-idade');
+    if (!dob) { out.value = ''; return; }
+    const birth = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    out.value = age + ' anos';
+  }
+
   window.saveConsultas = function() {
     saveDoc({ consultas: collectConsultData() }, 'msg-consult');
   };
@@ -2527,7 +2715,7 @@
 
   // ── Log de alterações ────────────────────────────────────────────────
   const TAB_LABELS_LOG = {
-    geral: 'Dados gerais', biomarcadores: 'Biomarcadores', plano: 'Plano alimentar',
+    geral: 'Dados gerais', anamnese: 'Anamnese', biomarcadores: 'Biomarcadores', plano: 'Plano alimentar',
     suplementacao: 'Suplementação', consultas: 'Consultas', relatorio: 'Relatório',
   };
 
@@ -2560,6 +2748,7 @@
 
   // ── Confirmação para dados clínicos ──────────────────────────────────
   const CLINICAL_SAVE_FN = {
+    anamnese:      () => saveAnamnese(),
     biomarcadores: () => saveBiomarcadores(),
     plano:         () => savePlano(),
     supp:          () => saveSupp(),
