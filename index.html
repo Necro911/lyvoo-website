@@ -1364,10 +1364,10 @@
     .ba-detail-range-label { font-size: 9.5px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 4px; }
     .ba-detail-range { font-size: 13px; font-weight: 700; }
     .ba-detail-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.75; }
-    .ba-detail-foods { display: flex; flex-direction: column; gap: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.07); }
-    .ba-detail-food-label { font-size: 9.5px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 6px; }
-    .ba-detail-foods .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    .ba-detail-foods .chip { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; padding: 4px 10px; }
+    .ba-detail-foods { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .ba-detail-food-group { font-size: 12px; line-height: 1.6; }
+    .ba-detail-food-label { color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; font-weight: 700; }
+    .ba-detail-food-list { color: rgba(255,255,255,0.55); }
 
     @media (max-width: 960px) {
       .step-atlas-top { grid-template-columns: 1fr; gap: 28px; }
@@ -3823,8 +3823,7 @@
         <div class="ba-detail-desc">${b.desc}</div>
         ${b.foods ? `<div class="ba-detail-foods">${Object.entries(b.foods).map(([group, items]) => `
           <div class="ba-detail-food-group">
-            <div class="ba-detail-food-label">${group}</div>
-            <div class="chips">${items.map(f => `<span class="chip">${f}</span>`).join('')}</div>
+            <span class="ba-detail-food-label">${group}: </span><span class="ba-detail-food-list">${items.join(', ')}</span>
           </div>`).join('')}</div>` : ''}
       </div>`;
   }
