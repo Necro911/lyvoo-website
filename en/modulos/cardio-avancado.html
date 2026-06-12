@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="../../images/og-image.png" type="image/png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Expanded Thyroid - Lyvoo Module</title>
-  <meta name="description" content="TSH, FT3, FT4, and thyroid antibodies with specialist functional interpretation." />
+  <link rel="icon" href="../../images/og-image.png" type="image/png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Cardio - Lyvoo Module</title>
+  <meta name="description" content="Lp(a) and NT-proBNP to deepen your cardiovascular risk and cardiac function assessment." />
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -15,11 +14,21 @@
     .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height:100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-    .nav-logo { text-decoration: none; }
+    .nav-logo { text-decoration: none; } .nav-logo span { font-size: 22px; font-weight: 900; letter-spacing: -0.04em; color: #fff; }
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
-    .hero { background: linear-gradient(160deg, #030D10 0%, #060F16 55%, #04080E 100%); padding: 130px 0 80px; text-align: center; }
+    .hero {
+      background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%);
+      padding: 130px 0 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%);
+    }
+    .hero .container { position: relative; }
     .hero .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; margin-bottom: 28px; transition: color 0.2s; }
     .hero .back-link:hover { color: rgba(255,255,255,0.75); }
     .hero .mod-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
@@ -47,14 +56,26 @@
     .markers-sub { font-size: 15px; color: var(--ink-3); margin-bottom: 36px; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
     .chip { font-size: 13px; font-weight: 500; color: var(--teal); background: #EEF9F9; border: 1px solid rgba(11,82,90,0.12); border-radius: 999px; padding: 7px 16px; }
-    .cta-section { background: linear-gradient(135deg, #0B525A 0%, #082C30 100%); padding: 80px 0; text-align: center; }
+    .cta-section { padding: 80px 0; text-align: center; position: relative; }
+    /* CTA + FOOTER continuous gradient */
+    .cta-footer-wrap {
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, #0A1415 0%, #051520 35%, #0D0820 68%, #060A0C 100%);
+    }
+    .modcta-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 45% at 50% 75%, rgba(61,217,232,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 20% 15%, rgba(139,92,246,0.1) 0%, transparent 60%);
+    }
+    .cta-footer-wrap .container { position: relative; }
     .cta-section h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 14px; }
     .cta-section p { font-size: 16px; color: rgba(255,255,255,0.55); margin-bottom: 36px; max-width: 440px; margin-left: auto; margin-right: auto; }
     .btn-cta { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--teal); font-size: 15px; font-weight: 700; padding: 14px 32px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
     .btn-cta:hover { opacity: 0.88; }
     .btn-cta-ghost { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 999px; text-decoration: none; margin-left: 14px; transition: all 0.2s; }
     .btn-cta-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
-    .footer { background: #07090B; padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer { padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; }
     .lf-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
     .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 16px; }
     .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
@@ -66,12 +87,17 @@
     .lf-links { display: flex; align-items: center; gap: 20px; }
     .lf-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
     .lf-links a:hover { color: rgba(255,255,255,0.7); }
-    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: "Inter", sans-serif; padding: 0; }
     .lf-cookies:hover { color: rgba(255,255,255,0.7); }
-    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } .content-grid { grid-template-columns: 1fr; gap: 40px; } .btn-cta-ghost { margin-left: 0; margin-top: 12px; } }
+    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
     @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle { display: flex; } }
-      .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; gap: 40px; } .btn-cta-ghost { margin-left: 0; margin-top: 12px; } }
+      /* Mobile navbar: keep logo + lang toggle + CTA, hide verbose text links */
+    @media (max-width: 700px) {
+      .nav-links { gap: 8px; }
+      .nav-links > li { display: none; }
+      .nav-links > li.lang-toggle { display: flex; }
+    }      .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
     .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
@@ -81,31 +107,28 @@
   <script src="../../prelaunch.js" defer></script>
 </head>
 <body>
-
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../en/index.html" class="nav-logo"><img src="../../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" /></a>
+    <a href="../../en/index.html" class="nav-logo"><img src="../../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;transform:translateY(0px);"/></a>
     <ul class="nav-links">
-      <li><a href="../../en/index.html">Home</a></li>
+      <li><a href="../../en/index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>Home</a></li>
       <li><a href="../../en/index.html#atlas">What we test</a></li>
       <li><a href="../../en/contact.html">Contact</a></li>
-      <li class="lang-toggle"><a href="../../modulos/tiroide-completo.html">PT</a><a href="#" class="lang-active">EN</a></li>
+      <li class="lang-toggle"><a href="../../modulos/cardio-avancado.html">PT</a><a href="#" class="lang-active">EN</a></li>
     </ul>
   </div>
 </nav>
 
 <section class="hero">
+  <div class="hero-glow"></div>
   <div class="container">
-    <a href="../../en/index.html#atlas" class="back-link">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      All modules
-    </a>
+    <a href="../../en/index.html#modulos" class="back-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>All modules</a>
     <div class="mod-label">Optional module</div>
-    <h1>Expanded<br/>Thyroid</h1>
-    <p class="hero-desc">TSH, FT3, FT4, and thyroid antibodies with specialist functional interpretation.</p>
+    <h1>Advanced<br/>Cardio</h1>
+    <p class="hero-desc">Lp(a) and NT-proBNP to deepen your cardiovascular risk and cardiac function assessment.</p>
     <div class="hero-price-wrap">
-      <span class="hero-price-cur">€</span><span class="hero-price-val">119</span>
-      <span class="hero-price-note">add-on to base plan</span>
+      <span class="hero-price-cur">€</span><span class="hero-price-val">89</span>
+      <span class="hero-price-note">add-on to the base plan</span>
     </div>
   </div>
 </section>
@@ -115,15 +138,15 @@
     <div class="content-grid">
       <div>
         <div class="section-label">What it is</div>
-        <h2>The thyroid goes<br/>beyond TSH.</h2>
-        <p>TSH is often the only thyroid marker assessed in routine tests. However, a normal TSH does not exclude functional thyroid dysfunction. The conversion of T4 to active T3, the presence of autoimmune antibodies, and free T3 values are fundamental for a complete assessment.</p>
-        <p>This module offers a complete thyroid panel with functional interpretation - not just whether values are within the reference range, but whether they are optimised for your health.</p>
+        <h2>Genetic risk and cardiac function.</h2>
+        <p>The base panel already assesses the complete lipid profile. This module deepens the assessment with two additional markers of high predictive value.</p>
+        <p>Lp(a) is a genetically determined cardiovascular risk factor, independent of lifestyle. NT-proBNP assesses cardiac function and detects overload or failure even at early stages.</p>
       </div>
       <div>
         <div class="section-label">Who it's for</div>
-        <h2>When symptoms don't match results.</h2>
-        <p>Recommended for those experiencing fatigue, unexplained weight gain, hair loss, sensitivity to cold, constipation, or low mood, even with TSH within normal values.</p>
-        <p>Particularly relevant for women (Hashimoto's thyroiditis is far more common in females), in cases of family history of thyroid disease, or after pregnancy.</p>
+        <h2>For a complete cardiovascular view.</h2>
+        <p>Recommended for those with a family history of early cardiovascular disease, who want to understand their genetic risk, or who wish to monitor heart health in greater depth.</p>
+        <p>Complements the base panel with markers the traditional lipid profile does not cover.</p>
       </div>
     </div>
   </div>
@@ -134,34 +157,24 @@
     <h2>What's included</h2>
     <div class="includes-grid">
       <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <div class="inc-title">Complete thyroid panel (5 markers)</div>
-        <div class="inc-desc">TSH, free T4, free T3, Anti-TPO, and Anti-Tg for functional and autoimmune thyroid assessment.</div>
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="inc-title">Lp(a)</div>
+        <div class="inc-desc">A genetic cardiovascular risk factor, independent of cholesterol and diet.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <div class="inc-title">NT-proBNP</div>
+        <div class="inc-desc">A marker of cardiac function. Elevated in cardiac overload or failure, even at early stages.</div>
       </div>
       <div class="inc-card">
         <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <div class="inc-title">Report with functional interpretation</div>
-        <div class="inc-desc">Medical assessment referencing optimal functional values, not just standard laboratory limits.</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-        <div class="inc-title">Autoimmunity screening</div>
-        <div class="inc-desc">Anti-TPO and anti-thyroglobulin antibodies for early identification of autoimmune thyroiditis (Hashimoto's / Graves').</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <div class="inc-title">T4→T3 conversion assessment</div>
-        <div class="inc-desc">Analysis of the FT3/FT4 ratio as an indicator of peripheral thyroid hormone conversion efficiency.</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-        <div class="inc-title">Thyroid nutritional recommendations</div>
-        <div class="inc-desc">Dietary support for thyroid function (iodine, selenium, zinc) based on your specific results.</div>
+        <div class="inc-title">Report with clinical interpretation</div>
+        <div class="inc-desc">Results contextualised against the rest of the base panel's lipid profile.</div>
       </div>
       <div class="inc-card">
         <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
         <div class="inc-title">Results in 7 to 10 days</div>
-        <div class="inc-desc">Certified laboratory analysis with delivery to the Lyvoo app.</div>
+        <div class="inc-desc">Certified laboratory analysis with delivery in the Lyvoo app.</div>
       </div>
     </div>
   </div>
@@ -169,25 +182,23 @@
 
 <section class="markers">
   <div class="container">
-    <h2>Markers analysed</h2>
-    <p class="markers-sub">Complete thyroid panel for functional and autoimmune assessment.</p>
+    <h2>Parameters analysed</h2>
+    <p class="markers-sub">Deepen your cardiovascular assessment beyond the base panel.</p>
     <div class="chips">
-      <span class="chip">TSH</span>
-      <span class="chip">Free T4 (FT4)</span>
-      <span class="chip">Free T3 (FT3)</span>
-      <span class="chip">Anti-TPO (anti-thyroid peroxidase antibodies)</span>
-      <span class="chip">Anti-Tg (anti-thyroglobulin antibodies)</span>
-      <span class="chip">FT3/FT4 ratio</span>
+      <span class="chip">Lp(a)</span>
+      <span class="chip">NT-proBNP</span>
     </div>
   </div>
 </section>
 
+<div class="cta-footer-wrap">
+  <div class="modcta-glow"></div>
 <section class="cta-section">
   <div class="container">
-    <h2>Add to your programme.</h2>
-    <p>Available as an add-on to the Lyvoo programme. Contact your Lyvoo team to activate.</p>
-    <a href="../../en/index.html#atlas" class="btn-cta">View programme</a>
-    <a href="../../en/index.html#atlas" class="btn-cta-ghost">Other modules</a>
+    <h2>Add it to your programme.</h2>
+    <p>Deepen your cardiovascular insight. Available as an add-on to any base plan.</p>
+    <a href="../../en/index.html#planos" class="btn-cta">View plan</a>
+    <a href="../../en/index.html#modulos" class="btn-cta-ghost">Other modules</a>
   </div>
 </section>
 
@@ -199,7 +210,7 @@
         <p class="lf-brand">Personalised preventive health.<br/>From home. Made in Portugal.</p>
       </div>
       <div class="lf-col"><h5>Product</h5><ul>
-        <li><a href="../../en/index.html">Home</a></li>
+        <li><a href="../../en/index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>Home</a></li>
         <li><a href="../../en/index.html#atlas">What we test</a></li>
       </ul></div>
       <div class="lf-col"><h5>Company</h5><ul>
@@ -218,11 +229,11 @@
       <div class="lf-links">
         <a href="../../en/privacy.html">Privacy policy</a>
         <a href="../../en/terms.html">Terms of service</a>
-        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+        <button class="lf-cookies" onclick="window.LyvooCookies&amp;&amp;window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
       </div>
     </div>
   </div>
 </footer>
-
+</div>
 </body>
 </html>

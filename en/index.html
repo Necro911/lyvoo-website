@@ -426,7 +426,7 @@
     .bioatlas{background:#07090B;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
     .ba-topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;gap:12px}
     .ba-headline{font-size:12px;font-weight:700;color:#8B5CF6;letter-spacing:0.08em;text-transform:uppercase}
-    .ba-filters{display:flex;gap:5px;flex-wrap:wrap}
+    .ba-filters{display:grid;grid-template-columns:repeat(4,max-content);gap:5px}
     .ba-filter{padding:5px 13px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(139,92,246,0.25);background:transparent;color:rgba(139,92,246,0.7);transition:all 0.2s;white-space:nowrap}
     .ba-filter:hover{color:#8B5CF6;border-color:rgba(139,92,246,0.5)}
     .ba-filter.active{border-color:var(--cyan);color:var(--cyan);background:rgba(61,217,232,0.07)}
@@ -436,8 +436,8 @@
     .ba-item:hover:not(.dimmed){background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}
     .ba-item.dimmed{opacity:0.1;pointer-events:none}
     .ba-item.selected{background:rgba(61,217,232,0.07);border-color:rgba(61,217,232,0.28)}
-    .ba-item-row{display:flex;align-items:center;gap:6px}
-    .ba-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .ba-item-row{display:flex;align-items:flex-start;gap:6px}
+    .ba-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
     .ba-name{font-size:12px;font-weight:600;color:rgba(255,255,255,0.78);line-height:1.3}
     .ba-catname{font-size:9.5px;color:rgba(255,255,255,0.2);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em}
     .ba-detail{width:230px;flex-shrink:0;border-left:1px solid rgba(255,255,255,0.07);padding:22px 20px;display:flex;flex-direction:column;gap:14px}
@@ -445,13 +445,17 @@
     .ba-detail-empty svg{width:28px;height:28px;color:rgba(255,255,255,0.4)}
     .ba-detail-empty span{font-size:12px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.5}
     .ba-detail-cat{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
-    .ba-detail-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.2}
+    .ba-detail-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.2;margin-top:6px}
     .ba-detail-full{font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px}
     .ba-detail-sep{height:1px;background:rgba(255,255,255,0.07)}
     .ba-detail-range-label{font-size:9.5px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:4px}
     .ba-detail-range{font-size:13px;font-weight:700}
     .ba-detail-desc{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.75}
-    @media(max-width:960px){.step-atlas-top{grid-template-columns:1fr;gap:28px}.ba-grid{grid-template-columns:repeat(3,1fr)}.ba-detail{display:none}}
+    .ba-detail-foods{display:flex;flex-direction:column;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07)}
+    .ba-detail-food-group{font-size:12px;line-height:1.6}
+    .ba-detail-food-label{color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;font-size:10px;font-weight:700}
+    .ba-detail-food-list{color:rgba(255,255,255,0.55)}
+    @media(max-width:960px){.step-atlas-top{grid-template-columns:1fr;gap:28px}.ba-grid{grid-template-columns:repeat(3,1fr)}.ba-detail{display:none}.ba-filters{display:flex;flex-wrap:wrap;justify-content:center}}
     @media(max-width:600px){.ba-grid{grid-template-columns:repeat(2,1fr)}}
     /* Lighter gray text in dark sections on mobile for readability */
     @media(max-width:760px){.layer-dark .step-text p,.layer-dark .step-detail-item,.layer-dark .step-atlas-right p,.layer-dark .step-atlas-right .step-detail-item,.layer-dark .process-intro p,.layer-dark .modules-header p,.step-atlas-right p,.step-atlas-right .step-detail-item,.glp-intro-row > p,.glp-left > p,.app-feature-text p,.ba-detail-desc{color:rgba(255,255,255,0.62)}}
@@ -805,13 +809,17 @@
             <span class="ba-headline">Lyvoo Biomarker Panel</span>
             <div class="ba-filters">
               <button class="ba-filter active" data-cat="todos">All</button>
-              <button class="ba-filter" data-cat="cardiovascular">Cardiovascular</button>
-              <button class="ba-filter" data-cat="hormonal">Hormonal</button>
-              <button class="ba-filter" data-cat="nutricional">Nutritional</button>
-              <button class="ba-filter" data-cat="tiróide">Thyroid</button>
-              <button class="ba-filter" data-cat="inflamação">Inflammation</button>
-              <button class="ba-filter" data-cat="renal">Renal</button>
-              <button class="ba-filter" data-cat="hepática">Hepatic</button>
+              <button class="ba-filter" data-cat="vitaminas">Vitamins</button>
+              <button class="ba-filter" data-cat="hormonal-masculino">Male Hormonal</button>
+              <button class="ba-filter" data-cat="hormonal-feminino">Female Hormonal</button>
+              <button class="ba-filter" data-cat="base">Base panel</button>
+              <button class="ba-filter" data-cat="cardio-avancado">Advanced Cardio</button>
+              <button class="ba-filter" data-cat="dst-ist">Full STI Test</button>
+              <button class="ba-filter" data-cat="hepatite-b">Hepatitis B</button>
+              <button class="ba-filter" data-cat="intolerancias">Food Intolerances</button>
+              <button class="ba-filter" data-cat="fertilidade">Fertility</button>
+              <button class="ba-filter" data-cat="tiroide-completo">Extended Thyroid</button>
+              <button class="ba-filter" data-cat="stress">Stress</button>
             </div>
           </div>
           <div class="ba-body">
@@ -841,7 +849,7 @@
       <div class="module-card module-card--highlight fade">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3Q12 6 15 9Q12 12 9 15Q12 18 15 21"/><path d="M15 3Q12 6 9 9Q12 12 15 15Q12 18 9 21" stroke-opacity="0.3" stroke-dasharray="2.5 2"/><line x1="9" y1="3" x2="15" y2="3"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="21" x2="15" y2="21"/></svg></div>
         <div class="mod-name">Genetic Testing</div>
-        <div class="mod-desc">Assess predisposition to hereditary conditions, risk of passing them on and guide preventive measures or treatments.</div>
+        <div class="mod-desc">Assess predisposition to hereditary conditions, the risk of passing them on, and guide preventive measures or treatments.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/genetica.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
       <div class="module-card module-card--highlight fade fade-d1">
@@ -851,46 +859,64 @@
         <div class="mod-footer"><a class="mod-add" href="modulos/microbioma.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
       <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg></div>
+        <div class="mod-name">Vitamins</div>
+        <div class="mod-desc">Vitamin D, B12 and Folate. Assess nutritional deficiencies that affect energy, immunity and long-term health.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/vitaminas.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div class="mod-name">Food Intolerance Test</div>
+        <div class="mod-desc">Immune response (IgG) to 59 foods, organised by group: dairy, eggs, fruits, grains, vegetables, meat, fish, spices, seeds and nuts.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/intolerancias-alimentares.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d1">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="5.5"/><line x1="14" y1="10" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg></div>
+        <div class="mod-name">Male Hormonal</div>
+        <div class="mod-desc">Total and free testosterone, SHBG, PSA, FSH and LH. Complete male hormonal assessment with clinical interpretation.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-masculino.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d2">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5.5"/><line x1="12" y1="13.5" x2="12" y2="21"/><line x1="8.5" y1="18" x2="15.5" y2="18"/></svg></div>
         <div class="mod-name">Female Hormonal</div>
-        <div class="mod-desc">Complete female hormonal panel. Cycle, fertility, menopause, bone health and oestrogen balance.</div>
+        <div class="mod-desc">Oestradiol, Progesterone, Prolactin, FSH, LH and SHBG. Complete female hormonal panel: cycle, balance and menopause.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-feminino.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
       <div class="module-card fade">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="5.5"/><line x1="14" y1="10" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg></div>
-        <div class="mod-name">Male Hormonal</div>
-        <div class="mod-desc">Testosterone, DHEA, PSA and men's health markers with clinical interpretation and recommendations.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-masculino.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg></div>
+        <div class="mod-name">Fertility</div>
+        <div class="mod-desc">AMH, FSH, LH and Oestradiol. Assess ovarian reserve and the hormonal balance relevant to fertility.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/fertilidade.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
       <div class="module-card fade fade-d1">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="16" height="9" rx="2"/><path d="M18 11h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2"/><path d="M9 11.5l2-3 1.5 2 2-2.5"/></svg></div>
-        <div class="mod-name">Energy &amp; Fatigue</div>
-        <div class="mod-desc">Markers linked to chronic fatigue, cellular energy, iron metabolism and mitochondrial function.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/energia-fadiga.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-      <div class="module-card fade fade-d2">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="8"/><ellipse cx="8" cy="14" rx="4" ry="6"/><ellipse cx="16" cy="14" rx="4" ry="6"/><path d="M10 13.5h4"/><line x1="12" y1="20" x2="12" y2="22"/></svg></div>
         <div class="mod-name">Extended Thyroid</div>
-        <div class="mod-desc">TSH, FT3, FT4 and thyroid antibodies with specialist functional interpretation.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/tiroide.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-      <div class="module-card fade">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3a2 2 0 0 0-2 2v4a6 6 0 0 0 6 6h1"/><path d="M19 3a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-1"/><path d="M10 15a5 5 0 0 0 5 5"/><circle cx="19" cy="19" r="2"/><line x1="7" y1="3" x2="7" y2="5"/><line x1="17" y1="3" x2="17" y2="5"/></svg></div>
-        <div class="mod-name">Extra medical consultation</div>
-        <div class="mod-desc">Additional preventive medical session with your Lyvoo doctor for review or specific concerns.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/consulta-medica.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-      <div class="module-card fade fade-d1">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="2" x2="8" y2="7"/><line x1="12" y1="2" x2="12" y2="7"/><path d="M8 7a2 2 0 0 0 4 0"/><line x1="10" y1="9" x2="10" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/></svg></div>
-        <div class="mod-name">Extra nutrition consultation</div>
-        <div class="mod-desc">Additional session with your nutritionist to adjust your dietary plan or address specific goals.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/consulta-nutricao.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-desc">FT4 and T3, complementing the base panel's TSH for a complete functional thyroid assessment.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/tiroide-completo.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
       <div class="module-card fade fade-d2">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg></div>
-        <div class="mod-name">Vitamin D upgrade</div>
-        <div class="mod-desc">Vitamin D 25-OH analysis with personalised supplementation recommendation based on your levels.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/vitamina-d.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="16" height="9" rx="2"/><path d="M18 11h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2"/><path d="M9 11.5l2-3 1.5 2 2-2.5"/></svg></div>
+        <div class="mod-name">Stress</div>
+        <div class="mod-desc">Morning cortisol. Assess the impact of chronic stress on sleep, immunity and metabolism.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/stress.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="mod-name">Advanced Cardio</div>
+        <div class="mod-desc">Lp(a) and NT-proBNP. Deepen your cardiovascular risk and cardiac function assessment.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/cardio-avancado.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d1">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="mod-name">Full STI Test</div>
+        <div class="mod-desc">Extended panel of sexually transmitted infections: HIV, Hepatitis B, Syphilis, Gonorrhoea, Chlamydia, Trichomoniasis, HSV-1/2, Mycoplasma, Ureaplasma and more.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/dst-ist.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+      <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3a2 2 0 0 0-2 2v4a6 6 0 0 0 6 6h1"/><path d="M19 3a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-1"/><path d="M10 15a5 5 0 0 0 5 5"/><circle cx="19" cy="19" r="2"/><line x1="7" y1="3" x2="7" y2="5"/><line x1="17" y1="3" x2="17" y2="5"/></svg></div>
+        <div class="mod-name">Hepatitis B</div>
+        <div class="mod-desc">HBsAg. Screening for Hepatitis B virus infection with clinical interpretation.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/hepatite-b.html">Learn more <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
     </div>
   </div>
@@ -1708,56 +1734,131 @@
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 
   const CAT_COLORS = {
-    cardiovascular:'#F87171',hormonal:'#C084FC',nutricional:'#4ADE80',
-    'tiróide':'#60A5FA',inflamação:'#FB923C',renal:'#34D399',hepática:'#FBBF24'
+    metabolico:           '#4ADE80',
+    cardiovascular:       '#F87171',
+    hepatica:             '#FBBF24',
+    renal:                '#34D399',
+    minerais:             '#60A5FA',
+    tiroide:              '#A78BFA',
+    inflamacao:           '#FB923C',
+    vitaminas:            '#4ADE80',
+    'hormonal-masculino': '#60A5FA',
+    'hormonal-feminino':  '#F472B6',
+    fertilidade:          '#F472B6',
+    'cardio-avancado':    '#F87171',
+    'hepatite-b':         '#FBBF24',
+    'tiroide-completo':   '#A78BFA',
+    stress:               '#FB923C',
+    'dst-ist':            '#22D3EE',
+    intolerancias:        '#84CC16',
+  };
+
+  const CAT_LABELS = {
+    metabolico:           'Metabolic',
+    cardiovascular:       'Cardiovascular',
+    hepatica:             'Liver function',
+    renal:                'Kidney function',
+    minerais:             'Minerals & Iron',
+    tiroide:              'Thyroid',
+    inflamacao:           'Inflammation',
+    vitaminas:            'Vitamins',
+    'hormonal-masculino': 'Male Hormonal',
+    'hormonal-feminino':  'Female Hormonal',
+    fertilidade:          'Fertility',
+    'cardio-avancado':    'Advanced Cardio',
+    'hepatite-b':         'Hepatitis B',
+    'tiroide-completo':   'Extended Thyroid',
+    stress:               'Stress',
+    'dst-ist':            'Full STI Test',
+    intolerancias:        'Food Intolerances',
   };
 
   const BIOMARKERS = [
-    {id:'ldl',name:'LDL',full:'LDL Cholesterol',cats:['cardiovascular'],range:'< 3.0 mmol/L',desc:'Bad cholesterol. Elevated levels increase the risk of arterial plaque and cardiovascular disease. Primary target in cardiac prevention.'},
-    {id:'hdl',name:'HDL',full:'HDL Cholesterol',cats:['cardiovascular'],range:'> 1.0 (M) / > 1.2 (F) mmol/L',desc:'Good cholesterol. Transports cholesterol from arteries to the liver. Low levels associated with higher cardiovascular risk.'},
-    {id:'apob',name:'ApoB',full:'Apolipoprotein B',cats:['cardiovascular'],range:'< 90 mg/dL',desc:'Better cardiovascular risk marker than LDL. Represents the total number of atherogenic particles in circulation.'},
-    {id:'col',name:'Total chol.',full:'Total Cholesterol',cats:['cardiovascular'],range:'< 5.0 mmol/L',desc:'Total blood cholesterol measure. Assessed alongside LDL, HDL and triglycerides for a complete lipid profile.'},
-    {id:'trig',name:'Triglycerides',full:'Triglycerides',cats:['cardiovascular'],range:'< 1.7 mmol/L',desc:'Blood fats. Elevated by excess sugar and alcohol consumption. An independent cardiovascular risk factor.'},
-    {id:'lpa',name:'Lp(a)',full:'Lipoprotein(a)',cats:['cardiovascular'],range:'< 75 nmol/L',desc:'Genetic cardiovascular risk factor. Largely determined by genetics, responds poorly to dietary changes.'},
-    {id:'hcy',name:'Homocysteine',full:'Homocysteine',cats:['cardiovascular','nutricional'],range:'< 10 µmol/L',desc:'Amino acid and cardiovascular risk marker. Elevated by deficiencies of B12, B9 and B6. Responds well to supplementation.'},
-    {id:'testt',name:'Testosterone T',full:'Total Testosterone',cats:['hormonal'],range:'300-1000 ng/dL (M)',desc:'Main male sex hormone. Affects muscle mass, energy, libido and mood. Naturally declines with age.'},
-    {id:'testl',name:'Testosterone F',full:'Free Testosterone',cats:['hormonal'],range:'50-210 pg/mL (M)',desc:'Biologically active testosterone fraction. More clinically relevant than total in cases of symptomatic deficiency.'},
-    {id:'dhea',name:'DHEA-S',full:'Dehydroepiandrosterone-S',cats:['hormonal'],range:'Variable by age/sex',desc:'Adrenal pre-hormone. Declines with age. Associated with vitality, immunity and body composition.'},
-    {id:'cortisol',name:'Cortisol',full:'Morning Cortisol',cats:['hormonal'],range:'6-23 µg/dL (morning)',desc:'Stress hormone. Chronically elevated cortisol impairs sleep, immunity and metabolism. Essential to assess in burnout.'},
-    {id:'estrad',name:'Oestradiol',full:'Oestradiol (E2)',cats:['hormonal'],range:'Variable by phase/sex',desc:'Main oestrogen. Crucial for bone, cardiovascular and cognitive health. Monitored in menopause and excess in men.'},
-    {id:'lhfsh',name:'LH / FSH',full:'Gonadotrophins LH and FSH',cats:['hormonal'],range:'Variable by phase/sex',desc:'Pituitary hormones that regulate gonadal function. Essential in fertility and menopause assessment.'},
-    {id:'ins',name:'Fasting insulin',full:'Fasting Insulin',cats:['hormonal','nutricional'],range:'< 8 µU/mL',desc:'Early marker of insulin resistance, well before glucose changes. Elevated in chronic pancreatic overload.'},
-    {id:'shbg',name:'SHBG',full:'Sex Hormone Binding Globulin',cats:['hormonal'],range:'10-80 nmol/L',desc:'Sex hormone transport protein. Affects the availability of free testosterone and oestradiol in the body.'},
-    {id:'hba1c',name:'HbA1c',full:'Glycated Haemoglobin',cats:['nutricional'],range:'< 5.7%',desc:'3-month blood sugar average. Primary marker of glycaemic control. Altered at the pre-diabetic stage.'},
-    {id:'glicose',name:'Glucose',full:'Fasting Glucose',cats:['nutricional'],range:'< 5.6 mmol/L',desc:'Fasting blood sugar. Less representative than HbA1c alone, but useful as a quick screening tool.'},
-    {id:'b12',name:'Vitamin B12',full:'Vitamin B12 (Cobalamin)',cats:['nutricional'],range:'> 400 pg/mL',desc:'Essential for nerve function, red blood cells and DNA synthesis. Deficiency common in vegetarians and metformin users.'},
-    {id:'vitd',name:'Vitamin D',full:'Vitamin D 25-OH',cats:['nutricional'],range:'40-60 ng/mL',desc:'Essential for immunity, bone health and hormonal regulation. Deficiency very prevalent in Portugal, even with sun.'},
-    {id:'b9',name:'Folate B9',full:'Folic Acid / Folate',cats:['nutricional'],range:'> 7 ng/mL',desc:'Essential B vitamin for DNA synthesis. Related to homocysteine and cardiovascular health. Critical in pregnancy.'},
-    {id:'mg',name:'Magnesium',full:'Serum Magnesium',cats:['nutricional'],range:'0.75-0.95 mmol/L',desc:'Involved in over 300 enzymatic reactions. Deficiency linked to cramps, insomnia, anxiety and cardiovascular risk.'},
-    {id:'zn',name:'Zinc',full:'Serum Zinc',cats:['nutricional'],range:'70-120 µg/dL',desc:'Essential mineral for immunity, wound healing and testosterone synthesis. Common deficiency in restrictive diets.'},
-    {id:'ferrit',name:'Ferritin',full:'Serum Ferritin',cats:['nutricional'],range:'30-200 ng/mL',desc:'Main iron store in the body. Low causes fatigue and anaemia. Very high indicates inflammation or iron overload.'},
-    {id:'sel',name:'Selenium',full:'Serum Selenium',cats:['nutricional'],range:'100-165 µg/L',desc:'Essential antioxidant for thyroid function and cellular protection. European soils are poor - silent deficiency is common.'},
-    {id:'tsh',name:'TSH',full:'Thyroid Stimulating Hormone',cats:['tiróide'],range:'0.5-2.5 mU/L (functional)',desc:'Primary thyroid function marker. Elevated may indicate hypothyroidism even with T3/T4 within the laboratory "normal".'},
-    {id:'ft3',name:'FT3',full:'Free Triiodothyronine',cats:['tiróide'],range:'3.5-4.5 pg/mL',desc:'Active form of thyroid hormone. Affects metabolism, energy and body temperature. Can be low with normal TSH.'},
-    {id:'ft4',name:'FT4',full:'Free Thyroxine',cats:['tiróide'],range:'1.0-1.5 ng/dL',desc:'Thyroid pro-hormone converted to FT3 in tissues. Assesses the secretory capacity of the gland.'},
-    {id:'antitpo',name:'Anti-TPO',full:'Anti-peroxidase antibodies',cats:['tiróide'],range:'< 35 IU/mL',desc:"Marker of Hashimoto's thyroiditis. May be elevated years before any changes in functional values."},
-    {id:'antiTG',name:'Anti-TG',full:'Anti-thyroglobulin antibodies',cats:['tiróide'],range:'< 20 IU/mL',desc:"Second marker of thyroid autoimmunity. Complements Anti-TPO in complete assessment of Hashimoto's disease."},
-    {id:'pcrus',name:'hsCRP',full:'High-sensitivity CRP',cats:['inflamação','cardiovascular'],range:'< 1.0 mg/L (optimal)',desc:'Ultrasensitive marker of systemic inflammation and cardiovascular risk. More precise than standard CRP for prevention.'},
-    {id:'pcr',name:'CRP',full:'C-Reactive Protein',cats:['inflamação'],range:'< 5 mg/L',desc:'Acute inflammation marker. Elevated in infections, autoimmune conditions and metabolic syndrome.'},
-    {id:'il6',name:'IL-6',full:'Interleukin-6',cats:['inflamação'],range:'< 7 pg/mL',desc:'Pro-inflammatory cytokine. Elevated in visceral obesity, autoimmune conditions and chronic stress.'},
-    {id:'fibrin',name:'Fibrinogen',full:'Plasma Fibrinogen',cats:['inflamação','cardiovascular'],range:'200-400 mg/dL',desc:'Coagulation protein and inflammatory marker. Elevated levels increase thrombosis and cardiovascular event risk.'},
-    {id:'vsg',name:'ESR',full:'Erythrocyte Sedimentation Rate',cats:['inflamação'],range:'< 20 mm/h (M)',desc:'Non-specific inflammation marker. Useful for monitoring chronic inflammatory conditions over time.'},
-    {id:'creat',name:'Creatinine',full:'Serum Creatinine',cats:['renal'],range:'0.6-1.2 mg/dL (M)',desc:'Primary renal function marker. Only rises when more than 50% of renal function is compromised.'},
-    {id:'ureia',name:'Urea',full:'Urea / BUN',cats:['renal'],range:'7-25 mg/dL',desc:'Protein metabolism by-product filtered by the kidneys. Assessed with creatinine for complete renal function.'},
-    {id:'aurico',name:'Uric acid',full:'Serum Uric Acid',cats:['renal'],range:'< 6.0 (F) / < 7.0 (M) mg/dL',desc:'Purine metabolism product. Elevated causes gout and is associated with metabolic syndrome and cardiovascular risk.'},
-    {id:'tfg',name:'eGFR',full:'Estimated Glomerular Filtration Rate',cats:['renal'],range:'> 90 mL/min/1.73m²',desc:'Best overall indicator of renal function. Calculated from creatinine, age and sex. Naturally declines with age.'},
-    {id:'cisC',name:'Cystatin C',full:'Serum Cystatin C',cats:['renal'],range:'< 0.95 mg/L',desc:'More sensitive renal function marker than creatinine. Not affected by muscle mass - ideal for athletes and the elderly.'},
-    {id:'alt',name:'ALT',full:'Alanine Aminotransferase',cats:['hepática'],range:'< 35 (F) / < 45 (M) U/L',desc:'Specific hepatic enzyme. Elevated in fatty liver, hepatitis and excessive alcohol use. Primary liver marker.'},
-    {id:'ast',name:'AST',full:'Aspartate Aminotransferase',cats:['hepática'],range:'< 40 U/L',desc:'Present in liver and muscle. Assessed with ALT for differential diagnosis of hepatic vs. muscular damage.'},
-    {id:'ggt',name:'GGT',full:'Gamma-Glutamyl Transferase',cats:['hepática'],range:'< 50 U/L (M)',desc:'Sensitive to alcohol, drugs and fatty liver. May be altered before ALT and AST show any change.'},
-    {id:'bilirrub',name:'Bilirubin',full:'Total Bilirubin',cats:['hepática'],range:'0.2-1.2 mg/dL',desc:'Haemoglobin degradation product. Elevated in hepatic dysfunction, haemolysis and cholestasis.'},
-    {id:'album',name:'Albumin',full:'Serum Albumin',cats:['hepática'],range:'3.5-5.0 g/dL',desc:'Main plasma protein, produced by the liver. Low in chronic liver disease, malnutrition and inflammation.'},
-    {id:'prottot',name:'Total proteins',full:'Total Serum Proteins',cats:['hepática'],range:'6.0-8.5 g/dL',desc:'Overall assessment of the liver\'s protein synthesis capacity. Includes albumin and globulins.'},
+    // ── Base panel (20 essential biomarkers) ──
+    { id:'hba1c',    name:'HbA1c',              full:'Glycated Haemoglobin',           cats:['metabolico','base'],     range:'< 5.7%',                  desc:'3-month blood sugar average. Primary marker of glycaemic control. Altered at the pre-diabetic stage.' },
+    { id:'col',      name:'Total Cholesterol',  full:'Total Cholesterol',              cats:['cardiovascular','base'], range:'< 5.0 mmol/L',            desc:'Total blood cholesterol measure. Assessed alongside LDL, HDL and triglycerides for the complete lipid profile.' },
+    { id:'hdl',      name:'HDL',                full:'HDL Cholesterol',                cats:['cardiovascular','base'], range:'> 1.0 (M) / > 1.2 (F) mmol/L', desc:'The "good" cholesterol. Transports cholesterol from the arteries to the liver. Low levels are linked to higher cardiovascular risk.' },
+    { id:'ldl',      name:'LDL',                full:'LDL Cholesterol',                cats:['cardiovascular','base'], range:'< 3.0 mmol/L',           desc:'The "bad" cholesterol. Elevated levels raise the risk of arterial plaque and cardiovascular disease. The primary target in cardiac prevention.' },
+    { id:'trig',     name:'Triglycerides',      full:'Triglycerides',                  cats:['cardiovascular','base'], range:'< 1.7 mmol/L',            desc:'Blood fats. Raised by excess sugar and alcohol intake. An independent cardiovascular risk factor.' },
+    { id:'apob',     name:'ApoB',               full:'Apolipoprotein B',               cats:['cardiovascular','base'], range:'< 90 mg/dL',              desc:'A better cardiovascular risk marker than LDL. Represents the total number of atherogenic particles in circulation.' },
+    { id:'lpa',      name:'Lp(a)',              full:'Lipoprotein(a)',                 cats:['cardiovascular','base','cardio-avancado'], range:'< 75 nmol/L', desc:'Genetic cardiovascular risk factor. Largely determined by genetics, it responds poorly to diet.' },
+    { id:'alt',      name:'ALT',                full:'Alanine Aminotransferase',       cats:['hepatica','base'],       range:'< 35 (F) / < 45 (M) U/L', desc:'Specific liver enzyme. Elevated in fatty liver disease, hepatitis and excessive alcohol use. The primary liver marker.' },
+    { id:'ast',      name:'AST',                full:'Aspartate Aminotransferase',     cats:['hepatica','base'],       range:'< 40 U/L',                desc:'Present in liver and muscle. Assessed with ALT for the differential diagnosis of liver vs. muscle damage.' },
+    { id:'ggt',      name:'GGT',                full:'Gamma-Glutamyl Transferase',     cats:['hepatica','base'],       range:'< 50 U/L (M)',            desc:'Sensitive to alcohol, drugs and fatty liver. Can be altered before ALT and AST show any change.' },
+    { id:'falc',     name:'Alkaline Phosphatase', full:'Alkaline Phosphatase',         cats:['hepatica','base'],       range:'40-130 U/L',              desc:'Enzyme linked to the liver and bones. Elevated in cholestasis, bone disease or liver problems.' },
+    { id:'album',    name:'Albumin',            full:'Serum Albumin',                  cats:['hepatica','base'],       range:'3.5-5.0 g/dL',            desc:'The main plasma protein, produced by the liver. Low in chronic liver disease, malnutrition and inflammation.' },
+    { id:'prottot',  name:'Total Protein',      full:'Total Serum Proteins',           cats:['hepatica','base'],       range:'6.0-8.5 g/dL',            desc:'Overall assessment of the liver\'s protein synthesis capacity. Includes albumin and globulins.' },
+    { id:'creat',    name:'Creatinine',         full:'Serum Creatinine',               cats:['renal','base'],          range:'0.6-1.2 mg/dL (M)',       desc:'The primary marker of kidney function. Only rises once more than 50% of kidney function is compromised.' },
+    { id:'ureia',    name:'Urea',               full:'Urea / BUN',                     cats:['renal','base'],          range:'7-25 mg/dL',              desc:'A by-product of protein metabolism filtered by the kidneys. Assessed with creatinine for complete kidney function.' },
+    { id:'calcio',   name:'Calcium',            full:'Serum Calcium',                  cats:['minerais','base'],       range:'8.5-10.5 mg/dL',          desc:'Essential for bone health, muscle contraction and nerve function. Changes may indicate parathyroid or kidney problems.' },
+    { id:'mg',       name:'Magnesium',          full:'Serum Magnesium',                cats:['minerais','base'],       range:'0.75-0.95 mmol/L',        desc:'Involved in over 300 enzymatic reactions. Deficiency is linked to cramps, insomnia, anxiety and cardiovascular risk.' },
+    { id:'ferrit',   name:'Ferritin',           full:'Serum Ferritin',                 cats:['minerais','base'],       range:'30-200 ng/mL',            desc:'The main iron store in the body. Low causes fatigue and anaemia. Very high indicates inflammation or iron overload.' },
+    { id:'tsh',      name:'TSH',                full:'Thyroid Stimulating Hormone',    cats:['tiroide','base'],        range:'0.5-2.5 mU/L (functional)',desc:'The primary marker of thyroid function. Elevated levels may indicate hypothyroidism even with T3/T4 within the laboratory "normal".' },
+    { id:'crp',      name:'CRP',                full:'C-Reactive Protein (high sensitivity)', cats:['inflamacao','base'], range:'< 1.0 mg/L (optimal)', desc:'An ultrasensitive marker of systemic inflammation and cardiovascular risk. Essential for prevention.' },
+
+    // ── Module: Vitamins (D + B12 + Folate) ──
+    { id:'vitd',     name:'Vitamin D',          full:'Vitamin D 25-OH',                cats:['vitaminas'],             range:'40-60 ng/mL',             desc:'Essential for immunity, bone health and hormonal regulation. Deficiency is very prevalent in Portugal, even with sun.' },
+    { id:'b12',      name:'Vitamin B12',        full:'Vitamin B12 (Cobalamin)',        cats:['vitaminas'],             range:'> 400 pg/mL',             desc:'Essential for nerve function, red blood cells and DNA synthesis. Deficiency is common in vegetarians and metformin users.' },
+    { id:'b9',       name:'Folate',             full:'Folic Acid / Folate (B9)',       cats:['vitaminas'],             range:'> 7 ng/mL',               desc:'A B vitamin essential for DNA synthesis. Linked to homocysteine and cardiovascular health. Critical in pregnancy.' },
+
+    // ── Module: Male Hormonal ──
+    { id:'testt',    name:'Total Testosterone', full:'Total Testosterone',             cats:['hormonal-masculino'],    range:'300-1000 ng/dL (M)',      desc:'The main male sex hormone. Affects muscle mass, energy, libido and mood. Declines naturally with age.' },
+    { id:'testl',    name:'Free Testosterone',  full:'Free Testosterone',              cats:['hormonal-masculino'],    range:'50-210 pg/mL (M)',        desc:'The biologically active fraction of testosterone. More clinically relevant than total in symptomatic deficiency.' },
+    { id:'psa',      name:'PSA',                full:'Prostate-Specific Antigen',      cats:['hormonal-masculino'],    range:'< 4.0 ng/mL',             desc:'A marker of prostate health. Assessed regularly in men, especially from the age of 40-50.' },
+
+    // ── Module: Female Hormonal ──
+    { id:'estradiol', name:'Oestradiol',        full:'Oestradiol (E2)',                cats:['hormonal-feminino','fertilidade'], range:'Variable by cycle phase', desc:'The main oestrogen. Crucial for bone, cardiovascular and cognitive health. Monitored across the cycle, fertility and menopause.' },
+    { id:'progest',   name:'Progesterone',      full:'Progesterone',                   cats:['hormonal-feminino'],     range:'Variable by cycle phase', desc:'A hormone essential for the menstrual cycle and pregnancy. Assessed to investigate cycle irregularities and fertility.' },
+    { id:'prolac',    name:'Prolactin',         full:'Prolactin',                      cats:['hormonal-feminino'],     range:'4.8-23.3 ng/mL',          desc:'A pituitary hormone linked to the menstrual cycle and fertility. Elevated levels can cause menstrual irregularities.' },
+
+    // ── Shared: Male + Female Hormonal ──
+    { id:'fsh',       name:'FSH',               full:'Follicle-Stimulating Hormone',   cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variable by phase/sex', desc:'A pituitary hormone that regulates gonadal function. Essential in assessing fertility, the cycle and reproductive function.' },
+    { id:'lh',        name:'LH',                full:'Luteinising Hormone',            cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variable by phase/sex', desc:'A pituitary hormone that regulates ovulation and testosterone production. Essential in assessing fertility and the cycle.' },
+    { id:'shbg',      name:'SHBG',              full:'Sex Hormone Binding Globulin',   cats:['hormonal-masculino','hormonal-feminino'], range:'10-80 nmol/L', desc:'A sex hormone transport protein. Affects the availability of free testosterone and oestradiol in the body.' },
+
+    // ── Module: Fertility (+AMH) ──
+    { id:'amh',       name:'AMH',               full:'Anti-Müllerian Hormone',         cats:['fertilidade'],           range:'Variable by age',        desc:'Reflects ovarian reserve. One of the most used markers in assessing female fertility.' },
+
+    // ── Module: Advanced Cardio (Lp(a) + NT-proBNP) ──
+    { id:'ntprobnp',  name:'NT-proBNP',         full:'B-type Natriuretic Peptide',     cats:['cardio-avancado'],       range:'< 125 pg/mL',             desc:'A marker of cardiac function. Elevated in cardiac overload or failure, even at early stages.' },
+
+    // ── Module: Extended Thyroid (FT4 + T3) ──
+    { id:'ft4',       name:'FT4',               full:'Free Thyroxine',                 cats:['tiroide-completo'],      range:'1.0-1.5 ng/dL',           desc:'A thyroid pro-hormone converted to FT3 in the tissues. Assesses the secretory capacity of the gland.' },
+    { id:'t3',        name:'T3',                full:'Triiodothyronine',               cats:['tiroide-completo'],      range:'80-200 ng/dL',            desc:'The active form of thyroid hormone. Affects metabolism, energy and body temperature. Completes the thyroid assessment.' },
+
+    // ── Module: Stress (Cortisol) ──
+    { id:'cortisol',  name:'Cortisol',          full:'Morning Cortisol',               cats:['stress'],                range:'6-23 µg/dL (morning)',    desc:'The stress hormone. Chronically elevated, it impairs sleep, immunity and metabolism. Key to assess in burnout.' },
+
+    // ── Module: Full STI Test ──
+    { id:'aghbsdst',  name:'HBsAg',             full:'Hepatitis B Surface Antigen',    cats:['dst-ist'],               range:'',             desc:'A marker of Hepatitis B virus infection, tested via blood draw in the STI panel.' },
+    { id:'hiv',       name:'Anti-HIV 1 & 2',    full:'Anti-HIV 1 & 2 Antibodies',      cats:['dst-ist'],               range:'',             desc:'Screening for the human immunodeficiency virus (HIV 1 and 2), via blood draw.' },
+    { id:'clamidia',  name:'Chlamydia',         full:'Chlamydia trachomatis PCR',      cats:['dst-ist'],               range:'',            desc:'PCR detection of the bacterium responsible for chlamydia, one of the most common STIs, via urine sample.' },
+    { id:'tricomon',  name:'Trichomoniasis',    full:'Trichomonas vaginalis PCR',      cats:['dst-ist'],               range:'',            desc:'PCR detection of the parasite responsible for trichomoniasis, via urine sample.' },
+    { id:'gonorreia', name:'Gonorrhoea',        full:'Neisseria gonorrhoeae PCR',      cats:['dst-ist'],               range:'',            desc:'PCR detection of the bacterium responsible for gonorrhoea, via urine sample.' },
+    { id:'sifilis',   name:'Syphilis',          full:'Treponema pallidum PCR',         cats:['dst-ist'],               range:'',            desc:'PCR detection of the bacterium responsible for syphilis, via urine sample.' },
+    { id:'hsv1',      name:'HSV-1',             full:'Herpes Simplex Virus type 1',    cats:['dst-ist'],               range:'',            desc:'PCR detection of herpes simplex virus type 1, via urine sample.' },
+    { id:'hsv2',      name:'HSV-2',             full:'Herpes Simplex Virus type 2',    cats:['dst-ist'],               range:'',            desc:'PCR detection of herpes simplex virus type 2, generally associated with genital herpes, via urine sample.' },
+    { id:'mgenit',    name:'Mycoplasma genitalium', full:'Mycoplasma genitalium PCR', cats:['dst-ist'],               range:'',            desc:'PCR detection of Mycoplasma genitalium, a bacterium linked to urethritis and cervicitis, via urine sample.' },
+    { id:'mhomin',    name:'Mycoplasma hominis', full:'Mycoplasma hominis PCR',       cats:['dst-ist'],               range:'',            desc:'PCR detection of Mycoplasma hominis, via urine sample.' },
+    { id:'uurea',     name:'Ureaplasma urealyticum', full:'Ureaplasma urealyticum PCR', cats:['dst-ist'],            range:'',            desc:'PCR detection of Ureaplasma urealyticum, via urine sample.' },
+    { id:'uparvum',   name:'Ureaplasma parvum', full:'Ureaplasma parvum PCR',          cats:['dst-ist'],               range:'',            desc:'PCR detection of Ureaplasma parvum, via urine sample.' },
+    { id:'hducreyi',  name:'Haemophilus ducreyi', full:'Haemophilus ducreyi PCR',      cats:['dst-ist'],               range:'',            desc:'PCR detection of Haemophilus ducreyi, the bacterium responsible for chancroid, via urine sample.' },
+
+    // ── Module: Hepatitis B (HBsAg) ──
+    { id:'aghbs',     name:'HBsAg',             full:'Hepatitis B Surface Antigen',    cats:['hepatite-b'],            range:'',             desc:'A marker of Hepatitis B virus infection. A reactive result indicates active infection or a virus carrier.' },
+
+    // ── Module: Food Intolerance Test (IgG) ──
+    { id:'igg_total', name:'Immune Response (IgG)', full:'Immune Response (IgG) to 59 Foods', cats:['intolerancias'], range:'', desc:'Measures the immune response (IgG) to 59 foods.', foods:{
+      'Dairy': ['Milk (cow)'],
+      'Eggs': ['Whole egg (Yolk and White)'],
+      'Fruits': ['Strawberry','Orange & Lemon','Grapefruit','Tomato','Apple','Redcurrant','Melon mix'],
+      'Grains': ['Oats','Gluten','Durum wheat semolina','Wheat','Rice','Yeast','Rye'],
+      'Vegetables': ['Corn','Carrot','Potato','Celery','Cucumber','Peppers','Legume mix','Leek','Mushrooms','Broccoli','Cabbage','Garlic','Olive','Soy'],
+      'Meat': ['Pork','Beef','Chicken','Lamb'],
+      'Fish': ['Shellfish mix','Freshwater fish mix','White fish mix','Tuna'],
+      'Spices': ['Ginger','Cocoa','Tea'],
+      'Seeds & Nuts': ['Almonds','Brazil nut','Walnut','Cashew','Peanut']
+    } },
   ];
 
   function initAtlas() {
@@ -1769,7 +1870,12 @@
       el.className = 'ba-item';
       el.dataset.cats = b.cats.join(',');
       const color = CAT_COLORS[b.cats[0]] || '#aaa';
-      el.innerHTML = `<div class="ba-item-row"><span class="ba-dot" style="background:${color}"></span><span class="ba-name">${b.name}</span></div><div class="ba-catname">${b.cats[0]}</div>`;
+      const isUnisex = b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino');
+      const dotStyle = isUnisex
+        ? `background:linear-gradient(135deg, ${CAT_COLORS['hormonal-masculino']} 50%, ${CAT_COLORS['hormonal-feminino']} 50%)`
+        : `background:${color}`;
+      const catLabel = isUnisex ? 'Unisex Hormonal' : (CAT_LABELS[b.cats[0]] || b.cats[0]);
+      el.innerHTML = `<div class="ba-item-row"><span class="ba-dot" style="${dotStyle}"></span><span class="ba-name">${b.name}</span></div><div class="ba-catname">${catLabel}</div>`;
       el.addEventListener('click', () => selectBiomarker(b, el));
       grid.appendChild(el);
     });
@@ -1793,8 +1899,33 @@
     document.querySelectorAll('.ba-item').forEach(i => i.classList.remove('selected'));
     el.classList.add('selected');
     const color = CAT_COLORS[b.cats[0]] || '#aaa';
+    const isUnisex = b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino');
+    const blue = CAT_COLORS['hormonal-masculino'], pink = CAT_COLORS['hormonal-feminino'];
+    const catLabel = isUnisex
+      ? `<span style="color:${blue}">Hormonal</span> <span style="color:${pink}">Unisex</span>`
+      : (CAT_LABELS[b.cats[0]] || b.cats[0]);
+    const catStyle = isUnisex
+      ? `background:linear-gradient(135deg, ${blue}18, ${pink}18);border:1px solid ${blue}30`
+      : `background:${color}18;color:${color};border:1px solid ${color}30`;
     const detail = document.getElementById('baDetail');
-    detail.innerHTML = `<div class="ba-detail-content"><div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${b.cats[0]}</span></div><div><div class="ba-detail-name">${b.full}</div><div class="ba-detail-full">${b.name}</div></div><div class="ba-detail-sep"></div><div><div class="ba-detail-range-label">Reference range</div><div class="ba-detail-range" style="color:${color}">${b.range}</div></div><div class="ba-detail-desc">${b.desc}</div></div>`;
+    detail.innerHTML = `
+      <div class="ba-detail-content">
+        <div><span class="ba-detail-cat" style="${catStyle}">${catLabel}</span></div>
+        <div>
+          <div class="ba-detail-name">${b.full}</div>
+          <div class="ba-detail-full">${b.name}</div>
+        </div>
+        ${b.range ? `<div class="ba-detail-sep"></div>
+        <div>
+          <div class="ba-detail-range-label">Reference range</div>
+          <div class="ba-detail-range" style="color:${color}">${b.range}</div>
+        </div>` : ''}
+        <div class="ba-detail-desc">${b.desc}</div>
+        ${b.foods ? `<div class="ba-detail-foods">${Object.entries(b.foods).map(([group, items]) => `
+          <div class="ba-detail-food-group">
+            <span class="ba-detail-food-label">${group}: </span><span class="ba-detail-food-list">${items.join(', ')}</span>
+          </div>`).join('')}</div>` : ''}
+      </div>`;
   }
 
   initAtlas();

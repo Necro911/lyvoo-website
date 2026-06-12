@@ -18,6 +18,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+// ── App Check: modo debug em localhost ────────────────────────────────────────
+// O reCAPTCHA v3 não valida localhost (devolve 403). Em ambiente local ativamos
+// o debug token: o Firebase imprime um token na consola que deves registar em
+// Firebase Console → App Check → Apps → ⋮ → Manage debug tokens. Não afeta produção.
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
 // ── App Check (reCAPTCHA v3) ──────────────────────────────────────────────────
 // Garante que só o domínio lyvoo.pt pode aceder ao Firestore e Auth.
 // SUBSTITUI '6LeiwBQtAAAAAPHxgJAnSv0FwV6CZiN1VQVUSAM4' pela chave obtida em google.com/recaptcha/admin

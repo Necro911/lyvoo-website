@@ -1,11 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="../../images/og-image.png" type="image/png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Energy &amp; Fatigue - Lyvoo Module</title>
-  <meta name="description" content="Markers linked to chronic fatigue, cellular energy, iron metabolism, and mitochondrial function." />
+  <link rel="icon" href="../../images/og-image.png" type="image/png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vitamins - Lyvoo Module</title>
+  <meta name="description" content="Vitamin D, B12 and Folate with a personalised supplementation recommendation based on your levels." />
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -15,11 +14,21 @@
     .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height:100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-    .nav-logo { text-decoration: none; }
+    .nav-logo { text-decoration: none; } .nav-logo span { font-size: 22px; font-weight: 900; letter-spacing: -0.04em; color: #fff; }
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
-    .hero { background: linear-gradient(160deg, #030D10 0%, #060F16 55%, #04080E 100%); padding: 130px 0 80px; text-align: center; }
+    .hero {
+      background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%);
+      padding: 130px 0 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%);
+    }
+    .hero .container { position: relative; }
     .hero .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; margin-bottom: 28px; transition: color 0.2s; }
     .hero .back-link:hover { color: rgba(255,255,255,0.75); }
     .hero .mod-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
@@ -47,14 +56,26 @@
     .markers-sub { font-size: 15px; color: var(--ink-3); margin-bottom: 36px; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
     .chip { font-size: 13px; font-weight: 500; color: var(--teal); background: #EEF9F9; border: 1px solid rgba(11,82,90,0.12); border-radius: 999px; padding: 7px 16px; }
-    .cta-section { background: linear-gradient(135deg, #0B525A 0%, #082C30 100%); padding: 80px 0; text-align: center; }
+    .cta-section { padding: 80px 0; text-align: center; position: relative; }
+    /* CTA + FOOTER continuous gradient */
+    .cta-footer-wrap {
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, #0A1415 0%, #051520 35%, #0D0820 68%, #060A0C 100%);
+    }
+    .modcta-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 45% at 50% 75%, rgba(61,217,232,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 20% 15%, rgba(139,92,246,0.1) 0%, transparent 60%);
+    }
+    .cta-footer-wrap .container { position: relative; }
     .cta-section h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 14px; }
     .cta-section p { font-size: 16px; color: rgba(255,255,255,0.55); margin-bottom: 36px; max-width: 440px; margin-left: auto; margin-right: auto; }
     .btn-cta { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--teal); font-size: 15px; font-weight: 700; padding: 14px 32px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
     .btn-cta:hover { opacity: 0.88; }
     .btn-cta-ghost { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 999px; text-decoration: none; margin-left: 14px; transition: all 0.2s; }
     .btn-cta-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
-    .footer { background: #07090B; padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer { padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; }
     .lf-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
     .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 16px; }
     .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
@@ -66,12 +87,17 @@
     .lf-links { display: flex; align-items: center; gap: 20px; }
     .lf-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
     .lf-links a:hover { color: rgba(255,255,255,0.7); }
-    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: "Inter", sans-serif; padding: 0; }
     .lf-cookies:hover { color: rgba(255,255,255,0.7); }
-    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } .content-grid { grid-template-columns: 1fr; gap: 40px; } .btn-cta-ghost { margin-left: 0; margin-top: 12px; } }
+    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
     @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle { display: flex; } }
-      .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; gap: 40px; } .btn-cta-ghost { margin-left: 0; margin-top: 12px; } }
+      /* Mobile navbar: keep logo + lang toggle + CTA, hide verbose text links */
+    @media (max-width: 700px) {
+      .nav-links { gap: 8px; }
+      .nav-links > li { display: none; }
+      .nav-links > li.lang-toggle { display: flex; }
+    }      .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
     .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
@@ -81,31 +107,28 @@
   <script src="../../prelaunch.js" defer></script>
 </head>
 <body>
-
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../en/index.html" class="nav-logo"><img src="../../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" /></a>
+    <a href="../../en/index.html" class="nav-logo"><img src="../../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;transform:translateY(0px);"/></a>
     <ul class="nav-links">
-      <li><a href="../../en/index.html">Home</a></li>
+      <li><a href="../../en/index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>Home</a></li>
       <li><a href="../../en/index.html#atlas">What we test</a></li>
       <li><a href="../../en/contact.html">Contact</a></li>
-      <li class="lang-toggle"><a href="../../modulos/stress.html">PT</a><a href="#" class="lang-active">EN</a></li>
+      <li class="lang-toggle"><a href="../../modulos/vitaminas.html">PT</a><a href="#" class="lang-active">EN</a></li>
     </ul>
   </div>
 </nav>
 
 <section class="hero">
+  <div class="hero-glow"></div>
   <div class="container">
-    <a href="../../en/index.html#atlas" class="back-link">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      All modules
-    </a>
+    <a href="../../en/index.html#modulos" class="back-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>All modules</a>
     <div class="mod-label">Optional module</div>
-    <h1>Energy &amp;<br/>Fatigue</h1>
-    <p class="hero-desc">Markers linked to chronic fatigue, cellular energy, iron metabolism, and mitochondrial function.</p>
+    <h1>Vitamins</h1>
+    <p class="hero-desc">Vitamin D, B12 and Folate with a personalised supplementation recommendation based on your real levels.</p>
     <div class="hero-price-wrap">
-      <span class="hero-price-cur">€</span><span class="hero-price-val">199</span>
-      <span class="hero-price-note">add-on to base plan</span>
+      <span class="hero-price-cur">€</span><span class="hero-price-val">45</span>
+      <span class="hero-price-note">add-on to the base plan</span>
     </div>
   </div>
 </section>
@@ -115,15 +138,15 @@
     <div class="content-grid">
       <div>
         <div class="section-label">What it is</div>
-        <h2>Fatigue has causes.<br/>And causes have solutions.</h2>
-        <p>Chronic fatigue rarely has a single cause. It may result from nutritional deficiencies (iron, B12, vitamin D), subclinical thyroid dysfunction, low-grade inflammation, hormonal imbalances, or mitochondrial stress.</p>
-        <p>This module evaluates a specific panel of markers linked to cellular energy, iron metabolism, and mitochondrial function, which are frequently excluded from routine tests.</p>
+        <h2>The 3 most critical vitamins, in a single module.</h2>
+        <p>Vitamin D, B12 and Folate are the most common nutritional deficiencies in the Portuguese population, with a direct impact on energy, immunity, nerve function and cardiovascular health.</p>
+        <p>This module analyses all three markers precisely and provides personalised supplementation recommendations based on your levels and health goals.</p>
       </div>
       <div>
         <div class="section-label">Who it's for</div>
-        <h2>For those who feel tired for no apparent reason.</h2>
-        <p>Recommended for those with persistent fatigue, difficulty concentrating, muscle weakness, or morning tiredness even after adequate sleep, whose standard test results reveal nothing significant.</p>
-        <p>Especially useful for athletes with below-expected performance or people with demanding routines.</p>
+        <h2>To supplement with precision.</h2>
+        <p>Recommended for anyone who suspects a deficiency (fatigue, low immunity, muscle aches, low mood in winter, tingling) or who wants to optimise their levels for bone health, energy and cognitive function.</p>
+        <p>Especially relevant for vegetarians, vegans and during the autumn and winter months, when sun exposure is insufficient.</p>
       </div>
     </div>
   </div>
@@ -134,34 +157,34 @@
     <h2>What's included</h2>
     <div class="includes-grid">
       <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <div class="inc-title">Energy and micronutrient panel</div>
-        <div class="inc-desc">Analysis of 12+ markers related to cellular energy production and nutritional deficiencies.</div>
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg></div>
+        <div class="inc-title">Vitamin D 25-OH</div>
+        <div class="inc-desc">Precise analysis of the most relevant marker for assessing Vitamin D status in the body.</div>
       </div>
       <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
-        <div class="inc-title">Complete iron metabolism</div>
-        <div class="inc-desc">Ferritin, serum iron, transferrin, and TSAT for precise diagnosis of iron-deficiency anaemia or iron overload.</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="inc-title">Mitochondrial markers</div>
-        <div class="inc-desc">CoQ10 and oxidative stress markers to assess the efficiency of energy production at the cellular level.</div>
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <div class="inc-title">Vitamin B12</div>
+        <div class="inc-desc">Essential for nerve function and red blood cell production. Deficiency is common in vegetarians, vegans and metformin users.</div>
       </div>
       <div class="inc-card">
         <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <div class="inc-title">Report with clinical interpretation</div>
-        <div class="inc-desc">Explanation of each marker and its relationship with your fatigue symptoms, available in the app.</div>
+        <div class="inc-title">Folate</div>
+        <div class="inc-desc">A B vitamin essential for DNA synthesis, linked to homocysteine and cardiovascular health.</div>
       </div>
       <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-        <div class="inc-title">Nutritional intervention plan</div>
-        <div class="inc-desc">Dietary and supplementation recommendations (iron, B12, CoQ10, magnesium) aimed at restoring energy levels.</div>
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="inc-title">Report with clinical interpretation</div>
+        <div class="inc-desc">Each vitamin classified (deficiency / insufficiency / sufficiency / optimal level) with clinical context.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="inc-title">Personalised supplementation dose</div>
+        <div class="inc-desc">A precise supplementation recommendation based on your results and health goals.</div>
       </div>
       <div class="inc-card">
         <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div class="inc-title">Results in 7 to 10 days</div>
-        <div class="inc-desc">Certified laboratory analysis with delivery to the Lyvoo app.</div>
+        <div class="inc-title">Results in 5 to 7 days</div>
+        <div class="inc-desc">Certified laboratory analysis with fast delivery in the Lyvoo app.</div>
       </div>
     </div>
   </div>
@@ -169,31 +192,24 @@
 
 <section class="markers">
   <div class="container">
-    <h2>Markers analysed</h2>
-    <p class="markers-sub">Specialist biomarkers linked to cellular energy and essential micronutrients.</p>
+    <h2>Parameters analysed</h2>
+    <p class="markers-sub">A complete panel to assess and optimise your essential vitamin levels.</p>
     <div class="chips">
-      <span class="chip">Ferritin</span>
-      <span class="chip">Serum iron</span>
-      <span class="chip">Transferrin</span>
-      <span class="chip">TSAT (transferrin saturation)</span>
+      <span class="chip">Vitamin D 25-OH</span>
       <span class="chip">Vitamin B12</span>
-      <span class="chip">Folic acid</span>
-      <span class="chip">Vitamin D (25-OH)</span>
-      <span class="chip">Magnesium</span>
-      <span class="chip">CoQ10 (Coenzyme Q10)</span>
-      <span class="chip">TSH (thyroid function)</span>
-      <span class="chip">Full blood count</span>
-      <span class="chip">CRP (inflammation)</span>
+      <span class="chip">Folate</span>
     </div>
   </div>
 </section>
 
+<div class="cta-footer-wrap">
+  <div class="modcta-glow"></div>
 <section class="cta-section">
   <div class="container">
-    <h2>Add to your programme.</h2>
-    <p>Available as an add-on to the Lyvoo programme. Contact your Lyvoo team to activate.</p>
-    <a href="../../en/index.html#atlas" class="btn-cta">View programme</a>
-    <a href="../../en/index.html#atlas" class="btn-cta-ghost">Other modules</a>
+    <h2>Add it to your programme.</h2>
+    <p>Lyvoo's most affordable module. Available as an add-on to any base plan.</p>
+    <a href="../../en/index.html#planos" class="btn-cta">View plan</a>
+    <a href="../../en/index.html#modulos" class="btn-cta-ghost">Other modules</a>
   </div>
 </section>
 
@@ -205,7 +221,7 @@
         <p class="lf-brand">Personalised preventive health.<br/>From home. Made in Portugal.</p>
       </div>
       <div class="lf-col"><h5>Product</h5><ul>
-        <li><a href="../../en/index.html">Home</a></li>
+        <li><a href="../../en/index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>Home</a></li>
         <li><a href="../../en/index.html#atlas">What we test</a></li>
       </ul></div>
       <div class="lf-col"><h5>Company</h5><ul>
@@ -224,11 +240,11 @@
       <div class="lf-links">
         <a href="../../en/privacy.html">Privacy policy</a>
         <a href="../../en/terms.html">Terms of service</a>
-        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+        <button class="lf-cookies" onclick="window.LyvooCookies&amp;&amp;window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
       </div>
     </div>
   </div>
 </footer>
-
+</div>
 </body>
 </html>

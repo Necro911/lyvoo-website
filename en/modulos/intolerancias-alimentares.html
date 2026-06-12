@@ -1,11 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="../../images/og-image.png" type="image/png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vitamin D Upgrade - Lyvoo Module</title>
-  <meta name="description" content="25-OH Vitamin D analysis with a personalised supplementation recommendation based on your actual levels." />
+  <link rel="icon" href="../../images/og-image.png" type="image/png" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Intolerance Test - Lyvoo Module</title>
+  <meta name="description" content="Measures the IgG immune response to 59 foods, organised by group: dairy, eggs, fruits, grains, vegetables, meat, fish, spices, seeds and nuts." />
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
@@ -15,11 +14,21 @@
     .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height:100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-    .nav-logo { text-decoration: none; }
+    .nav-logo { text-decoration: none; } .nav-logo span { font-size: 22px; font-weight: 900; letter-spacing: -0.04em; color: #fff; }
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
-    .hero { background: linear-gradient(160deg, #030D10 0%, #060F16 55%, #04080E 100%); padding: 130px 0 80px; text-align: center; }
+    .hero {
+      background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%);
+      padding: 130px 0 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%);
+    }
+    .hero .container { position: relative; }
     .hero .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; margin-bottom: 28px; transition: color 0.2s; }
     .hero .back-link:hover { color: rgba(255,255,255,0.75); }
     .hero .mod-label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
@@ -45,16 +54,30 @@
     .markers { padding: 80px 0; background: #fff; }
     .markers h2 { font-size: clamp(22px, 3vw, 34px); font-weight: 800; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 12px; }
     .markers-sub { font-size: 15px; color: var(--ink-3); margin-bottom: 36px; }
+    .markers-group { margin-bottom: 28px; }
+    .markers-group h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 14px; }
     .chips { display: flex; flex-wrap: wrap; gap: 10px; }
     .chip { font-size: 13px; font-weight: 500; color: var(--teal); background: #EEF9F9; border: 1px solid rgba(11,82,90,0.12); border-radius: 999px; padding: 7px 16px; }
-    .cta-section { background: linear-gradient(135deg, #0B525A 0%, #082C30 100%); padding: 80px 0; text-align: center; }
+    .cta-section { padding: 80px 0; text-align: center; position: relative; }
+    /* CTA + FOOTER continuous gradient */
+    .cta-footer-wrap {
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, #0A1415 0%, #051520 35%, #0D0820 68%, #060A0C 100%);
+    }
+    .modcta-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 45% at 50% 75%, rgba(61,217,232,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 20% 15%, rgba(139,92,246,0.1) 0%, transparent 60%);
+    }
+    .cta-footer-wrap .container { position: relative; }
     .cta-section h2 { font-size: clamp(26px, 3.5vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 14px; }
     .cta-section p { font-size: 16px; color: rgba(255,255,255,0.55); margin-bottom: 36px; max-width: 440px; margin-left: auto; margin-right: auto; }
     .btn-cta { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--teal); font-size: 15px; font-weight: 700; padding: 14px 32px; border-radius: 999px; text-decoration: none; transition: opacity 0.2s; }
     .btn-cta:hover { opacity: 0.88; }
     .btn-cta-ghost { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 999px; text-decoration: none; margin-left: 14px; transition: all 0.2s; }
     .btn-cta-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
-    .footer { background: #07090B; padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer { padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; }
     .lf-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
     .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 16px; }
     .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
@@ -66,12 +89,17 @@
     .lf-links { display: flex; align-items: center; gap: 20px; }
     .lf-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
     .lf-links a:hover { color: rgba(255,255,255,0.7); }
-    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+    .lf-cookies { font-size: 13px; color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer; font-family: "Inter", sans-serif; padding: 0; }
     .lf-cookies:hover { color: rgba(255,255,255,0.7); }
-    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } .content-grid { grid-template-columns: 1fr; gap: 40px; } .btn-cta-ghost { margin-left: 0; margin-top: 12px; } }
+    @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
     @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle { display: flex; } }
-      .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; gap: 40px; } .btn-cta-ghost { margin-left: 0; margin-top: 12px; } }
+      /* Mobile navbar: keep logo + lang toggle + CTA, hide verbose text links */
+    @media (max-width: 700px) {
+      .nav-links { gap: 8px; }
+      .nav-links > li { display: none; }
+      .nav-links > li.lang-toggle { display: flex; }
+    }      .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
     .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
@@ -81,31 +109,28 @@
   <script src="../../prelaunch.js" defer></script>
 </head>
 <body>
-
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../en/index.html" class="nav-logo"><img src="../../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" /></a>
+    <a href="../../en/index.html" class="nav-logo"><img src="../../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;transform:translateY(0px);"/></a>
     <ul class="nav-links">
-      <li><a href="../../en/index.html">Home</a></li>
+      <li><a href="../../en/index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>Home</a></li>
       <li><a href="../../en/index.html#atlas">What we test</a></li>
       <li><a href="../../en/contact.html">Contact</a></li>
-      <li class="lang-toggle"><a href="../../modulos/vitaminas.html">PT</a><a href="#" class="lang-active">EN</a></li>
+      <li class="lang-toggle"><a href="../../modulos/intolerancias-alimentares.html">PT</a><a href="#" class="lang-active">EN</a></li>
     </ul>
   </div>
 </nav>
 
 <section class="hero">
+  <div class="hero-glow"></div>
   <div class="container">
-    <a href="../../en/index.html#atlas" class="back-link">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-      All modules
-    </a>
+    <a href="../../en/index.html#modulos" class="back-link"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>All modules</a>
     <div class="mod-label">Optional module</div>
-    <h1>Vitamin D<br/>Upgrade</h1>
-    <p class="hero-desc">25-OH Vitamin D analysis with a personalised supplementation recommendation based on your actual levels.</p>
+    <h1>Food Intolerance Test</h1>
+    <p class="hero-desc">Measures the immune response (IgG) to 59 foods, organised by group, to identify food sensitivities that may affect your wellbeing.</p>
     <div class="hero-price-wrap">
-      <span class="hero-price-cur">€</span><span class="hero-price-val">45</span>
-      <span class="hero-price-note">add-on to base plan</span>
+      <span class="hero-price-cur">€</span><span class="hero-price-val">95</span>
+      <span class="hero-price-note">add-on to the base plan</span>
     </div>
   </div>
 </section>
@@ -115,15 +140,15 @@
     <div class="content-grid">
       <div>
         <div class="section-label">What it is</div>
-        <h2>Vitamin D:<br/>the right supplementation.</h2>
-        <p>In Portugal, the majority of the population has a Vitamin D deficiency, especially in winter. However, supplementing without knowing your actual levels can be ineffective or, in excess, harmful.</p>
-        <p>This module analyses your 25-OH Vitamin D with precision and provides a personalised supplementation dose based on your levels, health goals, and other relevant biomarkers (calcium, phosphorus, PTH).</p>
+        <h2>Identify hidden sensitivities.</h2>
+        <p>This module measures the levels of IgG antibodies produced in response to 59 common foods, organised into 9 groups: dairy, eggs, fruits, grains, vegetables, meat, fish, spices, and seeds and nuts.</p>
+        <p>Elevated IgG levels to certain foods may be associated with digestive symptoms, fatigue, inflammation and other chronic discomfort.</p>
       </div>
       <div>
         <div class="section-label">Who it's for</div>
-        <h2>For precise supplementation.</h2>
-        <p>Recommended for those already taking Vitamin D without knowing if the dose is adequate, for those who suspect a deficiency (fatigue, low immunity, muscle aches, low mood in winter), or for those wanting to optimise levels for bone health, immunity, and cognitive performance.</p>
-        <p>Particularly relevant in the autumn and winter months, when sun exposure is insufficient.</p>
+        <h2>For those looking for answers.</h2>
+        <p>Recommended for those with persistent digestive symptoms, unexplained fatigue, or who want to optimise their diet based on objective data about their immune response.</p>
+        <p>The results help guide personalised dietary adjustments, always with clinical support.</p>
       </div>
     </div>
   </div>
@@ -134,34 +159,19 @@
     <h2>What's included</h2>
     <div class="includes-grid">
       <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg></div>
-        <div class="inc-title">Vitamin D 25-OH (quantitative)</div>
-        <div class="inc-desc">Precise analysis of the most relevant marker for assessing Vitamin D status in the body.</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
-        <div class="inc-title">Bone metabolism markers</div>
-        <div class="inc-desc">Serum calcium and phosphorus to contextualise Vitamin D values in bone and metabolic health.</div>
-      </div>
-      <div class="inc-card">
         <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <div class="inc-title">Report with clinical interpretation</div>
-        <div class="inc-desc">Your Vitamin D levels classified (severe deficiency / insufficiency / sufficiency / optimal level) with clinical context.</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <div class="inc-title">Personalised supplementation dose</div>
-        <div class="inc-desc">Precise daily Vitamin D3 dose recommendation (with or without K2) based on your results and goals.</div>
-      </div>
-      <div class="inc-card">
-        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-        <div class="inc-title">Safety monitoring</div>
-        <div class="inc-desc">Serum calcium assessment to exclude hypercalcaemia in cases of prior high-dose supplementation.</div>
+        <div class="inc-title">Blood collection</div>
+        <div class="inc-desc">A single blood sample to analyse the IgG response to the 59 foods in the panel.</div>
       </div>
       <div class="inc-card">
         <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="inc-title">59 foods across 9 groups</div>
+        <div class="inc-desc">Dairy, eggs, fruits, grains, vegetables, meat, fish, spices, and seeds and nuts.</div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div class="inc-title">Results in 5 to 7 days</div>
-        <div class="inc-desc">Certified laboratory analysis with rapid delivery to the Lyvoo app.</div>
+        <div class="inc-desc">Certified laboratory analysis with delivery in the Lyvoo app.</div>
       </div>
     </div>
   </div>
@@ -169,24 +179,106 @@
 
 <section class="markers">
   <div class="container">
-    <h2>Markers analysed</h2>
-    <p class="markers-sub">Complete panel for assessment and optimisation of Vitamin D levels.</p>
-    <div class="chips">
-      <span class="chip">Vitamin D 25-OH</span>
-      <span class="chip">Serum calcium</span>
-      <span class="chip">Phosphorus</span>
-      <span class="chip">PTH (parathyroid hormone)</span>
-      <span class="chip">Magnesium (Vitamin D co-factor)</span>
+    <h2>Parameters analysed</h2>
+    <p class="markers-sub">Immune response (IgG) to 59 foods, via blood collection.</p>
+    <div class="markers-group">
+      <h3>Dairy</h3>
+      <div class="chips"><span class="chip">Milk (cow)</span></div>
+    </div>
+    <div class="markers-group">
+      <h3>Eggs</h3>
+      <div class="chips"><span class="chip">Whole egg (Yolk and White)</span></div>
+    </div>
+    <div class="markers-group">
+      <h3>Fruits</h3>
+      <div class="chips">
+        <span class="chip">Strawberry</span>
+        <span class="chip">Orange & Lemon</span>
+        <span class="chip">Grapefruit</span>
+        <span class="chip">Tomato</span>
+        <span class="chip">Apple</span>
+        <span class="chip">Redcurrant</span>
+        <span class="chip">Melon mix</span>
+      </div>
+    </div>
+    <div class="markers-group">
+      <h3>Grains</h3>
+      <div class="chips">
+        <span class="chip">Oats</span>
+        <span class="chip">Gluten</span>
+        <span class="chip">Durum wheat semolina</span>
+        <span class="chip">Wheat</span>
+        <span class="chip">Rice</span>
+        <span class="chip">Yeast</span>
+        <span class="chip">Rye</span>
+      </div>
+    </div>
+    <div class="markers-group">
+      <h3>Vegetables</h3>
+      <div class="chips">
+        <span class="chip">Corn</span>
+        <span class="chip">Carrot</span>
+        <span class="chip">Potato</span>
+        <span class="chip">Celery</span>
+        <span class="chip">Cucumber</span>
+        <span class="chip">Peppers</span>
+        <span class="chip">Legume mix</span>
+        <span class="chip">Leek</span>
+        <span class="chip">Mushrooms</span>
+        <span class="chip">Broccoli</span>
+        <span class="chip">Cabbage</span>
+        <span class="chip">Garlic</span>
+        <span class="chip">Olive</span>
+        <span class="chip">Soy</span>
+      </div>
+    </div>
+    <div class="markers-group">
+      <h3>Meat</h3>
+      <div class="chips">
+        <span class="chip">Pork</span>
+        <span class="chip">Beef</span>
+        <span class="chip">Chicken</span>
+        <span class="chip">Lamb</span>
+      </div>
+    </div>
+    <div class="markers-group">
+      <h3>Fish</h3>
+      <div class="chips">
+        <span class="chip">Shellfish mix</span>
+        <span class="chip">Freshwater fish mix</span>
+        <span class="chip">White fish mix</span>
+        <span class="chip">Tuna</span>
+      </div>
+    </div>
+    <div class="markers-group">
+      <h3>Spices</h3>
+      <div class="chips">
+        <span class="chip">Ginger</span>
+        <span class="chip">Cocoa</span>
+        <span class="chip">Tea</span>
+      </div>
+    </div>
+    <div class="markers-group">
+      <h3>Seeds & Nuts</h3>
+      <div class="chips">
+        <span class="chip">Almonds</span>
+        <span class="chip">Brazil nut</span>
+        <span class="chip">Walnut</span>
+        <span class="chip">Cashew</span>
+        <span class="chip">Peanut</span>
+      </div>
     </div>
   </div>
 </section>
 
+<div class="cta-footer-wrap">
+  <div class="modcta-glow"></div>
 <section class="cta-section">
   <div class="container">
-    <h2>Add to your programme.</h2>
-    <p>Lyvoo's most accessible module. Available as an add-on to any base plan.</p>
-    <a href="../../en/index.html#atlas" class="btn-cta">View programme</a>
-    <a href="../../en/index.html#atlas" class="btn-cta-ghost">Other modules</a>
+    <h2>Add it to your programme.</h2>
+    <p>Identify food sensitivities with a complete panel of 59 foods. Available as an add-on to any base plan.</p>
+    <a href="../../en/index.html#planos" class="btn-cta">View plan</a>
+    <a href="../../en/index.html#modulos" class="btn-cta-ghost">Other modules</a>
   </div>
 </section>
 
@@ -198,7 +290,7 @@
         <p class="lf-brand">Personalised preventive health.<br/>From home. Made in Portugal.</p>
       </div>
       <div class="lf-col"><h5>Product</h5><ul>
-        <li><a href="../../en/index.html">Home</a></li>
+        <li><a href="../../en/index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>Home</a></li>
         <li><a href="../../en/index.html#atlas">What we test</a></li>
       </ul></div>
       <div class="lf-col"><h5>Company</h5><ul>
@@ -217,11 +309,11 @@
       <div class="lf-links">
         <a href="../../en/privacy.html">Privacy policy</a>
         <a href="../../en/terms.html">Terms of service</a>
-        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+        <button class="lf-cookies" onclick="window.LyvooCookies&amp;&amp;window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
       </div>
     </div>
   </div>
 </footer>
-
+</div>
 </body>
 </html>
