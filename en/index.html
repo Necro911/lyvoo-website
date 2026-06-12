@@ -220,6 +220,16 @@
     .ev-conclusion-inner p{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.75;margin:0}
     .ev-source{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.04em}
     @media(max-width:860px){.ev-stats{grid-template-columns:1fr 1fr;gap:40px}.ev-divider{display:none}.ev-stat{padding:0}}
+    .bio-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:1040px;margin:0 auto}
+    .bio-card{background:#FAFCFC;border:1px solid rgba(11,82,90,0.08);border-radius:22px;padding:36px 32px}
+    .bio-card.bio-12{background:linear-gradient(160deg, rgba(61,217,232,0.06), rgba(139,92,246,0.05));border:1px solid rgba(61,217,232,0.18)}
+    .bio-card-tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.04em;color:#0B525A;border:1px solid rgba(11,82,90,0.2);border-radius:999px;padding:5px 14px;margin-bottom:16px}
+    .bio-card h3{font-size:clamp(22px,2.6vw,28px);font-weight:800;letter-spacing:-0.02em;color:var(--ink);margin-bottom:22px}
+    .bio-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:16px}
+    .bio-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+    .bio-list li svg{flex-shrink:0;margin-top:3px}
+    .bio-list li strong{color:var(--ink)}
+    @media(max-width:860px){.bio-grid{grid-template-columns:1fr}}
     .sp-header{text-align:center;margin-bottom:56px}
     .sp-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin-bottom:16px}
     .sp-sub{font-size:17px;color:var(--ink-2);max-width:640px;margin:0 auto;line-height:1.75}
@@ -793,7 +803,7 @@
     <span class="label fade" style="color:var(--cyan);border-color:rgba(61,217,232,0.2);display:block;text-align:center">Biomarkers</span>
     <div class="process-step step-atlas" style="padding-top:24px;border-top:none">
       <div class="step-atlas-top fade">
-        <h3><span style="white-space:nowrap">+50 parameters.</span><br/><span class="grad-text" style="font-size:0.65em;white-space:nowrap">A complete picture.</span></h3>
+        <h3><span style="white-space:nowrap">Up to +50 parameters</span><br/><span class="grad-text" style="font-size:0.65em;white-space:nowrap">A personalised view.</span></h3>
         <div class="step-atlas-right">
           <p>Your sample is processed in a certified laboratory. Every biomarker was selected for its clinical relevance and direct impact on preventive health. Click a category to explore the panel.</p>
           <div class="step-detail">
@@ -1191,7 +1201,7 @@
 </section>
 
 <!-- NUTRITION STEP -->
-<section class="step-layer layer-white">
+<section class="step-layer layer-off">
   <div class="container">
     <div class="process-step reverse">
       <div class="step-visual fade">
@@ -1218,6 +1228,147 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- SMART SUPPLEMENTATION -->
+<section class="step-layer layer-off" id="suplementacao">
+  <div class="container">
+    <div class="process-step">
+
+      <div class="step-text fade">
+        <h3><span class="grad-text">Smart</span><br/>Supplementation</h3>
+        <div class="step-subhead">Based on your biomarkers and on science.</div>
+        <p>Your doctor identifies the real deficiencies in your results and recommends only the supplements that make sense for your profile - with optimised dosage, form and timing.</p>
+        <div class="step-detail">
+          <div class="step-detail-item siphox-check">
+            <div class="siphox-check-icon">
+              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span><strong>Evidence-based recommendations</strong> - Only supplements with direct clinical evidence for your profile</span>
+          </div>
+          <div class="step-detail-item siphox-check">
+            <div class="siphox-check-icon">
+              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span><strong>Personalised dosage</strong> - Calculated from your real values, not generic doses</span>
+          </div>
+          <div class="step-detail-item siphox-check">
+            <div class="siphox-check-icon">
+              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span><strong>Validated every 6 months</strong> - At reassessment we measure the real impact of each supplement on your biomarkers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-visual fade fade-d1">
+        <svg width="100%" viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg" style="border-radius:20px;overflow:hidden;">
+          <defs>
+            <filter id="sfGlowEn" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="7" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <linearGradient id="sfBgEn" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#040D12"/>
+              <stop offset="100%" stop-color="#06131A"/>
+            </linearGradient>
+            <radialGradient id="sfG1En" cx="78%" cy="12%" r="52%">
+              <stop offset="0%" stop-color="#0D5C65" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#0D5C65" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="sfG2En" cx="12%" cy="92%" r="42%">
+              <stop offset="0%" stop-color="#4C1D95" stop-opacity="0.28"/>
+              <stop offset="100%" stop-color="#4C1D95" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="sfPDaEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#92400E"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
+            <linearGradient id="sfPDbEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE68A"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
+            <linearGradient id="sfPMaEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#064E3B"/></linearGradient>
+            <linearGradient id="sfPMbEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient>
+            <linearGradient id="sfPOaEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4C1D95"/><stop offset="100%" stop-color="#3B0764"/></linearGradient>
+            <linearGradient id="sfPObEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C4B5FD"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+            <linearGradient id="sfPZaEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#064E3B"/><stop offset="100%" stop-color="#065F46"/></linearGradient>
+            <linearGradient id="sfPZbEn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6EE7B7"/><stop offset="100%" stop-color="#34D399"/></linearGradient>
+          </defs>
+
+          <rect width="480" height="420" fill="url(#sfBgEn)"/>
+          <rect width="480" height="420" fill="url(#sfG1En)"/>
+          <rect width="480" height="420" fill="url(#sfG2En)"/>
+
+          <line x1="0" y1="118" x2="480" y2="118" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="0" y1="338" x2="480" y2="338" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+          <rect x="36" y="30" width="134" height="22" rx="11" fill="rgba(61,217,232,0.12)" stroke="rgba(61,217,232,0.28)" stroke-width="1"/>
+          <circle cx="53" cy="41" r="4" fill="#3DD9E8" filter="url(#sfGlowEn)"/>
+          <text x="64" y="46" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#3DD9E8" letter-spacing="0.06em">ACTIVE PROTOCOL</text>
+          <circle cx="428" cy="54" r="28" fill="rgba(61,217,232,0.08)" stroke="rgba(61,217,232,0.22)" stroke-width="1.5"/>
+          <text x="428" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="20" font-weight="900" fill="white">4</text>
+          <text x="428" y="67" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.5" font-weight="700" fill="rgba(61,217,232,0.65)" letter-spacing="0.05em">SUPPL.</text>
+          <text x="36" y="88" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="white" letter-spacing="-0.04em">Supplementation</text>
+          <text x="36" y="107" font-family="Inter,sans-serif" font-size="10.5" fill="rgba(255,255,255,0.32)">Personalised based on your biomarkers</text>
+
+          <rect x="36" y="126" width="408" height="46" rx="11" fill="rgba(245,158,11,0.07)" stroke="rgba(245,158,11,0.18)" stroke-width="1"/>
+          <g transform="translate(66,149)">
+            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPDaEn)"/>
+            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPDbEn)"/>
+            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="94" y="144" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Vitamin D3</text>
+          <text x="94" y="160" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">25(OH)D deficient · 18 ng/mL detected</text>
+          <rect x="338" y="134" width="98" height="22" rx="11" fill="rgba(245,158,11,0.16)"/>
+          <text x="387" y="149" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#F59E0B">4,000 IU · day</text>
+
+          <rect x="36" y="182" width="408" height="46" rx="11" fill="rgba(61,217,232,0.07)" stroke="rgba(61,217,232,0.14)" stroke-width="1"/>
+          <g transform="translate(66,205)">
+            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPMaEn)"/>
+            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPMbEn)"/>
+            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="94" y="200" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Magnesium Bisglycinate</text>
+          <text x="94" y="216" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Borderline · Serum Mg 0.74 mmol/L</text>
+          <rect x="338" y="190" width="98" height="22" rx="11" fill="rgba(61,217,232,0.13)"/>
+          <text x="387" y="205" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#3DD9E8">300 mg · night</text>
+
+          <rect x="36" y="238" width="408" height="46" rx="11" fill="rgba(139,92,246,0.07)" stroke="rgba(139,92,246,0.14)" stroke-width="1"/>
+          <g transform="translate(66,261)">
+            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPOaEn)"/>
+            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPObEn)"/>
+            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="94" y="256" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Omega-3 EPA/DHA</text>
+          <text x="94" y="272" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">LDL 5.8 mmol/L · Cardiovascular protection</text>
+          <rect x="330" y="246" width="106" height="22" rx="11" fill="rgba(139,92,246,0.13)"/>
+          <text x="383" y="261" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#A78BFA">2 g EPA+DHA · day</text>
+
+          <rect x="36" y="294" width="408" height="36" rx="11" fill="rgba(52,211,153,0.07)" stroke="rgba(52,211,153,0.14)" stroke-width="1"/>
+          <g transform="translate(66,312)">
+            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPZaEn)"/>
+            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPZbEn)"/>
+            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </g>
+          <text x="94" y="308" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Zinc Gluconate</text>
+          <text x="94" y="323" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Prevention · immune and hormonal profile</text>
+          <rect x="354" y="301" width="82" height="22" rx="11" fill="rgba(52,211,153,0.13)"/>
+          <text x="395" y="316" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#34D399">15 mg · day</text>
+
+          <text x="36" y="358" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" fill="rgba(255,255,255,0.28)" letter-spacing="0.1em">EXPECTED IMPACT · 90 DAYS</text>
+          <rect x="36" y="368" width="124" height="38" rx="10" fill="rgba(245,158,11,0.09)" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
+          <text x="50" y="385" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#F59E0B">+210%</text>
+          <text x="50" y="399" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.32)">Vitamin D normalised</text>
+          <rect x="172" y="368" width="124" height="38" rx="10" fill="rgba(139,92,246,0.09)" stroke="rgba(139,92,246,0.2)" stroke-width="1"/>
+          <text x="186" y="385" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#A78BFA">−18%</text>
+          <text x="186" y="399" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.32)">LDL Cholesterol</text>
+          <rect x="308" y="368" width="136" height="38" rx="10" fill="rgba(61,217,232,0.09)" stroke="rgba(61,217,232,0.2)" stroke-width="1"/>
+          <text x="322" y="385" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#3DD9E8">↑ Score</text>
+          <text x="322" y="399" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.32)">Recovery and sleep</text>
+        </svg>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1351,6 +1502,83 @@
       </div>
       <div class="ev-source">Sources: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
     </div>
+  </div>
+</section>
+
+<!-- WHAT CHANGES IN YOUR BODY -->
+<section class="step-layer layer-white" id="resultados-corpo">
+  <div class="container">
+
+    <div class="ev-header fade">
+      <span class="label">What to expect</span>
+      <h2>What changes <span class="grad-text">in your body</span></h2>
+      <p>Real results, measured in biomarkers - not just feelings. Here's what typically happens over the course of your follow-up.</p>
+    </div>
+
+    <div class="bio-grid">
+
+      <!-- Every 6 months -->
+      <div class="bio-card fade fade-d1">
+        <span class="bio-card-tag">Every 6 months</span>
+        <h3>The first measurable changes</h3>
+        <ul class="bio-list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Hormonal and thyroid balance</strong> - tracking and optimisation of markers such as TSH, T3/T4 and cortisol</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Replenishment of essential nutrients</strong> - support to optimise vitamin D, B12, iron and ferritin levels</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Support in reducing inflammation</strong> - tracking markers such as CRP</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>More energy and better sleep</strong> - many clients report less fatigue throughout the day</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>A more balanced microbiome</strong> - support for the first signs of digestive improvement</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- At 12 months -->
+      <div class="bio-card bio-12 fade fade-d2">
+        <span class="bio-card-tag" style="color:#7C3AED;border-color:rgba(139,92,246,0.3)">At 12 months</span>
+        <h3>Consolidated, sustainable results</h3>
+        <ul class="bio-list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Closely tracked biomarkers</strong> - focused on optimisation, not just being "within normal range"</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Support for body composition</strong> - nutritional guidance focused on preserving lean mass</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Metabolic support</strong> - tracking markers related to energy management</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Ongoing hormonal balance</strong> - follow-up that may support libido, cycle and mood</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span><strong>Sustainable results</strong> - plan continuously adjusted to your progress</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p style="text-align:center;font-size:12px;color:var(--ink-3);max-width:640px;margin:32px auto 0;">
+      Results vary from person to person and depend on individual clinical assessment and adherence to the recommended plan.
+    </p>
+
   </div>
 </section>
 
@@ -1535,45 +1763,43 @@
   <div class="container">
     <div class="sp-header fade">
       <span class="label">Annual programme</span>
-      <h2 class="fade fade-d1">One plan.<br/><span class="grad-text">Everything included.</span></h2>
-      <p class="sp-sub fade fade-d2">Comprehensive blood tests typically cost €800-1,500 at private clinics.<br/>With Lyvoo, you get everything for less than €1 per day.</p>
+      <h2 class="fade fade-d1">One plan.<br/><span class="grad-text">Personalised to you.</span></h2>
+      <p class="sp-sub fade fade-d2">Comprehensive blood tests typically cost €800-1,500 at private clinics.</p>
     </div>
     <div class="sp-card fade fade-d2">
       <div class="sp-left">
         <div class="sp-price-wrap">
-          <div class="sp-price"><span class="sp-cur">€</span><span class="sp-val">359</span><span class="sp-per">/year</span></div>
-          <div class="sp-daily">≈ €0.98 per day</div>
-          <div class="sp-billing">Single annual payment · No automatic renewal</div>
+          <div class="sp-price"><span class="sp-cur">€</span><span class="sp-val">365</span><span class="sp-per">/year</span></div>
+          <div class="sp-daily">≈ €1 per day</div>
+          <div class="sp-billing">Single annual payment · No automatic renewal · Full transparency</div>
         </div>
         <div class="sp-divider"></div>
         <div class="sp-section-label">What's included</div>
         <ul class="sp-features">
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>+50 biomarkers analysed</strong></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Test kit delivered to your door within 48h</strong></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>ISO 15189 certified laboratory</strong></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Medical + nutritional integrated report</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>20 biomarkers analysed</strong><span>20 essentials in the base panel + optional modules</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Kit delivered to your door within 48h</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Medical + nutritional report</strong></div></li>
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Personalised dietary plan</strong></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>6-month follow-up reassessment</strong></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Lyvoo app with continuous support</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Reassessment every 6 months</strong><span>2 full panels per year, included in the subscription</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Lyvoo dashboard with continuous support</strong></div></li>
         </ul>
         <a href="register.html?plano=lyvoo" class="sp-cta">Start the programme <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
         <p class="sp-guarantee">Free cancellation before kit dispatch · No automatic renewal</p>
       </div>
       <div class="sp-right">
         <div class="sp-bio-header">
-          <span class="sp-bio-title">+50 biomarkers included</span>
-          <span class="sp-bio-sub">Complete clinical coverage</span>
+          <span class="sp-bio-title">Up to +50 biomarkers</span>
+          <span class="sp-bio-sub">20 essentials in the base panel + optional modules</span>
         </div>
         <div class="sp-bio-groups">
-          <div class="sp-bio-group"><div class="sp-bio-cat">Cardiovascular</div><div class="sp-bio-chips"><span>LDL</span><span>HDL</span><span>ApoB</span><span>Triglycerides</span><span>Total cholesterol</span><span>hsCRP</span></div></div>
-          <div class="sp-bio-group"><div class="sp-bio-cat">Metabolic</div><div class="sp-bio-chips"><span>HbA1c</span><span>Glucose</span><span>Fasting insulin</span><span>HOMA-IR</span></div></div>
-          <div class="sp-bio-group"><div class="sp-bio-cat">Hormonal</div><div class="sp-bio-chips"><span>Testosterone</span><span>Oestradiol</span><span>DHEA-S</span><span>Cortisol</span><span>SHBG</span></div></div>
-          <div class="sp-bio-group"><div class="sp-bio-cat">Thyroid</div><div class="sp-bio-chips"><span>TSH</span><span>FT4</span><span>FT3</span></div></div>
-          <div class="sp-bio-group"><div class="sp-bio-cat">Nutritional</div><div class="sp-bio-chips"><span>Vitamin D</span><span>Vitamin B12</span><span>Folate B9</span><span>Magnesium</span><span>Iron</span><span>Ferritin</span><span>Zinc</span><span>Selenium</span></div></div>
-          <div class="sp-bio-group"><div class="sp-bio-cat">Renal &amp; Hepatic</div><div class="sp-bio-chips"><span>Creatinine</span><span>Urea</span><span>ALT</span><span>AST</span><span>GGT</span><span>Bilirubin</span><span>Albumin</span></div></div>
-          <div class="sp-bio-group"><div class="sp-bio-cat">Inflammation</div><div class="sp-bio-chips"><span>CRP</span><span>IL-6</span><span>Fibrinogen</span><span>ESR</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Metabolic</div><div class="sp-bio-chips"><span>HbA1c</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Cardiovascular &amp; Lipids</div><div class="sp-bio-chips"><span>ApoB</span><span>Lp(a)</span><span>Total cholesterol</span><span>HDL</span><span>LDL</span><span>Triglycerides</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Liver function</div><div class="sp-bio-chips"><span>ALT</span><span>AST</span><span>GGT</span><span>Alkaline phosphatase</span><span>Albumin</span><span>Total protein</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Kidney function</div><div class="sp-bio-chips"><span>Creatinine</span><span>Urea</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Minerals &amp; Iron</div><div class="sp-bio-chips"><span>Calcium</span><span>Magnesium</span><span>Ferritin</span></div></div>
+          <div class="sp-bio-group"><div class="sp-bio-cat">Thyroid &amp; Inflammation</div><div class="sp-bio-chips"><span>TSH</span><span>CRP (high sensitivity)</span></div></div>
         </div>
-        <p class="sp-bio-note">+ Optional add-on modules available: Microbiome, Genetic testing, Hormonal and more</p>
+        <p class="sp-bio-note">20 essential biomarkers included in the base panel. Optional modules available: Vitamins (D, B12, Folate), Male Hormonal, Female Hormonal, Fertility, Advanced Cardio, Hepatitis B, Extended Thyroid, Stress, Full STI Test and Food Intolerance Test.</p>
       </div>
     </div>
   </div>
@@ -1608,7 +1834,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-q">What's included in the programme?<span class="faq-icon"></span></button>
-          <div class="faq-a"><div class="faq-a-inner">The Lyvoo programme (€359/year) includes everything in one subscription: +50 biomarkers analysed, kit delivered to your door, ISO 15189 certified laboratory, integrated medical and nutritional report, personalised dietary plan, full 6-month reassessment and app access with continuous team support. No hidden costs, no mandatory extras.</div></div>
+          <div class="faq-a"><div class="faq-a-inner">The Lyvoo programme (€365/year) includes everything in one subscription: base panel with 20 essential biomarkers (up to +50 with additional modules), kit delivered to your door, ISO 15189 certified laboratory, integrated medical and nutritional report, personalised dietary plan, full reassessment every 6 months (2 per year) and app access with continuous team support. No hidden costs, no mandatory extras.</div></div>
         </div>
         <div class="faq-item">
           <button class="faq-q">Does this replace my GP?<span class="faq-icon"></span></button>
@@ -1616,7 +1842,7 @@
         </div>
         <div class="faq-item">
           <button class="faq-q">How does the 6-month reassessment work?<span class="faq-icon"></span></button>
-          <div class="faq-a"><div class="faq-a-inner">Midway through the annual programme you receive a new kit to repeat the panel. We compare the results with your initial baseline and show you, in numbers, what has changed. We then adjust your clinical and nutritional plan to your real progress.</div></div>
+          <div class="faq-a"><div class="faq-a-inner">Throughout the annual programme you receive a new kit every 6 months to repeat the panel (2 reassessments per year). We compare the results with your previous evaluation and show you, in numbers, what has changed. At each reassessment, we adjust your clinical and nutritional plan to your real progress.</div></div>
         </div>
         <div class="faq-item">
           <button class="faq-q">Is my health data protected?<span class="faq-icon"></span></button>
