@@ -879,75 +879,86 @@
   // DST/IST, Hepatite B e Intolerâncias Alimentares. Nomes têm de coincidir
   // com os do Atlas — o merge do editor e o render da dashboard são por nome.
   const BIO_CATS = {
-    metabolico: {
-      label: 'Metabólico',
+    base: {
+      label: 'Plano Base (20 biomarcadores)',
       rows: [
         { nome:'HbA1c',              unidade:'%',        referencia:'< 5.7%',        refOtima:'< 5.3' },
-      ]
-    },
-    cardiovascular: {
-      label: 'Cardiovascular',
-      rows: [
         { nome:'Colesterol total',    unidade:'mmol/L',  referencia:'< 5.0 mmol/L',  refOtima:'< 4.7' },
         { nome:'LDL',                 unidade:'mmol/L',  referencia:'< 3.0 mmol/L',  refOtima:'< 2.1' },
         { nome:'HDL',                 unidade:'mmol/L',  referencia:'> 1.0 (H) / > 1.2 (M) mmol/L', refOtima:'> 1.5' },
         { nome:'Triglicéridos',       unidade:'mmol/L',  referencia:'< 1.7 mmol/L',  refOtima:'< 1.0' },
         { nome:'ApoB',                unidade:'mg/dL',   referencia:'< 90 mg/dL',    refOtima:'< 70' },
         { nome:'Lp(a)',               unidade:'nmol/L',  referencia:'< 75 nmol/L',   refOtima:'< 30' },
-        { nome:'NT-proBNP',           unidade:'pg/mL',   referencia:'< 125 pg/mL' },
         { nome:'CRP',                 unidade:'mg/L',    referencia:'< 1.0 mg/L',    refOtima:'< 0.5' },
-      ]
-    },
-    hepatico: {
-      label: 'Hepático',
-      rows: [
         { nome:'ALT',                unidade:'U/L',  referencia:'< 35 (M) / < 45 (H) U/L', refOtima:'< 25' },
         { nome:'AST',                unidade:'U/L',  referencia:'< 40 U/L',         refOtima:'< 25' },
         { nome:'GGT',                unidade:'U/L',  referencia:'< 50 U/L (H)',     refOtima:'< 25' },
         { nome:'Fosfatase Alcalina', unidade:'U/L',  referencia:'40-130 U/L' },
         { nome:'Albumina',           unidade:'g/dL', referencia:'3.5-5.0 g/dL',     refOtima:'4.0-5.0' },
         { nome:'Proteína Total',     unidade:'g/dL', referencia:'6.0-8.5 g/dL' },
-      ]
-    },
-    renal: {
-      label: 'Renal',
-      rows: [
         { nome:'Creatinina',    unidade:'mg/dL',     referencia:'0.6-1.2 mg/dL (H)', refOtima:'0.7-1.0' },
         { nome:'Ureia',         unidade:'mg/dL',     referencia:'7-25 mg/dL' },
+        { nome:'Cálcio',       unidade:'mg/dL',    referencia:'8.5-10.5 mg/dL',   refOtima:'9.0-10.0' },
+        { nome:'Magnésio',     unidade:'mmol/L',   referencia:'0.75-0.95 mmol/L', refOtima:'0.85-0.95' },
+        { nome:'Ferritina',    unidade:'ng/mL',    referencia:'30-200 ng/mL',     refOtima:'50-150' },
+        { nome:'TSH',    unidade:'mU/L',    referencia:'0.5-4.0 mU/L',   refOtima:'0.5-2.5' },
       ]
     },
-    nutricional: {
-      label: 'Nutricional',
+    vitaminas: {
+      label: 'Módulo: Vitaminas',
       rows: [
         { nome:'Vitamina D',   unidade:'ng/mL',    referencia:'30-100 ng/mL',     refOtima:'40-60' },
         { nome:'Vitamina B12', unidade:'pg/mL',    referencia:'> 400 pg/mL',      refOtima:'500-900' },
         { nome:'Folato',       unidade:'ng/mL',    referencia:'> 7 ng/mL',        refOtima:'> 10' },
-        { nome:'Cálcio',       unidade:'mg/dL',    referencia:'8.5-10.5 mg/dL',   refOtima:'9.0-10.0' },
-        { nome:'Magnésio',     unidade:'mmol/L',   referencia:'0.75-0.95 mmol/L', refOtima:'0.85-0.95' },
-        { nome:'Ferritina',    unidade:'ng/mL',    referencia:'30-200 ng/mL',     refOtima:'50-150' },
       ]
     },
-    tiroide: {
-      label: 'Tiróide',
-      rows: [
-        { nome:'TSH',    unidade:'mU/L',    referencia:'0.5-4.0 mU/L',   refOtima:'0.5-2.5' },
-        { nome:'FT4',    unidade:'ng/dL',   referencia:'1.0-1.5 ng/dL' },
-        { nome:'T3',     unidade:'ng/dL',   referencia:'80-200 ng/dL' },
-      ]
-    },
-    hormonal: {
-      label: 'Hormonal',
+    hormonalMasculino: {
+      label: 'Módulo: Hormonal Masculino',
       rows: [
         { nome:'Testosterona Total', unidade:'ng/dL',   referencia:'300-1000 ng/dL (H)', refOtima:'550-900' },
         { nome:'Testosterona Livre', unidade:'pg/mL',   referencia:'50-210 pg/mL (H)' },
         { nome:'SHBG',               unidade:'nmol/L',  referencia:'10-80 nmol/L' },
         { nome:'PSA',                unidade:'ng/mL',   referencia:'< 4.0 ng/mL' },
+        { nome:'FSH',                unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+        { nome:'LH',                 unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+      ]
+    },
+    hormonalFeminino: {
+      label: 'Módulo: Hormonal Feminino',
+      rows: [
         { nome:'Estradiol',          unidade:'pg/mL',   referencia:'Variável por fase do ciclo' },
         { nome:'Progesterona',       unidade:'ng/mL',   referencia:'Variável por fase do ciclo' },
         { nome:'Prolactina',         unidade:'ng/mL',   referencia:'4.8-23.3 ng/mL' },
+        { nome:'SHBG',               unidade:'nmol/L',  referencia:'10-80 nmol/L' },
         { nome:'FSH',                unidade:'UI/L',    referencia:'Variável por fase/sexo' },
         { nome:'LH',                 unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+      ]
+    },
+    fertilidade: {
+      label: 'Módulo: Fertilidade',
+      rows: [
         { nome:'AMH',                unidade:'ng/mL',   referencia:'Variável por idade' },
+        { nome:'Estradiol',          unidade:'pg/mL',   referencia:'Variável por fase do ciclo' },
+        { nome:'FSH',                unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+        { nome:'LH',                 unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+      ]
+    },
+    cardioAvancado: {
+      label: 'Módulo: Cardio Avançado',
+      rows: [
+        { nome:'NT-proBNP',           unidade:'pg/mL',   referencia:'< 125 pg/mL' },
+      ]
+    },
+    tiroideCompleto: {
+      label: 'Módulo: Tiróide Completo',
+      rows: [
+        { nome:'FT4',    unidade:'ng/dL',   referencia:'1.0-1.5 ng/dL' },
+        { nome:'T3',     unidade:'ng/dL',   referencia:'80-200 ng/dL' },
+      ]
+    },
+    stress: {
+      label: 'Módulo: Stress',
+      rows: [
         { nome:'Cortisol',           unidade:'µg/dL',   referencia:'6-23 µg/dL (manhã)', refOtima:'10-18' },
       ]
     }
