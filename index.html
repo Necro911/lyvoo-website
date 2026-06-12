@@ -1921,6 +1921,7 @@
             <button class="ba-filter" data-cat="base">Painel base</button>
             <button class="ba-filter" data-cat="vitaminas">Vitaminas</button>
             <button class="ba-filter" data-cat="hormonal-masculino">Hormonal Masculino</button>
+            <button class="ba-filter" data-cat="dst-ist">DST/IST Completo</button>
             <button class="ba-filter" data-cat="hormonal-feminino">Hormonal Feminino</button>
             <button class="ba-filter" data-cat="fertilidade">Fertilidade</button>
             <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
@@ -3639,6 +3640,7 @@
     'hepatite-b':         '#FBBF24',
     'tiroide-completo':   '#A78BFA',
     stress:               '#FB923C',
+    'dst-ist':            '#22D3EE',
   };
 
   const CAT_LABELS = {
@@ -3657,6 +3659,7 @@
     'hepatite-b':         'Hepatite B',
     'tiroide-completo':   'Tiroide Completo',
     stress:               'Stress',
+    'dst-ist':            'DST/IST Completo',
   };
 
   const BIOMARKERS = [
@@ -3701,6 +3704,21 @@
     { id:'fsh',       name:'FSH',               full:'Hormona Folículo-Estimulante',   cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variável por fase/sexo', desc:'Hormona hipofisária que regula a função gonadal. Essencial na avaliação de fertilidade, ciclo e função reprodutiva.' },
     { id:'lh',        name:'LH',                full:'Hormona Luteinizante',           cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variável por fase/sexo', desc:'Hormona hipofisária que regula a ovulação e a produção de testosterona. Essencial na avaliação de fertilidade e ciclo.' },
     { id:'shbg',      name:'SHBG',              full:'Sex Hormone Binding Globulin',   cats:['hormonal-masculino','hormonal-feminino'], range:'10-80 nmol/L', desc:'Proteína transportadora de hormonas sexuais. Afeta a disponibilidade de testosterona e estradiol livre no organismo.' },
+
+    // ── Módulo: Teste DST/IST Completo ──
+    { id:'aghbsdst',  name:'AgHBs',             full:'Antigénio de Superfície da Hepatite B', cats:['dst-ist'],         range:'Não reativo',             desc:'Marcador de infeção pelo vírus da Hepatite B, pesquisado por colheita de sangue no painel de DST/IST.' },
+    { id:'hiv',       name:'Anti-HIV 1 e 2',    full:'Anticorpos Anti-VIH 1 e 2',      cats:['dst-ist'],               range:'Não reativo',             desc:'Rastreio do vírus da imunodeficiência humana (HIV 1 e 2), por colheita de sangue.' },
+    { id:'clamidia',  name:'Clamídia',          full:'PCR Chlamydia trachomatis',      cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR da bactéria responsável pela clamídia, uma das ISTs mais comuns, por colheita de urina.' },
+    { id:'tricomon',  name:'Tricomoníase',      full:'PCR Trichomonas vaginalis',      cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR do parasita responsável pela tricomoníase, por colheita de urina.' },
+    { id:'gonorreia', name:'Gonorreia',         full:'PCR Neisseria gonorrhoeae',      cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR da bactéria responsável pela gonorreia, por colheita de urina.' },
+    { id:'sifilis',   name:'Sífilis',           full:'PCR Treponema pallidum',         cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR da bactéria responsável pela sífilis, por colheita de urina.' },
+    { id:'hsv1',      name:'HSV-1',             full:'Vírus Herpes Simples tipo 1',    cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR do vírus herpes simples tipo 1, por colheita de urina.' },
+    { id:'hsv2',      name:'HSV-2',             full:'Vírus Herpes Simples tipo 2',    cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR do vírus herpes simples tipo 2, geralmente associado a herpes genital, por colheita de urina.' },
+    { id:'mgenit',    name:'Mycoplasma genitalium', full:'PCR Mycoplasma genitalium', cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR de Mycoplasma genitalium, bactéria associada a uretrites e cervicites, por colheita de urina.' },
+    { id:'mhomin',    name:'Mycoplasma hominis', full:'PCR Mycoplasma hominis',       cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR de Mycoplasma hominis, por colheita de urina.' },
+    { id:'uurea',     name:'Ureaplasma urealyticum', full:'PCR Ureaplasma urealyticum', cats:['dst-ist'],            range:'Não detetado',            desc:'Pesquisa por PCR de Ureaplasma urealyticum, por colheita de urina.' },
+    { id:'uparvum',   name:'Ureaplasma parvum', full:'PCR Ureaplasma parvum',          cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR de Ureaplasma parvum, por colheita de urina.' },
+    { id:'hducreyi',  name:'Haemophilus ducreyi', full:'PCR Haemophilus ducreyi',      cats:['dst-ist'],               range:'Não detetado',            desc:'Pesquisa por PCR de Haemophilus ducreyi, bactéria responsável pelo cancroide, por colheita de urina.' },
 
     // ── Módulo: Fertilidade (+AMH) ──
     { id:'amh',       name:'AMH',               full:'Hormona Anti-Mülleriana',        cats:['fertilidade'],           range:'Variável por idade',     desc:'Reflete a reserva ovárica. Um dos marcadores mais usados na avaliação de fertilidade feminina.' },
