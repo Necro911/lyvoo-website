@@ -138,6 +138,9 @@
     .card-editor { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; position:relative; }
     .card-editor-del { position:absolute; top:12px; right:12px; background:none; border:none; color:var(--txt-3); cursor:pointer; font-size:18px; line-height:1; padding:2px 6px; border-radius:6px; transition:all 0.15s; }
     .card-editor-del:hover { background:rgba(248,113,113,0.1); color:var(--red); }
+    .card-editor-move { position:absolute; top:12px; right:42px; display:flex; gap:2px; }
+    .card-move-btn { background:none; border:none; color:var(--txt-3); cursor:pointer; font-size:14px; line-height:1; padding:2px 6px; border-radius:6px; transition:all 0.15s; }
+    .card-move-btn:hover { background:var(--panel-2); color:var(--txt); }
     .btn-add-card { width:100%; padding:11px; border-radius:10px; border:1px dashed rgba(61,217,232,0.25); background:rgba(61,217,232,0.03); color:var(--cyan); font-size:13.5px; font-weight:600; cursor:pointer; transition:all 0.18s; }
     .btn-add-card:hover { background:rgba(61,217,232,0.07); border-color:rgba(61,217,232,0.4); }
     /* Opções de refeição */
@@ -1786,6 +1789,10 @@
     ).join('');
     div.innerHTML = `
       <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
+      <div class="card-editor-move">
+        <button type="button" class="card-move-btn" onclick="moveDiarioCard(this,-1)" title="Mover para cima">↑</button>
+        <button type="button" class="card-move-btn" onclick="moveDiarioCard(this,1)" title="Mover para baixo">↓</button>
+      </div>
       <div class="form-row-3">
         <div class="form-field">
           <label class="form-label">Refeição</label>
@@ -1813,6 +1820,15 @@
   }
 
   window.addDiarioRefeicao = function() { addDiarioCard({}); };
+
+  window.moveDiarioCard = function(btn, dir) {
+    const card = btn.closest('.card-editor');
+    const sibling = dir < 0 ? card.previousElementSibling : card.nextElementSibling;
+    if (!sibling) return;
+    if (dir < 0) card.parentNode.insertBefore(card, sibling);
+    else card.parentNode.insertBefore(sibling, card);
+    markDirty();
+  };
 
   function collectDiarioData() {
     return [...document.getElementById('diario-list').querySelectorAll('.card-editor')].map(card => ({
