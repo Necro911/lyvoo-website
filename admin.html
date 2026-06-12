@@ -816,99 +816,80 @@
   const ESTADO_LABELS = { 1:'Kit a ser preparado', 2:'Kit enviado', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação' };
 
   // ── Biomarcadores: categorias pré-definidas ─────────────────────────
+  // Espelha a tabela de biomarcadores do index.html (Atlas), exceto os módulos
+  // DST/IST, Hepatite B e Intolerâncias Alimentares. Nomes têm de coincidir
+  // com os do Atlas — o merge do editor e o render da dashboard são por nome.
   const BIO_CATS = {
-    cardiovascular: {
-      label: 'Cardiovascular',
-      rows: [
-        { nome:'Colesterol total',    unidade:'mg/dL',   referencia:'< 200 mg/dL',  refOtima:'< 180' },
-        { nome:'Colesterol LDL',      unidade:'mg/dL',   referencia:'< 100 mg/dL',  refOtima:'< 80' },
-        { nome:'Colesterol HDL',      unidade:'mg/dL',   referencia:'> 50 mg/dL',   refOtima:'> 60' },
-        { nome:'ApoB',                unidade:'mg/dL',   referencia:'< 90 mg/dL',   refOtima:'< 70' },
-        { nome:'Lp(a)',               unidade:'nmol/L',  referencia:'< 75 nmol/L',  refOtima:'< 30' },
-        { nome:'Triglicéridos',       unidade:'mg/dL',   referencia:'< 150 mg/dL',  refOtima:'< 90' },
-        { nome:'PCR ultra-sensível',  unidade:'mg/L',    referencia:'< 1.0 mg/L',   refOtima:'< 0.5' },
-        { nome:'Homocisteína',        unidade:'µmol/L',  referencia:'< 15 µmol/L',  refOtima:'< 9' },
-        { nome:'NT-proBNP',           unidade:'pg/mL',   referencia:'< 125 pg/mL' },
-      ]
-    },
     metabolico: {
       label: 'Metabólico',
       rows: [
         { nome:'HbA1c',              unidade:'%',        referencia:'< 5.7%',        refOtima:'< 5.3' },
-        { nome:'Glicose em jejum',   unidade:'mg/dL',    referencia:'70-99 mg/dL',   refOtima:'75-90' },
-        { nome:'Insulina jejum',     unidade:'µU/mL',    referencia:'< 10 µU/mL',    refOtima:'< 6' },
-        { nome:'HOMA-IR',            unidade:'',         referencia:'< 2.5',         refOtima:'< 1.5' },
+      ]
+    },
+    cardiovascular: {
+      label: 'Cardiovascular',
+      rows: [
+        { nome:'Colesterol total',    unidade:'mmol/L',  referencia:'< 5.0 mmol/L',  refOtima:'< 4.7' },
+        { nome:'LDL',                 unidade:'mmol/L',  referencia:'< 3.0 mmol/L',  refOtima:'< 2.1' },
+        { nome:'HDL',                 unidade:'mmol/L',  referencia:'> 1.0 (H) / > 1.2 (M) mmol/L', refOtima:'> 1.5' },
+        { nome:'Triglicéridos',       unidade:'mmol/L',  referencia:'< 1.7 mmol/L',  refOtima:'< 1.0' },
+        { nome:'ApoB',                unidade:'mg/dL',   referencia:'< 90 mg/dL',    refOtima:'< 70' },
+        { nome:'Lp(a)',               unidade:'nmol/L',  referencia:'< 75 nmol/L',   refOtima:'< 30' },
+        { nome:'NT-proBNP',           unidade:'pg/mL',   referencia:'< 125 pg/mL' },
+        { nome:'CRP',                 unidade:'mg/L',    referencia:'< 1.0 mg/L',    refOtima:'< 0.5' },
+      ]
+    },
+    hepatico: {
+      label: 'Hepático',
+      rows: [
+        { nome:'ALT',                unidade:'U/L',  referencia:'< 35 (M) / < 45 (H) U/L', refOtima:'< 25' },
+        { nome:'AST',                unidade:'U/L',  referencia:'< 40 U/L',         refOtima:'< 25' },
+        { nome:'GGT',                unidade:'U/L',  referencia:'< 50 U/L (H)',     refOtima:'< 25' },
+        { nome:'Fosfatase Alcalina', unidade:'U/L',  referencia:'40-130 U/L' },
+        { nome:'Albumina',           unidade:'g/dL', referencia:'3.5-5.0 g/dL',     refOtima:'4.0-5.0' },
+        { nome:'Proteína Total',     unidade:'g/dL', referencia:'6.0-8.5 g/dL' },
+      ]
+    },
+    renal: {
+      label: 'Renal',
+      rows: [
+        { nome:'Creatinina',    unidade:'mg/dL',     referencia:'0.6-1.2 mg/dL (H)', refOtima:'0.7-1.0' },
+        { nome:'Ureia',         unidade:'mg/dL',     referencia:'7-25 mg/dL' },
       ]
     },
     nutricional: {
       label: 'Nutricional',
       rows: [
         { nome:'Vitamina D',   unidade:'ng/mL',    referencia:'30-100 ng/mL',     refOtima:'40-60' },
-        { nome:'Vitamina B12', unidade:'pg/mL',    referencia:'200-900 pg/mL',    refOtima:'500-900' },
-        { nome:'Ferritina',    unidade:'ng/mL',    referencia:'30-200 ng/mL',     refOtima:'50-150' },
-        { nome:'Magnésio',     unidade:'mmol/L',   referencia:'0.74-0.99 mmol/L', refOtima:'0.85-0.99' },
+        { nome:'Vitamina B12', unidade:'pg/mL',    referencia:'> 400 pg/mL',      refOtima:'500-900' },
+        { nome:'Folato',       unidade:'ng/mL',    referencia:'> 7 ng/mL',        refOtima:'> 10' },
         { nome:'Cálcio',       unidade:'mg/dL',    referencia:'8.5-10.5 mg/dL',   refOtima:'9.0-10.0' },
-        { nome:'Ferro sérico', unidade:'µg/dL',    referencia:'60-170 µg/dL',     refOtima:'85-150' },
-        { nome:'Zinco',        unidade:'µg/dL',    referencia:'70-120 µg/dL',     refOtima:'90-120' },
-        { nome:'Folato',       unidade:'ng/mL',    referencia:'> 4.0 ng/mL',      refOtima:'> 10' },
+        { nome:'Magnésio',     unidade:'mmol/L',   referencia:'0.75-0.95 mmol/L', refOtima:'0.85-0.95' },
+        { nome:'Ferritina',    unidade:'ng/mL',    referencia:'30-200 ng/mL',     refOtima:'50-150' },
       ]
     },
     tiroide: {
       label: 'Tiróide',
       rows: [
-        { nome:'TSH',    unidade:'mUI/L',   referencia:'0.5-4.0 mUI/L',  refOtima:'1.0-2.5' },
-        { nome:'FT4',    unidade:'pmol/L',  referencia:'12-22 pmol/L',   refOtima:'15-20' },
-        { nome:'FT3',    unidade:'pmol/L',  referencia:'3.1-6.8 pmol/L', refOtima:'4.5-6.0' },
+        { nome:'TSH',    unidade:'mU/L',    referencia:'0.5-4.0 mU/L',   refOtima:'0.5-2.5' },
+        { nome:'FT4',    unidade:'ng/dL',   referencia:'1.0-1.5 ng/dL' },
         { nome:'T3',     unidade:'ng/dL',   referencia:'80-200 ng/dL' },
-        { nome:'TPO Ac', unidade:'UI/mL',   referencia:'< 34 UI/mL',     refOtima:'< 15' },
       ]
     },
     hormonal: {
       label: 'Hormonal',
       rows: [
-        { nome:'Testosterona total', unidade:'ng/dL',   referencia:'300-1000 ng/dL (H)', refOtima:'550-900' },
-        { nome:'Testosterona livre', unidade:'pg/mL',   referencia:'5-21 pg/mL (H)',     refOtima:'10-20' },
+        { nome:'Testosterona Total', unidade:'ng/dL',   referencia:'300-1000 ng/dL (H)', refOtima:'550-900' },
+        { nome:'Testosterona Livre', unidade:'pg/mL',   referencia:'50-210 pg/mL (H)' },
         { nome:'SHBG',               unidade:'nmol/L',  referencia:'10-80 nmol/L' },
         { nome:'PSA',                unidade:'ng/mL',   referencia:'< 4.0 ng/mL' },
-        { nome:'DHEA-S',             unidade:'µg/dL',   referencia:'80-560 µg/dL',       refOtima:'200-450' },
-        { nome:'Cortisol (manhã)',   unidade:'µg/dL',   referencia:'6-23 µg/dL',         refOtima:'10-18' },
-        { nome:'Estradiol',          unidade:'pg/mL',   referencia:'- (ver fase)' },
-        { nome:'Progesterona',       unidade:'ng/mL',   referencia:'- (ver fase)' },
+        { nome:'Estradiol',          unidade:'pg/mL',   referencia:'Variável por fase do ciclo' },
+        { nome:'Progesterona',       unidade:'ng/mL',   referencia:'Variável por fase do ciclo' },
         { nome:'Prolactina',         unidade:'ng/mL',   referencia:'4.8-23.3 ng/mL' },
-        { nome:'LH',                 unidade:'UI/L',    referencia:'- (ver fase)' },
-        { nome:'FSH',                unidade:'UI/L',    referencia:'- (ver fase)' },
-        { nome:'AMH',                unidade:'ng/mL',   referencia:'- (ver idade)' },
-      ]
-    },
-    hematologia: {
-      label: 'Hematologia',
-      rows: [
-        { nome:'Hemoglobina',  unidade:'g/dL',     referencia:'12-17.5 g/dL', refOtima:'13.5-16.5' },
-        { nome:'Hematócrito',  unidade:'%',         referencia:'37-52%',       refOtima:'40-50' },
-        { nome:'Leucócitos',   unidade:'10³/µL',   referencia:'4.5-11.0',     refOtima:'5.0-8.0' },
-        { nome:'Plaquetas',    unidade:'10³/µL',   referencia:'150-400',      refOtima:'180-350' },
-        { nome:'VCM',          unidade:'fL',        referencia:'80-100 fL',    refOtima:'85-95' },
-      ]
-    },
-    hepatico: {
-      label: 'Hepático',
-      rows: [
-        { nome:'ALT (TGP)',  unidade:'U/L',  referencia:'< 40 U/L',          refOtima:'< 25' },
-        { nome:'AST (TGO)',  unidade:'U/L',  referencia:'< 40 U/L',          refOtima:'< 25' },
-        { nome:'GGT',        unidade:'U/L',  referencia:'< 60 U/L',          refOtima:'< 25' },
-        { nome:'Fosfatase Alcalina', unidade:'U/L', referencia:'40-130 U/L' },
-        { nome:'Bilirrubina total', unidade:'mg/dL', referencia:'0.2-1.2 mg/dL', refOtima:'0.3-0.9' },
-        { nome:'Albumina',        unidade:'g/dL', referencia:'3.5-5.0 g/dL', refOtima:'4.0-5.0' },
-        { nome:'Proteína Total',  unidade:'g/dL', referencia:'6.0-8.5 g/dL' },
-      ]
-    },
-    renal: {
-      label: 'Renal',
-      rows: [
-        { nome:'Creatinina',    unidade:'mg/dL',     referencia:'0.6-1.2 mg/dL', refOtima:'0.7-1.0' },
-        { nome:'Ureia',         unidade:'mg/dL',     referencia:'15-50 mg/dL',   refOtima:'20-40' },
-        { nome:'Ácido úrico',   unidade:'mg/dL',     referencia:'3.5-7.2 mg/dL', refOtima:'3.5-5.5' },
-        { nome:'TFG estimada',  unidade:'mL/min',    referencia:'> 90 mL/min',   refOtima:'> 100' },
+        { nome:'FSH',                unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+        { nome:'LH',                 unidade:'UI/L',    referencia:'Variável por fase/sexo' },
+        { nome:'AMH',                unidade:'ng/mL',   referencia:'Variável por idade' },
+        { nome:'Cortisol',           unidade:'µg/dL',   referencia:'6-23 µg/dL (manhã)', refOtima:'10-18' },
       ]
     }
   };
