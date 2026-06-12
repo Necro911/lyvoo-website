@@ -182,6 +182,7 @@
       .trust { flex-direction: column; gap: 10px; }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="cookie-banner.js" defer></script>
   <script src="prelaunch.js" defer></script>
 </head>
@@ -263,14 +264,14 @@
       <div class="terms">
         <input type="checkbox" id="terms" name="terms" />
         <label for="terms">
-          Aceito os <a href="termos.html" target="_blank">Termos de Serviço</a> e a <a href="privacidade.html" target="_blank">Política de Privacidade</a> da Lyvoo.
+          Li e aceito os <a href="termos.html" target="_blank">Termos de Serviço</a> e confirmo ter lido a <a href="privacidade.html" target="_blank">Política de Privacidade</a> da Lyvoo.
         </label>
       </div>
 
       <div class="terms" style="margin-top:-4px;">
-        <input type="checkbox" id="serviceStart" name="serviceStart" />
-        <label for="serviceStart">
-          Compreendo que ao confirmar a subscrição, o envio do kit inicia imediatamente e que, após utilização do kit, abdico do direito de arrependimento nos termos do <a href="termos.html#cancelamento" target="_blank">art. 17.º do DL 24/2014</a>.
+        <input type="checkbox" id="marketing" name="marketing" />
+        <label for="marketing">
+          Quero receber comunicações da Lyvoo. <span style="color:var(--ink-3)">(opcional)</span>
         </label>
       </div>
 
@@ -313,12 +314,32 @@
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
+  // ── EmailJS (notificação de consentimento de marketing) ──
+  emailjs.init('P0ArQ2tRYDeYkPZuR');
+
+  async function notificarConsentimentoMarketing(user, aceitou) {
+    try {
+      await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
+        from_name:  user.displayName || user.email,
+        from_email: user.email,
+        email:      user.email,
+        interesse:  'Consentimento de marketing (registo)',
+        mensagem:   `O cliente ${user.displayName || ''} <${user.email}> ${aceitou ? 'ACEITOU' : 'DECLINOU'} receber comunicações da Lyvoo.`,
+      });
+    } catch (err) {
+      // Falha na notificação não deve impedir o registo
+      console.error('Notificação de consentimento falhou:', err);
+    }
+  }
+
   // Cria/atualiza o documento do utilizador no Firestore
   async function guardarPerfil(user, { firstName = '', lastName = '' } = {}) {
+    const marketing = document.getElementById('marketing').checked;
     const dados = {
       email: user.email,
       plano:     'lyvoo',
       planoNome: 'Lyvoo',
+      marketingConsent: marketing,
       atualizadoEm: serverTimestamp()
     };
     if (firstName || lastName) {
@@ -436,13 +457,9 @@
       pwErr.style.display = 'none';
     }
 
-    // Validar checkboxes obrigatórias
+    // Validar checkbox obrigatória
     if (!document.getElementById('terms').checked) {
-      mostrarErroGlobal('Deve aceitar os Termos de Serviço para continuar.');
-      valido = false;
-    }
-    if (!document.getElementById('serviceStart').checked) {
-      mostrarErroGlobal('Deve confirmar a política de início imediato do serviço para continuar.');
+      mostrarErroGlobal('Deve aceitar os Termos de Serviço e a Política de Privacidade para continuar.');
       valido = false;
     }
 
@@ -456,6 +473,7 @@
       const nome = [firstName, lastName].filter(Boolean).join(' ');
       if (nome) await updateProfile(cred.user, { displayName: nome });
       await guardarPerfil(cred.user, { firstName, lastName });
+      await notificarConsentimentoMarketing(cred.user, document.getElementById('marketing').checked);
       aoAutenticar(cred.user);
     } catch (err) {
       setBtnLoading(false);
@@ -479,6 +497,11 @@
   document.getElementById('btnGoogle').addEventListener('click', async (e) => {
     e.preventDefault();
     limparErroGlobal();
+    // Não permitir registo com Google sem aceitar os termos
+    if (!document.getElementById('terms').checked) {
+      mostrarErroGlobal('Deve aceitar os Termos de Serviço e a Política de Privacidade antes de continuar com Google.');
+      return;
+    }
     setGoogleLoading(true);
     try {
       const provider = new GoogleAuthProvider();
@@ -489,6 +512,7 @@
         firstName: partes[0] || '',
         lastName:  partes.slice(1).join(' ')
       });
+      await notificarConsentimentoMarketing(result.user, document.getElementById('marketing').checked);
       aoAutenticar(result.user);
     } catch (err) {
       setGoogleLoading(false);
