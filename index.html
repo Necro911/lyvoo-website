@@ -3813,11 +3813,17 @@
     el.classList.add('selected');
     const color = CAT_COLORS[b.cats[0]] || '#aaa';
     const isUnissexo = b.cats.includes('hormonal-masculino') && b.cats.includes('hormonal-feminino');
-    const catLabel = isUnissexo ? 'Hormonal Unissexo' : (CAT_LABELS[b.cats[0]] || b.cats[0]);
+    const blue = CAT_COLORS['hormonal-masculino'], pink = CAT_COLORS['hormonal-feminino'];
+    const catLabel = isUnissexo
+      ? `<span style="color:${blue}">Hormonal</span> <span style="color:${pink}">Unissexo</span>`
+      : (CAT_LABELS[b.cats[0]] || b.cats[0]);
+    const catStyle = isUnissexo
+      ? `background:linear-gradient(135deg, ${blue}18, ${pink}18);border:1px solid ${blue}30`
+      : `background:${color}18;color:${color};border:1px solid ${color}30`;
     const detail = document.getElementById('baDetail');
     detail.innerHTML = `
       <div class="ba-detail-content">
-        <div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${catLabel}</span></div>
+        <div><span class="ba-detail-cat" style="${catStyle}">${catLabel}</span></div>
         <div>
           <div class="ba-detail-name">${b.full}</div>
           <div class="ba-detail-full">${b.name}</div>
