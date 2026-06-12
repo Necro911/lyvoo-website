@@ -820,12 +820,15 @@
     cardiovascular: {
       label: 'Cardiovascular',
       rows: [
+        { nome:'Colesterol total',    unidade:'mg/dL',   referencia:'< 200 mg/dL',  refOtima:'< 180' },
         { nome:'Colesterol LDL',      unidade:'mg/dL',   referencia:'< 100 mg/dL',  refOtima:'< 80' },
         { nome:'Colesterol HDL',      unidade:'mg/dL',   referencia:'> 50 mg/dL',   refOtima:'> 60' },
         { nome:'ApoB',                unidade:'mg/dL',   referencia:'< 90 mg/dL',   refOtima:'< 70' },
+        { nome:'Lp(a)',               unidade:'nmol/L',  referencia:'< 75 nmol/L',  refOtima:'< 30' },
         { nome:'Triglicéridos',       unidade:'mg/dL',   referencia:'< 150 mg/dL',  refOtima:'< 90' },
         { nome:'PCR ultra-sensível',  unidade:'mg/L',    referencia:'< 1.0 mg/L',   refOtima:'< 0.5' },
         { nome:'Homocisteína',        unidade:'µmol/L',  referencia:'< 15 µmol/L',  refOtima:'< 9' },
+        { nome:'NT-proBNP',           unidade:'pg/mL',   referencia:'< 125 pg/mL' },
       ]
     },
     metabolico: {
@@ -844,6 +847,7 @@
         { nome:'Vitamina B12', unidade:'pg/mL',    referencia:'200-900 pg/mL',    refOtima:'500-900' },
         { nome:'Ferritina',    unidade:'ng/mL',    referencia:'30-200 ng/mL',     refOtima:'50-150' },
         { nome:'Magnésio',     unidade:'mmol/L',   referencia:'0.74-0.99 mmol/L', refOtima:'0.85-0.99' },
+        { nome:'Cálcio',       unidade:'mg/dL',    referencia:'8.5-10.5 mg/dL',   refOtima:'9.0-10.0' },
         { nome:'Ferro sérico', unidade:'µg/dL',    referencia:'60-170 µg/dL',     refOtima:'85-150' },
         { nome:'Zinco',        unidade:'µg/dL',    referencia:'70-120 µg/dL',     refOtima:'90-120' },
         { nome:'Folato',       unidade:'ng/mL',    referencia:'> 4.0 ng/mL',      refOtima:'> 10' },
@@ -855,6 +859,7 @@
         { nome:'TSH',    unidade:'mUI/L',   referencia:'0.5-4.0 mUI/L',  refOtima:'1.0-2.5' },
         { nome:'FT4',    unidade:'pmol/L',  referencia:'12-22 pmol/L',   refOtima:'15-20' },
         { nome:'FT3',    unidade:'pmol/L',  referencia:'3.1-6.8 pmol/L', refOtima:'4.5-6.0' },
+        { nome:'T3',     unidade:'ng/dL',   referencia:'80-200 ng/dL' },
         { nome:'TPO Ac', unidade:'UI/mL',   referencia:'< 34 UI/mL',     refOtima:'< 15' },
       ]
     },
@@ -863,11 +868,16 @@
       rows: [
         { nome:'Testosterona total', unidade:'ng/dL',   referencia:'300-1000 ng/dL (H)', refOtima:'550-900' },
         { nome:'Testosterona livre', unidade:'pg/mL',   referencia:'5-21 pg/mL (H)',     refOtima:'10-20' },
+        { nome:'SHBG',               unidade:'nmol/L',  referencia:'10-80 nmol/L' },
+        { nome:'PSA',                unidade:'ng/mL',   referencia:'< 4.0 ng/mL' },
         { nome:'DHEA-S',             unidade:'µg/dL',   referencia:'80-560 µg/dL',       refOtima:'200-450' },
         { nome:'Cortisol (manhã)',   unidade:'µg/dL',   referencia:'6-23 µg/dL',         refOtima:'10-18' },
         { nome:'Estradiol',          unidade:'pg/mL',   referencia:'- (ver fase)' },
+        { nome:'Progesterona',       unidade:'ng/mL',   referencia:'- (ver fase)' },
+        { nome:'Prolactina',         unidade:'ng/mL',   referencia:'4.8-23.3 ng/mL' },
         { nome:'LH',                 unidade:'UI/L',    referencia:'- (ver fase)' },
         { nome:'FSH',                unidade:'UI/L',    referencia:'- (ver fase)' },
+        { nome:'AMH',                unidade:'ng/mL',   referencia:'- (ver idade)' },
       ]
     },
     hematologia: {
@@ -886,7 +896,10 @@
         { nome:'ALT (TGP)',  unidade:'U/L',  referencia:'< 40 U/L',          refOtima:'< 25' },
         { nome:'AST (TGO)',  unidade:'U/L',  referencia:'< 40 U/L',          refOtima:'< 25' },
         { nome:'GGT',        unidade:'U/L',  referencia:'< 60 U/L',          refOtima:'< 25' },
+        { nome:'Fosfatase Alcalina', unidade:'U/L', referencia:'40-130 U/L' },
         { nome:'Bilirrubina total', unidade:'mg/dL', referencia:'0.2-1.2 mg/dL', refOtima:'0.3-0.9' },
+        { nome:'Albumina',        unidade:'g/dL', referencia:'3.5-5.0 g/dL', refOtima:'4.0-5.0' },
+        { nome:'Proteína Total',  unidade:'g/dL', referencia:'6.0-8.5 g/dL' },
       ]
     },
     renal: {
@@ -1435,7 +1448,7 @@
       // Merge: pre-defined rows + any custom saved rows
       const preRows = cat.rows.map(r => {
         const saved = savedRows.find(s => s.nome === r.nome) || {};
-        return { ...r, valor: saved.valor||'', tag: saved.tag||'', delta: saved.delta||'' };
+        return { ...r, valor: saved.valor||'', tag: saved.tag||'', delta: saved.delta||'', destaque: saved.destaque||false };
       });
       // Custom rows (not in pre-defined)
       const customRows = savedRows.filter(s => !cat.rows.find(r => r.nome === s.nome));
