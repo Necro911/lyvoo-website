@@ -47,7 +47,7 @@
 
   <!-- Módulos PT -->
   <url>
-    <loc>https://lyvoo.pt/modulos/genetica.html</loc>
+    <loc>https://lyvoo.pt/modulos/vitaminas.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -62,22 +62,27 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/modulos/tiroide.html</loc>
+    <loc>https://lyvoo.pt/modulos/fertilidade.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/modulos/microbioma.html</loc>
+    <loc>https://lyvoo.pt/modulos/cardio-avancado.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/modulos/energia-fadiga.html</loc>
+    <loc>https://lyvoo.pt/modulos/hepatite-b.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/modulos/vitamina-d.html</loc>
+    <loc>https://lyvoo.pt/modulos/tiroide-completo.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/modulos/stress.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -94,7 +99,7 @@
 
   <!-- Módulos EN -->
   <url>
-    <loc>https://lyvoo.pt/en/modulos/genetica.html</loc>
+    <loc>https://lyvoo.pt/en/modulos/vitaminas.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -109,22 +114,27 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/en/modulos/tiroide.html</loc>
+    <loc>https://lyvoo.pt/en/modulos/fertilidade.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/en/modulos/microbioma.html</loc>
+    <loc>https://lyvoo.pt/en/modulos/cardio-avancado.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/en/modulos/energia-fadiga.html</loc>
+    <loc>https://lyvoo.pt/en/modulos/hepatite-b.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://lyvoo.pt/en/modulos/vitamina-d.html</loc>
+    <loc>https://lyvoo.pt/en/modulos/tiroide-completo.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://lyvoo.pt/en/modulos/stress.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

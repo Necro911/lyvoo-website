@@ -1590,7 +1590,7 @@
       </div>
       <div class="trust-item">
         <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-        App de acompanhamento contínuo
+        Dashboard com suporte contínuo
       </div>
       <div class="trust-item">
         <svg class="trust-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><path d="M2 12h4m12 0h4M12 2v4m0 12v4"/></svg>
@@ -1918,13 +1918,15 @@
           <span class="ba-headline">Biomarcadores da Lyvoo</span>
           <div class="ba-filters">
             <button class="ba-filter active" data-cat="todos">Todos</button>
-            <button class="ba-filter" data-cat="cardiovascular">Cardiovascular</button>
-            <button class="ba-filter" data-cat="hormonal">Hormonal</button>
-            <button class="ba-filter" data-cat="nutricional">Nutricional</button>
-            <button class="ba-filter" data-cat="tiróide">Tiróide</button>
-            <button class="ba-filter" data-cat="inflamação">Inflamação</button>
-            <button class="ba-filter" data-cat="renal">Renal</button>
-            <button class="ba-filter" data-cat="hepática">Hepática</button>
+            <button class="ba-filter" data-cat="base">Painel base</button>
+            <button class="ba-filter" data-cat="vitaminas">Vitaminas</button>
+            <button class="ba-filter" data-cat="hormonal-masculino">Hormonal Masculino</button>
+            <button class="ba-filter" data-cat="hormonal-feminino">Hormonal Feminino</button>
+            <button class="ba-filter" data-cat="fertilidade">Fertilidade</button>
+            <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
+            <button class="ba-filter" data-cat="hepatite-b">Hepatite B</button>
+            <button class="ba-filter" data-cat="tiroide-completo">Tiroide Completo</button>
+            <button class="ba-filter" data-cat="stress">Stress</button>
           </div>
         </div>
         <div class="ba-body">
@@ -1952,66 +1954,59 @@
     <div class="modules-grid">
 
       <div class="module-card module-card--highlight fade">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3Q12 6 15 9Q12 12 9 15Q12 18 15 21"/><path d="M15 3Q12 6 9 9Q12 12 15 15Q12 18 9 21" stroke-opacity="0.3" stroke-dasharray="2.5 2"/><line x1="9" y1="3" x2="15" y2="3"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="21" x2="15" y2="21"/></svg></div>
-        <div class="mod-name">Teste Genético</div>
-        <div class="mod-desc">Permite avaliar a predisposição a doenças hereditárias, o risco de transmitir condições a descendentes e orientar medidas preventivas ou tratamentos</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/genetica.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg></div>
+        <div class="mod-name">Vitaminas</div>
+        <div class="mod-desc">Vitamina D, B12 e Folato. Avalie défices nutricionais que afetam energia, imunidade e saúde a longo prazo.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/vitaminas.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
       <div class="module-card module-card--highlight fade fade-d1">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="2.5"/><circle cx="15" cy="9" r="1.5"/><circle cx="14.5" cy="15" r="2"/><circle cx="8.5" cy="15.5" r="1"/></svg></div>
-        <div class="mod-name">Microbioma</div>
-        <div class="mod-desc">Análise completa da flora intestinal. Perceba o impacto do seu microbioma na saúde metabólica, imunidade e bem-estar.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/microbioma.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Mars symbol ♂ --><circle cx="10" cy="14" r="5.5"/><line x1="14" y1="10" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg></div>
+        <div class="mod-name">Hormonal Masculino</div>
+        <div class="mod-desc">Testosterona total e livre, SHBG, PSA, FSH e LH. Avaliação hormonal masculina completa com interpretação clínica.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-masculino.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
       <div class="module-card fade fade-d2">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Venus symbol ♀ --><circle cx="12" cy="8" r="5.5"/><line x1="12" y1="13.5" x2="12" y2="21"/><line x1="8.5" y1="18" x2="15.5" y2="18"/></svg></div>
         <div class="mod-name">Hormonal Feminino</div>
-        <div class="mod-desc">Painel hormonal feminino completo. Ciclo, fertilidade, menopausa, saúde óssea e equilíbrio estrogénico.</div>
+        <div class="mod-desc">Estradiol, Progesterona, Prolactina, FSH, LH e SHBG. Painel hormonal feminino completo: ciclo, equilíbrio e menopausa.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-feminino.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
       <div class="module-card fade">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Mars symbol ♂ --><circle cx="10" cy="14" r="5.5"/><line x1="14" y1="10" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg></div>
-        <div class="mod-name">Hormonal Masculino</div>
-        <div class="mod-desc">Testosterona, DHEA, PSA e marcadores de saúde masculina com interpretação clínica e recomendações.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-masculino.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M12 9v6"/></svg></div>
+        <div class="mod-name">Fertilidade</div>
+        <div class="mod-desc">AMH, FSH, LH e Estradiol. Avalie a reserva ovárica e o equilíbrio hormonal relevante para a fertilidade.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/fertilidade.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+
+      <div class="module-card fade fade-d1">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="mod-name">Cardio Avançado</div>
+        <div class="mod-desc">Lp(a) e NT-proBNP. Aprofunde a avaliação de risco cardiovascular e função cardíaca.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/cardio-avancado.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+
+      <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Stethoscope --><path d="M5 3a2 2 0 0 0-2 2v4a6 6 0 0 0 6 6h1"/><path d="M19 3a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-1"/><path d="M10 15a5 5 0 0 0 5 5"/><circle cx="19" cy="19" r="2"/><line x1="7" y1="3" x2="7" y2="5"/><line x1="17" y1="3" x2="17" y2="5"/></svg></div>
+        <div class="mod-name">Hepatite B</div>
+        <div class="mod-desc">AgHBs. Rastreio de infeção pelo vírus da Hepatite B com interpretação clínica.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/hepatite-b.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+
+      <div class="module-card fade">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="8"/><ellipse cx="8" cy="14" rx="4" ry="6"/><ellipse cx="16" cy="14" rx="4" ry="6"/><path d="M10 13.5h4"/><line x1="12" y1="20" x2="12" y2="22"/></svg></div>
+        <div class="mod-name">Tiroide Completo</div>
+        <div class="mod-desc">FT4 e T3, complementando o TSH do painel base para uma avaliação tiroideia funcional completa.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/tiroide-completo.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
       <div class="module-card fade fade-d1">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Battery with bolt --><rect x="2" y="8" width="16" height="9" rx="2"/><path d="M18 11h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2"/><path d="M9 11.5l2-3 1.5 2 2-2.5"/></svg></div>
-        <div class="mod-name">Energia &amp; Fadiga</div>
-        <div class="mod-desc">Marcadores ligados ao cansaço crónico, energia celular, metabolismo do ferro e função mitocondrial.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/energia-fadiga.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-
-      <div class="module-card fade fade-d2">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="8"/><ellipse cx="8" cy="14" rx="4" ry="6"/><ellipse cx="16" cy="14" rx="4" ry="6"/><path d="M10 13.5h4"/><line x1="12" y1="20" x2="12" y2="22"/></svg></div>
-        <div class="mod-name">Tiroide Expandida</div>
-        <div class="mod-desc">TSH, FT3, FT4 e anticorpos tiroideus com interpretação funcional especializada.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/tiroide.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-
-      <div class="module-card fade">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Stethoscope --><path d="M5 3a2 2 0 0 0-2 2v4a6 6 0 0 0 6 6h1"/><path d="M19 3a2 2 0 0 1 2 2v4a6 6 0 0 1-6 6h-1"/><path d="M10 15a5 5 0 0 0 5 5"/><circle cx="19" cy="19" r="2"/><line x1="7" y1="3" x2="7" y2="5"/><line x1="17" y1="3" x2="17" y2="5"/></svg></div>
-        <div class="mod-name">Consulta médica extra</div>
-        <div class="mod-desc">Sessão médica preventiva adicional com o médico da sua equipa Lyvoo para revisão ou dúvidas específicas.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/consulta-medica.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-
-      <div class="module-card fade fade-d1">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="2" x2="8" y2="7"/><line x1="12" y1="2" x2="12" y2="7"/><path d="M8 7a2 2 0 0 0 4 0"/><line x1="10" y1="9" x2="10" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/></svg></div>
-        <div class="mod-name">Consulta de nutrição extra</div>
-        <div class="mod-desc">Sessão adicional com o nutricionista para ajustar o plano alimentar ou abordar objetivos específicos.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/consulta-nutricao.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-
-      <div class="module-card fade fade-d2">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Sun / Vitamin D --><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg></div>
-        <div class="mod-name">Vitamina D upgrade</div>
-        <div class="mod-desc">Análise de Vitamina D 25-OH com recomendação personalizada de suplementação baseada nos seus níveis.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/vitamina-d.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+        <div class="mod-name">Stress</div>
+        <div class="mod-desc">Cortisol matinal. Avalie o impacto do stress crónico no sono, imunidade e metabolismo.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/stress.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
     </div>
@@ -3313,7 +3308,7 @@
     <!-- Header -->
     <div class="sp-header fade">
       <span class="label">Programa anual</span>
-      <h2 class="fade fade-d1">Um único plano.<br/><span class="grad-text">Tudo incluído.</span></h2>
+      <h2 class="fade fade-d1">Um único plano.<br/><span class="grad-text">Com personalização.</span></h2>
       <p class="sp-sub fade fade-d2">Análises completas custam habitualmente €800-1500 em clínicas privadas.</p>
     </div>
 
@@ -3325,24 +3320,23 @@
         <div class="sp-price-wrap">
           <div class="sp-price">
             <span class="sp-cur">€</span>
-            <span class="sp-val">359</span>
+            <span class="sp-val">365</span>
             <span class="sp-per">/ano</span>
           </div>
-          <div class="sp-daily">≈ €0.98 por dia</div>
-          <div class="sp-billing">Pagamento único anual · Sem renovação automática</div>
+          <div class="sp-daily">≈ €1 por dia</div>
+          <div class="sp-billing">Pagamento único anual · Sem renovação automática · Total transparência</div>
         </div>
 
         <div class="sp-divider"></div>
 
         <div class="sp-section-label">O que está incluído</div>
         <ul class="sp-features">
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Até +40 biomarcadores analisados</strong><span>20 essenciais no painel base + módulos opcionais</span></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>20 biomarcadores analisados</strong><span>20 essenciais no painel base + módulos opcionais</span></div></li>
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Kit enviado para casa em 48h</strong></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Laboratório certificado ISO 15189</strong></li>
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Relatório médico + nutricional</strong></div></li>
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Plano alimentar personalizado</strong></div></li>
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Reavaliações a cada 6 meses</strong><span>2 painéis completos por ano, incluídos na subscrição</span></div></li>
-          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>App Lyvoo com suporte contínuo</strong></div></li>
+          <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Dashboard Lyvoo com suporte contínuo</strong></div></li>
         </ul>
 
         <a href="registar.html?plano=lyvoo" class="sp-cta">
@@ -3368,7 +3362,7 @@
           <div class="sp-bio-group">
             <div class="sp-bio-cat">Cardiovascular &amp; Lípidos</div>
             <div class="sp-bio-chips">
-              <span>Colesterol total</span><span>HDL</span><span>LDL</span><span>Triglicéridos</span><span>ApoB</span><span>Lp(a)</span>
+              <span>ApoB</span><span>Lp(a)</span><span>Colesterol total</span><span>HDL</span><span>LDL</span><span>Triglicéridos</span>
             </div>
           </div>
           <div class="sp-bio-group">
@@ -3609,68 +3603,99 @@
 
   // ── Biomarker Atlas ──
   const CAT_COLORS = {
-    cardiovascular: '#F87171',
-    hormonal:       '#C084FC',
-    nutricional:    '#4ADE80',
-    tiróide:        '#60A5FA',
-    inflamação:     '#FB923C',
-    renal:          '#34D399',
-    hepática:       '#FBBF24',
+    metabolico:           '#4ADE80',
+    cardiovascular:       '#F87171',
+    hepatica:             '#FBBF24',
+    renal:                '#34D399',
+    minerais:             '#60A5FA',
+    tiroide:              '#A78BFA',
+    inflamacao:           '#FB923C',
+    vitaminas:            '#4ADE80',
+    'hormonal-masculino': '#60A5FA',
+    'hormonal-feminino':  '#F472B6',
+    fertilidade:          '#F472B6',
+    'cardio-avancado':    '#F87171',
+    'hepatite-b':         '#FBBF24',
+    'tiroide-completo':   '#A78BFA',
+    stress:               '#FB923C',
+  };
+
+  const CAT_LABELS = {
+    metabolico:           'Metabólico',
+    cardiovascular:       'Cardiovascular',
+    hepatica:             'Função hepática',
+    renal:                'Função renal',
+    minerais:             'Minerais & Ferro',
+    tiroide:              'Tiroide',
+    inflamacao:           'Inflamação',
+    vitaminas:            'Vitaminas',
+    'hormonal-masculino': 'Hormonal Masculino',
+    'hormonal-feminino':  'Hormonal Feminino',
+    fertilidade:          'Fertilidade',
+    'cardio-avancado':    'Cardio Avançado',
+    'hepatite-b':         'Hepatite B',
+    'tiroide-completo':   'Tiroide Completo',
+    stress:               'Stress',
   };
 
   const BIOMARKERS = [
-    // Cardiovascular
-    { id:'ldl',      name:'LDL',             full:'LDL Colesterol',               cats:['cardiovascular'],              range:'< 3.0 mmol/L',           desc:'O colesterol "mau". Elevado aumenta o risco de placa arterial e doença cardiovascular. Alvo primário na prevenção cardíaca.' },
-    { id:'hdl',      name:'HDL',             full:'HDL Colesterol',               cats:['cardiovascular'],              range:'> 1.0 (H) / > 1.2 (M) mmol/L', desc:'O colesterol "bom". Transporta colesterol das artérias para o fígado. Níveis baixos associados a maior risco cardiovascular.' },
-    { id:'apob',     name:'ApoB',            full:'Apolipoproteína B',            cats:['cardiovascular'],              range:'< 90 mg/dL',              desc:'Melhor marcador de risco cardiovascular que o LDL. Representa o número total de partículas aterogénicas em circulação.' },
-    { id:'col',      name:'Colesterol total',full:'Colesterol total',             cats:['cardiovascular'],              range:'< 5.0 mmol/L',            desc:'Medida total do colesterol no sangue. Avaliado em conjunto com LDL, HDL e triglicéridos para o perfil lipídico completo.' },
-    { id:'trig',     name:'Triglicéridos',   full:'Triglicéridos',               cats:['cardiovascular'],              range:'< 1.7 mmol/L',            desc:'Gorduras no sangue. Elevados por consumo excessivo de açúcar e álcool. Fator de risco cardiovascular independente.' },
-    { id:'lpa',      name:'Lp(a)',           full:'Lipoproteína(a)',              cats:['cardiovascular'],              range:'< 75 nmol/L',             desc:'Fator de risco genético para doença cardiovascular. Maioritariamente determinado pela genética, não responde bem à dieta.' },
-    { id:'hcy',      name:'Homocisteína',    full:'Homocisteína',                cats:['cardiovascular','nutricional'],range:'< 10 µmol/L',             desc:'Aminoácido marcador de risco cardiovascular. Elevado por défice de B12, B9 e B6. Responde bem à suplementação.' },
-    // Hormonal
-    { id:'testt',    name:'Testosterona T',  full:'Testosterona Total',          cats:['hormonal'],                    range:'300-1000 ng/dL (H)',      desc:'Hormona sexual masculina principal. Afeta massa muscular, energia, libido e humor. Diminui naturalmente com a idade.' },
-    { id:'testl',    name:'Testosterona L',  full:'Testosterona Livre',          cats:['hormonal'],                    range:'50-210 pg/mL (H)',        desc:'Fração biologicamente ativa da testosterona. Mais relevante clinicamente que a total em casos de défice sintomático.' },
-    { id:'dhea',     name:'DHEA-S',          full:'Deidroepiandrosterona-S',     cats:['hormonal'],                    range:'Variável por idade/sexo', desc:'Pré-hormona suprarrenal. Diminui com a idade. Associada a vitalidade, imunidade e composição corporal.' },
-    { id:'cortisol', name:'Cortisol',        full:'Cortisol matinal',            cats:['hormonal'],                    range:'6-23 µg/dL (manhã)',      desc:'Hormona do stress. Cronicamente elevado compromete o sono, imunidade e metabolismo. Fundamental avaliar em esgotamento.' },
-    { id:'estrad',   name:'Estradiol',       full:'Estradiol (E2)',              cats:['hormonal'],                    range:'Variável por fase/sexo',  desc:'Principal estrogénio. Crucial para saúde óssea, cardiovascular e cognitiva. Monitorizado na menopausa e em excesso em homens.' },
-    { id:'lhfsh',    name:'LH / FSH',        full:'Gonadotrofinas LH e FSH',    cats:['hormonal'],                    range:'Variável por fase/sexo',  desc:'Hormonas hipofisárias que regulam a função gonadal. Essenciais na avaliação de fertilidade e menopausa.' },
-    { id:'ins',      name:'Insulina jejum',  full:'Insulina em Jejum',          cats:['hormonal','nutricional'],      range:'< 8 µU/mL',               desc:'Marcador precoce de resistência à insulina, muito antes da glicose se alterar. Elevada em sobrecarga pancreática crónica.' },
-    { id:'shbg',     name:'SHBG',            full:'Sex Hormone Binding Globulin',cats:['hormonal'],                   range:'10-80 nmol/L',            desc:'Proteína transportadora de hormonas sexuais. Afeta a disponibilidade de testosterona e estradiol livre no organismo.' },
-    // Nutricional
-    { id:'hba1c',    name:'HbA1c',           full:'Hemoglobina Glicosilada',     cats:['nutricional'],                 range:'< 5.7%',                  desc:'Média da glicemia nos últimos 3 meses. Principal marcador de controlo glicémico. Alterado já na fase pré-diabética.' },
-    { id:'glicose',  name:'Glicose',         full:'Glicose em Jejum',            cats:['nutricional'],                 range:'< 5.6 mmol/L',            desc:'Açúcar no sangue em jejum. Menos representativo que a HbA1c isoladamente, mas útil como rastreio rápido.' },
-    { id:'b12',      name:'Vitamina B12',    full:'Vitamina B12 (Cobalamina)',   cats:['nutricional'],                 range:'> 400 pg/mL',             desc:'Essencial para função nervosa, glóbulos vermelhos e síntese de ADN. Défice comum em vegetarianos e com uso de metformina.' },
-    { id:'vitd',     name:'Vitamina D',      full:'Vitamina D 25-OH',           cats:['nutricional'],                 range:'40-60 ng/mL',             desc:'Essencial para imunidade, saúde óssea e regulação hormonal. Défice muito prevalente em Portugal, mesmo com sol.' },
-    { id:'b9',       name:'Folato B9',       full:'Ácido Fólico / Folato',      cats:['nutricional'],                 range:'> 7 ng/mL',               desc:'Vitamina B essencial para síntese de ADN. Relacionada com homocisteína e saúde cardiovascular. Crítica na gravidez.' },
-    { id:'mg',       name:'Magnésio',        full:'Magnésio sérico',             cats:['nutricional'],                 range:'0.75-0.95 mmol/L',        desc:'Envolvido em mais de 300 reações enzimáticas. Défice associado a cãibras, insónia, ansiedade e risco cardiovascular.' },
-    { id:'zn',       name:'Zinco',           full:'Zinco sérico',               cats:['nutricional'],                 range:'70-120 µg/dL',            desc:'Mineral essencial para imunidade, cicatrização e síntese de testosterona. Défice comum em dietas restritivas.' },
-    { id:'ferrit',   name:'Ferritina',       full:'Ferritina sérica',           cats:['nutricional'],                 range:'30-200 ng/mL',            desc:'Principal reserva de ferro no organismo. Baixa causa fadiga e anemia. Muito elevada indica inflamação ou sobrecarga de ferro.' },
-    { id:'sel',      name:'Selénio',         full:'Selénio sérico',             cats:['nutricional'],                 range:'100-165 µg/L',            desc:'Antioxidante essencial para função tiroideia e proteção celular. Défice silencioso frequente.' },
-    // Tiróide
-    { id:'tsh',      name:'TSH',             full:'Hormona Estimulante da Tiróide', cats:['tiróide'],                 range:'0.5-2.5 mU/L (funcional)',desc:'Principal marcador de função tiroideia. Elevada pode indicar hipotiroidismo mesmo com T3/T4 dentro do "normal" laboratorial.' },
-    { id:'ft3',      name:'FT3',             full:'Triiodotironina Livre',       cats:['tiróide'],                    range:'3.5-4.5 pg/mL',           desc:'Forma ativa da hormona tiroideia. Afeta metabolismo, energia e temperatura corporal. Pode estar baixa com TSH normal.' },
-    { id:'ft4',      name:'FT4',             full:'Tiroxina Livre',             cats:['tiróide'],                    range:'1.0-1.5 ng/dL',           desc:'Pró-hormona tiroideia convertida em FT3 nos tecidos. Avalia a capacidade secretora da glândula.' },
-    { id:'antitpo',  name:'Anti-TPO',        full:'Anticorpos anti-peroxidase', cats:['tiróide'],                    range:'< 35 IU/mL',              desc:'Marcador de tiroidite de Hashimoto. Pode estar elevado anos antes de qualquer alteração nos valores funcionais.' },
-    { id:'antiTG',   name:'Anti-TG',         full:'Anticorpos anti-tiroglobulina', cats:['tiróide'],                 range:'< 20 IU/mL',              desc:'Segundo marcador de autoimunidade tiroideia. Complementa o Anti-TPO na avaliação completa de doença de Hashimoto.' },
-    // Inflamação
-    { id:'pcrus',    name:'PCR-us',          full:'PCR ultrassensível',          cats:['inflamação','cardiovascular'], range:'< 1.0 mg/L (ótimo)',      desc:'Marcador ultrassensível de inflamação sistémica e risco cardiovascular. Mais preciso que a PCR standard para prevenção.' },
-    { id:'pcr',      name:'PCR',             full:'Proteína C-Reativa',          cats:['inflamação'],                 range:'< 5 mg/L',                desc:'Marcador de inflamação aguda. Elevado em infeções, doenças autoimunes e síndrome metabólica.' },
-    { id:'il6',      name:'IL-6',            full:'Interleucina-6',             cats:['inflamação'],                 range:'< 7 pg/mL',               desc:'Citocina pró-inflamatória. Elevada em obesidade visceral, doenças autoimunes e stress crónico.' },
-    { id:'fibrin',   name:'Fibrinogénio',    full:'Fibrinogénio plasmático',    cats:['inflamação','cardiovascular'], range:'200-400 mg/dL',           desc:'Proteína de coagulação e marcador inflamatório. Elevado aumenta risco de trombose e eventos cardiovasculares.' },
-    { id:'vsg',      name:'VSG',             full:'Velocidade de Sedimentação', cats:['inflamação'],                 range:'< 20 mm/h (H)',           desc:'Marcador inespecífico de inflamação. Útil para monitorizar doenças inflamatórias crónicas ao longo do tempo.' },
-    // Renal
-    { id:'creat',    name:'Creatinina',      full:'Creatinina sérica',          cats:['renal'],                      range:'0.6-1.2 mg/dL (H)',       desc:'Principal marcador de função renal. Sobe apenas quando mais de 50% da função renal está comprometida.' },
-    { id:'ureia',    name:'Ureia',           full:'Ureia / BUN',               cats:['renal'],                      range:'7-25 mg/dL',              desc:'Produto do metabolismo proteico filtrado pelos rins. Avaliado com creatinina para função renal completa.' },
-    { id:'aurico',   name:'Ácido úrico',     full:'Ácido úrico sérico',        cats:['renal'],                      range:'< 6.0 (M) / < 7.0 (H) mg/dL', desc:'Produto do metabolismo das purinas. Elevado causa gota e associa-se a síndrome metabólica e risco cardiovascular.' },
-    { id:'tfg',      name:'TFG',             full:'Taxa de Filtração Glomerular', cats:['renal'],                   range:'> 90 mL/min/1.73m²',      desc:'Melhor indicador global da função renal. Calculado a partir da creatinina, idade e sexo. Diminui naturalmente com a idade.' },
-    { id:'cisC',     name:'Cistatina C',     full:'Cistatina C sérica',        cats:['renal'],                      range:'< 0.95 mg/L',             desc:'Marcador mais sensível de função renal que a creatinina. Não é afetado pela massa muscular, ideal para atletas e idosos.' },
-    // Hepática
-    { id:'alt',      name:'ALT',             full:'Alanina Aminotransferase',   cats:['hepática'],                   range:'< 35 (M) / < 45 (H) U/L', desc:'Enzima hepática específica. Elevada em esteatose hepática, hepatites e consumo excessivo de álcool. Principal marcador hepático.' },
-    { id:'ast',      name:'AST',             full:'Aspartato Aminotransferase', cats:['hepática'],                   range:'< 40 U/L',                desc:'Presente no fígado e músculo. Avaliada com ALT para diagnóstico diferencial de dano hepático vs. muscular.' },
-    { id:'ggt',      name:'GGT',             full:'Gama-Glutamil Transferase',  cats:['hepática'],                   range:'< 50 U/L (H)',            desc:'Sensível a álcool, fármacos e esteatose hepática. Pode estar alterada antes de ALT e AST mostrarem qualquer alteração.' },
-    { id:'bilirrub', name:'Bilirrubina',     full:'Bilirrubina total',         cats:['hepática'],                   range:'0.2-1.2 mg/dL',           desc:'Produto da degradação da hemoglobina. Elevada em disfunção hepática, hemólise e colestase.' },
-    { id:'album',    name:'Albumina',        full:'Albumina sérica',           cats:['hepática'],                   range:'3.5-5.0 g/dL',            desc:'Principal proteína do plasma, produzida pelo fígado. Baixa em doença hepática crónica, desnutrição e inflamação.' },
-    { id:'prottot',  name:'Proteínas totais',full:'Proteínas totais séricas',  cats:['hepática'],                   range:'6.0-8.5 g/dL',            desc:'Avalia globalmente a capacidade de síntese proteica do fígado. Inclui albumina e globulinas.' },
+    // ── Painel base (20 biomarcadores essenciais) ──
+    { id:'hba1c',    name:'HbA1c',              full:'Hemoglobina Glicosilada',        cats:['metabolico','base'],     range:'< 5.7%',                  desc:'Média da glicemia nos últimos 3 meses. Principal marcador de controlo glicémico. Alterado já na fase pré-diabética.' },
+    { id:'col',      name:'Colesterol total',   full:'Colesterol total',               cats:['cardiovascular','base'], range:'< 5.0 mmol/L',            desc:'Medida total do colesterol no sangue. Avaliado em conjunto com LDL, HDL e triglicéridos para o perfil lipídico completo.' },
+    { id:'hdl',      name:'HDL',                full:'HDL Colesterol',                 cats:['cardiovascular','base'], range:'> 1.0 (H) / > 1.2 (M) mmol/L', desc:'O colesterol "bom". Transporta colesterol das artérias para o fígado. Níveis baixos associados a maior risco cardiovascular.' },
+    { id:'ldl',      name:'LDL',                full:'LDL Colesterol',                 cats:['cardiovascular','base'], range:'< 3.0 mmol/L',           desc:'O colesterol "mau". Elevado aumenta o risco de placa arterial e doença cardiovascular. Alvo primário na prevenção cardíaca.' },
+    { id:'trig',     name:'Triglicéridos',      full:'Triglicéridos',                  cats:['cardiovascular','base'], range:'< 1.7 mmol/L',            desc:'Gorduras no sangue. Elevados por consumo excessivo de açúcar e álcool. Fator de risco cardiovascular independente.' },
+    { id:'apob',     name:'ApoB',               full:'Apolipoproteína B',              cats:['cardiovascular','base'], range:'< 90 mg/dL',              desc:'Melhor marcador de risco cardiovascular que o LDL. Representa o número total de partículas aterogénicas em circulação.' },
+    { id:'lpa',      name:'Lp(a)',              full:'Lipoproteína(a)',                cats:['cardiovascular','base','cardio-avancado'], range:'< 75 nmol/L', desc:'Fator de risco genético para doença cardiovascular. Maioritariamente determinado pela genética, não responde bem à dieta.' },
+    { id:'alt',      name:'ALT',                full:'Alanina Aminotransferase',       cats:['hepatica','base'],       range:'< 35 (M) / < 45 (H) U/L', desc:'Enzima hepática específica. Elevada em esteatose hepática, hepatites e consumo excessivo de álcool. Principal marcador hepático.' },
+    { id:'ast',      name:'AST',                full:'Aspartato Aminotransferase',     cats:['hepatica','base'],       range:'< 40 U/L',                desc:'Presente no fígado e músculo. Avaliada com ALT para diagnóstico diferencial de dano hepático vs. muscular.' },
+    { id:'ggt',      name:'GGT',                full:'Gama-Glutamil Transferase',      cats:['hepatica','base'],       range:'< 50 U/L (H)',            desc:'Sensível a álcool, fármacos e esteatose hepática. Pode estar alterada antes de ALT e AST mostrarem qualquer alteração.' },
+    { id:'falc',     name:'Fosfatase Alcalina', full:'Fosfatase Alcalina',             cats:['hepatica','base'],       range:'40-130 U/L',              desc:'Enzima ligada ao fígado e ossos. Elevada em colestase, doença óssea ou problemas hepáticos.' },
+    { id:'album',    name:'Albumina',           full:'Albumina sérica',                cats:['hepatica','base'],       range:'3.5-5.0 g/dL',            desc:'Principal proteína do plasma, produzida pelo fígado. Baixa em doença hepática crónica, desnutrição e inflamação.' },
+    { id:'prottot',  name:'Proteína Total',     full:'Proteínas totais séricas',       cats:['hepatica','base'],       range:'6.0-8.5 g/dL',            desc:'Avalia globalmente a capacidade de síntese proteica do fígado. Inclui albumina e globulinas.' },
+    { id:'creat',    name:'Creatinina',         full:'Creatinina sérica',              cats:['renal','base'],          range:'0.6-1.2 mg/dL (H)',       desc:'Principal marcador de função renal. Sobe apenas quando mais de 50% da função renal está comprometida.' },
+    { id:'ureia',    name:'Ureia',              full:'Ureia / BUN',                    cats:['renal','base'],          range:'7-25 mg/dL',              desc:'Produto do metabolismo proteico filtrado pelos rins. Avaliado com creatinina para função renal completa.' },
+    { id:'calcio',   name:'Cálcio',             full:'Cálcio sérico',                  cats:['minerais','base'],       range:'8.5-10.5 mg/dL',          desc:'Essencial para saúde óssea, contração muscular e função nervosa. Alterações podem indicar problemas paratiroideus ou renais.' },
+    { id:'mg',       name:'Magnésio',           full:'Magnésio sérico',                cats:['minerais','base'],       range:'0.75-0.95 mmol/L',        desc:'Envolvido em mais de 300 reações enzimáticas. Défice associado a cãibras, insónia, ansiedade e risco cardiovascular.' },
+    { id:'ferrit',   name:'Ferritina',          full:'Ferritina sérica',               cats:['minerais','base'],       range:'30-200 ng/mL',            desc:'Principal reserva de ferro no organismo. Baixa causa fadiga e anemia. Muito elevada indica inflamação ou sobrecarga de ferro.' },
+    { id:'tsh',      name:'TSH',                full:'Hormona Estimulante da Tiroide', cats:['tiroide','base'],        range:'0.5-2.5 mU/L (funcional)',desc:'Principal marcador de função tiroideia. Elevada pode indicar hipotiroidismo mesmo com T3/T4 dentro do "normal" laboratorial.' },
+    { id:'crp',      name:'CRP',                full:'Proteína C-Reativa (alta sensibilidade)', cats:['inflamacao','base'], range:'< 1.0 mg/L (ótimo)', desc:'Marcador ultrassensível de inflamação sistémica e risco cardiovascular. Essencial para prevenção.' },
+
+    // ── Módulo: Vitaminas (D + B12 + Folato) ──
+    { id:'vitd',     name:'Vitamina D',         full:'Vitamina D 25-OH',               cats:['vitaminas'],             range:'40-60 ng/mL',             desc:'Essencial para imunidade, saúde óssea e regulação hormonal. Défice muito prevalente em Portugal, mesmo com sol.' },
+    { id:'b12',      name:'Vitamina B12',       full:'Vitamina B12 (Cobalamina)',      cats:['vitaminas'],             range:'> 400 pg/mL',             desc:'Essencial para função nervosa, glóbulos vermelhos e síntese de ADN. Défice comum em vegetarianos e com uso de metformina.' },
+    { id:'b9',       name:'Folato',             full:'Ácido Fólico / Folato (B9)',     cats:['vitaminas'],             range:'> 7 ng/mL',               desc:'Vitamina B essencial para síntese de ADN. Relacionada com homocisteína e saúde cardiovascular. Crítica na gravidez.' },
+
+    // ── Módulo: Hormonal Masculino ──
+    { id:'testt',    name:'Testosterona Total', full:'Testosterona Total',             cats:['hormonal-masculino'],    range:'300-1000 ng/dL (H)',      desc:'Hormona sexual masculina principal. Afeta massa muscular, energia, libido e humor. Diminui naturalmente com a idade.' },
+    { id:'testl',    name:'Testosterona Livre', full:'Testosterona Livre',             cats:['hormonal-masculino'],    range:'50-210 pg/mL (H)',        desc:'Fração biologicamente ativa da testosterona. Mais relevante clinicamente que a total em casos de défice sintomático.' },
+    { id:'psa',      name:'PSA',                full:'Antigénio Específico da Próstata', cats:['hormonal-masculino'],  range:'< 4.0 ng/mL',             desc:'Marcador de saúde da próstata. Avaliado regularmente em homens, sobretudo a partir dos 40-50 anos.' },
+
+    // ── Módulo: Hormonal Feminino ──
+    { id:'estradiol', name:'Estradiol',         full:'Estradiol (E2)',                 cats:['hormonal-feminino','fertilidade'], range:'Variável por fase do ciclo', desc:'Principal estrogénio. Crucial para saúde óssea, cardiovascular e cognitiva. Monitorizado no ciclo, fertilidade e menopausa.' },
+    { id:'progest',   name:'Progesterona',      full:'Progesterona',                   cats:['hormonal-feminino'],     range:'Variável por fase do ciclo', desc:'Hormona essencial para o ciclo menstrual e gravidez. Avaliada para investigar irregularidades do ciclo e fertilidade.' },
+    { id:'prolac',    name:'Prolactina',        full:'Prolactina',                     cats:['hormonal-feminino'],     range:'4.8-23.3 ng/mL',          desc:'Hormona hipofisária ligada ao ciclo menstrual e fertilidade. Valores elevados podem causar irregularidades menstruais.' },
+
+    // ── Partilhados: Hormonal Masculino + Feminino ──
+    { id:'fsh',       name:'FSH',               full:'Hormona Folículo-Estimulante',   cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variável por fase/sexo', desc:'Hormona hipofisária que regula a função gonadal. Essencial na avaliação de fertilidade, ciclo e função reprodutiva.' },
+    { id:'lh',        name:'LH',                full:'Hormona Luteinizante',           cats:['hormonal-masculino','hormonal-feminino','fertilidade'], range:'Variável por fase/sexo', desc:'Hormona hipofisária que regula a ovulação e a produção de testosterona. Essencial na avaliação de fertilidade e ciclo.' },
+    { id:'shbg',      name:'SHBG',              full:'Sex Hormone Binding Globulin',   cats:['hormonal-masculino','hormonal-feminino'], range:'10-80 nmol/L', desc:'Proteína transportadora de hormonas sexuais. Afeta a disponibilidade de testosterona e estradiol livre no organismo.' },
+
+    // ── Módulo: Fertilidade (+AMH) ──
+    { id:'amh',       name:'AMH',               full:'Hormona Anti-Mülleriana',        cats:['fertilidade'],           range:'Variável por idade',     desc:'Reflete a reserva ovárica. Um dos marcadores mais usados na avaliação de fertilidade feminina.' },
+
+    // ── Módulo: Cardio Avançado (Lp(a) + NT-proBNP) ──
+    { id:'ntprobnp',  name:'NT-proBNP',         full:'Peptídeo Natriurético tipo B',   cats:['cardio-avancado'],       range:'< 125 pg/mL',             desc:'Marcador de função cardíaca. Elevado em sobrecarga ou insuficiência cardíaca, mesmo em fases iniciais.' },
+
+    // ── Módulo: Hepatite B (AgHBs) ──
+    { id:'aghbs',     name:'AgHBs',             full:'Antigénio de Superfície da Hepatite B', cats:['hepatite-b'],     range:'Não reativo',             desc:'Marcador de infeção pelo vírus da Hepatite B. Um resultado reativo indica infeção ativa ou portador do vírus.' },
+
+    // ── Módulo: Tiroide Completo (FT4 + T3) ──
+    { id:'ft4',       name:'FT4',               full:'Tiroxina Livre',                 cats:['tiroide-completo'],      range:'1.0-1.5 ng/dL',           desc:'Pró-hormona tiroideia convertida em FT3 nos tecidos. Avalia a capacidade secretora da glândula.' },
+    { id:'t3',        name:'T3',                full:'Triiodotironina',                cats:['tiroide-completo'],      range:'80-200 ng/dL',            desc:'Forma ativa da hormona tiroideia. Afeta metabolismo, energia e temperatura corporal. Completa a avaliação tiroideia.' },
+
+    // ── Módulo: Stress (Cortisol) ──
+    { id:'cortisol',  name:'Cortisol',          full:'Cortisol matinal',               cats:['stress'],                range:'6-23 µg/dL (manhã)',      desc:'Hormona do stress. Cronicamente elevado compromete o sono, imunidade e metabolismo. Fundamental avaliar em esgotamento.' },
   ];
 
   function initAtlas() {
@@ -3688,7 +3713,7 @@
           <span class="ba-dot" style="background:${color}"></span>
           <span class="ba-name">${b.name}</span>
         </div>
-        <div class="ba-catname">${b.cats[0]}</div>`;
+        <div class="ba-catname">${CAT_LABELS[b.cats[0]] || b.cats[0]}</div>`;
       el.addEventListener('click', () => selectBiomarker(b, el));
       grid.appendChild(el);
     });
@@ -3719,7 +3744,7 @@
     const detail = document.getElementById('baDetail');
     detail.innerHTML = `
       <div class="ba-detail-content">
-        <div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${b.cats[0]}</span></div>
+        <div><span class="ba-detail-cat" style="background:${color}18;color:${color};border:1px solid ${color}30">${CAT_LABELS[b.cats[0]] || b.cats[0]}</span></div>
         <div>
           <div class="ba-detail-name">${b.full}</div>
           <div class="ba-detail-full">${b.name}</div>
