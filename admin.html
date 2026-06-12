@@ -1909,7 +1909,11 @@
         // limpar notificações do ciclo anterior para não confundir o cliente
         respostaCliente: null,
         consultaAlterada: null,
-        notificadoEm: serverTimestamp()
+        consultaCancelada: null,
+        consultaCanceladaAdmin: null
+        // NOTA: não escrever notificadoEm aqui — esse campo está reservado ao
+        // email de resultados (guard do envio automático em saveGeral); o sino
+        // do cliente usa agendamentoConvite.criadoEm para notificar o convite.
       });
       await loadConvite(_conviteUid);
       msg.style.color = 'var(--green)';
@@ -2096,9 +2100,41 @@
       const convite = snap.data().agendamentoConvite;
       const esc = convite.escolha || {};
       const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
+      let link = document.getElementById('convite-link').value.trim();
+      if (link && !/^https?:\/\//i.test(link)) link = `https://${link}`;
+
+      // Garantir que a marcação existe em agendamentosNutri — sem ela a
+      // dashboard considera o convite "agendado" órfão e reabre-o como
+      // 'cancelado_cliente', anulando a confirmação do admin.
+      const agSnap = await getDocs(query(
+        collection(db,'agendamentosNutri'),
+        where('uid','==',_conviteUid),
+        where('data','==',esc.data || ''),
+        where('hora','==',esc.hora || '')
+      ));
+      let atualizou = false;
+      for (const d of agSnap.docs) {
+        if (d.data().estado !== 'cancelada') {
+          await updateDoc(doc(db,'agendamentosNutri',d.id), { estado: 'confirmada', ...(link ? { link } : {}) });
+          atualizou = true;
+        }
+      }
+      if (!atualizou) {
+        await addDoc(collection(db,'agendamentosNutri'), {
+          uid: _conviteUid,
+          tipo: convite.tipo,
+          titulo: tipoLbl,
+          data: esc.data || '',
+          hora: esc.hora || '',
+          link,
+          estado: 'confirmada',
+          criadoEm: serverTimestamp()
+        });
+      }
 
       await updateDoc(doc(db,'users',_conviteUid), {
         'agendamentoConvite.estado': 'agendado',
+        consultaConfirmada: { tipo: convite.tipo, data: esc.data || null, hora: esc.hora || null, link, confirmadoEm: serverTimestamp(), visto: false },
         respostaCliente: null
       });
 
