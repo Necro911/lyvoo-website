@@ -350,7 +350,6 @@
     // 4=resultados; 5-7=ciclo de reavaliação (kit/laboratório/resultados)
     dados.estado = 1;
     dados.estadoLabel = 'Sem plano ativo';
-    dados.planoBaseAtivo = false;
 
     // merge:true - não apaga campos existentes
     await setDoc(doc(db, 'users', user.uid), {

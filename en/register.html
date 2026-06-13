@@ -219,7 +219,6 @@
     if (firstName || lastName) { dados.firstName = firstName; dados.lastName = lastName; }
     dados.estado = 1;
     dados.estadoLabel = 'Sem plano ativo';
-    dados.planoBaseAtivo = false;
     await setDoc(doc(db, 'users', user.uid), { criadoEm: serverTimestamp(), ...dados }, { merge: true });
   }
 

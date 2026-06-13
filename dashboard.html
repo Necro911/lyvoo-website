@@ -59,6 +59,9 @@
       50%     { box-shadow: 0 0 0 1px rgba(61,217,232,0.55), 0 0 22px rgba(61,217,232,0.45); background: rgba(61,217,232,0.12); }
     }
     .mob-nav-btn.mob-locked { opacity: 0.35; pointer-events: none; }
+    .mob-nav-btn.sb-glow { color: var(--cyan); animation: sbGlow 2.2s ease-in-out infinite; }
+    .mob-nav-btn.sb-glow svg { opacity: 1; }
+    .ciclo-badge { display: inline-flex; align-items: center; margin-left: 10px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; color: var(--violet); background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.3); vertical-align: middle; }
 
     /* Estado badge no topbar */
     /* ── Secções internas ── */
@@ -1080,7 +1083,7 @@
 
       <!-- Program progress -->
       <div class="panel">
-        <div class="panel-head"><h2>Progresso do programa</h2></div>
+        <div class="panel-head"><h2>Progresso do programa</h2><span class="ciclo-badge" id="prog-ciclo-badge" style="display:none;"></span></div>
         <div class="ring-wrap">
           <div class="ring">
             <svg width="132" height="132">
@@ -1327,6 +1330,11 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span>Precisa de completar alguns dados na área "Perfil" antes de conseguir avançar.</span>
         <button class="store-warn-btn" onclick="navSection('perfil')">Ir para o Perfil →</button>
+      </div>
+
+      <div class="store-warn" id="store-expirado-banner" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>O seu plano anual expirou. Renove o plano base para voltar a ter acesso ao painel, plano alimentar, suplementação, relatórios, biomarcadores e consultas.</span>
       </div>
 
       <div class="store-base-card">
@@ -2399,7 +2407,8 @@
     if (activeMob) activeMob.classList.add('active');
 
     // Marcar secção como visitada (remove badge "Novo")
-    const seenKey = 'lyvoo_seen_' + name;
+    // Chave inclui o estado para o badge voltar a aparecer em cada novo ciclo de reavaliação
+    const seenKey = 'lyvoo_seen_' + name + '_e' + (window._estadoActual || 1);
     if (!localStorage.getItem(seenKey)) {
       localStorage.setItem(seenKey, '1');
       const fcId = { 'plano-alimentar': 'fc-plano', 'biomarcadores': 'fc-bio' }[name];
@@ -3240,7 +3249,6 @@
           renderScore(rel, d.resultados); renderRelatorio(rel, d.resultados);
         }
         if (d.resultados)   renderBodyMap(d.resultados);
-        if (d.kit)          window._kitData = d.kit;
 
         // Carregar histórico de análises (subcoleção)
         try {
@@ -3315,19 +3323,25 @@
 
     const primeiro = nome.split(' ')[0];
 
-    // ── Estado 1 = registado sem plano: bloquear painel e dados ──────────
+    // ── Estado 1 = registado sem plano, ou plano expirado: bloquear painel e dados ──
     const semPlano = estadoNum <= 1;
+    const expirado = !!d.planoValidoAte && new Date(d.planoValidoAte) < new Date();
+    const bloqueado = semPlano || expirado;
     const LOCKAVEIS = ['sb-painel','sb-plano-alimentar','sb-suplementacao','sb-relatorio','sb-biomarcadores','sb-consultas'];
     const MOB_LOCKAVEIS = ['mn-painel','mn-biomarcadores','mn-consultas'];
     const storeLink = document.getElementById('sb-store');
-    LOCKAVEIS.forEach(id => lockSidebar(id, semPlano));
-    MOB_LOCKAVEIS.forEach(id => document.getElementById(id)?.classList.toggle('mob-locked', semPlano));
-    if (storeLink) storeLink.classList.toggle('sb-glow', semPlano);
+    LOCKAVEIS.forEach(id => lockSidebar(id, bloqueado));
+    MOB_LOCKAVEIS.forEach(id => document.getElementById(id)?.classList.toggle('mob-locked', bloqueado));
+    if (storeLink) storeLink.classList.toggle('sb-glow', bloqueado);
+    document.getElementById('mn-store')?.classList.toggle('sb-glow', bloqueado);
+
+    const planoExpiradoBanner = document.getElementById('store-expirado-banner');
+    if (planoExpiradoBanner) planoExpiradoBanner.style.display = expirado ? 'flex' : 'none';
 
     const viewRes = document.getElementById('view-resultados');
 
-    if (semPlano) {
-      // Sem plano: esconder o painel completo e encaminhar para a Lyvoo Store
+    if (bloqueado) {
+      // Sem plano ou plano expirado: esconder o painel completo e encaminhar para a Lyvoo Store
       viewRes.style.display = 'none';
       const activeId = document.querySelector('.sb-link.active')?.id;
       if (!activeId || activeId === 'sb-painel') navSection('store');
@@ -3400,6 +3414,18 @@
                     : (estadoNum === 3 || estadoNum === 6) ? 'lab'
                     : 'resultados'; // 4 ou 7
 
+      // Badge "Ciclo N" — só visível durante reavaliações (ciclo 2, 3, ...)
+      const cicloBadge = document.getElementById('prog-ciclo-badge');
+      if (cicloBadge) {
+        const ciclo = d.cicloAtual || 1;
+        if (reaval && ciclo > 1) {
+          cicloBadge.textContent = `Ciclo ${ciclo}`;
+          cicloBadge.style.display = 'inline-flex';
+        } else {
+          cicloBadge.style.display = 'none';
+        }
+      }
+
       if (!d.relatorio?.progresso) {
         const pct = subFase === 'kit' ? 25 : subFase === 'lab' ? 55 : 100;
         const pctEl = document.getElementById('prog-pct');
@@ -3450,7 +3476,7 @@
         // Badges "Novo" nos feature cards
         [{id:'fc-plano', sec:'plano-alimentar'}, {id:'fc-bio', sec:'biomarcadores'}].forEach(({id, sec}) => {
           const el = document.getElementById(id);
-          if (el && !localStorage.getItem('lyvoo_seen_' + sec) && !el.querySelector('.feature-new')) {
+          if (el && !localStorage.getItem('lyvoo_seen_' + sec + '_e' + estadoNum) && !el.querySelector('.feature-new')) {
             const badge = document.createElement('span');
             badge.className = 'feature-new';
             badge.textContent = 'Novo';
@@ -3477,13 +3503,12 @@
 
         const reevalTimeline = document.getElementById('reeval-timeline');
         if (reevalTimeline) {
-          // subEstado: 5 = kit a caminho/recolha, 6 = laboratório
-          const subEstado = estadoNum === 6 ? 2 : (window._kitData?.dataRecolha ? 2 : (window._kitData?.tracking ? 1 : 0));
+          // subEstado: 0 = kit a caminho/recolha (estado 5), 1 = laboratório (estado 6)
+          const subEstado = estadoNum === 6 ? 1 : 0;
           const steps = [
-            { label: 'Kit a caminho',         done: subEstado >= 1, active: subEstado === 0 },
-            { label: 'Recolha em casa',        done: subEstado >= 2, active: subEstado === 1 },
-            { label: 'Laboratório',            done: false,          active: subEstado === 2 },
-            { label: 'Relatório comparativo',  done: false,          active: false },
+            { label: 'Kit a caminho / recolha', done: subEstado >= 1, active: subEstado === 0 },
+            { label: 'Laboratório',             done: false,          active: subEstado === 1 },
+            { label: 'Relatório comparativo',   done: false,          active: false },
           ];
           reevalTimeline.innerHTML = steps.map((s, i) => `
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;">
@@ -3568,10 +3593,15 @@
   })();
 
   function atualizarStoreUI() {
-    // Plano considerado ativo quando o estado avança para 2+ (kit a caminho)
-    const ativo = (window._userData?.estado || 1) >= 2 || !!window._userData?.planoBaseAtivo;
+    // Plano considerado ativo quando o estado avança para 2+ (kit a caminho) e a validade não expirou
+    const d = window._userData || {};
+    const expirado = !!d.planoValidoAte && new Date(d.planoValidoAte) < new Date();
+    const ativo = (d.estado || 1) >= 2 && !expirado;
     const btn = document.getElementById('store-base-btn');
-    if (ativo) {
+    if (expirado) {
+      btn.disabled = false;
+      btn.textContent = 'Renovar plano base';
+    } else if (ativo) {
       btn.disabled = true;
       btn.textContent = '✓ Plano Base ativo';
       document.getElementById('store-mods-sub').textContent = 'Adicione módulos especializados ao seu plano através do chat com a equipa.';

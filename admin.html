@@ -1322,14 +1322,27 @@
     // iniciar a próxima reavaliação (ciclo contínuo de 6 em 6 meses).
     if (n === 4 || n === 7) {
       box.style.display = 'flex';
-      if (reevalBox) reevalBox.style.display = 'flex';
       const u = allUsers.find(x => x.uid === currentUID);
+      if (reevalBox) {
+        reevalBox.style.display = 'flex';
+        const cicloAtual  = u?.cicloAtual || 1;
+        const proximoCiclo = cicloAtual + 1;
+        const title = reevalBox.querySelector('.notify-box-title');
+        const sub   = document.getElementById('reeval-box-sub');
+        const btn   = document.getElementById('btn-reeval');
+        if (title) title.textContent = `Reavaliação - iniciar ciclo ${proximoCiclo}?`;
+        if (sub) sub.textContent = `Os resultados do ciclo ${cicloAtual} são arquivados no histórico e o cliente avança para o ciclo ${proximoCiclo} (estado 5, novo kit a caminho). Mantém o acesso aos resultados atuais até chegarem os novos.`;
+        if (btn) btn.textContent = `🔄 Iniciar ciclo ${proximoCiclo}`;
+      }
       const btn = document.getElementById('btn-notify');
       const sub = box.querySelector('.notify-box-sub');
       if (u?.notificadoEm) {
         const d = u.notificadoEm.toDate ? u.notificadoEm.toDate() : new Date(u.notificadoEm);
         if (sub) sub.textContent = `✓ Notificado em ${d.toLocaleString('pt-PT', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}`;
         if (btn) { btn.textContent = 'Reenviar'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
+      } else if (u?.emailFalhouEm) {
+        if (sub) sub.textContent = `⚠ Falha no envio automático do email para este cliente. Clique para tentar novamente.`;
+        if (btn) { btn.textContent = '✉ Tentar de novo'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
       } else {
         if (sub) sub.textContent = `O estado foi definido como ${n}. O cliente ainda não foi notificado por email.`;
         if (btn) { btn.textContent = '✉ Enviar email'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
@@ -1350,9 +1363,10 @@
       const e = u.estado || 1;
       const arquivadoBadge = u.arquivado ? `<span style="font-size:10px;color:var(--txt-3);margin-left:4px">📦</span>` : '';
       const chatDot = temChatNaoLido(u.uid) ? `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:6px;flex-shrink:0;"></span>` : '';
+      const emailFailDot = (u.emailFalhouEm && !u.notificadoEm) ? `<span title="Falha no email automático" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:6px;flex-shrink:0;"></span>` : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
         <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}</div><div class="u-email-sm">${u.email||'-'}</div></div>
+        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}</div><div class="u-email-sm">${u.email||'-'}</div></div>
         ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
@@ -2543,10 +2557,11 @@
         await updateDoc(doc(db, 'users', currentUID), {
           notificadoEm:  serverTimestamp(),
           notificadoPor: 'auto',
+          emailFalhouEm: null,
         });
         // Atualizar cache local e UI
         const idx = allUsers.findIndex(x => x.uid === currentUID);
-        if (idx !== -1) allUsers[idx].notificadoEm = new Date();
+        if (idx !== -1) { allUsers[idx].notificadoEm = new Date(); allUsers[idx].emailFalhouEm = null; }
         const sub = document.querySelector('#notify-box .notify-box-sub');
         if (sub) sub.textContent = '✓ Email enviado automaticamente ao guardar.';
         const btn = document.getElementById('btn-notify');
@@ -2554,6 +2569,13 @@
         showMsg('msg-geral', '✓ Guardado · Email enviado ao cliente', false);
       } catch(err) {
         console.error('Auto-email error:', err);
+        try {
+          await updateDoc(doc(db, 'users', currentUID), { emailFalhouEm: serverTimestamp() });
+          const idx = allUsers.findIndex(x => x.uid === currentUID);
+          if (idx !== -1) allUsers[idx].emailFalhouEm = new Date();
+        } catch (e2) { console.error('Falha ao registar emailFalhouEm:', e2); }
+        const sub = document.querySelector('#notify-box .notify-box-sub');
+        if (sub) sub.textContent = '⚠ Falha no envio automático do email. Tente "Enviar email" novamente.';
         showMsg('msg-geral', '✓ Guardado · Falha no email automático - notifique manualmente', true);
       }
     }
@@ -2848,6 +2870,10 @@
 
       // 2. Avançar para estado 5 (reavaliação · kit a caminho). Os resultados
       //    atuais mantêm-se visíveis para o cliente até chegarem os novos.
+      //    Renovação implica novo ano de plano: avança ciclo e validade.
+      const novoCiclo = (u.cicloAtual || 1) + 1;
+      const novaValidade = new Date();
+      novaValidade.setFullYear(novaValidade.getFullYear() + 1);
       await updateDoc(doc(db, 'users', currentUID), {
         estado:      5,
         estadoLabel: ESTADO_LABELS[5],
@@ -2855,12 +2881,20 @@
         notificadoPor: null,
         atualizadoEm: serverTimestamp(),
         cicloReavaliacao: serverTimestamp(),
+        cicloAtual: novoCiclo,
+        planoValidoAte: novaValidade.toISOString(),
+        // limpar notificações de consultas do ciclo anterior
+        consultaConfirmada: null,
+        consultaAlterada: null,
+        consultaCancelada: null,
+        consultaCanceladaAdmin: null,
+        agendamentoConvite: null,
       });
 
       // 3. Atualizar cache local
       const idx = allUsers.findIndex(x => x.uid === currentUID);
       if (idx !== -1) {
-        allUsers[idx] = { ...allUsers[idx], estado: 5, estadoLabel: ESTADO_LABELS[5], notificadoEm: null };
+        allUsers[idx] = { ...allUsers[idx], estado: 5, estadoLabel: ESTADO_LABELS[5], notificadoEm: null, cicloAtual: novoCiclo, planoValidoAte: novaValidade.toISOString() };
       }
       selectEstado(5);
       document.getElementById('reeval-box').style.display = 'none';
