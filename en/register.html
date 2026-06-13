@@ -252,14 +252,8 @@
 
   function setGoogleLoading(loading) { const btn = document.getElementById('btnGoogle'); btn.style.opacity = loading ? '0.6' : '1'; btn.style.pointerEvents = loading ? 'none' : ''; }
 
-  const STRIPE_LINK = 'https://buy.stripe.com/3cI5kCdOE95e2j57It7N600';
-
   function aoAutenticar(user) {
-    const params = new URLSearchParams({
-      prefilled_email:     user.email || '',
-      client_reference_id: user.uid   || ''
-    });
-    window.location.href = `${STRIPE_LINK}?${params.toString()}`;
+    window.location.href = '../dashboard.html';
   }
 
   const togglePw = document.getElementById('togglePw');

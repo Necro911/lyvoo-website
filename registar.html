@@ -403,15 +403,8 @@
     btn.style.pointerEvents = loading ? 'none' : '';
   }
 
-  const STRIPE_LINK = 'https://buy.stripe.com/3cI5kCdOE95e2j57It7N600';
-
   function aoAutenticar(user) {
-    // Redirigir para Stripe com email pré-preenchido e UID como referência
-    const params = new URLSearchParams({
-      prefilled_email:     user.email || '',
-      client_reference_id: user.uid   || ''
-    });
-    window.location.href = `${STRIPE_LINK}?${params.toString()}`;
+    window.location.href = 'dashboard.html';
   }
 
   // ── Toggle palavra-passe ──
