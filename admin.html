@@ -295,6 +295,18 @@
       .user-list { max-height: 55vh; }
       .estado-cards { grid-template-columns: repeat(3,1fr); }
       .form-row, .form-row-3 { grid-template-columns: 1fr; }
+
+      /* Texto secundário/terciário ganha mais contraste em mobile — em ecrãs
+         pequenos e com luz ambiente o cinzento escuro original (--txt-3) ficava
+         demasiado difícil de ler. */
+      :root {
+        --txt-2: #B7C2C7;
+        --txt-3: #89959A;
+        --line: rgba(255,255,255,0.12);
+        --line-2: rgba(255,255,255,0.16);
+        --panel: #131A1E;
+        --panel-2: #19232A;
+      }
     }
     @media (max-width: 640px) {
       .tab-content { padding: 18px 14px 60px; }
