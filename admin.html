@@ -67,6 +67,8 @@
     .e3 { background:rgba(61,217,232,0.08); color:var(--cyan); }
     .e4 { background:rgba(74,222,128,0.08); color:var(--green); }
     .e5 { background:rgba(139,92,246,0.08); color:var(--violet); }
+    .e6 { background:rgba(139,92,246,0.08); color:var(--violet); }
+    .e7 { background:rgba(74,222,128,0.08); color:var(--green); }
 
     /* ── DETAIL PANEL ── */
     .detail { overflow-y:auto; display:flex; flex-direction:column; }
@@ -164,7 +166,7 @@
     .tag-input-inline { background:none; border:none; outline:none; font-family:inherit; font-size:12.5px; color:var(--txt); flex:1; min-width:80px; }
 
     /* Estado selector grande */
-    .estado-cards { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:14px; }
+    .estado-cards { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:14px; }
     .estado-card { padding:12px 10px; border-radius:12px; border:1px solid var(--line); text-align:center; cursor:pointer; transition:all 0.18s; }
     .estado-card:hover { border-color:var(--line-2); }
     .estado-card.selected { border-color:var(--cyan); background:rgba(61,217,232,0.07); }
@@ -313,7 +315,7 @@
       </div>
       <div class="stat-mini" onclick="setEstadoFilter(1)" id="sc-1">
         <div class="stat-mini-val" id="s-e1" style="color:var(--txt-2)">-</div>
-        <div class="stat-mini-lbl">Kit a preparar</div>
+        <div class="stat-mini-lbl">Sem plano</div>
         <div class="stat-mini-bar"><div class="stat-mini-bar-fill" id="s-bar-1" style="background:var(--txt-3);width:0%"></div></div>
       </div>
       <div class="stat-mini" onclick="setEstadoFilter(2)" id="sc-2">
@@ -334,11 +336,13 @@
     </div>
     <div class="estado-filters" id="estado-filters">
       <button class="ef-btn active" data-e="all" onclick="setEstadoFilter('all')">Todos</button>
-      <button class="ef-btn" data-e="1" onclick="setEstadoFilter(1)">1 Kit</button>
-      <button class="ef-btn" data-e="2" onclick="setEstadoFilter(2)">2 Enviado</button>
+      <button class="ef-btn" data-e="1" onclick="setEstadoFilter(1)">1 Sem plano</button>
+      <button class="ef-btn" data-e="2" onclick="setEstadoFilter(2)">2 Kit</button>
       <button class="ef-btn" data-e="3" onclick="setEstadoFilter(3)">3 Lab</button>
-      <button class="ef-btn" data-e="4" onclick="setEstadoFilter(4)">4 Prontos</button>
-      <button class="ef-btn" data-e="5" onclick="setEstadoFilter(5)">5 Reavaliação</button>
+      <button class="ef-btn" data-e="4" onclick="setEstadoFilter(4)">4 Resultados</button>
+      <button class="ef-btn" data-e="5" onclick="setEstadoFilter(5)">5 Reav. Kit</button>
+      <button class="ef-btn" data-e="6" onclick="setEstadoFilter(6)">6 Reav. Lab</button>
+      <button class="ef-btn" data-e="7" onclick="setEstadoFilter(7)">7 Reav. Result.</button>
       <button class="ef-btn" data-e="arquivados" onclick="setEstadoFilter('arquivados')" style="color:var(--txt-3)">Arquivados</button>
     </div>
     <div class="user-list" id="user-list"></div>
@@ -396,7 +400,7 @@
           <div style="font-size:26px;line-height:1">🔄</div>
           <div class="notify-box-text">
             <div class="notify-box-title" style="color:var(--violet)">Reavaliação - iniciar novo ciclo?</div>
-            <div class="notify-box-sub" id="reeval-box-sub">Os resultados atuais serão arquivados no histórico e os campos de kit/análise reiniciados para a nova ronda.</div>
+            <div class="notify-box-sub" id="reeval-box-sub">Os resultados atuais são arquivados no histórico e o cliente avança para o estado 5 (novo kit a caminho). Mantém o acesso aos resultados atuais até chegarem os novos.</div>
           </div>
           <button class="btn-notify" id="btn-reeval" onclick="iniciarReavaliacao()" style="background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:var(--violet)">🔄 Iniciar novo ciclo</button>
         </div>
@@ -404,11 +408,13 @@
         <div class="form-section">
           <div class="form-section-title">Estado do programa</div>
           <div class="estado-cards" id="estado-cards">
-            <div class="estado-card selected" data-e="1" onclick="selectEstado(1)"><div class="estado-card-num">1</div><div class="estado-card-lbl">Kit a preparar</div></div>
-            <div class="estado-card" data-e="2" onclick="selectEstado(2)"><div class="estado-card-num">2</div><div class="estado-card-lbl">Kit enviado</div></div>
+            <div class="estado-card selected" data-e="1" onclick="selectEstado(1)"><div class="estado-card-num">1</div><div class="estado-card-lbl">Sem plano</div></div>
+            <div class="estado-card" data-e="2" onclick="selectEstado(2)"><div class="estado-card-num">2</div><div class="estado-card-lbl">Kit a caminho</div></div>
             <div class="estado-card" data-e="3" onclick="selectEstado(3)"><div class="estado-card-num">3</div><div class="estado-card-lbl">Lab. a processar</div></div>
             <div class="estado-card" data-e="4" onclick="selectEstado(4)"><div class="estado-card-num">4</div><div class="estado-card-lbl">Resultados prontos</div></div>
-            <div class="estado-card" data-e="5" onclick="selectEstado(5)"><div class="estado-card-num">5</div><div class="estado-card-lbl">Reavaliação</div></div>
+            <div class="estado-card" data-e="5" onclick="selectEstado(5)"><div class="estado-card-num">5</div><div class="estado-card-lbl">Reav. · Kit</div></div>
+            <div class="estado-card" data-e="6" onclick="selectEstado(6)"><div class="estado-card-num">6</div><div class="estado-card-lbl">Reav. · Lab.</div></div>
+            <div class="estado-card" data-e="7" onclick="selectEstado(7)"><div class="estado-card-num">7</div><div class="estado-card-lbl">Reav. · Resultados</div></div>
           </div>
         </div>
         <div class="form-section">
@@ -859,7 +865,7 @@
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
 
-  const ESTADO_LABELS = { 1:'Kit a ser preparado', 2:'Kit enviado', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação' };
+  const ESTADO_LABELS = { 1:'Sem plano ativo', 2:'Kit a caminho', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação · Kit a caminho', 6:'Reavaliação · Laboratório a processar', 7:'Reavaliação · Resultados disponíveis' };
 
   // ── Biomarcadores: categorias pré-definidas ─────────────────────────
   // Espelha a tabela de biomarcadores do index.html (Atlas), exceto os módulos
@@ -1312,9 +1318,11 @@
     const box = document.getElementById('notify-box');
     if (!box) return;
     const reevalBox = document.getElementById('reeval-box');
-    if (n === 4) {
+    // Estados 4 e 7 = resultados entregues: permitir notificar o cliente e
+    // iniciar a próxima reavaliação (ciclo contínuo de 6 em 6 meses).
+    if (n === 4 || n === 7) {
       box.style.display = 'flex';
-      if (reevalBox) reevalBox.style.display = 'none';
+      if (reevalBox) reevalBox.style.display = 'flex';
       const u = allUsers.find(x => x.uid === currentUID);
       const btn = document.getElementById('btn-notify');
       const sub = box.querySelector('.notify-box-sub');
@@ -1323,12 +1331,9 @@
         if (sub) sub.textContent = `✓ Notificado em ${d.toLocaleString('pt-PT', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}`;
         if (btn) { btn.textContent = 'Reenviar'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
       } else {
-        if (sub) sub.textContent = 'O estado foi definido como 4. O cliente ainda não foi notificado por email.';
+        if (sub) sub.textContent = `O estado foi definido como ${n}. O cliente ainda não foi notificado por email.`;
         if (btn) { btn.textContent = '✉ Enviar email'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; }
       }
-    } else if (n === 5) {
-      box.style.display = 'none';
-      if (reevalBox) reevalBox.style.display = 'flex';
     } else {
       box.style.display = 'none';
       if (reevalBox) reevalBox.style.display = 'none';
@@ -1361,18 +1366,24 @@
       allUsers.sort((a,b) => (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0));
       const ativos = allUsers.filter(u => !u.arquivado);
       const total = ativos.length || 1;
-      const counts = {1:0, 2:0, 3:0, 4:0, 5:0};
+      const counts = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0};
       ativos.forEach(u => { const e = u.estado||1; if (counts[e]!==undefined) counts[e]++; });
+      // Agregados (ciclo contínuo): kit = 2+5, lab = 3+6, resultados = 4+7, reavaliação = 5+6+7
+      const cResultados = counts[4] + counts[7];
+      const cKit        = counts[2] + counts[5];
+      const cLab        = counts[3] + counts[6];
+      const cReaval     = counts[5] + counts[6] + counts[7];
       document.getElementById('s-total').textContent  = ativos.length;
-      document.getElementById('s-active').textContent = counts[4];
+      document.getElementById('s-active').textContent = cResultados;
       document.getElementById('s-e1').textContent     = counts[1];
-      document.getElementById('s-e2').textContent     = counts[2];
-      document.getElementById('s-e3').textContent     = counts[3];
-      document.getElementById('s-e5').textContent     = counts[5];
+      document.getElementById('s-e2').textContent     = cKit;
+      document.getElementById('s-e3').textContent     = cLab;
+      document.getElementById('s-e5').textContent     = cReaval;
       // Barras de proporção
-      [1,2,3,4,5].forEach(e => {
+      const barVals = { 4: cResultados, 1: counts[1], 2: cKit, 3: cLab, 5: cReaval };
+      Object.entries(barVals).forEach(([e, v]) => {
         const bar = document.getElementById(`s-bar-${e}`);
-        if (bar) bar.style.width = Math.round((counts[e]/total)*100) + '%';
+        if (bar) bar.style.width = Math.round((v/total)*100) + '%';
       });
       renderList(ativos);
     } catch(e) { console.error(e); }
@@ -2514,10 +2525,10 @@
     };
     await saveDoc(data, 'msg-geral');
 
-    // ── Email automático quando estado passa a 4 (Resultados prontos) ──
-    const passou_a_4 = selectedEstado === 4 && estadoAnterior !== 4;
+    // ── Email automático quando estado passa a resultados (4 ou 7) ──
+    const passou_a_resultados = (selectedEstado === 4 || selectedEstado === 7) && estadoAnterior !== selectedEstado;
     const ja_notificado = !!u?.notificadoEm;
-    if (passou_a_4 && !ja_notificado) {
+    if (passou_a_resultados && !ja_notificado) {
       const nome = [data.firstName, data.lastName].filter(Boolean).join(' ') || u?.email?.split('@')[0] || '';
       const primeiro = nome.split(' ')[0] || 'Cliente';
       try {
@@ -2819,7 +2830,7 @@
     const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || '';
     const primeiro = nome.split(' ')[0] || 'Cliente';
 
-    if (!confirm(`Iniciar novo ciclo de análise para "${nome}"?\n\nOs resultados atuais são preservados no histórico. O kit e os campos de análise serão reiniciados.`)) return;
+    if (!confirm(`Iniciar reavaliação (novo ciclo de 6 meses) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico e o cliente passa ao estado 5 (novo kit a caminho). O cliente mantém o acesso aos resultados atuais até chegarem os novos.`)) return;
 
     const btn = document.getElementById('btn-reeval');
     if (btn) { btn.disabled = true; btn.textContent = 'A processar…'; }
@@ -2835,11 +2846,11 @@
         });
       }
 
-      // 2. Reiniciar campos de trabalho, manter estado 5 (admin moverá para 1 manualmente)
+      // 2. Avançar para estado 5 (reavaliação · kit a caminho). Os resultados
+      //    atuais mantêm-se visíveis para o cliente até chegarem os novos.
       await updateDoc(doc(db, 'users', currentUID), {
-        estado:      1,
-        estadoLabel: 'Kit a ser preparado',
-        resultados:  null,
+        estado:      5,
+        estadoLabel: ESTADO_LABELS[5],
         notificadoEm: null,
         notificadoPor: null,
         atualizadoEm: serverTimestamp(),
@@ -2849,13 +2860,12 @@
       // 3. Atualizar cache local
       const idx = allUsers.findIndex(x => x.uid === currentUID);
       if (idx !== -1) {
-        allUsers[idx] = { ...allUsers[idx], estado: 1, estadoLabel: 'Kit a ser preparado', resultados: null, notificadoEm: null };
+        allUsers[idx] = { ...allUsers[idx], estado: 5, estadoLabel: ESTADO_LABELS[5], notificadoEm: null };
       }
-      selectedEstado = 1;
-      document.querySelectorAll('.estado-card').forEach(c => c.classList.toggle('selected', +c.dataset.e === 1));
+      selectEstado(5);
       document.getElementById('reeval-box').style.display = 'none';
 
-      showMsg('msg-geral', '✓ Novo ciclo iniciado · Resultados anteriores arquivados no histórico', false);
+      showMsg('msg-geral', '✓ Reavaliação iniciada · Resultados anteriores arquivados no histórico', false);
       applyFilters();
 
     } catch(e) {

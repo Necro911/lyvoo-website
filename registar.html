@@ -346,9 +346,11 @@
       dados.firstName = firstName;
       dados.lastName  = lastName;
     }
-    // Estado do programa (1=kit pendente, 2=kit enviado, 3=amostra recebida, 4=resultados prontos, 5=reavaliação)
+    // Estado do programa: 1=sem plano (registado), 2=kit a caminho, 3=laboratório,
+    // 4=resultados; 5-7=ciclo de reavaliação (kit/laboratório/resultados)
     dados.estado = 1;
-    dados.estadoLabel = 'Kit a ser preparado';
+    dados.estadoLabel = 'Sem plano ativo';
+    dados.planoBaseAtivo = false;
 
     // merge:true - não apaga campos existentes
     await setDoc(doc(db, 'users', user.uid), {

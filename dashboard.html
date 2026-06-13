@@ -50,6 +50,15 @@
     .sb-link:hover { background: rgba(255,255,255,0.04); color: var(--txt); }
     .sb-link.active { background: rgba(61,217,232,0.10); color: var(--cyan); }
     .sb-link.active svg { opacity: 1; }
+    .sb-link.sb-locked { opacity: 0.38; cursor: not-allowed; pointer-events: none; }
+    .sb-lock-icon { margin-left: auto; width: 13px; height: 13px; flex-shrink: 0; opacity: 0.6; }
+    .sb-link.sb-glow { color: var(--cyan); border: 1px solid rgba(61,217,232,0.45); animation: sbGlow 2.2s ease-in-out infinite; }
+    .sb-link.sb-glow svg { opacity: 1; }
+    @keyframes sbGlow {
+      0%,100% { box-shadow: 0 0 0 1px rgba(61,217,232,0.30), 0 0 10px rgba(61,217,232,0.20); background: rgba(61,217,232,0.06); }
+      50%     { box-shadow: 0 0 0 1px rgba(61,217,232,0.55), 0 0 22px rgba(61,217,232,0.45); background: rgba(61,217,232,0.12); }
+    }
+    .mob-nav-btn.mob-locked { opacity: 0.35; pointer-events: none; }
 
     /* Estado badge no topbar */
     /* ── Secções internas ── */
@@ -2419,6 +2428,30 @@
     return nome.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
   }
 
+  // Bloquear/desbloquear um item da sidebar (com ícone de cadeado)
+  function lockSidebar(id, locked) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (locked) {
+      el.classList.add('sb-locked');
+      if (!el.querySelector('.sb-lock-icon')) {
+        const ico = document.createElementNS('http://www.w3.org/2000/svg','svg');
+        ico.setAttribute('class','sb-lock-icon');
+        ico.setAttribute('viewBox','0 0 24 24');
+        ico.setAttribute('fill','none');
+        ico.setAttribute('stroke','currentColor');
+        ico.setAttribute('stroke-width','2');
+        ico.setAttribute('stroke-linecap','round');
+        ico.setAttribute('stroke-linejoin','round');
+        ico.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>';
+        el.appendChild(ico);
+      }
+    } else {
+      el.classList.remove('sb-locked');
+      el.querySelector('.sb-lock-icon')?.remove();
+    }
+  }
+
   // ── Distritos / Concelhos de Portugal ─────────────────────────────────
   const DISTRITOS_CONCELHOS = {
     'Aveiro': ['Águeda','Albergaria-a-Velha','Anadia','Arouca','Aveiro','Castelo de Paiva','Espinho','Estarreja','Ílhavo','Mealhada','Murtosa','Oliveira de Azeméis','Oliveira do Bairro','Ovar','Santa Maria da Feira','São João da Madeira','Sever do Vouga','Vagos','Vale de Cambra'],
@@ -3114,11 +3147,13 @@
   }
 
   const ESTADO_LABELS = {
-    1: 'Kit a ser preparado',
-    2: 'Kit enviado',
+    1: 'Sem plano ativo',
+    2: 'Kit a caminho',
     3: 'Laboratório a processar',
     4: 'Resultados disponíveis',
-    5: 'Reavaliação'
+    5: 'Reavaliação · Kit a caminho',
+    6: 'Reavaliação · Laboratório a processar',
+    7: 'Reavaliação · Resultados disponíveis'
   };
 
   async function carregarDados(user) {
@@ -3280,10 +3315,24 @@
 
     const primeiro = nome.split(' ')[0];
 
-    // ── Vista única: dashboard completo para todos os estados ──
+    // ── Estado 1 = registado sem plano: bloquear painel e dados ──────────
+    const semPlano = estadoNum <= 1;
+    const LOCKAVEIS = ['sb-painel','sb-plano-alimentar','sb-suplementacao','sb-relatorio','sb-biomarcadores','sb-consultas'];
+    const MOB_LOCKAVEIS = ['mn-painel','mn-biomarcadores','mn-consultas'];
+    const storeLink = document.getElementById('sb-store');
+    LOCKAVEIS.forEach(id => lockSidebar(id, semPlano));
+    MOB_LOCKAVEIS.forEach(id => document.getElementById(id)?.classList.toggle('mob-locked', semPlano));
+    if (storeLink) storeLink.classList.toggle('sb-glow', semPlano);
+
     const viewRes = document.getElementById('view-resultados');
-    viewRes.style.display = 'block';
-    {
+
+    if (semPlano) {
+      // Sem plano: esconder o painel completo e encaminhar para a Lyvoo Store
+      viewRes.style.display = 'none';
+      const activeId = document.querySelector('.sb-link.active')?.id;
+      if (!activeId || activeId === 'sb-painel') navSection('store');
+    } else {
+      viewRes.style.display = 'block';
       // Banner: convite de agendamento enviado pelo admin (a aguardar escolha do cliente)
       if (window._convite?.estado === 'pendente' && (window._convite.slots||[]).length) {
         const conviteBanner = document.getElementById('convite-banner');
@@ -3345,53 +3394,43 @@
         }
       }
 
-      // Estados 1-3: progresso e checklist refletem a fase inicial do programa
-      if (estadoNum <= 3) {
-        if (!d.relatorio?.progresso) {
-          const pctMap = { 1: 10, 2: 30, 3: 55 };
-          const pct = pctMap[estadoNum] || 10;
-          const pctEl = document.getElementById('prog-pct');
-          if (pctEl) pctEl.innerHTML = `${pct}<small>%</small>`;
-          const pr = document.getElementById('prog-ring-fill');
-          if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * (1 - pct / 100)).toFixed(1));
-        }
+      // ── Progresso do ciclo atual (2-4 = inicial, 5-7 = reavaliação) ──
+      const reaval = estadoNum >= 5;
+      const subFase = (estadoNum === 2 || estadoNum === 5) ? 'kit'
+                    : (estadoNum === 3 || estadoNum === 6) ? 'lab'
+                    : 'resultados'; // 4 ou 7
 
-        const doneSvg = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-        const passos = [
-          { titulo: 'Programa iniciado',     done: true,           ativo: false,            descDone: 'Concluído',  descAtivo: '' },
-          { titulo: 'Kit enviado para casa', done: estadoNum >= 2, ativo: estadoNum === 1,  descDone: 'Concluído',  descAtivo: 'Em preparação · ~48h' },
-          { titulo: 'Análise laboratorial',  done: false,          ativo: estadoNum === 3,  descDone: 'Concluída',  descAtivo: 'Em curso · 7-10 dias' },
-          { titulo: 'Resultados e plano',    done: false,          ativo: false,            descDone: 'Disponível', descAtivo: '' },
-        ];
-        const checklist = document.getElementById('prog-checklist');
-        if (checklist) checklist.innerHTML = passos.map(p => {
-          const cls   = p.done ? 'done' : p.ativo ? 'prog' : 'todo';
-          const state = p.done ? p.descDone : p.ativo ? p.descAtivo : 'Pendente';
-          return `<div class="check-item"><div class="check-mark ${cls}">${p.done ? doneSvg : ''}</div><div class="check-body"><div class="check-title">${p.titulo}</div><div class="check-state"${p.ativo ? ' style="color:var(--cyan)"' : ''}>${state}</div></div></div>`;
-        }).join('');
+      if (!d.relatorio?.progresso) {
+        const pct = subFase === 'kit' ? 25 : subFase === 'lab' ? 55 : 100;
+        const pctEl = document.getElementById('prog-pct');
+        if (pctEl) pctEl.innerHTML = `${pct}<small>%</small>`;
+        const pr = document.getElementById('prog-ring-fill');
+        if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * (1 - pct / 100)).toFixed(1));
       }
 
-      // Banner "resultados prontos" (estado 4 inicial) — mostra apenas uma vez
-      if (estadoNum === 4) {
+      const doneSvg = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      const kitDone = subFase !== 'kit';
+      const labDone = subFase === 'resultados';
+      const passos = [
+        { titulo: reaval ? 'Reavaliação iniciada' : 'Plano adquirido', done: true,    ativo: false,                 descDone: 'Concluído' },
+        { titulo: 'Kit de colheita em casa',  done: kitDone, ativo: subFase === 'kit', descDone: 'Concluído',  descAtivo: 'A caminho · ~48h' },
+        { titulo: 'Análise laboratorial',     done: labDone, ativo: subFase === 'lab', descDone: 'Concluída',  descAtivo: 'Em curso · 1-5 dias' },
+        { titulo: reaval ? 'Novos resultados e plano' : 'Resultados e plano', done: labDone, ativo: false, descDone: 'Disponível', descAtivo: '' },
+      ];
+      const checklist = document.getElementById('prog-checklist');
+      if (checklist) checklist.innerHTML = passos.map(p => {
+        const cls   = p.done ? 'done' : p.ativo ? 'prog' : 'todo';
+        const state = p.done ? p.descDone : p.ativo ? p.descAtivo : 'Pendente';
+        return `<div class="check-item"><div class="check-mark ${cls}">${p.done ? doneSvg : ''}</div><div class="check-body"><div class="check-title">${p.titulo}</div><div class="check-state"${p.ativo ? ' style="color:var(--cyan)"' : ''}>${state}</div></div></div>`;
+      }).join('');
+
+      // ── Banner "resultados prontos" (estados 4 e 7) ──
+      if (subFase === 'resultados') {
         const banner = document.getElementById('results-banner');
-        if (banner && !localStorage.getItem(`lyvoo_resultados_banner_${user.uid}`)) banner.style.display = 'flex';
+        const bKey = `lyvoo_resultados_banner_${user.uid}_e${estadoNum}`;
+        if (banner && !localStorage.getItem(bKey)) banner.style.display = 'flex';
 
-        // Progress: 80% (fallback quando o admin não definiu progresso) + checklist
-        if (!d.relatorio?.progresso) {
-          const pctEl = document.getElementById('prog-pct');
-          if (pctEl) pctEl.innerHTML = '80<small>%</small>';
-          const pr = document.getElementById('prog-ring-fill');
-          if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * 0.2).toFixed(1));
-        }
-
-        const checklist = document.getElementById('prog-checklist');
-        if (checklist) checklist.innerHTML = `
-          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
-          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Análise laboratorial</div><div class="check-state">Concluída</div></div></div>
-          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Relatório e plano entregues</div><div class="check-state">Disponível agora</div></div></div>
-          <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Reavaliação</div><div class="check-state">Em breve · 6 meses</div></div></div>`;
-
-        // CTA consulta de nutrição — mostrar se não há consulta de nutrição futura agendada
+        // CTA consulta de nutrição — se não há consulta futura agendada nem convite ativo
         const nutriCta = document.getElementById('nutri-cta');
         if (nutriCta) {
           const today = new Date(); today.setHours(0,0,0,0);
@@ -3420,20 +3459,11 @@
         });
       }
 
-      // Estado 5: reavaliação
-      if (estadoNum === 5) {
-        if (!d.relatorio?.progresso) {
-          const pctEl = document.getElementById('prog-pct');
-          if (pctEl) pctEl.innerHTML = '90<small>%</small>';
-          const pr = document.getElementById('prog-ring-fill');
-          if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * 0.1).toFixed(1));
-        }
-
-        // Mostrar banner de reavaliação
+      // ── Reavaliação em curso (estados 5 e 6): banner + mini-timeline ──
+      if (reaval && subFase !== 'resultados') {
         const reevalBanner = document.getElementById('reeval-banner');
         if (reevalBanner) reevalBanner.style.display = 'block';
 
-        // Botão "Agendar reavaliação" — mostrar se não há reavaliação futura agendada
         const reevalBtn = document.getElementById('reeval-agendar-btn');
         if (reevalBtn) {
           const today = new Date(); today.setHours(0,0,0,0);
@@ -3445,17 +3475,15 @@
           reevalBtn.style.display = temReavaliacaoAgendada ? 'none' : 'inline-flex';
         }
 
-        // Mini-timeline: usar kit se disponível para deduzir sub-estado
         const reevalTimeline = document.getElementById('reeval-timeline');
         if (reevalTimeline) {
-          const kitData = window._kitData || {};
-          // sub-estado: 0=preparar, 1=kit enviado, 2=amostra enviada, 3=lab a processar
-          const subEstado = kitData.tracking ? (kitData.dataRecolha ? 2 : 1) : 0;
+          // subEstado: 5 = kit a caminho/recolha, 6 = laboratório
+          const subEstado = estadoNum === 6 ? 2 : (window._kitData?.dataRecolha ? 2 : (window._kitData?.tracking ? 1 : 0));
           const steps = [
             { label: 'Kit a caminho',         done: subEstado >= 1, active: subEstado === 0 },
             { label: 'Recolha em casa',        done: subEstado >= 2, active: subEstado === 1 },
-            { label: 'Laboratório',            done: subEstado >= 3, active: subEstado === 2 },
-            { label: 'Relatório comparativo',  done: false,          active: subEstado === 3 },
+            { label: 'Laboratório',            done: false,          active: subEstado === 2 },
+            { label: 'Relatório comparativo',  done: false,          active: false },
           ];
           reevalTimeline.innerHTML = steps.map((s, i) => `
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;">
@@ -3475,16 +3503,7 @@
               ${s.active?'<div style="font-size:10px;color:var(--violet);font-weight:600;">Em curso</div>':''}
             </div>`).join('');
         }
-
-        // Actualizar checklist do progresso
-        const checklist = document.getElementById('prog-checklist');
-        if (checklist) checklist.innerHTML = `
-          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
-          <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Plano personalizado</div><div class="check-state">Concluído</div></div></div>
-          <div class="check-item"><div class="check-mark prog"></div><div class="check-body"><div class="check-title">Reavaliação dos 6 meses</div><div class="check-state" style="color:var(--violet)">Em curso</div></div></div>
-          <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Relatório comparativo</div><div class="check-state">Em breve</div></div></div>`;
       }
-
     }
 
     window._estadoActual = estadoNum;
@@ -3549,7 +3568,8 @@
   })();
 
   function atualizarStoreUI() {
-    const ativo = !!window._userData?.planoBaseAtivo;
+    // Plano considerado ativo quando o estado avança para 2+ (kit a caminho)
+    const ativo = (window._userData?.estado || 1) >= 2 || !!window._userData?.planoBaseAtivo;
     const btn = document.getElementById('store-base-btn');
     if (ativo) {
       btn.disabled = true;
