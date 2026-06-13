@@ -1435,8 +1435,8 @@
           <a href="termos.html" class="sec-btn">Ver</a>
         </div>
         <div class="account-item danger">
-          <div><div class="account-item-title">Eliminar conta</div><div class="account-item-desc">Apagar permanentemente todos os seus dados</div></div>
-          <button class="sec-btn danger-btn" onclick="alert('Para eliminar a conta, contacte hello@lyvoo.pt')">Eliminar</button>
+          <div><div class="account-item-title">Eliminar conta</div><div class="account-item-desc" id="del-acc-desc">Apagar permanentemente todos os seus dados</div></div>
+          <button class="sec-btn danger-btn" id="del-acc-btn" onclick="abrirEliminarConta()">Eliminar</button>
         </div>
       </div>
     </div>
@@ -1489,11 +1489,17 @@
     return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
   }
 
+  let _chatInitUid = null;
   function initChat(uid) {
     const msgsEl = document.getElementById('chat-messages');
     const form   = document.getElementById('chat-form');
     const input  = document.getElementById('chat-input');
     if (!msgsEl || !form || !input) return;
+    // Evita duplicar o onSnapshot e o handler de submit caso onAuthStateChanged
+    // dispare mais do que uma vez na mesma página (senão cada mensagem é enviada
+    // tantas vezes quantos os handlers acumulados).
+    if (_chatInitUid === uid) return;
+    _chatInitUid = uid;
 
     const q = query(collection(db, 'chats', uid, 'mensagens'), orderBy('criadoEm', 'asc'));
     onSnapshot(q, (snap) => {
@@ -1941,6 +1947,78 @@
   document.getElementById('cd-overlay').addEventListener('click', (e) => {
     if (e.target.id === 'cd-overlay') fecharDetalheConsulta();
   });
+
+  // ── Modal: Eliminar conta (RGPD — pedido de apagamento) ──────────────
+  function mostrarPedidoEliminacaoFeito(ts) {
+    const email = auth.currentUser?.email || '';
+    const quando = ts ? new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long', year:'numeric' }) : '';
+    document.getElementById('del-form').style.display = 'none';
+    const succ = document.getElementById('del-success');
+    succ.style.display = 'block';
+    document.getElementById('del-success-text').innerHTML =
+      `✓ Pedido de eliminação registado${quando ? ' a ' + quando : ''}. A equipa Lyvoo vai processar o apagamento dos seus dados e confirmará por email${email ? ' (' + escapeHtml(email) + ')' : ''}. Para cancelar o pedido, contacte <a href="mailto:hello@lyvoo.pt" style="color:var(--cyan)">hello@lyvoo.pt</a>.`;
+  }
+
+  window.abrirEliminarConta = function() {
+    const pe = window._userData?.pedidoEliminacao;
+    document.getElementById('del-msg').textContent = '';
+    document.getElementById('del-msg').className = 'bk-msg';
+    const btn = document.getElementById('del-confirm-btn');
+    btn.disabled = false;
+    btn.textContent = 'Pedir eliminação da conta';
+    if (pe?.estado === 'pendente') {
+      const ts = pe.em?.toDate ? pe.em.toDate().getTime() : (pe.em ? new Date(pe.em).getTime() : null);
+      mostrarPedidoEliminacaoFeito(ts);
+    } else {
+      document.getElementById('del-form').style.display = 'block';
+      document.getElementById('del-success').style.display = 'none';
+    }
+    document.getElementById('del-overlay').classList.add('open');
+  };
+  function fecharEliminarConta() {
+    document.getElementById('del-overlay').classList.remove('open');
+  }
+  document.getElementById('del-close').addEventListener('click', fecharEliminarConta);
+  document.getElementById('del-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'del-overlay') fecharEliminarConta();
+  });
+  document.getElementById('del-confirm-btn').addEventListener('click', async () => {
+    if (!auth.currentUser) return;
+    const btn = document.getElementById('del-confirm-btn');
+    const msg = document.getElementById('del-msg');
+    btn.disabled = true;
+    btn.textContent = 'A registar…';
+    try {
+      await auth.currentUser.getIdToken(true);
+      await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+        pedidoEliminacao: { em: serverTimestamp(), estado: 'pendente', email: auth.currentUser.email || '' },
+        atualizadoEm: serverTimestamp()
+      });
+      if (window._userData) window._userData.pedidoEliminacao = { em: new Date(), estado: 'pendente', email: auth.currentUser.email || '' };
+      aplicarEstadoEliminacao();
+      mostrarPedidoEliminacaoFeito(Date.now());
+    } catch (e) {
+      console.error('Erro ao registar pedido de eliminação:', e);
+      msg.className = 'bk-msg err';
+      msg.textContent = 'Não foi possível registar o pedido. Tente novamente ou contacte hello@lyvoo.pt.';
+      btn.disabled = false;
+      btn.textContent = 'Pedir eliminação da conta';
+    }
+  });
+  // Reflete na secção Conta se já existe um pedido pendente
+  function aplicarEstadoEliminacao() {
+    const pe = window._userData?.pedidoEliminacao;
+    const desc = document.getElementById('del-acc-desc');
+    const btn = document.getElementById('del-acc-btn');
+    if (pe?.estado === 'pendente') {
+      if (desc) desc.textContent = 'Pedido de eliminação registado — a aguardar processamento pela equipa Lyvoo.';
+      if (btn) btn.textContent = 'Ver pedido';
+    } else {
+      if (desc) desc.textContent = 'Apagar permanentemente todos os seus dados';
+      if (btn) btn.textContent = 'Eliminar';
+    }
+  }
+  window._aplicarEstadoEliminacao = aplicarEstadoEliminacao;
 
   window.abrirDetalheConsulta = function(idx) {
     const c = (window._consultasList || [])[idx];
@@ -3241,6 +3319,7 @@
         window._convite = d.agendamentoConvite || null;
         window._userData = d;
         atualizarStoreUI();
+        window._aplicarEstadoEliminacao?.();
 
         // Render secções com dados reais
         if (d.resultados)     renderBiomarcadores(d.resultados);
@@ -3904,6 +3983,29 @@
     <div class="bk-title" id="cd-title">Consulta</div>
     <div id="cd-body"></div>
     <div class="bk-msg" id="cd-msg"></div>
+  </div>
+</div>
+
+<!-- ── Modal: Eliminar conta (RGPD) ── -->
+<div class="bk-overlay" id="del-overlay">
+  <div class="bk-modal">
+    <button class="bk-close" id="del-close" aria-label="Fechar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+    </button>
+    <div class="bk-title">Eliminar conta</div>
+    <div id="del-form">
+      <div class="bk-sub" style="margin-bottom:14px;">
+        Tem o direito ao apagamento dos seus dados (RGPD, art.&nbsp;17.º). Ao confirmar, a equipa Lyvoo
+        apaga permanentemente a sua conta e todos os dados associados — perfil, biomarcadores, plano
+        alimentar, suplementação, consultas e histórico — no prazo máximo de 30 dias.
+      </div>
+      <div class="cd-note" style="margin-bottom:18px;">Esta ação é irreversível. Se tiver um plano ativo, será contactado(a) sobre eventuais implicações antes da eliminação.</div>
+      <button class="cd-cancel-btn" id="del-confirm-btn" style="margin-top:0;">Pedir eliminação da conta</button>
+      <div class="bk-msg" id="del-msg"></div>
+    </div>
+    <div id="del-success" style="display:none;">
+      <div class="bk-sub" id="del-success-text" style="margin-bottom:0;"></div>
+    </div>
   </div>
 </div>
 

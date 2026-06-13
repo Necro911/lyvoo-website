@@ -412,6 +412,16 @@
       <!-- ── TAB: GERAL ── -->
       <div class="tab-content active" id="tab-geral">
 
+        <!-- Pedido de eliminação de conta (RGPD) -->
+        <div class="notify-box" id="del-req-box" style="display:none;border-color:rgba(248,113,113,0.35);background:rgba(248,113,113,0.07)">
+          <div style="font-size:26px;line-height:1">⌫</div>
+          <div class="notify-box-text">
+            <div class="notify-box-title" style="color:var(--red)">Pedido de eliminação de conta (RGPD)</div>
+            <div class="notify-box-sub" id="del-req-sub">O cliente pediu o apagamento dos seus dados. Processe a eliminação e marque como tratado.</div>
+          </div>
+          <button class="btn-notify" id="del-req-btn" onclick="marcarEliminacaoTratada()" style="background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.35);color:var(--red)">Marcar como tratado</button>
+        </div>
+
         <!-- Notificação ao cliente (aparece quando estado = 4) -->
         <div class="notify-box" id="notify-box" style="display:none">
           <div style="font-size:26px;line-height:1">🎉</div>
@@ -1376,9 +1386,10 @@
       const arquivadoBadge = u.arquivado ? `<span style="font-size:10px;color:var(--txt-3);margin-left:4px">📦</span>` : '';
       const chatDot = temChatNaoLido(u.uid) ? `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:6px;flex-shrink:0;"></span>` : '';
       const emailFailDot = (u.emailFalhouEm && !u.notificadoEm) ? `<span title="Falha no email automático" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:6px;flex-shrink:0;"></span>` : '';
+      const delBadge = (u.pedidoEliminacao?.estado === 'pendente') ? `<span title="Pedido de eliminação de conta (RGPD)" style="font-size:10px;color:var(--red);margin-left:6px;font-weight:700;">⌫ eliminar</span>` : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
         <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}</div><div class="u-email-sm">${u.clienteId||''} · ${u.email||'-'}</div></div>
+        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}${delBadge}</div><div class="u-email-sm">${u.clienteId||''} · ${u.email||'-'}</div></div>
         ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
@@ -1453,6 +1464,18 @@
     document.getElementById('g-cp').value             = d.codigoPostal||'';
     document.getElementById('g-distrito').value       = d.distrito||'';
     preencherConcelhos(d.distrito||'', d.concelho||'');
+
+    // Pedido de eliminação de conta (RGPD)
+    const delBox = document.getElementById('del-req-box');
+    const pe = d.pedidoEliminacao;
+    if (pe?.estado === 'pendente') {
+      const quando = pe.em ? fmtDate(pe.em) : '';
+      document.getElementById('del-req-sub').textContent =
+        `O cliente pediu o apagamento dos seus dados${quando ? ' em ' + quando : ''}. Processe a eliminação dos dados e marque como tratado.`;
+      delBox.style.display = 'flex';
+    } else {
+      delBox.style.display = 'none';
+    }
 
     // Anamnese
     const an = d.anamnese || {};
@@ -2966,6 +2989,30 @@
       console.error(e);
       if (btn) { btn.disabled = false; btn.textContent = '🔄 Iniciar novo ciclo'; }
       showMsg('msg-geral', 'Erro: ' + e.message, true);
+    }
+  };
+
+  // ── Pedido de eliminação de conta (RGPD): marcar como tratado ─────────
+  window.marcarEliminacaoTratada = async function() {
+    if (!currentUID) return;
+    if (!confirm('Marcar o pedido de eliminação como tratado?\n\nFaça isto apenas depois de processar o apagamento dos dados do cliente.')) return;
+    const btn = document.getElementById('del-req-btn');
+    if (btn) btn.disabled = true;
+    try {
+      await auth.currentUser?.getIdToken(true);
+      await updateDoc(doc(db, 'users', currentUID), {
+        'pedidoEliminacao.estado': 'tratado',
+        'pedidoEliminacao.tratadoEm': serverTimestamp(),
+      });
+      const idx = allUsers.findIndex(x => x.uid === currentUID);
+      if (idx !== -1 && allUsers[idx].pedidoEliminacao) allUsers[idx].pedidoEliminacao.estado = 'tratado';
+      document.getElementById('del-req-box').style.display = 'none';
+      showMsg('msg-geral', '✓ Pedido de eliminação marcado como tratado', false);
+      applyFilters();
+    } catch(e) {
+      console.error(e);
+      showMsg('msg-geral', 'Erro: ' + e.message, true);
+      if (btn) btn.disabled = false;
     }
   };
 
