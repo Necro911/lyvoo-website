@@ -2742,15 +2742,33 @@
   }
 
   // ── Render: Biomarcadores ─────────────────────────────────────────────
-  const CAT_LABELS = {
-    cardiovascular:'Cardiovascular', metabolico:'Metabólico', nutricional:'Nutricional',
-    tiroide:'Tiróide', hormonal:'Hormonal', hematologia:'Hematologia',
-    hepatico:'Hepático', renal:'Renal',
-    base:'Plano Base',
-    vitaminas:'Vitaminas',
-    hormonalMasculino:'Hormonal Masculino', hormonalFeminino:'Hormonal Feminino',
-    fertilidade:'Fertilidade', cardioAvancado:'Cardio Avançado',
-    tiroideCompleto:'Tiróide Completo', stress:'Stress'
+  // Agrupamento por componente biológica, independentemente do módulo onde o
+  // admin inseriu o biomarcador (Plano Base, Vitaminas, Hormonal Masculino, ...)
+  const BIO_SYSTEMS = [
+    { key:'metabolico',     label:'Metabolismo' },
+    { key:'cardiovascular', label:'Cardiovascular' },
+    { key:'hepatico',       label:'Hepático' },
+    { key:'renal',          label:'Renal' },
+    { key:'tiroide',        label:'Tiróide' },
+    { key:'hormonal',       label:'Hormonal' },
+    { key:'hematologia',    label:'Hematologia' },
+    { key:'nutricional',    label:'Nutricional' },
+    { key:'outros',         label:'Outros' },
+  ];
+  const BIO_SYSTEM_MAP = {
+    'HbA1c':'metabolico',
+    'Colesterol total':'cardiovascular', 'LDL':'cardiovascular', 'HDL':'cardiovascular',
+    'Triglicéridos':'cardiovascular', 'ApoB':'cardiovascular', 'Lp(a)':'cardiovascular',
+    'CRP':'cardiovascular', 'NT-proBNP':'cardiovascular',
+    'ALT':'hepatico', 'AST':'hepatico', 'GGT':'hepatico', 'Fosfatase Alcalina':'hepatico', 'Albumina':'hepatico',
+    'Creatinina':'renal', 'Ureia':'renal',
+    'Proteína Total':'nutricional', 'Magnésio':'nutricional', 'Cálcio':'nutricional',
+    'Vitamina D':'nutricional', 'Vitamina B12':'nutricional', 'Folato':'nutricional',
+    'Ferritina':'hematologia',
+    'TSH':'tiroide', 'FT4':'tiroide', 'T3':'tiroide',
+    'Testosterona Total':'hormonal', 'Testosterona Livre':'hormonal', 'SHBG':'hormonal',
+    'PSA':'hormonal', 'FSH':'hormonal', 'LH':'hormonal', 'Estradiol':'hormonal',
+    'Progesterona':'hormonal', 'Prolactina':'hormonal', 'AMH':'hormonal', 'Cortisol':'hormonal',
   };
   // ── Render: Seletor de análise histórica ─────────────────────────────
   function renderHistoricoSelector(historico) {
@@ -2839,12 +2857,21 @@
     if (!resultados || !resultados.biomarcadores) return;
     if (resultados.dataAnalise) sub.textContent = 'Resultados da sua análise · ' + resultados.dataAnalise;
     const bio = resultados.biomarcadores;
+    // Achatar todos os módulos do admin e reagrupar por componente biológica
+    const grupos = {};
+    const vistos = new Set();
+    Object.values(bio).forEach(rows => (rows||[]).forEach(r => {
+      if (!r || !r.valor) return;
+      if (vistos.has(r.nome)) return;
+      vistos.add(r.nome);
+      const sys = BIO_SYSTEM_MAP[r.nome] || 'outros';
+      (grupos[sys] = grupos[sys] || []).push(r);
+    }));
     let html = '';
-    Object.entries(bio).forEach(([cat, rows]) => {
-      if (!rows || !rows.length) return;
-      const activeRows = rows.filter(r => r.valor);
-      if (!activeRows.length) return;
-      html += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${CAT_LABELS[cat]||cat}</div><div class="bio-table">`;
+    BIO_SYSTEMS.forEach(({ key: cat, label }) => {
+      const activeRows = grupos[cat];
+      if (!activeRows || !activeRows.length) return;
+      html += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${label}</div><div class="bio-table">`;
       html += `<div class="bio-thead">
         <span>Parâmetro</span><span>Valor</span><span>Referência</span>
         <span></span><span>Estado</span><span style="text-align:right">Δ</span>
