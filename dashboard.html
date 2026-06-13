@@ -672,6 +672,106 @@
       .sec-wrap { padding: 20px 20px 84px; }
     }
 
+    /* ── Lyvoo Store ─────────────────────────────────────────────────── */
+    .store-warn {
+      display: none; align-items: center; gap: 12px; flex-wrap: wrap;
+      background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25);
+      border-radius: 14px; padding: 14px 18px; margin-bottom: 20px;
+      font-size: 13.5px; color: var(--amber, #FBBF24);
+    }
+    .store-warn-btn {
+      margin-left: auto; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3);
+      color: var(--amber, #FBBF24); font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+      padding: 7px 14px; border-radius: 10px; cursor: pointer; transition: all 0.2s;
+    }
+    .store-warn-btn:hover { background: rgba(251,191,36,0.2); }
+    .store-base-card {
+      position: relative; overflow: hidden;
+      background: var(--panel); border: 1px solid rgba(61,217,232,0.30);
+      border-radius: 20px; padding: 30px; margin-bottom: 28px;
+    }
+    .store-base-card::after {
+      content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(61,217,232,0.10), transparent 70%);
+      pointer-events: none;
+    }
+    .store-base-tag {
+      display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--cyan); background: rgba(61,217,232,0.10);
+      border: 1px solid rgba(61,217,232,0.22); border-radius: 999px; padding: 4px 12px; margin-bottom: 14px;
+    }
+    .store-base-title { font-size: 22px; font-weight: 800; color: var(--txt); letter-spacing: -0.03em; margin-bottom: 6px; }
+    .store-base-price { font-size: 30px; font-weight: 800; color: var(--txt); letter-spacing: -0.04em; margin: 10px 0 2px; }
+    .store-base-price span { font-size: 14px; font-weight: 500; color: var(--txt-3); }
+    .store-base-sub { font-size: 13px; color: var(--txt-3); margin-bottom: 18px; }
+    .store-base-feats { display: flex; flex-direction: column; gap: 9px; margin-bottom: 22px; }
+    .store-base-feats li { list-style: none; display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--txt-2); }
+    .store-base-feats li svg { flex-shrink: 0; margin-top: 2px; color: var(--cyan); }
+    .store-buy-btn {
+      background: linear-gradient(90deg, #0B6B78, #0D7A87); color: #fff;
+      border: none; padding: 14px 28px; border-radius: 12px;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s; box-shadow: 0 4px 20px rgba(13,122,135,0.30);
+    }
+    .store-buy-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .store-buy-btn:disabled { cursor: default; background: rgba(74,222,128,0.12); color: var(--green); box-shadow: none; border: 1px solid rgba(74,222,128,0.25); }
+    .store-mods-label { font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--txt-3); margin: 6px 0 6px; }
+    .store-mods-sub { font-size: 13px; color: var(--txt-3); margin-bottom: 18px; }
+    .store-mods-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .store-mod-card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+      padding: 20px; display: flex; flex-direction: column; gap: 8px;
+      transition: opacity 0.25s, filter 0.25s;
+    }
+    .store-mod-name { font-size: 15px; font-weight: 700; color: var(--txt); letter-spacing: -0.01em; }
+    .store-mod-desc { font-size: 12.5px; color: var(--txt-3); line-height: 1.55; flex: 1; }
+    .store-mod-cta {
+      align-self: flex-start; margin-top: 6px; font-size: 12.5px; font-weight: 600;
+      background: none; border: 1px solid var(--line-2); color: var(--txt-2);
+      font-family: 'Inter', sans-serif; padding: 8px 16px; border-radius: 10px; cursor: pointer; transition: all 0.2s;
+    }
+    .store-mod-cta:hover:not(:disabled) { border-color: rgba(61,217,232,0.45); color: var(--cyan); }
+    .store-mod-card.store-locked { opacity: 0.38; filter: grayscale(0.85); pointer-events: none; }
+    .store-mod-lock { display: none; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--txt-3); }
+    .store-mod-card.store-locked .store-mod-lock { display: flex; }
+    .store-mod-card.store-locked .store-mod-cta { display: none; }
+
+    /* ── Modal: Consentimentos ───────────────────────────────────────── */
+    .consent-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(5,8,12,0.72); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .consent-modal {
+      background: var(--panel); border: 1px solid var(--line-2); border-radius: 20px;
+      padding: 30px; width: 100%; max-width: 480px; position: relative;
+    }
+    .consent-close {
+      position: absolute; top: 16px; right: 16px; background: none; border: none;
+      color: var(--txt-3); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px;
+    }
+    .consent-close:hover { color: var(--txt); }
+    .consent-title { font-size: 18px; font-weight: 800; color: var(--txt); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .consent-sub { font-size: 13px; color: var(--txt-3); line-height: 1.6; margin-bottom: 20px; }
+    .consent-item {
+      display: flex; align-items: flex-start; gap: 11px;
+      padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px;
+      margin-bottom: 10px; cursor: pointer; transition: border-color 0.2s;
+    }
+    .consent-item:hover { border-color: var(--line-2); }
+    .consent-item input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 15px; height: 15px; accent-color: var(--cyan); cursor: pointer; }
+    .consent-item-title { font-size: 13.5px; font-weight: 600; color: var(--txt); margin-bottom: 2px; }
+    .consent-item-desc { font-size: 12px; color: var(--txt-3); line-height: 1.5; }
+    .consent-confirm {
+      width: 100%; margin-top: 12px;
+      background: linear-gradient(90deg, #0B6B78, #0D7A87); color: #fff;
+      border: none; padding: 14px; border-radius: 12px;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .consent-confirm:disabled { opacity: 0.35; cursor: not-allowed; }
+    .consent-msg { font-size: 12.5px; color: var(--red); text-align: center; margin-top: 10px; display: none; }
+
     /* ── Modal: Agendar consulta ─────────────────────────────────────── */
     .bk-overlay {
       display: none; position: fixed; inset: 0; z-index: 1000;
@@ -807,6 +907,12 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         Chat
         <span id="chat-badge-dot" style="display:none;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:auto;"></span>
+      </a>
+
+      <div class="sb-section">Loja</div>
+      <a href="#" class="sb-link" id="sb-store" onclick="navSection('store')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Lyvoo Store
       </a>
 
       <div class="sb-section">Dados pessoais</div>
@@ -1349,6 +1455,39 @@
     </div>
 
     <!-- PERFIL -->
+    <!-- LYVOO STORE -->
+    <div id="sec-store" class="sec-wrap" style="display:none">
+      <div class="sec-header">
+        <div><h2 class="sec-title">Lyvoo Store</h2><p class="sec-sub">Adquira o plano base e adicione módulos especializados</p></div>
+      </div>
+
+      <div class="store-warn" id="store-warn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Precisa de completar alguns dados na área "Perfil" antes de conseguir avançar.</span>
+        <button class="store-warn-btn" onclick="navSection('perfil')">Ir para o Perfil →</button>
+      </div>
+
+      <div class="store-base-card">
+        <span class="store-base-tag">Programa anual</span>
+        <div class="store-base-title">Plano Base Lyvoo</div>
+        <div class="store-base-price">€365 <span>/ano · ≈ €1 por dia</span></div>
+        <div class="store-base-sub">Pagamento único anual · Sem renovação automática · Transparência total</div>
+        <ul class="store-base-feats">
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>20 biomarcadores essenciais analisados</li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Kit de colheita enviado para casa em 48h</li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Relatório integrado médico e nutricional</li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Plano alimentar personalizado</li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Reavaliação a cada 6 meses · 2 painéis completos por ano</li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Dashboard Lyvoo com acompanhamento contínuo</li>
+        </ul>
+        <button class="store-buy-btn" id="store-base-btn" onclick="comprarPlanoBase()">Adquirir plano base</button>
+      </div>
+
+      <div class="store-mods-label">Módulos adicionais</div>
+      <p class="store-mods-sub" id="store-mods-sub">Os módulos são complementos exclusivos para quem tem o Plano Base ativo.</p>
+      <div class="store-mods-grid" id="store-mods-grid"></div>
+    </div>
+
     <div id="sec-perfil" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div><h2 class="sec-title">Perfil</h2><p class="sec-sub">Os seus dados pessoais</p></div>
@@ -1446,6 +1585,10 @@
     <button class="mob-nav-btn" id="mn-consultas" onclick="navSection('consultas')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       <span>Consultas</span>
+    </button>
+    <button class="mob-nav-btn" id="mn-store" onclick="navSection('store')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>Store</span>
     </button>
     <button class="mob-nav-btn" id="mn-perfil" onclick="navSection('perfil')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2346,13 +2489,14 @@
   };
 
   // ── Navegação entre secções ──────────────────────────────────────────
-  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','chat','perfil','conta'];
+  const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','chat','store','perfil','conta'];
   const SECTION_TITLES = {
     'biomarcadores':  'Biomarcadores',
     'plano-alimentar':'Plano alimentar',
     'suplementacao':  'Suplementação',
     'relatorio':      'Relatório médico',
     'consultas':      'Consultas',
+    'store':          'Lyvoo Store',
     'perfil':         'Perfil',
     'conta':          'Conta e segurança',
     'painel':         'Painel'
@@ -3303,6 +3447,8 @@
         if (d.estado) estadoNum = d.estado;
         window._planoNome = nome;
         window._convite = d.agendamentoConvite || null;
+        window._userData = d;
+        atualizarStoreUI();
 
         // Render secções com dados reais
         if (d.resultados)     renderBiomarcadores(d.resultados);
@@ -3658,6 +3804,112 @@
     }
   });
 
+  // ── Lyvoo Store ────────────────────────────────────────────────────────
+  const STRIPE_LINK = 'https://buy.stripe.com/3cI5kCdOE95e2j57It7N600';
+
+  const STORE_MODULOS = [
+    { nome: 'Teste Genético',                     desc: 'Avalie a predisposição a doenças hereditárias e oriente medidas preventivas ou tratamentos.' },
+    { nome: 'Microbioma',                          desc: 'Análise completa da flora intestinal: impacto na saúde metabólica, imunidade e bem-estar.' },
+    { nome: 'Vitaminas',                           desc: 'Vitamina D, B12 e Folato. Avalie défices nutricionais que afetam energia e imunidade.' },
+    { nome: 'Teste de Intolerâncias Alimentares',  desc: 'Resposta imunitária (IgG) a 59 alimentos, organizados por grupo alimentar.' },
+    { nome: 'Hormonal Masculino',                  desc: 'Testosterona total e livre, SHBG, PSA, FSH e LH. Avaliação hormonal masculina completa.' },
+    { nome: 'Hormonal Feminino',                   desc: 'Estradiol, Progesterona, Prolactina, FSH, LH e SHBG. Ciclo, equilíbrio e menopausa.' },
+    { nome: 'Fertilidade',                         desc: 'AMH, FSH, LH e Estradiol. Avalie a reserva ovárica e o equilíbrio hormonal.' },
+    { nome: 'Tiroide Completo',                    desc: 'FT4 e T3, complementando o TSH do painel base para uma avaliação tiroideia completa.' },
+    { nome: 'Stress',                              desc: 'Cortisol matinal. Avalie o impacto do stress crónico no sono, imunidade e metabolismo.' },
+    { nome: 'Cardio Avançado',                     desc: 'Lp(a) e NT-proBNP. Aprofunde a avaliação de risco cardiovascular e função cardíaca.' },
+    { nome: 'Teste DST/IST Completo',              desc: 'Painel alargado de infeções sexualmente transmissíveis com interpretação clínica.' },
+    { nome: 'Hepatite B',                          desc: 'AgHBs. Rastreio de infeção pelo vírus da Hepatite B com interpretação clínica.' },
+  ];
+
+  (function renderStoreModulos() {
+    const grid = document.getElementById('store-mods-grid');
+    grid.innerHTML = STORE_MODULOS.map(m => `
+      <div class="store-mod-card store-locked">
+        <div class="store-mod-name">${m.nome}</div>
+        <div class="store-mod-desc">${m.desc}</div>
+        <span class="store-mod-lock">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Requer Plano Base ativo
+        </span>
+        <button class="store-mod-cta" onclick="navSection('chat')">Adicionar ao plano</button>
+      </div>`).join('');
+  })();
+
+  function atualizarStoreUI() {
+    const ativo = !!window._userData?.planoBaseAtivo;
+    const btn = document.getElementById('store-base-btn');
+    if (ativo) {
+      btn.disabled = true;
+      btn.textContent = '✓ Plano Base ativo';
+      document.getElementById('store-mods-sub').textContent = 'Adicione módulos especializados ao seu plano através do chat com a equipa.';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Adquirir plano base';
+    }
+    document.querySelectorAll('.store-mod-card').forEach(c => c.classList.toggle('store-locked', !ativo));
+  }
+
+  const PERFIL_OBRIGATORIOS = ['pf-dob','pf-genero','pf-phone','pf-morada','pf-distrito','pf-concelho','pf-cp'];
+
+  window.comprarPlanoBase = function() {
+    const warn = document.getElementById('store-warn');
+    const falta = PERFIL_OBRIGATORIOS.some(id => !document.getElementById(id).value.trim());
+    if (falta) {
+      warn.style.display = 'flex';
+      warn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    warn.style.display = 'none';
+    // Abrir modal de consentimentos
+    ['cs-saude','cs-labs','cs-tele'].forEach(id => { document.getElementById(id).checked = false; });
+    document.getElementById('consent-confirm').disabled = true;
+    document.getElementById('consent-msg').style.display = 'none';
+    document.getElementById('consent-overlay').style.display = 'flex';
+  };
+
+  window.fecharConsentimentos = function() {
+    document.getElementById('consent-overlay').style.display = 'none';
+  };
+  document.getElementById('consent-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) fecharConsentimentos();
+  });
+  ['cs-saude','cs-labs','cs-tele'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => {
+      document.getElementById('consent-confirm').disabled =
+        !(['cs-saude','cs-labs','cs-tele'].every(c => document.getElementById(c).checked));
+    });
+  });
+
+  window.confirmarConsentimentos = async function() {
+    const btn = document.getElementById('consent-confirm');
+    const msg = document.getElementById('consent-msg');
+    btn.disabled = true;
+    btn.textContent = 'A processar…';
+    try {
+      await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+        consentimentos: {
+          dadosSaude:    true,
+          laboratorios:  true,
+          teleconsultas: true,
+          aceiteEm:      new Date().toISOString(),
+        },
+        atualizadoEm: serverTimestamp()
+      });
+      const params = new URLSearchParams({
+        prefilled_email:     auth.currentUser.email || '',
+        client_reference_id: auth.currentUser.uid   || ''
+      });
+      window.location.href = `${STRIPE_LINK}?${params.toString()}`;
+    } catch (e) {
+      console.error('Erro ao guardar consentimentos:', e);
+      btn.disabled = false;
+      btn.textContent = 'Continuar para o checkout';
+      msg.textContent = 'Não foi possível registar os consentimentos. Tente novamente.';
+      msg.style.display = 'block';
+    }
+  };
+
   // ── Perfil: distrito/concelho + idade automática ───────────────────────
   window._preencherConcelhos = initDistritoConcelho(
     document.getElementById('pf-distrito'),
@@ -3736,6 +3988,40 @@
 </script>
 
 <!-- Modal: Agendar consulta -->
+<!-- ── Modal: Consentimentos (compra do plano base) ── -->
+<div class="consent-overlay" id="consent-overlay">
+  <div class="consent-modal">
+    <button class="consent-close" onclick="fecharConsentimentos()" aria-label="Fechar">×</button>
+    <div class="consent-title">Antes de avançar</div>
+    <div class="consent-sub">Para podermos prestar o serviço Lyvoo, é necessário o seu consentimento expresso para o seguinte:</div>
+
+    <label class="consent-item">
+      <input type="checkbox" id="cs-saude" />
+      <div>
+        <div class="consent-item-title">Tratamento de dados de saúde</div>
+        <div class="consent-item-desc">Autorizo a Lyvoo a tratar os meus dados de saúde para análise, interpretação clínica e elaboração de recomendações personalizadas.</div>
+      </div>
+    </label>
+    <label class="consent-item">
+      <input type="checkbox" id="cs-labs" />
+      <div>
+        <div class="consent-item-title">Partilha com laboratórios</div>
+        <div class="consent-item-desc">Autorizo a partilha dos meus dados com laboratórios certificados parceiros, exclusivamente para processamento das análises.</div>
+      </div>
+    </label>
+    <label class="consent-item">
+      <input type="checkbox" id="cs-tele" />
+      <div>
+        <div class="consent-item-title">Teleconsultas</div>
+        <div class="consent-item-desc">Aceito a realização de consultas à distância (teleconsultas) com a equipa clínica Lyvoo.</div>
+      </div>
+    </label>
+
+    <button class="consent-confirm" id="consent-confirm" disabled onclick="confirmarConsentimentos()">Continuar para o checkout</button>
+    <p class="consent-msg" id="consent-msg"></p>
+  </div>
+</div>
+
 <div class="bk-overlay" id="bk-overlay">
   <div class="bk-modal">
     <button class="bk-close" id="bk-close" aria-label="Fechar">
