@@ -132,6 +132,8 @@
     .bio-tbl input, .bio-tbl select { padding:6px 9px; border-radius:7px; border:1px solid var(--line-2); background:var(--panel-2); font-family:inherit; font-size:12.5px; color:var(--txt); outline:none; width:100%; transition:border-color 0.15s; }
     .bio-tbl input:focus, .bio-tbl select:focus { border-color:var(--cyan); }
     .bio-tbl select { cursor:pointer; }
+    .bio-tbl td.bio-ref-pair { display:flex; flex-direction:column; gap:4px; }
+    .bio-tbl td.bio-ref-pair input { font-size:11.5px; padding:5px 8px; }
     .btn-del-row { background:rgba(248,113,113,0.06); border:1px solid rgba(248,113,113,0.15); color:var(--red); border-radius:6px; padding:4px 8px; font-size:12px; cursor:pointer; transition:background 0.15s; }
     .btn-del-row:hover { background:rgba(248,113,113,0.14); }
 
@@ -1584,7 +1586,13 @@
       // Merge: pre-defined rows + any custom saved rows
       const preRows = cat.rows.map(r => {
         const saved = savedRows.find(s => s.nome === r.nome) || {};
-        return { ...r, valor: saved.valor||'', tag: saved.tag||'', delta: saved.delta||'', destaque: saved.destaque||false };
+        return {
+          ...r,
+          unidade:    saved.unidade    !== undefined ? saved.unidade    : r.unidade,
+          referencia: saved.referencia !== undefined ? saved.referencia : r.referencia,
+          refOtima:   saved.refOtima   !== undefined ? saved.refOtima   : r.refOtima,
+          valor: saved.valor||'', tag: saved.tag||'', delta: saved.delta||'', destaque: saved.destaque||false,
+        };
       });
       // Custom rows (not in pre-defined)
       const customRows = savedRows.filter(s => !cat.rows.find(r => r.nome === s.nome));
@@ -1599,9 +1607,9 @@
           <button class="btn-add-row" onclick="addBioRow('${catKey}')">+ Linha</button>
         </div>
         <table class="bio-tbl">
-          <colgroup><col style="width:20%"><col style="width:10%"><col style="width:10%"><col style="width:18%"><col style="width:12%"><col style="width:14%"><col style="width:10%"><col style="width:6%"></colgroup>
+          <colgroup><col style="width:16%"><col style="width:8%"><col style="width:8%"><col style="width:16%"><col style="width:14%"><col style="width:12%"><col style="width:9%"><col style="width:6%"></colgroup>
           <thead><tr>
-            <th>Biomarcador</th><th>Valor</th><th>Unidade</th><th>Referência</th><th title="Zona ótima Lyvoo (opcional) - se preenchida, o estado e o score são avaliados contra esta zona">Intervalo ótimo</th><th>Tag</th><th>Δ (variação)</th><th title="Mostrar no painel do cliente">⭐ Destaque</th><th></th>
+            <th>Biomarcador</th><th>Valor</th><th>Unidade</th><th title="Valores de referência do laboratório, por sexo (♀/♂)">Referência ♀/♂</th><th title="Zona ótima Lyvoo (opcional) - se preenchida, o estado e o score são avaliados contra esta zona, por sexo (♀/♂)">Intervalo ótimo ♀/♂</th><th>Tag</th><th>Δ (variação)</th><th title="Mostrar no painel do cliente">⭐ Destaque</th><th></th>
           </tr></thead>
           <tbody id="biotbody-${catKey}">
             ${allRows.map(r => bioRow(r)).join('')}
@@ -1613,20 +1621,35 @@
     requestAnimationFrame(updateDestaquePreview);
   }
 
+  // Valores de referência podem ser uma string única (legado/unissex) ou
+  // um objeto { f, m } com valores diferentes por sexo.
+  function refField(v) {
+    if (v && typeof v === 'object') return { f: v.f||'', m: v.m||'' };
+    return { f: v||'', m: v||'' };
+  }
+
   function bioRow(r) {
+    const ref = refField(r.referencia);
+    const ot  = refField(r.refOtima);
     return `<tr>
-      <td><input type="text" value="${r.nome||''}" placeholder="Nome" /></td>
-      <td><input type="text" value="${r.valor||''}" placeholder="-" style="width:72px" /></td>
-      <td><input type="text" value="${r.unidade||''}" placeholder="mg/dL" /></td>
-      <td><input type="text" value="${r.referencia||''}" placeholder="referência" /></td>
-      <td><input type="text" value="${r.refOtima||''}" placeholder="ex: 40-60" /></td>
-      <td><select>
+      <td><input type="text" class="f-nome" value="${r.nome||''}" placeholder="Nome" /></td>
+      <td><input type="text" class="f-valor" value="${r.valor||''}" placeholder="-" style="width:72px" /></td>
+      <td><input type="text" class="f-unidade" value="${r.unidade||''}" placeholder="mg/dL" /></td>
+      <td class="bio-ref-pair">
+        <input type="text" class="f-ref-f" value="${ref.f}" placeholder="♀ referência" title="Referência (Feminino)" />
+        <input type="text" class="f-ref-m" value="${ref.m}" placeholder="♂ referência" title="Referência (Masculino)" />
+      </td>
+      <td class="bio-ref-pair">
+        <input type="text" class="f-ot-f" value="${ot.f}" placeholder="♀ ex: 40-60" title="Intervalo ótimo (Feminino)" />
+        <input type="text" class="f-ot-m" value="${ot.m}" placeholder="♂ ex: 40-60" title="Intervalo ótimo (Masculino)" />
+      </td>
+      <td><select class="f-tag">
         <option value="">Auto</option>
         <option value="otimo" ${r.tag==='otimo'?'selected':''}>Ótimo</option>
         <option value="atencao" ${r.tag==='atencao'?'selected':''}>Atenção</option>
         <option value="critico" ${r.tag==='critico'?'selected':''}>Crítico</option>
       </select></td>
-      <td><input type="text" value="${r.delta||''}" placeholder="ex: -15 ou +8" /></td>
+      <td><input type="text" class="f-delta" value="${r.delta||''}" placeholder="ex: -15 ou +8" /></td>
       <td class="destaque-cell"><input type="checkbox" class="destaque-cb" title="Mostrar no painel" ${r.destaque?'checked':''} /></td>
       <td><button class="btn-del-row" onclick="this.closest('tr').remove()" title="Remover">×</button></td>
     </tr>`;
@@ -1701,19 +1724,18 @@
       if (!tbody) return;
       const rows = [];
       tbody.querySelectorAll('tr').forEach(tr => {
-        const inputs = tr.querySelectorAll('input[type=text], input[type=number]');
-        const sel  = tr.querySelector('select');
+        const val  = cls => tr.querySelector('.' + cls)?.value.trim() || '';
         const cb   = tr.querySelector('input[type=checkbox]');
-        const nome = inputs[0].value.trim();
+        const nome = val('f-nome');
         if (!nome) return;
         rows.push({
           nome,
-          valor:      inputs[1].value.trim(),
-          unidade:    inputs[2].value.trim(),
-          referencia: inputs[3].value.trim(),
-          refOtima:   inputs[4].value.trim(),
-          tag:        sel.value,
-          delta:      inputs[5].value.trim(),
+          valor:      val('f-valor'),
+          unidade:    val('f-unidade'),
+          referencia: { f: val('f-ref-f'), m: val('f-ref-m') },
+          refOtima:   { f: val('f-ot-f'),  m: val('f-ot-m') },
+          tag:        tr.querySelector('.f-tag')?.value || '',
+          delta:      val('f-delta'),
           destaque:   cb ? cb.checked : false,
         });
       });

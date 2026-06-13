@@ -2840,11 +2840,23 @@
     return outsideSeverity(val, rf);
   }
 
-  // Normaliza todas as linhas: preenche r.tag automaticamente quando em falta
-  function normalizeResultados(resultados) {
+  // Escolhe o valor de referência adequado ao género do cliente.
+  // Aceita o formato legado (string única) ou { f, m } com valores por sexo.
+  function pickRef(v, genero) {
+    if (v && typeof v === 'object') return (genero === 'masculino' ? v.m : v.f) || v.f || v.m || '';
+    return v || '';
+  }
+
+  // Normaliza todas as linhas: resolve referências por género e preenche r.tag automaticamente quando em falta
+  function normalizeResultados(resultados, genero = window._userData?.genero) {
     if (!resultados?.biomarcadores) return resultados;
     Object.values(resultados.biomarcadores).forEach(rows =>
-      (rows || []).forEach(r => { if (r) r.tag = autoTag(r); }));
+      (rows || []).forEach(r => {
+        if (!r) return;
+        r.referencia = pickRef(r.referencia, genero);
+        r.refOtima = pickRef(r.refOtima, genero);
+        r.tag = autoTag(r);
+      }));
     return resultados;
   }
 
