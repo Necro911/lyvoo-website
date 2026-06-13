@@ -26,7 +26,7 @@
     /* LOADING */
 
     /* SHELL */
-    .shell { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
+    .shell { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
 
     /* ── SIDEBAR ── */
     .sidebar {
@@ -435,10 +435,15 @@
     .danger-btn { background: rgba(248,113,113,0.08) !important; color: var(--red) !important; border-color: rgba(248,113,113,0.2) !important; cursor: pointer; }
 
     @media (max-width: 860px) {
-      .bio-row { grid-template-columns: 1fr 80px 70px; }
-      .bio-row .bio-range, .bio-row .sys-range-cell { display: none; }
       .sec-cards-grid { grid-template-columns: 1fr; }
       .pf-row { grid-template-columns: 1fr; }
+    }
+    /* Biomarcadores: tabela compacta (Parâmetro · Valor · Estado) — esconde
+       Referência (3), Intervalo (4) e Δ (6); robusto ao <span> vazio do range. */
+    @media (max-width: 768px) {
+      .bio-thead, .bio-row { grid-template-columns: minmax(0, 1fr) 80px 78px; gap: 10px; padding-left: 16px; padding-right: 16px; }
+      .bio-thead > span:nth-child(3), .bio-thead > span:nth-child(4), .bio-thead > span:nth-child(6),
+      .bio-row > *:nth-child(3), .bio-row > *:nth-child(4), .bio-row > *:nth-child(6) { display: none; }
     }
 
     /* ── Novo badge em feature cards ── */
@@ -621,10 +626,11 @@
     .bio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
     .bio-card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
     .bio-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-    .bio-name { font-size: 12.5px; font-weight: 600; color: var(--txt); }
-    .bio-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(74,222,128,0.15); color: var(--green); }
-    .bio-val { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--txt); }
-    .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 500; }
+    /* Scoped a .bio-card para não colidir com as mesmas classes na tabela de biomarcadores */
+    .bio-card .bio-name { font-size: 12.5px; font-weight: 600; color: var(--txt); }
+    .bio-card .bio-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(74,222,128,0.15); color: var(--green); }
+    .bio-card .bio-val { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--txt); }
+    .bio-card .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 500; }
     .bio-trend { font-size: 11px; color: var(--txt-2); margin-top: 2px; }
     .bio-trend.up { color: var(--green); }
     .bio-trend.down { color: var(--cyan); }

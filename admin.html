@@ -32,7 +32,7 @@
     .btn-ghost-sm:hover { color:var(--txt); border-color:rgba(255,255,255,0.18); }
 
     /* ── LAYOUT ── */
-    .layout { display:grid; grid-template-columns:320px 1fr; min-height:calc(100vh - 58px); }
+    .layout { display:grid; grid-template-columns:320px minmax(0, 1fr); min-height:calc(100vh - 58px); }
 
     /* ── SIDEBAR LIST ── */
     .sidebar { border-right:1px solid var(--line); display:flex; flex-direction:column; }
@@ -286,10 +286,14 @@
     #access-denied h2 { font-size:20px; font-weight:800; color:var(--red); margin-bottom:10px; }
 
     @media (max-width: 960px) {
-      .layout { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: minmax(0, 1fr); }
       .sidebar { border-right: none; border-bottom: 1px solid var(--line); max-height: 40vh; }
       .estado-cards { grid-template-columns: repeat(3,1fr); }
       .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .tab-content { padding: 18px 14px 60px; }
+      .estado-cards { grid-template-columns: repeat(2,1fr); }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
