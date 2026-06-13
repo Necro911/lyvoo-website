@@ -422,41 +422,35 @@
   });
 
   // ── Login com Google ──
+  // Usamos sempre signInWithPopup (mobile e desktop). O signInWithRedirect NÃO
+  // funciona aqui: o site está em lyvoo.pt (GitHub Pages) mas o authDomain do
+  // Firebase é lyvoo-9d54b.firebaseapp.com — domínios diferentes. Ao voltar da
+  // Google, os browsers (sobretudo Safari/iOS) bloqueiam o acesso ao estado
+  // guardado no domínio do Firebase e o login não completa (volta ao login.html).
+  // O popup recebe o resultado por postMessage na mesma janela, sem depender
+  // desse armazenamento cruzado, por isso funciona nos dois.
   document.getElementById('btnGoogle').addEventListener('click', async () => {
     limparMensagem();
     setGoogleLoading(true);
     const provider = new GoogleAuthProvider();
-
-    // Mobile: ir direto para redirect (pop-ups são bloqueados na maioria dos
-    // browsers móveis). A página sai e regressa; o getRedirectResult/onAuthState
-    // tratam do resto.
-    if (isMobile) {
-      try {
-        await signInWithRedirect(auth, provider);
-      } catch (err) {
-        mostrarMensagem(mensagemErro(err.code, err));
-        setGoogleLoading(false);
-      }
-      return;
-    }
-
-    // Desktop: tentar pop-up; se for bloqueado, recorrer a redirect.
     try {
       const cred = await signInWithPopup(auth, provider);
       window.location.href = destino(cred.user.email);
     } catch (err) {
-      const fallback = ['auth/popup-blocked', 'auth/cancelled-popup-request', 'auth/operation-not-supported-in-this-environment'];
-      if (fallback.includes(err.code)) {
-        try { await signInWithRedirect(auth, provider); return; }
-        catch (e2) { mostrarMensagem(mensagemErro(e2.code, e2)); setGoogleLoading(false); return; }
+      console.error('[login] login Google falhou:', err.code, err);
+      if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        setGoogleLoading(false);
+        return;
       }
-      // Mesmo um "cancelado pelo utilizador" é registado na consola — ajuda a
-      // distinguir um cancelamento real de um pop-up que fecha sozinho (sinal
-      // típico de problema de App Check/COOP/domínio).
-      console.error('[login] pop-up Google falhou:', err.code, err);
-      if (err.code !== 'auth/popup-closed-by-user') {
-        mostrarMensagem(mensagemErro(err.code, err));
+      // Pop-up bloqueado normalmente só acontece dentro de browsers embebidos
+      // (Instagram, Facebook, etc.). O redirect não é alternativa válida aqui
+      // (ver acima), por isso orientamos o utilizador a abrir num browser real.
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment') {
+        mostrarMensagem('Não foi possível abrir a janela da Google. Se está dentro de outra app (Instagram, Facebook…), abra lyvoo.pt no Safari ou Chrome e tente novamente.');
+        setGoogleLoading(false);
+        return;
       }
+      mostrarMensagem(mensagemErro(err.code, err));
       setGoogleLoading(false);
     }
   });

@@ -526,21 +526,12 @@
     setGoogleLoading(true);
     const provider = new GoogleAuthProvider();
 
-    // Mobile: guardar a intenção (termos/marketing perdem-se no reload) e ir por redirect.
-    if (isMobile) {
-      try {
-        sessionStorage.setItem(GSIGNUP_KEY, JSON.stringify({
-          marketing: document.getElementById('marketing').checked, terms: true
-        }));
-        await signInWithRedirect(auth, provider);
-      } catch (err) {
-        setGoogleLoading(false);
-        mostrarErroGlobal(mensagemErro(err.code));
-      }
-      return;
-    }
-
-    // Desktop: pop-up, com fallback para redirect se for bloqueado.
+    // Usamos sempre signInWithPopup (mobile e desktop). O signInWithRedirect não
+    // funciona aqui porque o site (lyvoo.pt, GitHub Pages) está num domínio
+    // diferente do authDomain do Firebase (lyvoo-9d54b.firebaseapp.com), e os
+    // browsers móveis bloqueiam o estado guardado nesse domínio ao regressar da
+    // Google. Como o popup não recarrega a página, os checkboxes (termos/
+    // marketing) continuam disponíveis no DOM — sem necessidade de sessionStorage.
     try {
       const result = await signInWithPopup(auth, provider);
       // Google fornece displayName; separa primeiro/último nome
@@ -552,18 +543,21 @@
       await notificarConsentimentoMarketing(result.user, document.getElementById('marketing').checked);
       aoAutenticar(result.user);
     } catch (err) {
-      const fallback = ['auth/popup-blocked', 'auth/cancelled-popup-request', 'auth/operation-not-supported-in-this-environment'];
-      if (fallback.includes(err.code)) {
-        sessionStorage.setItem(GSIGNUP_KEY, JSON.stringify({
-          marketing: document.getElementById('marketing').checked, terms: true
-        }));
-        try { await signInWithRedirect(auth, provider); return; }
-        catch (e2) { setGoogleLoading(false); mostrarErroGlobal(mensagemErro(e2.code)); return; }
+      console.error('[registar] registo Google falhou:', err.code, err);
+      if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        setGoogleLoading(false);
+        return;
+      }
+      // Pop-up bloqueado acontece sobretudo em browsers embebidos (Instagram,
+      // Facebook…). O redirect não é alternativa válida aqui, por isso orientamos
+      // o utilizador a abrir num browser real.
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment') {
+        mostrarErroGlobal('Não foi possível abrir a janela da Google. Se está dentro de outra app (Instagram, Facebook…), abra lyvoo.pt no Safari ou Chrome e tente novamente.');
+        setGoogleLoading(false);
+        return;
       }
       setGoogleLoading(false);
-      if (err.code !== 'auth/popup-closed-by-user') {
-        mostrarErroGlobal(mensagemErro(err.code));
-      }
+      mostrarErroGlobal(mensagemErro(err.code));
     }
   });
 </script>
