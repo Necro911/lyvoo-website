@@ -3378,6 +3378,32 @@
         }
       }
 
+      // Estados 1-3: progresso e checklist refletem a fase inicial do programa
+      if (estadoNum <= 3) {
+        if (!d.relatorio?.progresso) {
+          const pctMap = { 1: 10, 2: 30, 3: 55 };
+          const pct = pctMap[estadoNum] || 10;
+          const pctEl = document.getElementById('prog-pct');
+          if (pctEl) pctEl.innerHTML = `${pct}<small>%</small>`;
+          const pr = document.getElementById('prog-ring-fill');
+          if (pr) pr.setAttribute('stroke-dashoffset', (351.9 * (1 - pct / 100)).toFixed(1));
+        }
+
+        const doneSvg = '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        const passos = [
+          { titulo: 'Programa iniciado',     done: true,           ativo: false,            descDone: 'Concluído',  descAtivo: '' },
+          { titulo: 'Kit enviado para casa', done: estadoNum >= 2, ativo: estadoNum === 1,  descDone: 'Concluído',  descAtivo: 'Em preparação · ~48h' },
+          { titulo: 'Análise laboratorial',  done: false,          ativo: estadoNum === 3,  descDone: 'Concluída',  descAtivo: 'Em curso · 7-10 dias' },
+          { titulo: 'Resultados e plano',    done: false,          ativo: false,            descDone: 'Disponível', descAtivo: '' },
+        ];
+        const checklist = document.getElementById('prog-checklist');
+        if (checklist) checklist.innerHTML = passos.map(p => {
+          const cls   = p.done ? 'done' : p.ativo ? 'prog' : 'todo';
+          const state = p.done ? p.descDone : p.ativo ? p.descAtivo : 'Pendente';
+          return `<div class="check-item"><div class="check-mark ${cls}">${p.done ? doneSvg : ''}</div><div class="check-body"><div class="check-title">${p.titulo}</div><div class="check-state"${p.ativo ? ' style="color:var(--cyan)"' : ''}>${state}</div></div></div>`;
+        }).join('');
+      }
+
       // Banner "resultados prontos" (estado 4 inicial) — mostra apenas uma vez
       if (estadoNum === 4) {
         const banner = document.getElementById('results-banner');
