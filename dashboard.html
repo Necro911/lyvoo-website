@@ -754,14 +754,32 @@
     .consent-title { font-size: 18px; font-weight: 800; color: var(--txt); letter-spacing: -0.02em; margin-bottom: 6px; }
     .consent-sub { font-size: 13px; color: var(--txt-3); line-height: 1.6; margin-bottom: 20px; }
     .consent-item {
-      display: flex; align-items: flex-start; gap: 11px;
       padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px;
-      margin-bottom: 10px; cursor: pointer; transition: border-color 0.2s;
+      margin-bottom: 10px; transition: border-color 0.2s;
     }
-    .consent-item:hover { border-color: var(--line-2); }
-    .consent-item input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; width: 15px; height: 15px; accent-color: var(--cyan); cursor: pointer; }
-    .consent-item-title { font-size: 13.5px; font-weight: 600; color: var(--txt); margin-bottom: 2px; }
-    .consent-item-desc { font-size: 12px; color: var(--txt-3); line-height: 1.5; }
+    .consent-item-head { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .consent-item input[type="checkbox"] { flex-shrink: 0; width: 15px; height: 15px; accent-color: var(--cyan); cursor: pointer; }
+    .consent-item input[type="checkbox"]:disabled { cursor: not-allowed; opacity: 0.4; }
+    .consent-item-title { font-size: 13.5px; font-weight: 600; color: var(--txt); cursor: pointer; }
+    .consent-read-hint {
+      margin-left: auto; flex-shrink: 0; font-size: 10.5px; font-weight: 600;
+      color: var(--amber); background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.22); border-radius: 999px; padding: 3px 9px;
+      white-space: nowrap;
+    }
+    .consent-read-hint.read {
+      color: var(--green); background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.22);
+    }
+    .consent-scroll {
+      max-height: 120px; overflow-y: auto;
+      background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 11.5px; color: var(--txt-3); line-height: 1.6;
+      overscroll-behavior: contain;
+    }
+    .consent-scroll p { margin-bottom: 8px; }
+    .consent-scroll p:last-child { margin-bottom: 0; }
+    .consent-modal { max-height: 90vh; overflow-y: auto; }
     .consent-confirm {
       width: 100%; margin-top: 12px;
       background: linear-gradient(90deg, #0B6B78, #0D7A87); color: #fff;
@@ -3861,12 +3879,40 @@
       return;
     }
     warn.style.display = 'none';
-    // Abrir modal de consentimentos
-    ['cs-saude','cs-labs','cs-tele'].forEach(id => { document.getElementById(id).checked = false; });
+    // Abrir modal de consentimentos (reset: por ler, por aceitar)
+    ['cs-saude','cs-labs','cs-tele'].forEach(id => {
+      const cb = document.getElementById(id);
+      cb.checked = false;
+      cb.disabled = true;
+      const hint = document.getElementById('hint-' + id);
+      hint.classList.remove('read');
+      hint.textContent = 'Leia até ao fim ↓';
+    });
+    document.querySelectorAll('.consent-scroll').forEach(box => { box.scrollTop = 0; });
     document.getElementById('consent-confirm').disabled = true;
     document.getElementById('consent-msg').style.display = 'none';
     document.getElementById('consent-overlay').style.display = 'flex';
+    // Caso algum texto não tenha scroll (ecrãs grandes), considerá-lo lido
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.consent-scroll').forEach(verificarLeituraConsent);
+    });
   };
+
+  // Só permite aceitar cada consentimento depois de o texto ter sido lido
+  // até ao fim (scroll completo) — consentimento informado nos termos do RGPD
+  function verificarLeituraConsent(box) {
+    const lido = box.scrollTop + box.clientHeight >= box.scrollHeight - 4;
+    if (!lido) return;
+    const cb = document.getElementById(box.dataset.cb);
+    if (!cb.disabled) return;
+    cb.disabled = false;
+    const hint = document.getElementById('hint-' + box.dataset.cb);
+    hint.classList.add('read');
+    hint.textContent = '✓ Lido';
+  }
+  document.querySelectorAll('.consent-scroll').forEach(box => {
+    box.addEventListener('scroll', () => verificarLeituraConsent(box));
+  });
 
   window.fecharConsentimentos = function() {
     document.getElementById('consent-overlay').style.display = 'none';
@@ -3893,6 +3939,7 @@
           laboratorios:  true,
           teleconsultas: true,
           aceiteEm:      new Date().toISOString(),
+          versaoTexto:   '2026-06-13.v1',
         },
         atualizadoEm: serverTimestamp()
       });
@@ -3992,30 +4039,50 @@
 <div class="consent-overlay" id="consent-overlay">
   <div class="consent-modal">
     <button class="consent-close" onclick="fecharConsentimentos()" aria-label="Fechar">×</button>
-    <div class="consent-title">Antes de avançar</div>
-    <div class="consent-sub">Para podermos prestar o serviço Lyvoo, é necessário o seu consentimento expresso para o seguinte:</div>
+    <div class="consent-title">Consentimentos necessários</div>
+    <div class="consent-sub">Nos termos do Regulamento Geral sobre a Proteção de Dados (RGPD), precisamos do seu consentimento expresso, livre e informado. <strong>Leia cada declaração até ao fim para poder aceitar.</strong></div>
 
-    <label class="consent-item">
-      <input type="checkbox" id="cs-saude" />
-      <div>
-        <div class="consent-item-title">Tratamento de dados de saúde</div>
-        <div class="consent-item-desc">Autorizo a Lyvoo a tratar os meus dados de saúde para análise, interpretação clínica e elaboração de recomendações personalizadas.</div>
+    <div class="consent-item">
+      <div class="consent-item-head">
+        <input type="checkbox" id="cs-saude" disabled />
+        <label for="cs-saude" class="consent-item-title">1. Tratamento de dados de saúde</label>
+        <span class="consent-read-hint" id="hint-cs-saude">Leia até ao fim ↓</span>
       </div>
-    </label>
-    <label class="consent-item">
-      <input type="checkbox" id="cs-labs" />
-      <div>
-        <div class="consent-item-title">Partilha com laboratórios</div>
-        <div class="consent-item-desc">Autorizo a partilha dos meus dados com laboratórios certificados parceiros, exclusivamente para processamento das análises.</div>
+      <div class="consent-scroll" data-cb="cs-saude">
+        <p>Declaro que consinto, de forma livre, específica, informada e explícita, que a Lyvoo, na qualidade de responsável pelo tratamento, proceda ao tratamento dos meus dados pessoais de saúde — incluindo resultados de análises clínicas, biomarcadores, historial clínico, dados de anamnese e informação que eu venha a disponibilizar no âmbito do programa — para as seguintes finalidades: (i) análise e interpretação clínica dos meus resultados; (ii) elaboração de relatórios médicos e nutricionais personalizados; (iii) definição de planos alimentares e de suplementação ajustados ao meu perfil; e (iv) acompanhamento contínuo da minha saúde ao longo do programa.</p>
+        <p>Base legal: consentimento explícito do titular, nos termos do artigo 9.º, n.º 2, alínea a) do RGPD. Os dados de saúde constituem uma categoria especial de dados pessoais e só são tratados com este consentimento.</p>
+        <p>Os dados são conservados apenas durante o período necessário às finalidades indicadas e de acordo com os prazos legais aplicáveis, conforme detalhado na Política de Privacidade (lyvoo.pt/privacidade.html).</p>
+        <p>Tenho o direito de retirar este consentimento a qualquer momento, através do email hello@lyvoo.pt ou da área "Conta e segurança", sem comprometer a licitude do tratamento efetuado até essa data. A retirada do consentimento poderá, no entanto, impossibilitar a prestação do serviço Lyvoo. Tenho ainda os direitos de acesso, retificação, apagamento, limitação, portabilidade e oposição, bem como o direito de apresentar reclamação à CNPD (Comissão Nacional de Proteção de Dados).</p>
       </div>
-    </label>
-    <label class="consent-item">
-      <input type="checkbox" id="cs-tele" />
-      <div>
-        <div class="consent-item-title">Teleconsultas</div>
-        <div class="consent-item-desc">Aceito a realização de consultas à distância (teleconsultas) com a equipa clínica Lyvoo.</div>
+    </div>
+
+    <div class="consent-item">
+      <div class="consent-item-head">
+        <input type="checkbox" id="cs-labs" disabled />
+        <label for="cs-labs" class="consent-item-title">2. Partilha com laboratórios</label>
+        <span class="consent-read-hint" id="hint-cs-labs">Leia até ao fim ↓</span>
       </div>
-    </label>
+      <div class="consent-scroll" data-cb="cs-labs">
+        <p>Declaro que consinto, de forma livre, específica, informada e explícita, que a Lyvoo partilhe os meus dados pessoais — nome, contactos, dados de identificação da amostra e requisição de análises — com laboratórios de análises clínicas certificados (norma ISO 15189) que atuam como parceiros da Lyvoo, exclusivamente para a finalidade de processamento laboratorial das minhas amostras biológicas e emissão dos respetivos resultados.</p>
+        <p>Os laboratórios parceiros atuam ao abrigo de contratos de tratamento de dados nos termos do artigo 28.º do RGPD, estando obrigados a sigilo, a medidas técnicas e organizativas adequadas e à utilização dos dados estritamente para a finalidade indicada. Não é efetuada qualquer transferência dos meus dados para fora do Espaço Económico Europeu sem garantias adequadas nos termos do Capítulo V do RGPD.</p>
+        <p>Base legal: consentimento explícito do titular, nos termos do artigo 9.º, n.º 2, alínea a) do RGPD.</p>
+        <p>Tenho o direito de retirar este consentimento a qualquer momento através do email hello@lyvoo.pt, sem comprometer a licitude do tratamento efetuado até essa data. Sem esta partilha não é possível realizar as análises clínicas que integram o programa Lyvoo.</p>
+      </div>
+    </div>
+
+    <div class="consent-item">
+      <div class="consent-item-head">
+        <input type="checkbox" id="cs-tele" disabled />
+        <label for="cs-tele" class="consent-item-title">3. Teleconsultas</label>
+        <span class="consent-read-hint" id="hint-cs-tele">Leia até ao fim ↓</span>
+      </div>
+      <div class="consent-scroll" data-cb="cs-tele">
+        <p>Declaro que consinto, de forma livre, específica e informada, na realização de consultas à distância (teleconsultas), por videochamada ou chamada telefónica, com os profissionais de saúde da equipa Lyvoo (médicos e nutricionistas), no âmbito do acompanhamento previsto no programa.</p>
+        <p>Compreendo que: (i) a teleconsulta tem natureza complementar e não substitui, em situações de urgência ou emergência, o recurso aos serviços de saúde presenciais; (ii) durante a teleconsulta poderão ser tratados dados de saúde, abrangidos pelo consentimento de tratamento de dados de saúde acima prestado; (iii) as teleconsultas não são gravadas sem o meu consentimento prévio e expresso; e (iv) posso, a qualquer momento, solicitar esclarecimentos adicionais ou interromper a teleconsulta.</p>
+        <p>Base legal: consentimento do titular, nos termos do artigo 6.º, n.º 1, alínea a) e, quanto a dados de saúde, do artigo 9.º, n.º 2, alínea a) do RGPD.</p>
+        <p>Tenho o direito de retirar este consentimento a qualquer momento através do email hello@lyvoo.pt, sem comprometer a licitude do tratamento efetuado até essa data.</p>
+      </div>
+    </div>
 
     <button class="consent-confirm" id="consent-confirm" disabled onclick="confirmarConsentimentos()">Continuar para o checkout</button>
     <p class="consent-msg" id="consent-msg"></p>
