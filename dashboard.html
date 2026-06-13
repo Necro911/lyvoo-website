@@ -847,6 +847,11 @@
     <div style="width:34px;height:34px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--cyan);border-radius:50%;animation:dash-spin 0.8s linear infinite;"></div>
     <div style="font-size:13px;">A carregar o seu painel…</div>
   </div>
+  <div id="load-error-mask" style="position:fixed;inset:0;z-index:100000;background:#060A0C;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div style="font-size:15px;color:var(--txt-2);max-width:340px;line-height:1.6;">Não foi possível carregar o seu painel. Verifique a ligação à internet e tente novamente.</div>
+    <button onclick="location.reload()" style="background:var(--cyan);color:#04141A;border:none;font-family:inherit;font-size:14px;font-weight:700;padding:12px 24px;border-radius:10px;cursor:pointer;">Tentar novamente</button>
+  </div>
   <style>@keyframes dash-spin { to { transform: rotate(360deg); } }</style>
 
 <div class="shell" id="shell">
@@ -1489,6 +1494,19 @@
     return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
   }
 
+  // ── Estado "visto" sincronizado no Firestore (cross-device) ───────────
+  // Antes era localStorage (por-dispositivo): noutro dispositivo o sino e o
+  // chat reapareciam como não-lidos. Agora persiste no doc do utilizador.
+  let _vistoNotifTs = 0;  // d.vistoNotificacoesEm — sino de notificações
+  let _vistoChatTs  = 0;  // d.vistoChatEm — chat com a equipa
+  const tsToMs = (v) => v?.toDate ? v.toDate().getTime() : (v ? new Date(v).getTime() : 0);
+  async function gravarVisto(campo) {
+    const uid = auth.currentUser?.uid;
+    if (!uid) return;
+    try { await updateDoc(doc(db, 'users', uid), { [campo]: serverTimestamp() }); }
+    catch (e) { console.error('Erro ao gravar estado visto:', e); }
+  }
+
   let _chatInitUid = null;
   function initChat(uid) {
     const msgsEl = document.getElementById('chat-messages');
@@ -1523,7 +1541,7 @@
       }).join('');
       msgsEl.scrollTop = msgsEl.scrollHeight;
 
-      const vistoTs = parseInt(localStorage.getItem(`lyvoo_chat_visto_${uid}`) || '0', 10);
+      const vistoTs = _vistoChatTs;
       const dot = document.getElementById('chat-badge-dot');
       if (dot) dot.style.display = (lastAdminTs > vistoTs) ? 'block' : 'none';
     }, (err) => {
@@ -1566,8 +1584,8 @@
 
   window.marcarNotificacoesVistas = function(e) {
     e.stopPropagation();
-    const uid = window._currentUser?.uid;
-    if (uid) localStorage.setItem(`lyvoo_visto_${uid}`, Date.now());
+    _vistoNotifTs = Date.now();
+    gravarVisto('vistoNotificacoesEm');
     // Remover dot e badge unread
     document.getElementById('bell-dot').style.display = 'none';
     document.querySelectorAll('.bell-notif.unread').forEach(el => el.classList.remove('unread'));
@@ -1584,7 +1602,7 @@
 
     if (d.notificadoEm) {
       const notifTs = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
-      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const vistoTs = _vistoNotifTs;
       const isNew   = notifTs > vistoTs;
       const dataStr = new Date(notifTs).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       const titulo  = d.estado >= 4 ? 'Resultados disponíveis' : 'O seu painel foi atualizado';
@@ -1598,7 +1616,7 @@
     if (d.consultaConfirmada?.confirmadoEm) {
       const cf = d.consultaConfirmada;
       const ts = cf.confirmadoEm.toDate ? cf.confirmadoEm.toDate().getTime() : new Date(cf.confirmadoEm).getTime();
-      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
       const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       const ed = cf.data ? new Date(cf.data + 'T00:00:00') : null;
@@ -1613,7 +1631,7 @@
 
     if (d.consultaAlterada?.alteradoEm) {
       const ts = d.consultaAlterada.alteradoEm.toDate ? d.consultaAlterada.alteradoEm.toDate().getTime() : new Date(d.consultaAlterada.alteradoEm).getTime();
-      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
       const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       const ed = d.consultaAlterada.data ? new Date(d.consultaAlterada.data + 'T00:00:00') : null;
@@ -1629,7 +1647,7 @@
     if (d.agendamentoConvite?.estado === 'pendente' && (d.agendamentoConvite.slots||[]).length && d.agendamentoConvite.criadoEm) {
       const cv = d.agendamentoConvite;
       const ts = cv.criadoEm.toDate ? cv.criadoEm.toDate().getTime() : new Date(cv.criadoEm).getTime();
-      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
       const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       _bellNotifs.push({
@@ -1643,7 +1661,7 @@
     if (d.consultaCanceladaAdmin?.em) {
       const ca = d.consultaCanceladaAdmin;
       const ts = ca.em.toDate ? ca.em.toDate().getTime() : new Date(ca.em).getTime();
-      const vistoTs = parseInt(localStorage.getItem(`lyvoo_visto_${uid}`) || '0', 10);
+      const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
       const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       const ed = ca.data ? new Date(ca.data + 'T00:00:00') : null;
@@ -2513,7 +2531,8 @@
 
     // Marcar chat como visto
     if (name === 'chat' && window._currentUser) {
-      localStorage.setItem(`lyvoo_chat_visto_${window._currentUser.uid}`, Date.now());
+      _vistoChatTs = Date.now();
+      gravarVisto('vistoChatEm');
       const dot = document.getElementById('chat-badge-dot');
       if (dot) dot.style.display = 'none';
     }
@@ -3318,6 +3337,8 @@
         window._planoNome = nome;
         window._convite = d.agendamentoConvite || null;
         window._userData = d;
+        _vistoNotifTs = tsToMs(d.vistoNotificacoesEm);
+        _vistoChatTs  = tsToMs(d.vistoChatEm);
         atualizarStoreUI();
         window._aplicarEstadoEliminacao?.();
 
@@ -3408,7 +3429,7 @@
 
         if (d.notificadoEm) {
           const notifTs  = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
-          const vistoTs  = parseInt(localStorage.getItem(`lyvoo_visto_${user.uid}`) || '0', 10);
+          const vistoTs  = _vistoNotifTs;
           const banner   = document.getElementById('novidades-banner');
           const closeBtn = document.getElementById('novidades-banner-close');
           const sub      = document.getElementById('novidades-banner-sub');
@@ -3420,7 +3441,8 @@
             }
             banner.style.display = 'flex';
             const marcarVisto = () => {
-              localStorage.setItem(`lyvoo_visto_${user.uid}`, Date.now());
+              _vistoNotifTs = Date.now();
+              gravarVisto('vistoNotificacoesEm');
               document.getElementById('bell-dot').style.display = 'none';
               document.querySelectorAll('.bell-notif.unread').forEach(el => el.classList.remove('unread'));
             };
@@ -3431,7 +3453,13 @@
         }
       }
     } catch (err) {
-      console.warn('Não foi possível carregar o perfil:', err);
+      console.error('Não foi possível carregar o painel:', err);
+      if (myGen !== window._loadGen) return; // outra execução mais recente trata da UI
+      const em = document.getElementById('load-error-mask');
+      if (em) em.style.display = 'flex';
+      const pm = document.getElementById('page-loading-mask');
+      if (pm) { pm.style.opacity = '0'; setTimeout(() => { pm.style.display = 'none'; }, 300); }
+      return; // não renderizar um painel vazio/bloqueado por cima de um erro de carregamento
     }
 
     if (myGen !== window._loadGen) return; // execução mais recente já em curso, abortar
