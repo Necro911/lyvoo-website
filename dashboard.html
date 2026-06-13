@@ -774,23 +774,26 @@
     .bk-title { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; color: var(--txt, #fff); margin-bottom: 4px; }
     .bk-sub { font-size: 13px; color: var(--txt-2, #a0aab8); margin-bottom: 22px; line-height: 1.5; }
     .bk-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--txt-3, #6b7686); margin: 18px 0 10px; }
-    .bk-days {
-      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
-      scrollbar-width: thin;
-    }
-    .bk-day {
-      flex: 0 0 auto; min-width: 58px; padding: 10px 6px; border-radius: 12px;
-      border: 1px solid var(--line, rgba(255,255,255,0.08)); background: rgba(255,255,255,0.02);
-      color: var(--txt, #fff); cursor: pointer; text-align: center; transition: all 0.15s;
-      font-family: inherit;
-    }
-    .bk-day .bk-day-dow { font-size: 10px; color: var(--txt-3, #6b7686); text-transform: uppercase; font-weight: 700; letter-spacing: 0.06em; }
-    .bk-day .bk-day-num { font-size: 17px; font-weight: 800; margin-top: 2px; }
-    .bk-day .bk-day-mon { font-size: 9.5px; color: var(--txt-3, #6b7686); margin-top: 1px; }
-    .bk-day:hover { border-color: var(--cyan, #3DD9E8); }
-    .bk-day.active { background: rgba(61,217,232,0.12); border-color: var(--cyan, #3DD9E8); }
-    .bk-day.active .bk-day-dow, .bk-day.active .bk-day-mon { color: var(--cyan, #3DD9E8); }
+    /* Calendário do cliente (escolha de dia) */
+    .bk-cal { background: rgba(255,255,255,0.02); border: 1px solid var(--line, rgba(255,255,255,0.08)); border-radius: 16px; padding: 16px 18px; }
+    .bk-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .bk-cal-title { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; color: var(--txt, #fff); }
+    .bk-cal-nav { width: 32px; height: 32px; border-radius: 10px; border: 1px solid var(--line, rgba(255,255,255,0.08)); background: rgba(255,255,255,0.02); color: var(--txt-2, #a0aab8); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; line-height: 1; transition: all 0.15s; }
+    .bk-cal-nav:hover:not(:disabled) { border-color: var(--cyan, #3DD9E8); color: var(--cyan, #3DD9E8); }
+    .bk-cal-nav:disabled { opacity: 0.25; cursor: not-allowed; }
+    .bk-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .bk-cal-dow { font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; color: var(--txt-3, #6b7686); text-align: center; padding: 2px 0 6px; }
+    .bk-cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13.5px; font-weight: 600; color: var(--txt-3, #6b7686); border-radius: 10px; border: 1px solid transparent; position: relative; }
+    .bk-cal-day--off { opacity: 0.28; }
+    .bk-cal-day--avail { color: var(--txt, #fff); cursor: pointer; background: rgba(61,217,232,0.07); border-color: rgba(61,217,232,0.22); transition: all 0.15s; }
+    .bk-cal-day--avail:hover { background: rgba(61,217,232,0.16); border-color: var(--cyan, #3DD9E8); }
+    .bk-cal-day--avail::after { content: ''; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--cyan, #3DD9E8); }
+    .bk-cal-day--today:not(.bk-cal-day--sel) { box-shadow: inset 0 0 0 1px var(--line-2, rgba(255,255,255,0.14)); }
+    .bk-cal-day--sel { background: var(--cyan, #3DD9E8); border-color: var(--cyan, #3DD9E8); color: #04141A; font-weight: 800; }
+    .bk-cal-day--sel::after { background: #04141A; }
     .bk-times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .bk-period { grid-column: 1 / -1; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--txt-3, #6b7686); margin: 4px 0 -2px; }
+    .bk-period:first-child { margin-top: 0; }
     .bk-time {
       padding: 10px 4px; border-radius: 10px; border: 1px solid var(--line, rgba(255,255,255,0.08));
       background: rgba(255,255,255,0.02); color: var(--txt, #fff); cursor: pointer;
@@ -1699,10 +1702,14 @@
 
   // ── Agendar consulta de nutrição (calendário disponibilizado pela equipa) ──
   const BK_DOW = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const BK_DOW_LONG = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const BK_MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   let _bkSelectedDate = null;
   let _bkSelectedTime = null;
   let _bkBusy = {}; // { 'YYYY-MM-DD': Set('HH:MM') }
   let _bkConviteSlots = []; // [{ data:'YYYY-MM-DD', horas:['09:00',...] }]
+  let _bkView = null;       // primeiro dia do mês visível no calendário
+  const bkIso = (dt) => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
 
   async function bkLoadBusy(dateStrs) {
     _bkBusy = {};
@@ -1726,18 +1733,28 @@
   function bkRenderTimes() {
     const wrap = document.getElementById('bk-times');
     const confirmBtn = document.getElementById('bk-confirm');
+    const horaLabel = document.getElementById('bk-hora-label');
     if (!_bkSelectedDate) {
       wrap.innerHTML = '<div class="bk-empty">Selecione um dia</div>';
+      horaLabel.textContent = 'Hora';
       confirmBtn.disabled = true;
       return;
     }
     const slot = _bkConviteSlots.find(s => s.data === _bkSelectedDate);
-    const horas = slot ? slot.horas : [];
+    const horas = (slot ? slot.horas : []).slice().sort();
     const taken = _bkBusy[_bkSelectedDate] || new Set();
-    wrap.innerHTML = horas.map(h => {
+    const dt = new Date(_bkSelectedDate + 'T00:00:00');
+    horaLabel.textContent = `Hora · ${BK_DOW_LONG[dt.getDay()]}, ${dt.getDate()} ${MESES[dt.getMonth()]}`;
+    const chip = (h) => {
       const isTaken = taken.has(h);
-      return `<button type="button" class="bk-time ${isTaken?'taken':''} ${(_bkSelectedTime===h && !isTaken)?'active':''}" data-hora="${h}" ${isTaken?'disabled':''}>${h}</button>`;
-    }).join('');
+      return `<button type="button" class="bk-time ${isTaken?'taken':''}" data-hora="${h}" ${isTaken?'disabled':''}>${h}</button>`;
+    };
+    const manha = horas.filter(h => parseInt(h, 10) < 13);
+    const tarde = horas.filter(h => parseInt(h, 10) >= 13);
+    let html = '';
+    if (manha.length) html += `<div class="bk-period">Manhã</div>` + manha.map(chip).join('');
+    if (tarde.length) html += `<div class="bk-period">Tarde</div>` + tarde.map(chip).join('');
+    wrap.innerHTML = html || '<div class="bk-empty" style="grid-column:1/-1;">Sem horas disponíveis neste dia.</div>';
     wrap.querySelectorAll('.bk-time:not(.taken)').forEach(btn => {
       btn.addEventListener('click', () => {
         _bkSelectedTime = btn.dataset.hora;
@@ -1750,38 +1767,63 @@
     _bkSelectedTime = null;
   }
 
-  async function bkRenderDays(convite) {
+  function bkRenderCalendar() {
     const wrap = document.getElementById('bk-days');
+    const avail = new Set(_bkConviteSlots.map(s => s.data));
+    const months = _bkConviteSlots.map(s => s.data.slice(0, 7));
+    const minMonth = months[0], maxMonth = months[months.length - 1];
+    const year = _bkView.getFullYear(), month = _bkView.getMonth();
+    const curMonthStr = `${year}-${String(month+1).padStart(2,'0')}`;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const dowHead = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const firstDow = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+    let cells = dowHead.map(d => `<div class="bk-cal-dow">${d}</div>`).join('');
+    for (let i = 0; i < firstDow; i++) cells += `<div class="bk-cal-day bk-cal-day--off"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dt = new Date(year, month, d);
+      const iso = bkIso(dt);
+      const isAvail = avail.has(iso);
+      const cls = ['bk-cal-day'];
+      cls.push(isAvail ? 'bk-cal-day--avail' : 'bk-cal-day--off');
+      if (iso === _bkSelectedDate) cls.push('bk-cal-day--sel');
+      if (dt.getTime() === today.getTime()) cls.push('bk-cal-day--today');
+      cells += `<div class="${cls.join(' ')}" ${isAvail ? `data-date="${iso}"` : ''}>${d}</div>`;
+    }
+    const prevDisabled = curMonthStr <= minMonth;
+    const nextDisabled = curMonthStr >= maxMonth;
+    wrap.innerHTML = `
+      <div class="bk-cal-head">
+        <button type="button" class="bk-cal-nav" id="bk-cal-prev" ${prevDisabled?'disabled':''}>‹</button>
+        <div class="bk-cal-title">${BK_MONTHS[month]} ${year}</div>
+        <button type="button" class="bk-cal-nav" id="bk-cal-next" ${nextDisabled?'disabled':''}>›</button>
+      </div>
+      <div class="bk-cal-grid">${cells}</div>`;
+    if (!prevDisabled) wrap.querySelector('#bk-cal-prev').onclick = () => { _bkView = new Date(year, month-1, 1); bkRenderCalendar(); };
+    if (!nextDisabled) wrap.querySelector('#bk-cal-next').onclick = () => { _bkView = new Date(year, month+1, 1); bkRenderCalendar(); };
+    wrap.querySelectorAll('.bk-cal-day[data-date]').forEach(el => {
+      el.onclick = () => { _bkSelectedDate = el.dataset.date; bkRenderCalendar(); bkRenderTimes(); };
+    });
+  }
+
+  async function bkRenderDays(convite) {
     const today = new Date(); today.setHours(0,0,0,0);
     const slots = (convite.slots || [])
       .filter(s => s.data && (s.horas||[]).length && new Date(s.data + 'T00:00:00') >= today)
       .sort((a,b) => a.data.localeCompare(b.data));
     _bkConviteSlots = slots;
     if (!slots.length) {
-      wrap.innerHTML = '';
-      document.getElementById('bk-times').innerHTML =
-        '<div class="bk-empty" style="grid-column:1/-1;">Sem dias disponíveis de momento.</div>';
+      document.getElementById('bk-days').innerHTML = '<div class="bk-empty">Sem dias disponíveis de momento.</div>';
+      document.getElementById('bk-times').innerHTML = '';
+      document.getElementById('bk-hora-label').style.display = 'none';
       document.getElementById('bk-confirm').style.display = 'none';
       return;
     }
-    const dateStrs = slots.map(s => s.data);
-    wrap.innerHTML = slots.map(s => {
-      const dt = new Date(s.data + 'T00:00:00');
-      return `<button type="button" class="bk-day" data-date="${s.data}">
-        <div class="bk-day-dow">${BK_DOW[dt.getDay()]}</div>
-        <div class="bk-day-num">${dt.getDate()}</div>
-        <div class="bk-day-mon">${MESES[dt.getMonth()]}</div>
-      </button>`;
-    }).join('');
-    await bkLoadBusy(dateStrs);
-    wrap.querySelectorAll('.bk-day').forEach(btn => {
-      btn.addEventListener('click', () => {
-        _bkSelectedDate = btn.dataset.date;
-        wrap.querySelectorAll('.bk-day').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        bkRenderTimes();
-      });
-    });
+    document.getElementById('bk-hora-label').style.display = '';
+    await bkLoadBusy(slots.map(s => s.data));
+    const fd = new Date(slots[0].data + 'T00:00:00');
+    _bkView = new Date(fd.getFullYear(), fd.getMonth(), 1);
+    bkRenderCalendar();
   }
 
   window.abrirAgendamento = async function(tipo) {
@@ -1817,13 +1859,14 @@
         const ed = new Date(convite.escolha.data + 'T00:00:00');
         aviso = `Já tem esta consulta agendada para ${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}${convite.escolha.hora ? ' às ' + convite.escolha.hora : ''}.`;
       }
-      document.getElementById('bk-days').innerHTML = '';
-      document.getElementById('bk-times').innerHTML =
-        `<div class="bk-empty" style="grid-column:1/-1;">${aviso}</div>`;
+      document.getElementById('bk-days').innerHTML = `<div class="bk-empty">${aviso}</div>`;
+      document.getElementById('bk-times').innerHTML = '';
+      document.getElementById('bk-hora-label').style.display = 'none';
       document.getElementById('bk-confirm').style.display = 'none';
       return;
     }
 
+    document.getElementById('bk-hora-label').style.display = '';
     document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
     document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
     await bkRenderDays(convite);
@@ -1847,6 +1890,7 @@
     document.getElementById('bk-confirm').disabled = true;
     document.getElementById('bk-confirm').style.display = '';
     document.getElementById('bk-confirm').textContent = 'Sugerir esta data';
+    document.getElementById('bk-hora-label').style.display = '';
     document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
     document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
     document.getElementById('bk-overlay').classList.add('open');
@@ -3841,10 +3885,10 @@
     <div class="bk-title" id="bk-title">Agendar consulta de nutrição</div>
     <div class="bk-sub" id="bk-sub">Escolha o dia e o horário disponível com a sua nutricionista.</div>
 
-    <div class="bk-label">Dia</div>
-    <div class="bk-days" id="bk-days"></div>
+    <div class="bk-label">Escolha o dia</div>
+    <div class="bk-cal" id="bk-days"></div>
 
-    <div class="bk-label">Hora</div>
+    <div class="bk-label" id="bk-hora-label">Hora</div>
     <div class="bk-times" id="bk-times"><div class="bk-empty">Selecione um dia</div></div>
 
     <button class="bk-confirm-btn" id="bk-confirm" disabled>Confirmar marcação</button>

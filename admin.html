@@ -153,6 +153,33 @@
     .opcao-input { flex:1; min-height:60px; }
     .opcao-del { background:none; border:none; color:var(--txt-3); cursor:pointer; font-size:16px; padding:6px 4px; margin-top:4px; border-radius:6px; transition:all 0.15s; flex-shrink:0; }
     .opcao-del:hover { background:rgba(248,113,113,0.1); color:var(--red); }
+
+    /* Calendário de disponibilidade (convite de consulta) */
+    .cal-wrap { background:var(--panel-2); border:1px solid var(--line-2); border-radius:12px; padding:14px 16px; max-width:340px; }
+    .cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .cal-nav { background:none; border:1px solid var(--line-2); color:var(--txt-2); width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:16px; line-height:1; transition:all 0.15s; }
+    .cal-nav:hover { background:var(--panel-3); color:var(--txt); }
+    .cal-title { font-size:14px; font-weight:700; color:var(--txt); }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+    .cal-dow { font-size:11px; font-weight:600; color:var(--txt-3); text-align:center; padding:4px 0; }
+    .cal-day { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:13px; color:var(--txt-2); border-radius:8px; cursor:pointer; border:1px solid transparent; transition:all 0.12s; user-select:none; }
+    .cal-day:hover:not(.cal-day--empty):not(.cal-day--past) { background:var(--panel-3); }
+    .cal-day--empty { cursor:default; }
+    .cal-day--past { color:var(--txt-3); opacity:0.35; cursor:not-allowed; }
+    .cal-day--sel { background:var(--violet); color:#fff; font-weight:700; }
+    .cal-day--sel:hover { background:var(--violet); }
+    .cal-day--today:not(.cal-day--sel) { border-color:var(--line-2); }
+
+    /* Editor de horas por dia (convite de consulta) */
+    .day-hours { border:1px solid var(--line-2); border-radius:10px; padding:12px 14px; background:var(--panel-2); }
+    .day-hours-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; gap:10px; }
+    .day-hours-title { font-size:13.5px; font-weight:700; color:var(--txt); text-transform:capitalize; }
+    .day-hours-period { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-3); margin:9px 0 6px; }
+    .hour-grid { display:flex; flex-wrap:wrap; gap:6px; }
+    .hour-chip { font-size:12px; color:var(--txt-2); border:1px solid var(--line-2); border-radius:8px; padding:5px 10px; cursor:pointer; background:none; font-family:inherit; transition:all 0.12s; }
+    .hour-chip:hover { border-color:var(--cyan); }
+    .hour-chip--on { background:rgba(61,217,232,0.12); border-color:var(--cyan); color:var(--cyan); font-weight:600; }
+    .day-hours--empty { border-color:rgba(248,113,113,0.3); }
     .opcao-del-placeholder { width:28px; flex-shrink:0; }
     .btn-add-opcao { background:none; border:1px dashed rgba(255,255,255,0.12); border-radius:8px; color:var(--txt-3); font-size:12.5px; font-weight:600; padding:7px 14px; cursor:pointer; transition:all 0.15s; width:100%; }
     .btn-add-opcao:hover { border-color:rgba(61,217,232,0.3); color:var(--cyan); background:rgba(61,217,232,0.04); }
@@ -700,31 +727,14 @@
               </select>
             </div>
           </div>
-          <div class="form-row" style="align-items:flex-end;">
-            <div class="form-field" style="flex:0 0 150px;">
-              <label class="form-label">De</label>
-              <input class="form-input" type="date" id="convite-data-de" />
-            </div>
-            <div class="form-field" style="flex:0 0 150px;">
-              <label class="form-label">Até</label>
-              <input class="form-input" type="date" id="convite-data-ate" />
-            </div>
+          <div class="form-row">
             <div class="form-field" style="flex:1;">
-              <label class="form-label">Dias da semana</label>
-              <div id="convite-dow-checks" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+              <label class="form-label">Dias disponíveis</label>
+              <div style="font-size:12px;color:var(--txt-3);margin-bottom:8px;">Clique nos dias em que está disponível. Depois escolha as horas (de 30 em 30 min) de cada dia.</div>
+              <div class="cal-wrap" id="convite-cal"></div>
             </div>
           </div>
-          <div class="form-row" style="align-items:flex-end;">
-            <div class="form-field" style="flex:1;">
-              <label class="form-label">Horários disponíveis nesses dias</label>
-              <div id="convite-horas-checks" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
-            </div>
-            <div class="form-field" style="flex:0 0 auto;display:flex;gap:8px;">
-              <button type="button" class="ef-btn" id="convite-clear-days-btn">Limpar dias</button>
-              <button type="button" class="ef-btn" id="convite-add-day-btn">+ Adicionar dias</button>
-            </div>
-          </div>
-          <div id="convite-slots-list" style="display:flex;flex-direction:column;gap:6px;margin:6px 0 14px;"></div>
+          <div id="convite-slots-list" style="display:flex;flex-direction:column;gap:10px;margin:14px 0;"></div>
           <div class="save-bar">
             <button type="button" class="btn-save" id="convite-send-btn">Enviar convite ao cliente</button>
             <span class="save-msg" id="msg-convite"></span>
@@ -1366,7 +1376,7 @@
       const emailFailDot = (u.emailFalhouEm && !u.notificadoEm) ? `<span title="Falha no email automático" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:6px;flex-shrink:0;"></span>` : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
         <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}</div><div class="u-email-sm">${u.email||'-'}</div></div>
+        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}</div><div class="u-email-sm">${u.clienteId||''} · ${u.email||'-'}</div></div>
         ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
@@ -1377,6 +1387,9 @@
       const snap = await getDocs(collection(db,'users'));
       allUsers = [];
       snap.forEach(d => allUsers.push({uid:d.id,...d.data()}));
+      // Atribui um ID de cliente sequencial (mais antigo = nº 1), só para uso interno do admin.
+      const porAntiguidade = [...allUsers].sort((a,b) => (a.criadoEm?.toMillis?.()??0) - (b.criadoEm?.toMillis?.()??0));
+      porAntiguidade.forEach((u, i) => { u.clienteId = 'C' + String(i+1).padStart(4,'0'); });
       allUsers.sort((a,b) => (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0));
       const ativos = allUsers.filter(u => !u.arquivado);
       const total = ativos.length || 1;
@@ -1420,7 +1433,7 @@
 
     document.getElementById('dh-ava').textContent = iniciais(nome);
     document.getElementById('dh-name').textContent = nome;
-    document.getElementById('dh-meta').textContent = (d.email||'-') + ' · Registado ' + fmtDate(d.criadoEm);
+    document.getElementById('dh-meta').textContent = (d.clienteId||'') + ' · ' + (d.email||'-') + ' · Registado ' + fmtDate(d.criadoEm);
 
     // Timestamps
     currentTimestamps = d.timestamps || {};
@@ -1876,98 +1889,123 @@
   }
 
   // ── Convite de agendamento (calendário enviado pelo admin) ─────────────
-  const BK_HORAS = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  // Horários de 30 em 30 min (08:00–20:00). Divididos em Manhã (<13h) e Tarde.
+  const BK_HORAS = (() => {
+    const out = [];
+    for (let h = 8; h <= 20; h++) {
+      out.push(`${String(h).padStart(2,'0')}:00`);
+      if (h < 20) out.push(`${String(h).padStart(2,'0')}:30`);
+    }
+    return out;
+  })();
   let _conviteUid = null;
-  let _conviteSlots = [];
+  let _conviteSlots = [];      // [{ data:'YYYY-MM-DD', horas:['09:00', ...] }]
+  let _calView = null;         // primeiro dia do mês visível no calendário
 
-  const BK_DOW_LABELS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const isoLocal = (dt) => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+  const fmtDiaLongo = (iso) => {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('pt-PT', { weekday:'long', day:'numeric', month:'long' });
+  };
 
-  function renderConviteHorasChecks() {
-    const wrap = document.getElementById('convite-horas-checks');
-    wrap.innerHTML = BK_HORAS.map(h => `
-      <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--txt-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 8px;cursor:pointer;">
-        <input type="checkbox" value="${h}" style="margin:0;" /> ${h}
-      </label>
-    `).join('');
-  }
-
-  function renderConviteDowChecks() {
-    const wrap = document.getElementById('convite-dow-checks');
-    wrap.innerHTML = BK_DOW_LABELS.map((label, i) => `
-      <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--txt-2);border:1px solid var(--line-2);border-radius:8px;padding:5px 8px;cursor:pointer;">
-        <input type="checkbox" value="${i}" style="margin:0;" ${(i>=1 && i<=5)?'checked':''} /> ${label}
-      </label>
-    `).join('');
+  function renderConviteCal() {
+    const wrap = document.getElementById('convite-cal');
+    if (!_calView) { const n = new Date(); _calView = new Date(n.getFullYear(), n.getMonth(), 1); }
+    const year = _calView.getFullYear(), month = _calView.getMonth();
+    const today = new Date(); today.setHours(0,0,0,0);
+    const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const dowHead = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const firstDow = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+    const selSet = new Set(_conviteSlots.map(s => s.data));
+    let cells = dowHead.map(d => `<div class="cal-dow">${d}</div>`).join('');
+    for (let i = 0; i < firstDow; i++) cells += `<div class="cal-day cal-day--empty"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dt = new Date(year, month, d);
+      const iso = isoLocal(dt);
+      const past = dt < today;
+      const cls = ['cal-day'];
+      if (past) cls.push('cal-day--past');
+      if (selSet.has(iso)) cls.push('cal-day--sel');
+      if (dt.getTime() === today.getTime()) cls.push('cal-day--today');
+      cells += `<div class="${cls.join(' ')}" ${past ? '' : `data-iso="${iso}"`}>${d}</div>`;
+    }
+    wrap.innerHTML = `
+      <div class="cal-head">
+        <button type="button" class="cal-nav" id="cal-prev">‹</button>
+        <div class="cal-title">${monthNames[month]} ${year}</div>
+        <button type="button" class="cal-nav" id="cal-next">›</button>
+      </div>
+      <div class="cal-grid">${cells}</div>`;
+    wrap.querySelector('#cal-prev').onclick = () => { _calView = new Date(year, month-1, 1); renderConviteCal(); };
+    wrap.querySelector('#cal-next').onclick = () => { _calView = new Date(year, month+1, 1); renderConviteCal(); };
+    wrap.querySelectorAll('.cal-day[data-iso]').forEach(el => {
+      el.onclick = () => {
+        const iso = el.dataset.iso;
+        if (_conviteSlots.find(s => s.data === iso)) {
+          _conviteSlots = _conviteSlots.filter(s => s.data !== iso);
+        } else {
+          _conviteSlots.push({ data: iso, horas: [] });
+        }
+        renderConviteCal();
+        renderConviteSlotsList();
+      };
+    });
   }
 
   function renderConviteSlotsList() {
     const wrap = document.getElementById('convite-slots-list');
     if (!_conviteSlots.length) {
-      wrap.innerHTML = '<div style="font-size:12.5px;color:var(--txt-3)">Nenhum dia adicionado.</div>';
+      wrap.innerHTML = '<div style="font-size:12.5px;color:var(--txt-3)">Selecione um ou mais dias no calendário acima.</div>';
       return;
     }
+    const manha = BK_HORAS.filter(h => parseInt(h, 10) < 13);
+    const tarde = BK_HORAS.filter(h => parseInt(h, 10) >= 13);
     const sorted = [..._conviteSlots].sort((a,b) => a.data.localeCompare(b.data));
+    const chipRow = (horasSel, periodo) => periodo.map(h =>
+      `<button type="button" class="hour-chip${horasSel.includes(h) ? ' hour-chip--on' : ''}" data-hora="${h}">${h}</button>`
+    ).join('');
     wrap.innerHTML = sorted.map(s => `
-      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel-2);flex-wrap:wrap;">
-        <div style="flex:1;min-width:140px;font-size:13px;font-weight:600;">${fmtDate(s.data)}</div>
-        <div style="font-size:12px;color:var(--txt-3);flex:2;min-width:160px;">${s.horas.join(', ')}</div>
-        <button type="button" class="ef-btn convite-remove-slot" data-data="${s.data}" style="font-size:11px;">Remover</button>
+      <div class="day-hours${s.horas.length ? '' : ' day-hours--empty'}" data-data="${s.data}">
+        <div class="day-hours-head">
+          <div class="day-hours-title">${fmtDiaLongo(s.data)}</div>
+          <button type="button" class="ef-btn convite-remove-slot" data-data="${s.data}" style="font-size:11px;">Remover dia</button>
+        </div>
+        <div class="day-hours-period">Manhã</div>
+        <div class="hour-grid">${chipRow(s.horas, manha)}</div>
+        <div class="day-hours-period">Tarde</div>
+        <div class="hour-grid">${chipRow(s.horas, tarde)}</div>
       </div>
     `).join('');
-    wrap.querySelectorAll('.convite-remove-slot').forEach(btn => {
-      btn.addEventListener('click', () => {
-        _conviteSlots = _conviteSlots.filter(s => s.data !== btn.dataset.data);
-        renderConviteSlotsList();
+    wrap.querySelectorAll('.day-hours').forEach(box => {
+      const data = box.dataset.data;
+      box.querySelectorAll('.hour-chip').forEach(chip => {
+        chip.onclick = () => {
+          const slot = _conviteSlots.find(s => s.data === data);
+          if (!slot) return;
+          const h = chip.dataset.hora;
+          if (slot.horas.includes(h)) slot.horas = slot.horas.filter(x => x !== h);
+          else slot.horas.push(h);
+          slot.horas.sort();
+          chip.classList.toggle('hour-chip--on');
+          box.classList.toggle('day-hours--empty', !slot.horas.length);
+        };
       });
     });
-  }
-
-  document.getElementById('convite-add-day-btn').addEventListener('click', () => {
-    const msg = document.getElementById('msg-convite');
-    const deInput = document.getElementById('convite-data-de');
-    const ateInput = document.getElementById('convite-data-ate');
-    const de = deInput.value;
-    const ate = ateInput.value || de;
-    const horas = [...document.querySelectorAll('#convite-horas-checks input:checked')].map(c => c.value);
-    const dows = new Set([...document.querySelectorAll('#convite-dow-checks input:checked')].map(c => Number(c.value)));
-
-    const avisar = (texto) => {
-      msg.style.color = 'var(--red)';
-      msg.textContent = texto;
-      setTimeout(() => msg.textContent = '', 3000);
-    };
-
-    if (!de)          return avisar('Preencha a data "De".');
-    if (!horas.length) return avisar('Selecione pelo menos um horário.');
-    if (!dows.size)   return avisar('Selecione pelo menos um dia da semana.');
-
-    const start = new Date(de + 'T00:00:00');
-    const end = new Date(ate + 'T00:00:00');
-    const datas = [];
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      if (dows.has(d.getDay())) {
-        const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
-        datas.push(`${y}-${m}-${day}`);
-      }
-    }
-    if (!datas.length) return avisar('Nenhum dos dias da semana selecionados ocorre no intervalo de datas indicado.');
-    datas.forEach(data => {
-      _conviteSlots = _conviteSlots.filter(s => s.data !== data);
-      _conviteSlots.push({ data, horas: [...horas] });
+    wrap.querySelectorAll('.convite-remove-slot').forEach(btn => {
+      btn.onclick = () => {
+        _conviteSlots = _conviteSlots.filter(s => s.data !== btn.dataset.data);
+        renderConviteCal();
+        renderConviteSlotsList();
+      };
     });
-    renderConviteSlotsList();
-  });
-
-  document.getElementById('convite-clear-days-btn').addEventListener('click', () => {
-    _conviteSlots = [];
-    renderConviteSlotsList();
-  });
+  }
 
   async function loadConvite(uid) {
     _conviteUid = uid;
     _conviteSlots = [];
-    renderConviteHorasChecks();
-    renderConviteDowChecks();
+    _calView = null;
+    renderConviteCal();
     renderConviteSlotsList();
     const status = document.getElementById('convite-status');
     const agendadoBox = document.getElementById('convite-agendado-box');
@@ -2004,6 +2042,13 @@
       }
       document.getElementById('convite-tipo').value = convite.tipo || 'nutricao';
       _conviteSlots = (convite.slots || []).map(s => ({ data: s.data, horas: [...(s.horas||[])] }));
+      // Posiciona o calendário no mês do primeiro dia já selecionado.
+      if (_conviteSlots.length) {
+        const first = [..._conviteSlots].sort((a,b) => a.data.localeCompare(b.data))[0].data;
+        const fd = new Date(first + 'T00:00:00');
+        _calView = new Date(fd.getFullYear(), fd.getMonth(), 1);
+      }
+      renderConviteCal();
       renderConviteSlotsList();
       const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
       const titEl = document.getElementById('convite-agendado-titulo');
@@ -2075,8 +2120,15 @@
     const msg = document.getElementById('msg-convite');
     if (!_conviteSlots.length) {
       msg.style.color = 'var(--red)';
-      msg.textContent = 'Adicione pelo menos um dia disponível.';
+      msg.textContent = 'Selecione pelo menos um dia disponível.';
       setTimeout(() => msg.textContent = '', 2500);
+      return;
+    }
+    const semHoras = _conviteSlots.filter(s => !s.horas.length);
+    if (semHoras.length) {
+      msg.style.color = 'var(--red)';
+      msg.textContent = `Escolha pelo menos uma hora para: ${semHoras.map(s => fmtDiaLongo(s.data)).join('; ')}.`;
+      setTimeout(() => msg.textContent = '', 4000);
       return;
     }
     const tipo = document.getElementById('convite-tipo').value;
@@ -2866,6 +2918,28 @@
           criadoEm: serverTimestamp(),
           ciclo: 'reavaliacao',
         });
+      }
+
+      // 1.5 Resolver as consultas pendentes do ciclo que termina. Sem isto, o
+      //     documento em agendamentosNutri continua com estado 'agendada'/
+      //     'confirmada' e a dashboard do cliente — que combina d.consultas com
+      //     todos os agendamentosNutri não cancelados — continuaria a mostrar a
+      //     consulta do ciclo anterior como ativa no novo ciclo. Passam a
+      //     'realizada' para ficarem arquivadas no histórico do cliente.
+      try {
+        const agSnap = await getDocs(query(collection(db,'agendamentosNutri'), where('uid','==',currentUID)));
+        for (const dSnap of agSnap.docs) {
+          const est = dSnap.data().estado || 'agendada';
+          if (est === 'agendada' || est === 'confirmada') {
+            await updateDoc(doc(db,'agendamentosNutri',dSnap.id), {
+              estado: 'realizada',
+              resolvidoEm: serverTimestamp(),
+              resolvidoPor: 'reavaliacao',
+            });
+          }
+        }
+      } catch(e) {
+        console.error('Erro ao resolver consultas do ciclo anterior:', e);
       }
 
       // 2. Avançar para estado 5 (reavaliação · kit a caminho). Os resultados
