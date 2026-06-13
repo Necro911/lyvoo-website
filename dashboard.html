@@ -643,9 +643,13 @@
       .bio-grid { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 860px) {
-      .shell { grid-template-columns: 1fr; }
+      /* minmax(0,1fr) em vez de 1fr: no Firefox uma track "1fr" não encolhe
+         abaixo da largura do conteúdo (min-width:auto), o que empurrava a
+         página para os lados. Com minmax(0,...) a track pode encolher e o
+         conteúdo interno é que faz scroll/wrap, ficando a página fixa. */
+      .shell { grid-template-columns: minmax(0, 1fr); }
       .sidebar { display: none; }
-      .row-main { grid-template-columns: 1fr; }
+      .row-main { grid-template-columns: minmax(0, 1fr); }
       /* Em mobile, esconder os cartões de atalho (plano alimentar,
          suplementação, biomarcadores, consultas) e os biomarcadores em
          destaque por baixo do score de saúde — acesso já é feito pela
