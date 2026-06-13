@@ -280,6 +280,8 @@
   import {
     signInWithEmailAndPassword,
     signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     sendPasswordResetEmail,
     GoogleAuthProvider,
     onAuthStateChanged
@@ -288,6 +290,9 @@
 
   const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com', 'hello@lyvoo.pt'];
   const nextPage = new URLSearchParams(window.location.search).get('next') || null;
+  // Em telemóvel, os pop-ups são frequentemente bloqueados (Safari iOS, browsers
+  // in-app). Usamos o fluxo de redirect, mais fiável nestes contextos.
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile|Silk/i.test(navigator.userAgent);
 
   function destino(email) {
     if (nextPage) return nextPage;
@@ -298,6 +303,15 @@
   onAuthStateChanged(auth, user => {
     if (!user) return;
     window.location.replace(destino(user.email));
+  });
+
+  // Processar o regresso de um login via redirect (mobile). O onAuthStateChanged
+  // acima trata do encaminhamento em caso de sucesso; aqui só mostramos erros.
+  getRedirectResult(auth).catch(err => {
+    if (err?.code && err.code !== 'auth/popup-closed-by-user') {
+      mostrarMensagem(mensagemErro(err.code));
+    }
+    setGoogleLoading(false);
   });
 
   // ── Mensagens de erro em PT-PT ──
@@ -312,6 +326,9 @@
     'auth/popup-blocked':           'O pop-up foi bloqueado pelo browser. Permita pop-ups para este site.',
     'auth/network-request-failed':  'Erro de ligação. Verifique a sua internet.',
     'auth/requests-from-referer-blocked': 'Domínio não autorizado. Contacte o suporte.',
+    'auth/unauthorized-domain':     'Domínio não autorizado. Contacte o suporte.',
+    'auth/account-exists-with-different-credential': 'Já existe uma conta com este email criada com outro método. Entre com email e palavra-passe.',
+    'auth/operation-not-supported-in-this-environment': 'Este browser não suporta este método de login. Tente outro browser.',
   };
 
   function mensagemErro(code) {
@@ -404,10 +421,31 @@
   document.getElementById('btnGoogle').addEventListener('click', async () => {
     limparMensagem();
     setGoogleLoading(true);
+    const provider = new GoogleAuthProvider();
+
+    // Mobile: ir direto para redirect (pop-ups são bloqueados na maioria dos
+    // browsers móveis). A página sai e regressa; o getRedirectResult/onAuthState
+    // tratam do resto.
+    if (isMobile) {
+      try {
+        await signInWithRedirect(auth, provider);
+      } catch (err) {
+        mostrarMensagem(mensagemErro(err.code));
+        setGoogleLoading(false);
+      }
+      return;
+    }
+
+    // Desktop: tentar pop-up; se for bloqueado, recorrer a redirect.
     try {
-      const cred = await signInWithPopup(auth, new GoogleAuthProvider());
+      const cred = await signInWithPopup(auth, provider);
       window.location.href = destino(cred.user.email);
     } catch (err) {
+      const fallback = ['auth/popup-blocked', 'auth/cancelled-popup-request', 'auth/operation-not-supported-in-this-environment'];
+      if (fallback.includes(err.code)) {
+        try { await signInWithRedirect(auth, provider); return; }
+        catch (e2) { mostrarMensagem(mensagemErro(e2.code)); setGoogleLoading(false); return; }
+      }
       if (err.code !== 'auth/popup-closed-by-user') {
         mostrarMensagem(mensagemErro(err.code));
       }

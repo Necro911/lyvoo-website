@@ -3493,8 +3493,28 @@
     let consultasFinal = [];
 
     try {
-      const snap = await getDoc(doc(db, 'users', user.uid));
+      const userRef = doc(db, 'users', user.uid);
+      let snap = await getDoc(userRef);
       if (myGen !== window._loadGen) return; // execução mais recente já em curso, abortar
+      // Utilizador autenticado sem documento (ex: primeiro login via Google sem
+      // registo prévio): criar um perfil base para o painel funcionar e o admin
+      // o ver na lista. Evita também o erro "not-found" ao guardar o perfil.
+      if (!snap.exists()) {
+        const partes = (user.displayName || '').trim().split(' ').filter(Boolean);
+        try {
+          await setDoc(userRef, {
+            email:       user.email || '',
+            estado:      1,
+            estadoLabel: 'Sem plano ativo',
+            plano:       'lyvoo',
+            planoNome:   'Lyvoo',
+            criadoEm:    serverTimestamp(),
+            atualizadoEm: serverTimestamp(),
+            ...(partes.length ? { firstName: partes[0], lastName: partes.slice(1).join(' ') } : {})
+          }, { merge: true });
+          snap = await getDoc(userRef);
+        } catch (e) { console.error('Não foi possível criar o perfil base:', e); }
+      }
       if (snap.exists()) {
         d = snap.data();
         const completo = [d.firstName, d.lastName].filter(Boolean).join(' ');
@@ -4065,7 +4085,10 @@
 
       try {
         await auth.currentUser?.getIdToken(true); // garantir token fresco
-        await updateDoc(doc(db, 'users', user.uid), {
+        // setDoc com merge cria o documento caso ainda não exista (ex: primeiro
+        // login via Google sem registo prévio), evitando o erro "not-found".
+        await setDoc(doc(db, 'users', user.uid), {
+          email:        user.email || '',
           firstName:    document.getElementById('pf-first').value.trim(),
           lastName:     document.getElementById('pf-last').value.trim(),
           phone:        document.getElementById('pf-phone').value.trim(),
@@ -4077,7 +4100,7 @@
           codigoPostal: document.getElementById('pf-cp').value.trim(),
           perfilCompleto: true,
           atualizadoEm: serverTimestamp()
-        });
+        }, { merge: true });
         document.getElementById('pf-idade').value = calcularIdade(document.getElementById('pf-dob').value) || '';
         msg.style.color = 'var(--green)';
         msg.textContent = '✓ Guardado com sucesso';

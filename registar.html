@@ -307,6 +307,8 @@
   import {
     createUserWithEmailAndPassword,
     signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     GoogleAuthProvider,
     updateProfile
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
@@ -314,8 +316,33 @@
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
+  // Em telemóvel usamos redirect (pop-ups são bloqueados na maioria dos browsers móveis).
+  const isMobile = /Android|iPhone|iPad|iPod|Mobile|Silk/i.test(navigator.userAgent);
+  const GSIGNUP_KEY = 'lyvoo_gsignup_intent';
+
   // ── EmailJS (notificação de consentimento de marketing) ──
   emailjs.init('P0ArQ2tRYDeYkPZuR');
+
+  // Concluir um registo Google iniciado via redirect (regresso à página em mobile).
+  getRedirectResult(auth).then(async (result) => {
+    if (!result || !result.user) return;
+    let intent = {};
+    try { intent = JSON.parse(sessionStorage.getItem(GSIGNUP_KEY) || '{}'); } catch (_) {}
+    sessionStorage.removeItem(GSIGNUP_KEY);
+    setGoogleLoading(true);
+    try {
+      const partes = (result.user.displayName || '').trim().split(' ');
+      await guardarPerfil(result.user, { firstName: partes[0] || '', lastName: partes.slice(1).join(' ') });
+      await notificarConsentimentoMarketing(result.user, !!intent.marketing);
+      aoAutenticar(result.user);
+    } catch (err) {
+      setGoogleLoading(false);
+      mostrarErroGlobal(mensagemErro(err.code));
+    }
+  }).catch(err => {
+    if (err?.code && err.code !== 'auth/popup-closed-by-user') mostrarErroGlobal(mensagemErro(err.code));
+    setGoogleLoading(false);
+  });
 
   async function notificarConsentimentoMarketing(user, aceitou) {
     try {
@@ -497,8 +524,24 @@
       return;
     }
     setGoogleLoading(true);
+    const provider = new GoogleAuthProvider();
+
+    // Mobile: guardar a intenção (termos/marketing perdem-se no reload) e ir por redirect.
+    if (isMobile) {
+      try {
+        sessionStorage.setItem(GSIGNUP_KEY, JSON.stringify({
+          marketing: document.getElementById('marketing').checked, terms: true
+        }));
+        await signInWithRedirect(auth, provider);
+      } catch (err) {
+        setGoogleLoading(false);
+        mostrarErroGlobal(mensagemErro(err.code));
+      }
+      return;
+    }
+
+    // Desktop: pop-up, com fallback para redirect se for bloqueado.
     try {
-      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       // Google fornece displayName; separa primeiro/último nome
       const partes = (result.user.displayName || '').trim().split(' ');
@@ -509,6 +552,14 @@
       await notificarConsentimentoMarketing(result.user, document.getElementById('marketing').checked);
       aoAutenticar(result.user);
     } catch (err) {
+      const fallback = ['auth/popup-blocked', 'auth/cancelled-popup-request', 'auth/operation-not-supported-in-this-environment'];
+      if (fallback.includes(err.code)) {
+        sessionStorage.setItem(GSIGNUP_KEY, JSON.stringify({
+          marketing: document.getElementById('marketing').checked, terms: true
+        }));
+        try { await signInWithRedirect(auth, provider); return; }
+        catch (e2) { setGoogleLoading(false); mostrarErroGlobal(mensagemErro(e2.code)); return; }
+      }
       setGoogleLoading(false);
       if (err.code !== 'auth/popup-closed-by-user') {
         mostrarErroGlobal(mensagemErro(err.code));
