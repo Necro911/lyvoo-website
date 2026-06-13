@@ -2757,7 +2757,7 @@
     'HbA1c':'metabolico',
     'Colesterol total':'cardiovascular', 'LDL':'cardiovascular', 'HDL':'cardiovascular',
     'Triglicéridos':'cardiovascular', 'ApoB':'cardiovascular', 'Lp(a)':'cardiovascular',
-    'CRP':'cardiovascular', 'NT-proBNP':'cardiovascular',
+    'hs-CRP':'cardiovascular', 'NT-proBNP':'cardiovascular',
     'ALT':'hepatico', 'AST':'hepatico', 'GGT':'hepatico', 'Fosfatase Alcalina':'hepatico', 'Albumina':'hepatico',
     'Creatinina':'renal', 'Ureia':'renal',
     'Proteína Total':'nutricional', 'Magnésio':'nutricional', 'Cálcio':'nutricional',
@@ -2823,13 +2823,34 @@
     return desvio <= tol ? 'atencao' : 'critico';
   }
 
+  // Faixas compostas tipo "8.6-8.9 ou 10.1-10.2" / "<8.6 ou >10.2" → array de {min,max}
+  function parseRefRanges(str) {
+    return String(str || '').split(/\bou\b/i).map(s => parseRefRange(s)).filter(Boolean);
+  }
+
+  function inAnyRange(val, ranges) {
+    return ranges.some(rg => inRange(val, rg));
+  }
+
   function autoTag(r) {
     if (r.tag === 'otimo' || r.tag === 'atencao' || r.tag === 'critico') return r.tag;
     const val = parseFloat(String(r.valor ?? '').replace(',', '.'));
     if (isNaN(val)) return '';
+    const acao  = parseRefRanges(r.refAcao);
+    const risco = parseRefRanges(r.refRisco);
+    const otima = parseRefRanges(r.refOtima);
+    // Modelo de 4 níveis: populacional / ótima / risco / ação clínica
+    if (acao.length || risco.length || otima.length) {
+      if (inAnyRange(val, acao))  return 'critico';
+      if (inAnyRange(val, risco)) return 'atencao';
+      if (inAnyRange(val, otima)) return 'otimo';
+      const rf = parseRefRange(r.referencia);
+      if (rf) return inRange(val, rf) ? 'atencao' : 'critico';
+      return 'atencao';
+    }
+    // Modelo legado de 2 níveis: zona ótima Lyvoo (apertada) dentro da referência laboratorial
     const ot = parseRefRange(r.refOtima);
     const rf = parseRefRange(r.referencia);
-    // Avaliação em dois níveis: zona ótima Lyvoo (apertada) dentro da referência laboratorial
     if (ot) {
       if (inRange(val, ot)) return 'otimo';
       if (rf) return inRange(val, rf) ? 'atencao' : outsideSeverity(val, rf);
@@ -2855,6 +2876,8 @@
         if (!r) return;
         r.referencia = pickRef(r.referencia, genero);
         r.refOtima = pickRef(r.refOtima, genero);
+        r.refRisco = pickRef(r.refRisco, genero);
+        r.refAcao = pickRef(r.refAcao, genero);
         r.tag = autoTag(r);
       }));
     return resultados;
