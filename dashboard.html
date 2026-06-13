@@ -171,8 +171,6 @@
     .bio-val { font-size: 14px; font-weight: 700; color: var(--txt); }
     .bio-val small { font-size: 11px; color: var(--txt-3); font-weight: 400; }
     .bio-range { font-size: 11.5px; color: var(--txt-3); }
-    .bio-bar-wrap { height: 5px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
-    .bio-bar-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
     .bio-tag { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; text-align: center; white-space: nowrap; }
     .bio-tag.good { background: rgba(74,222,128,0.10); color: var(--green);  border: 1px solid rgba(74,222,128,0.22); }
     .bio-tag.warn { background: rgba(251,191,36,0.10); color: var(--amber);  border: 1px solid rgba(251,191,36,0.22); }
@@ -438,7 +436,7 @@
 
     @media (max-width: 860px) {
       .bio-row { grid-template-columns: 1fr 80px 70px; }
-      .bio-row .bio-range, .bio-row .bio-bar-wrap { display: none; }
+      .bio-row .bio-range, .bio-row .sys-range-cell { display: none; }
       .sec-cards-grid { grid-template-columns: 1fr; }
       .pf-row { grid-template-columns: 1fr; }
     }
@@ -2874,14 +2872,13 @@
       html += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${label}</div><div class="bio-table">`;
       html += `<div class="bio-thead">
         <span>Parâmetro</span><span>Valor</span><span>Referência</span>
-        <span></span><span>Estado</span><span style="text-align:right">Δ</span>
+        <span>Intervalo</span><span>Estado</span><span style="text-align:right">Δ</span>
       </div>`;
       activeRows.forEach(r => {
         const tagCls  = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
         const tagLbl  = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
         const rowCls  = r.tag==='atencao'?'row-warn':r.tag==='critico'?'row-crit':'';
-        const barColor = r.tag==='otimo'?'var(--green)':r.tag==='atencao'?'var(--amber)':'var(--red)';
-        const barPct   = r.tag==='otimo'?82:r.tag==='atencao'?50:22;
+        const barColor = tagColor(r.tag);
         const delta = r.delta
           ? (r.delta.startsWith('-')||r.delta.startsWith('↓')
               ? `<span class="bio-delta down">${r.delta}</span>`
@@ -2891,7 +2888,7 @@
           <span class="bio-name">${r.nome}</span>
           <span class="bio-val">${r.valor} <small>${r.unidade||''}</small></span>
           <span class="bio-range">${r.referencia||''}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${r.refOtima}</small>` : ''}</span>
-          <div class="bio-bar-wrap"><div class="bio-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
+          ${sysRangeBar(r, barColor)}
           <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span>
           ${delta}
         </div>`;
@@ -2920,6 +2917,10 @@
     if (!scored.length) return null;
     const total = scored.reduce((sum, r) => sum + BODY_TAG_SCORE[autoTag(r)], 0);
     return Math.round(total / scored.length);
+  }
+
+  function tagColor(tag) {
+    return tag === 'otimo' ? 'var(--green)' : tag === 'atencao' ? 'var(--amber)' : 'var(--red)';
   }
 
   // Barra de posição do valor face ao intervalo de referência
@@ -2984,10 +2985,6 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       listWrap.querySelectorAll('circle[data-offset]').forEach(c => c.setAttribute('stroke-dashoffset', c.dataset.offset));
     }));
-
-    function tagColor(tag) {
-      return tag === 'otimo' ? 'var(--green)' : tag === 'atencao' ? 'var(--amber)' : 'var(--red)';
-    }
 
     function selectCat(cat) {
       const c = cats[cat];
