@@ -345,6 +345,19 @@
     }
     .pf-field input:focus { border-color: rgba(61,217,232,0.45); box-shadow: 0 0 0 3px rgba(61,217,232,0.08); }
     .pf-field input:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pf-field select {
+      padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line-2);
+      background: var(--panel-2); font-family: 'Inter', sans-serif;
+      font-size: 14px; color: var(--txt); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237A8F96' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+    }
+    .pf-field select:focus { border-color: rgba(61,217,232,0.45); box-shadow: 0 0 0 3px rgba(61,217,232,0.08); }
+    .pf-field select:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pf-field label .req { color: var(--cyan); margin-left: 2px; }
+    .pf-field input.field-invalid, .pf-field select.field-invalid { border-color: #F87171; }
+    .pf-hint { font-size: 12px; color: var(--txt-3); margin-top: -4px; }
     .pf-save {
       background: linear-gradient(90deg, #0B6B78, #0D7A87);
       color: #fff; border: none; padding: 14px; border-radius: 12px;
@@ -1359,9 +1372,33 @@
         </div>
         <div class="pf-field"><label>Email</label><input type="email" id="pf-email" placeholder="Email" disabled/></div>
         <div class="pf-row">
-          <div class="pf-field"><label>Telemóvel</label><input type="tel" id="pf-phone" placeholder="+351 9xx xxx xxx"/></div>
-          <div class="pf-field"><label>Data de nascimento</label><input type="date" id="pf-dob"/></div>
+          <div class="pf-field"><label>Telemóvel<span class="req">*</span></label><input type="tel" id="pf-phone" placeholder="+351 9xx xxx xxx"/></div>
+          <div class="pf-field"><label>Data de nascimento<span class="req">*</span></label><input type="date" id="pf-dob"/></div>
         </div>
+        <div class="pf-row">
+          <div class="pf-field"><label>Idade</label><input type="text" id="pf-idade" placeholder="-" disabled/></div>
+          <div class="pf-field"><label>Género<span class="req">*</span></label>
+            <select id="pf-genero">
+              <option value="">Selecionar...</option>
+              <option value="feminino">Feminino</option>
+              <option value="masculino">Masculino</option>
+            </select>
+            <p class="pf-hint">Necessário para apresentar os valores de referência corretos.</p>
+          </div>
+        </div>
+
+        <div class="pf-section-label" style="margin-top:6px;">Morada para envio do kit</div>
+        <div class="pf-field"><label>Morada<span class="req">*</span></label><input type="text" id="pf-morada" placeholder="Rua, número, andar"/></div>
+        <div class="pf-row">
+          <div class="pf-field"><label>Distrito<span class="req">*</span></label>
+            <select id="pf-distrito"><option value="">Selecionar...</option></select>
+          </div>
+          <div class="pf-field"><label>Concelho<span class="req">*</span></label>
+            <select id="pf-concelho" disabled><option value="">Selecionar distrito primeiro</option></select>
+          </div>
+        </div>
+        <div class="pf-field" style="max-width:200px"><label>Código postal<span class="req">*</span></label><input type="text" id="pf-cp" placeholder="0000-000" maxlength="8"/></div>
+
         <button class="pf-save" id="pf-save-btn">Guardar alterações</button>
         <p class="pf-msg" id="pf-msg"></p>
       </div>
@@ -2470,6 +2507,64 @@
     return nome.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase();
   }
 
+  // ── Distritos / Concelhos de Portugal ─────────────────────────────────
+  const DISTRITOS_CONCELHOS = {
+    'Aveiro': ['Águeda','Albergaria-a-Velha','Anadia','Arouca','Aveiro','Castelo de Paiva','Espinho','Estarreja','Ílhavo','Mealhada','Murtosa','Oliveira de Azeméis','Oliveira do Bairro','Ovar','Santa Maria da Feira','São João da Madeira','Sever do Vouga','Vagos','Vale de Cambra'],
+    'Beja': ['Aljustrel','Almodôvar','Alvito','Barrancos','Beja','Castro Verde','Cuba','Ferreira do Alentejo','Mértola','Moura','Odemira','Ourique','Serpa','Vidigueira'],
+    'Braga': ['Amares','Barcelos','Braga','Cabeceiras de Basto','Celorico de Basto','Esposende','Fafe','Guimarães','Póvoa de Lanhoso','Terras de Bouro','Vieira do Minho','Vila Nova de Famalicão','Vila Verde','Vizela'],
+    'Bragança': ['Alfândega da Fé','Bragança','Carrazeda de Ansiães','Freixo de Espada à Cinta','Macedo de Cavaleiros','Miranda do Douro','Mirandela','Mogadouro','Torre de Moncorvo','Vila Flor','Vimioso','Vinhais'],
+    'Castelo Branco': ['Belmonte','Castelo Branco','Covilhã','Fundão','Idanha-a-Nova','Oleiros','Penamacor','Proença-a-Nova','Sertã','Vila de Rei','Vila Velha de Ródão'],
+    'Coimbra': ['Arganil','Cantanhede','Coimbra','Condeixa-a-Nova','Figueira da Foz','Góis','Lousã','Mira','Miranda do Corvo','Montemor-o-Velho','Oliveira do Hospital','Pampilhosa da Serra','Penacova','Penela','Soure','Tábua','Vila Nova de Poiares'],
+    'Évora': ['Alandroal','Arraiolos','Borba','Estremoz','Évora','Montemor-o-Novo','Mora','Mourão','Portel','Redondo','Reguengos de Monsaraz','Vendas Novas','Viana do Alentejo','Vila Viçosa'],
+    'Faro': ['Albufeira','Alcoutim','Aljezur','Castro Marim','Faro','Lagoa','Lagos','Loulé','Monchique','Olhão','Portimão','São Brás de Alportel','Silves','Tavira','Vila do Bispo','Vila Real de Santo António'],
+    'Guarda': ['Aguiar da Beira','Almeida','Celorico da Beira','Figueira de Castelo Rodrigo','Fornos de Algodres','Gouveia','Guarda','Manteigas','Mêda','Pinhel','Sabugal','Seia','Trancoso','Vila Nova de Foz Côa'],
+    'Leiria': ['Alcobaça','Alvaiázere','Ansião','Batalha','Bombarral','Caldas da Rainha','Castanheira de Pera','Figueiró dos Vinhos','Leiria','Marinha Grande','Nazaré','Óbidos','Pedrógão Grande','Peniche','Pombal','Porto de Mós'],
+    'Lisboa': ['Alenquer','Amadora','Arruda dos Vinhos','Azambuja','Cadaval','Cascais','Lisboa','Loures','Lourinhã','Mafra','Odivelas','Oeiras','Sintra','Sobral de Monte Agraço','Torres Vedras','Vila Franca de Xira'],
+    'Portalegre': ['Alter do Chão','Arronches','Avis','Campo Maior','Castelo de Vide','Crato','Elvas','Fronteira','Gavião','Marvão','Monforte','Nisa','Ponte de Sor','Portalegre','Sousel'],
+    'Porto': ['Amarante','Baião','Felgueiras','Gondomar','Lousada','Maia','Marco de Canaveses','Matosinhos','Paços de Ferreira','Paredes','Penafiel','Porto','Póvoa de Varzim','Santo Tirso','Trofa','Valongo','Vila do Conde','Vila Nova de Gaia'],
+    'Santarém': ['Abrantes','Alcanena','Almeirim','Alpiarça','Benavente','Cartaxo','Chamusca','Constância','Coruche','Entroncamento','Ferreira do Zêzere','Golegã','Mação','Ourém','Rio Maior','Salvaterra de Magos','Santarém','Sardoal','Tomar','Torres Novas','Vila Nova da Barquinha'],
+    'Setúbal': ['Alcácer do Sal','Alcochete','Almada','Barreiro','Grândola','Moita','Montijo','Palmela','Santiago do Cacém','Seixal','Sesimbra','Setúbal','Sines'],
+    'Viana do Castelo': ['Arcos de Valdevez','Caminha','Melgaço','Monção','Paredes de Coura','Ponte da Barca','Ponte de Lima','Valença','Viana do Castelo','Vila Nova de Cerveira'],
+    'Vila Real': ['Alijó','Boticas','Chaves','Mesão Frio','Mondim de Basto','Montalegre','Murça','Peso da Régua','Ribeira de Pena','Sabrosa','Santa Marta de Penaguião','Valpaços','Vila Pouca de Aguiar','Vila Real'],
+    'Viseu': ['Armamar','Carregal do Sal','Castro Daire','Cinfães','Lamego','Mangualde','Moimenta da Beira','Mortágua','Nelas','Oliveira de Frades','Penalva do Castelo','Penedono','Resende','Santa Comba Dão','São João da Pesqueira','São Pedro do Sul','Sátão','Sernancelhe','Tabuaço','Tarouca','Tondela','Vila Nova de Paiva','Viseu','Vouzela'],
+    'Açores': ['Angra do Heroísmo','Calheta (Açores)','Corvo','Horta','Lagoa (Açores)','Lajes das Flores','Lajes do Pico','Madalena','Nordeste','Ponta Delgada','Povoação','Praia da Vitória','Ribeira Grande','Santa Cruz da Graciosa','Santa Cruz das Flores','São Roque do Pico','Velas','Vila do Porto','Vila Franca do Campo'],
+    'Madeira': ['Calheta (Madeira)','Câmara de Lobos','Funchal','Machico','Ponta do Sol','Porto Moniz','Porto Santo','Ribeira Brava','Santa Cruz','Santana','São Vicente'],
+  };
+
+  function initDistritoConcelho(distritoSel, concelhoSel) {
+    Object.keys(DISTRITOS_CONCELHOS).forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d; opt.textContent = d;
+      distritoSel.appendChild(opt);
+    });
+    function preencherConcelhos(distrito, concelhoSelecionado) {
+      concelhoSel.innerHTML = '';
+      const lista = DISTRITOS_CONCELHOS[distrito];
+      if (!lista) {
+        concelhoSel.innerHTML = '<option value="">Selecionar distrito primeiro</option>';
+        concelhoSel.disabled = true;
+        return;
+      }
+      concelhoSel.disabled = false;
+      concelhoSel.innerHTML = '<option value="">Selecionar...</option>' +
+        lista.map(c => `<option value="${c}" ${c === concelhoSelecionado ? 'selected' : ''}>${c}</option>`).join('');
+    }
+    distritoSel.addEventListener('change', () => preencherConcelhos(distritoSel.value, ''));
+    return preencherConcelhos;
+  }
+
+  function calcularIdade(dob) {
+    if (!dob) return '';
+    const nasc = new Date(dob);
+    if (isNaN(nasc.getTime())) return '';
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - nasc.getFullYear();
+    const aindaNaoFezAniversario = (hoje.getMonth() < nasc.getMonth()) ||
+      (hoje.getMonth() === nasc.getMonth() && hoje.getDate() < nasc.getDate());
+    if (aindaNaoFezAniversario) idade--;
+    return idade >= 0 ? String(idade) : '';
+  }
+
   // ── Render: Biomarcadores ─────────────────────────────────────────────
   const CAT_LABELS = {
     cardiovascular:'Cardiovascular', metabolico:'Metabólico', nutricional:'Nutricional',
@@ -3277,6 +3372,14 @@
         if (d.lastName)  document.getElementById('pf-last').value  = d.lastName;
         if (d.phone)     document.getElementById('pf-phone').value = d.phone;
         if (d.dob)       document.getElementById('pf-dob').value   = d.dob;
+        if (d.genero)    document.getElementById('pf-genero').value = d.genero;
+        if (d.morada)    document.getElementById('pf-morada').value = d.morada;
+        if (d.codigoPostal) document.getElementById('pf-cp').value  = d.codigoPostal;
+        document.getElementById('pf-idade').value = calcularIdade(d.dob) || '';
+        if (d.distrito) {
+          document.getElementById('pf-distrito').value = d.distrito;
+          window._preencherConcelhos?.(d.distrito, d.concelho || '');
+        }
 
         // Sub-title das secções
         if (d.resultados?.dataAnalise) {
@@ -3555,6 +3658,15 @@
     }
   });
 
+  // ── Perfil: distrito/concelho + idade automática ───────────────────────
+  window._preencherConcelhos = initDistritoConcelho(
+    document.getElementById('pf-distrito'),
+    document.getElementById('pf-concelho')
+  );
+  document.getElementById('pf-dob').addEventListener('change', (e) => {
+    document.getElementById('pf-idade').value = calcularIdade(e.target.value) || '';
+  });
+
   onAuthStateChanged(auth, async (user) => {
     clearTimeout(window._authFallback);
     if (!user) { window.location.href = 'login.html?next=dashboard.html'; return; }
@@ -3575,15 +3687,37 @@
     // Guardar perfil (onclick: nunca duplica mesmo que o auth dispare de novo)
     document.getElementById('pf-save-btn').onclick = async () => {
       const msg = document.getElementById('pf-msg');
+
+      // Validar campos obrigatórios para compra do plano base
+      const required = ['pf-dob','pf-genero','pf-phone','pf-morada','pf-distrito','pf-concelho','pf-cp'];
+      let valido = true;
+      required.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) { el.classList.add('field-invalid'); valido = false; }
+        else el.classList.remove('field-invalid');
+      });
+      if (!valido) {
+        msg.style.color = 'var(--red)';
+        msg.textContent = 'Preencha todos os campos obrigatórios (*) para poder adquirir o plano base.';
+        return;
+      }
+
       try {
         await auth.currentUser?.getIdToken(true); // garantir token fresco
         await updateDoc(doc(db, 'users', user.uid), {
-          firstName: document.getElementById('pf-first').value.trim(),
-          lastName:  document.getElementById('pf-last').value.trim(),
-          phone:     document.getElementById('pf-phone').value.trim(),
-          dob:       document.getElementById('pf-dob').value,
+          firstName:    document.getElementById('pf-first').value.trim(),
+          lastName:     document.getElementById('pf-last').value.trim(),
+          phone:        document.getElementById('pf-phone').value.trim(),
+          dob:          document.getElementById('pf-dob').value,
+          genero:       document.getElementById('pf-genero').value,
+          morada:       document.getElementById('pf-morada').value.trim(),
+          distrito:     document.getElementById('pf-distrito').value,
+          concelho:     document.getElementById('pf-concelho').value,
+          codigoPostal: document.getElementById('pf-cp').value.trim(),
+          perfilCompleto: true,
           atualizadoEm: serverTimestamp()
         });
+        document.getElementById('pf-idade').value = calcularIdade(document.getElementById('pf-dob').value) || '';
         msg.style.color = 'var(--green)';
         msg.textContent = '✓ Guardado com sucesso';
         setTimeout(() => msg.textContent = '', 3000);
