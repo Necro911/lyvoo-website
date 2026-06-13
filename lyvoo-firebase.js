@@ -20,10 +20,12 @@ const app = initializeApp(firebaseConfig);
 
 // ── App Check: modo debug em localhost ────────────────────────────────────────
 // O reCAPTCHA v3 não valida localhost (devolve 403). Em ambiente local ativamos
-// o debug token: o Firebase imprime um token na consola que deves registar em
-// Firebase Console → App Check → Apps → ⋮ → Manage debug tokens. Não afeta produção.
+// o debug token: com `true` o Firebase gera um token novo (aleatório) a cada
+// reload, o que obriga a registar um token diferente sempre. Por isso fixamos
+// aqui o token já registado em Firebase Console → App Check → Apps → ⋮ →
+// Manage debug tokens, para ser estável entre reloads. Não afeta produção.
 if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = '1bb5cd7b-e99f-4bbe-8948-88d35e009f14';
 }
 
 // ── App Check (reCAPTCHA v3) ──────────────────────────────────────────────────
