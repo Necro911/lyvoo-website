@@ -1494,6 +1494,24 @@
     return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
   }
 
+  // ── Toast (feedback transitório, em vez de alert() nativo) ────────────
+  function mostrarToast(texto, tipo = 'info') {
+    let cont = document.getElementById('toast-cont');
+    if (!cont) {
+      cont = document.createElement('div');
+      cont.id = 'toast-cont';
+      cont.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100001;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;';
+      document.body.appendChild(cont);
+    }
+    const cor = tipo === 'erro' ? 'var(--red,#E53935)' : tipo === 'ok' ? 'var(--green,#22C55E)' : 'var(--cyan,#3DD9E8)';
+    const t = document.createElement('div');
+    t.style.cssText = `pointer-events:auto;background:var(--panel,#11161D);border:1px solid var(--line,rgba(255,255,255,0.1));border-left:3px solid ${cor};color:var(--txt,#fff);font-size:13.5px;line-height:1.4;padding:12px 16px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.4);max-width:90vw;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;`;
+    t.textContent = texto;
+    cont.appendChild(t);
+    requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateY(0)'; });
+    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(8px)'; setTimeout(() => t.remove(), 250); }, 3500);
+  }
+
   // ── Estado "visto" sincronizado no Firestore (cross-device) ───────────
   // Antes era localStorage (por-dispositivo): noutro dispositivo o sino e o
   // chat reapareciam como não-lidos. Agora persiste no doc do utilizador.
@@ -1568,6 +1586,8 @@
         }, { merge: true });
       } catch (err) {
         console.error('Erro ao enviar mensagem:', err);
+        input.value = texto; // repor o texto para o cliente não o perder
+        mostrarToast('Não foi possível enviar a mensagem. Tente novamente.', 'erro');
       }
     });
   }
@@ -2071,9 +2091,8 @@
 
     const cancelBtn = document.getElementById('cd-cancel-btn');
     if (cancelBtn) {
-      cancelBtn.addEventListener('click', async () => {
-        if (!confirm('Tem a certeza que quer cancelar esta consulta?')) return;
-        cancelBtn.disabled = true;
+      const executarCancelamento = async (btnSim) => {
+        btnSim.disabled = true;
         const msg = document.getElementById('cd-msg');
         try {
           await auth.currentUser?.getIdToken(true);
@@ -2103,8 +2122,22 @@
           console.error(e);
           msg.textContent = 'Erro ao cancelar. Tente novamente.';
           msg.className = 'bk-msg err';
-          cancelBtn.disabled = false;
+          btnSim.disabled = false;
         }
+      };
+      // Confirmação inline (substitui o confirm() nativo, coerente com a app)
+      cancelBtn.addEventListener('click', () => {
+        const wrap = document.createElement('div');
+        wrap.style.marginTop = '10px';
+        wrap.innerHTML = `
+          <div class="cd-note" style="margin-top:0;margin-bottom:8px;">Tem a certeza que quer cancelar esta consulta? A equipa Lyvoo enviar-lhe-á novas datas.</div>
+          <div style="display:flex;gap:8px;">
+            <button class="cd-cancel-btn" id="cd-cancel-yes" style="margin-top:0;">Sim, cancelar</button>
+            <button class="cd-cancel-btn" id="cd-cancel-no" style="margin-top:0;background:rgba(255,255,255,0.06);border-color:var(--line);color:var(--txt);">Manter</button>
+          </div>`;
+        cancelBtn.replaceWith(wrap);
+        document.getElementById('cd-cancel-no').onclick = () => abrirDetalheConsulta(idx);
+        document.getElementById('cd-cancel-yes').onclick = (ev) => executarCancelamento(ev.currentTarget);
       });
     }
 
@@ -2492,7 +2525,7 @@
 
     } catch(e) {
       console.error('PDF error:', e);
-      alert('Erro ao gerar PDF. Tente novamente.');
+      mostrarToast('Erro ao gerar o PDF. Tente novamente.', 'erro');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
     }
@@ -2917,7 +2950,8 @@
   // ── Render: Plano alimentar ───────────────────────────────────────────
   function renderPlano(pa) {
     const container = document.getElementById('plano-content');
-    if (!pa || !pa.objectivo) return;
+    const temConteudo = pa && (pa.objectivo || pa.kcal || (pa.refeicoes && pa.refeicoes.length) || (pa.priorizar && pa.priorizar.length) || (pa.reduzir && pa.reduzir.length) || pa.obs);
+    if (!temConteudo) return;
     window._planoData = pa;
     const dlBtn = document.getElementById('plano-pdf-btn');
     if (dlBtn) dlBtn.style.display = 'inline-flex';
@@ -2989,11 +3023,11 @@
 
     container.innerHTML = `
       <div class="sec-cards-grid">
-        <div class="sec-card">
+        ${pa.objectivo ? `<div class="sec-card">
           <div class="sec-card-label" style="color:var(--cyan)">Objectivo principal</div>
           <div class="sec-card-title">${pa.objectivo}</div>
           <div class="sec-card-desc">${pa.objectivoDesc||''}</div>
-        </div>
+        </div>` : ''}
         <div class="sec-card">
           <div class="sec-card-label" style="color:var(--green)">Macros diários${pa.kcal?' · '+pa.kcal:''}</div>
           <div class="sec-card-title">Proteína · Gordura · Hidratos</div>
