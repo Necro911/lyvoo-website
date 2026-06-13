@@ -66,6 +66,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { animation: spin 0.8s linear infinite; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="../cookie-banner.js" defer></script>
   <script src="../prelaunch.js" defer></script>
 </head>
@@ -142,14 +143,14 @@
       <div class="terms">
         <input type="checkbox" id="terms" name="terms" />
         <label for="terms">
-          I accept Lyvoo's <a href="../termos.html" target="_blank">Terms of Service</a> and <a href="../privacidade.html" target="_blank">Privacy Policy</a>.
+          I have read and accept Lyvoo's <a href="../termos.html" target="_blank">Terms of Service</a> and confirm I have read the <a href="../privacidade.html" target="_blank">Privacy Policy</a>.
         </label>
       </div>
 
       <div class="terms" style="margin-top:-4px;">
-        <input type="checkbox" id="serviceStart" name="serviceStart" />
-        <label for="serviceStart">
-          I understand that by confirming my subscription, kit dispatch begins immediately and that, once the kit has been used, I waive my right of withdrawal pursuant to <a href="../termos.html#cancelamento" target="_blank">Art. 17 of Decree-Law 24/2014</a>.
+        <input type="checkbox" id="marketing" name="marketing" />
+        <label for="marketing">
+          I want to receive communications from Lyvoo. <span style="color:var(--ink-3)">(optional)</span>
         </label>
       </div>
 
@@ -189,11 +190,30 @@
     from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from '../lyvoo-firebase.js';
 
+  // ── EmailJS (marketing consent notification) ──
+  emailjs.init('P0ArQ2tRYDeYkPZuR');
+
+  async function notificarConsentimentoMarketing(user, aceitou) {
+    try {
+      await emailjs.send('service_x9g66zr', 'template_4is6gpi', {
+        from_name:  user.displayName || user.email,
+        from_email: user.email,
+        email:      user.email,
+        interesse:  'Marketing consent (registration, EN)',
+        mensagem:   `Customer ${user.displayName || ''} <${user.email}> ${aceitou ? 'ACCEPTED' : 'DECLINED'} to receive communications from Lyvoo.`,
+      });
+    } catch (err) {
+      console.error('Consent notification failed:', err);
+    }
+  }
+
   async function guardarPerfil(user, { firstName = '', lastName = '' } = {}) {
+    const marketing = document.getElementById('marketing').checked;
     const dados = {
       email: user.email,
       plano:     'lyvoo',
       planoNome: 'Lyvoo',
+      marketingConsent: marketing,
       atualizadoEm: serverTimestamp()
     };
     if (firstName || lastName) { dados.firstName = firstName; dados.lastName = lastName; }
@@ -264,8 +284,7 @@
     const emailVal = emailInput.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { emailInput.classList.add('error'); emailErr.style.display = 'block'; valido = false; } else { emailInput.classList.remove('error'); emailErr.style.display = 'none'; }
     if (pwInput.value.length < 8) { pwInput.classList.add('error'); pwErr.style.display = 'block'; valido = false; } else { pwInput.classList.remove('error'); pwErr.style.display = 'none'; }
-    if (!document.getElementById('terms').checked) { mostrarErroGlobal('You must accept the Terms of Service to continue.'); valido = false; }
-    if (!document.getElementById('serviceStart').checked) { mostrarErroGlobal('You must confirm the immediate service start policy to continue.'); valido = false; }
+    if (!document.getElementById('terms').checked) { mostrarErroGlobal('You must accept the Terms of Service and Privacy Policy to continue.'); valido = false; }
     if (!valido) return;
     setBtnLoading(true);
     try {
@@ -275,6 +294,7 @@
       const nome = [firstName, lastName].filter(Boolean).join(' ');
       if (nome) await updateProfile(cred.user, { displayName: nome });
       await guardarPerfil(cred.user, { firstName, lastName });
+      await notificarConsentimentoMarketing(cred.user, document.getElementById('marketing').checked);
       aoAutenticar(cred.user);
     } catch (err) { setBtnLoading(false); mostrarErroGlobal(mensagemErro(err.code)); }
   });
@@ -283,11 +303,17 @@
   pwInput.addEventListener('input', () => { pwInput.classList.remove('error'); pwErr.style.display = 'none'; limparErroGlobal(); });
 
   document.getElementById('btnGoogle').addEventListener('click', async (e) => {
-    e.preventDefault(); limparErroGlobal(); setGoogleLoading(true);
+    e.preventDefault(); limparErroGlobal();
+    if (!document.getElementById('terms').checked) {
+      mostrarErroGlobal('You must accept the Terms of Service and Privacy Policy before continuing with Google.');
+      return;
+    }
+    setGoogleLoading(true);
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const partes = (result.user.displayName || '').trim().split(' ');
       await guardarPerfil(result.user, { firstName: partes[0] || '', lastName: partes.slice(1).join(' ') });
+      await notificarConsentimentoMarketing(result.user, document.getElementById('marketing').checked);
       aoAutenticar(result.user);
     } catch (err) { setGoogleLoading(false); if (err.code !== 'auth/popup-closed-by-user') mostrarErroGlobal(mensagemErro(err.code)); }
   });
