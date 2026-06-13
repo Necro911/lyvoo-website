@@ -309,7 +309,7 @@
   // acima trata do encaminhamento em caso de sucesso; aqui só mostramos erros.
   getRedirectResult(auth).catch(err => {
     if (err?.code && err.code !== 'auth/popup-closed-by-user') {
-      mostrarMensagem(mensagemErro(err.code));
+      mostrarMensagem(mensagemErro(err.code, err));
     }
     setGoogleLoading(false);
   });
@@ -331,8 +331,12 @@
     'auth/operation-not-supported-in-this-environment': 'Este browser não suporta este método de login. Tente outro browser.',
   };
 
-  function mensagemErro(code) {
-    return erros[code] || 'Ocorreu um erro inesperado. Tente novamente.';
+  function mensagemErro(code, err) {
+    // Regista sempre o erro completo na consola para diagnóstico.
+    if (err !== undefined) console.error('[login] falha de autenticação:', code, err);
+    // Para códigos não mapeados, mostramos o código entre parênteses — ajuda a
+    // diagnosticar problemas de App Check/reCAPTCHA/domínio em produção.
+    return erros[code] || `Ocorreu um erro inesperado (${code || 'sem código'}). Tente novamente.`;
   }
 
   function mostrarMensagem(msg, tipo = 'erro') {
@@ -412,7 +416,7 @@
       const cred = await signInWithEmailAndPassword(auth, emailVal, pwVal);
       window.location.href = destino(cred.user.email);
     } catch (err) {
-      mostrarMensagem(mensagemErro(err.code));
+      mostrarMensagem(mensagemErro(err.code, err));
       setBtnLoading(false);
     }
   });
@@ -430,7 +434,7 @@
       try {
         await signInWithRedirect(auth, provider);
       } catch (err) {
-        mostrarMensagem(mensagemErro(err.code));
+        mostrarMensagem(mensagemErro(err.code, err));
         setGoogleLoading(false);
       }
       return;
@@ -444,10 +448,14 @@
       const fallback = ['auth/popup-blocked', 'auth/cancelled-popup-request', 'auth/operation-not-supported-in-this-environment'];
       if (fallback.includes(err.code)) {
         try { await signInWithRedirect(auth, provider); return; }
-        catch (e2) { mostrarMensagem(mensagemErro(e2.code)); setGoogleLoading(false); return; }
+        catch (e2) { mostrarMensagem(mensagemErro(e2.code, e2)); setGoogleLoading(false); return; }
       }
+      // Mesmo um "cancelado pelo utilizador" é registado na consola — ajuda a
+      // distinguir um cancelamento real de um pop-up que fecha sozinho (sinal
+      // típico de problema de App Check/COOP/domínio).
+      console.error('[login] pop-up Google falhou:', err.code, err);
       if (err.code !== 'auth/popup-closed-by-user') {
-        mostrarMensagem(mensagemErro(err.code));
+        mostrarMensagem(mensagemErro(err.code, err));
       }
       setGoogleLoading(false);
     }
@@ -466,7 +474,7 @@
       await sendPasswordResetEmail(auth, emailVal);
       mostrarMensagem('Email de recuperação enviado. Verifique a sua caixa de entrada.', 'sucesso');
     } catch (err) {
-      mostrarMensagem(mensagemErro(err.code));
+      mostrarMensagem(mensagemErro(err.code, err));
     }
   });
 </script>
