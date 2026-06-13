@@ -287,7 +287,12 @@
 
     @media (max-width: 960px) {
       .layout { grid-template-columns: minmax(0, 1fr); }
-      .sidebar { border-right: none; border-bottom: 1px solid var(--line); max-height: 40vh; }
+      /* Não limitar a sidebar a 40vh: a pesquisa + cartões + filtros já ocupavam
+         mais de 40vh, esmagando a .user-list para 0px (os clientes ficavam
+         invisíveis). Em vez disso, a sidebar cresce com o conteúdo e é a própria
+         lista que tem altura máxima com scroll. */
+      .sidebar { border-right: none; border-bottom: 1px solid var(--line); max-height: none; }
+      .user-list { max-height: 55vh; }
       .estado-cards { grid-template-columns: repeat(3,1fr); }
       .form-row, .form-row-3 { grid-template-columns: 1fr; }
     }
@@ -1470,6 +1475,12 @@
 
     document.getElementById('detail-empty').style.display = 'none';
     document.getElementById('detail-content').style.display = 'block';
+
+    // Em mobile a lista fica por cima do detalhe; ao abrir um cliente, levar o
+    // painel de detalhe à vista (senão parece que "não acontece nada").
+    if (window.matchMedia('(max-width: 960px)').matches) {
+      document.getElementById('detail-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 
     const snap = await getDoc(doc(db,'users',uid));
     const d = snap.exists() ? snap.data() : {};
