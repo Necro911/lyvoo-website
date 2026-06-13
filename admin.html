@@ -745,6 +745,8 @@
           <div class="form-section-title">Marcações feitas pelo cliente</div>
           <div id="agendamentos-list" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
+        <div class="form-section-title" style="margin-top:24px;">Consultas registadas manualmente</div>
+        <div style="font-size:12px;color:var(--txt-3);margin:-4px 0 12px;">Apenas para consultas fora do calendário (ex.: telefónicas ou ad-hoc). O agendamento, estado e link das consultas marcadas com o cliente são geridos no calendário acima.</div>
         <div class="cards-editor" id="consult-list"></div>
         <button class="btn-add-card" onclick="addConsult()">+ Adicionar consulta</button>
         <div class="save-bar" style="margin-top:20px">
@@ -2494,21 +2496,8 @@
       </div>
       <div class="form-row">
         <div class="form-field"><label class="form-label">Data</label><input class="form-input" type="date" name="c-data" value="${c.data||''}" /></div>
-        <div class="form-field"><label class="form-label">Hora</label><input class="form-input" type="time" name="c-hora" value="${c.hora||''}" /></div>
-      </div>
-      <div class="form-row">
         <div class="form-field"><label class="form-label">Profissional</label><input class="form-input" type="text" name="c-medico" value="${c.medico||''}" placeholder="Ex: Dra. Lúcia Abreu" /></div>
-        <div class="form-field"><label class="form-label">Estado</label>
-          <select class="form-select" name="c-estado">
-            <option value="agendada" ${c.estado==='agendada'?'selected':''}>Agendada</option>
-            <option value="confirmada" ${c.estado==='confirmada'?'selected':''}>Confirmada</option>
-            <option value="realizada" ${c.estado==='realizada'?'selected':''}>Realizada</option>
-            <option value="cancelada" ${c.estado==='cancelada'?'selected':''}>Cancelada</option>
-            <option value="pendente" ${c.estado==='pendente'?'selected':''}>Pendente</option>
-          </select>
-        </div>
       </div>
-      <div class="form-field"><label class="form-label">Link da videochamada</label><input class="form-input" type="url" name="c-link" value="${c.link||''}" placeholder="https://meet.google.com/..." /></div>
       <div class="form-field"><label class="form-label">Notas (visíveis para o cliente)</label><input class="form-input" type="text" name="c-notas" value="${c.notas||''}" placeholder="Ex: Trazer lista de alimentos..." /></div>`;
     container.appendChild(div);
   }
@@ -2520,10 +2509,7 @@
       titulo: card.querySelector('[name=c-titulo]').value.trim(),
       tipo:   card.querySelector('[name=c-tipo]').value,
       data:   card.querySelector('[name=c-data]').value,
-      hora:   card.querySelector('[name=c-hora]').value,
       medico: card.querySelector('[name=c-medico]').value.trim(),
-      estado: card.querySelector('[name=c-estado]').value,
-      link:   card.querySelector('[name=c-link]').value.trim(),
       notas:  card.querySelector('[name=c-notas]').value.trim(),
     })).filter(c => c.titulo);
   }
