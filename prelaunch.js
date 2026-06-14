@@ -23,6 +23,7 @@
   const SOON_LABEL        = isEN ? 'Coming soon - pricing to be announced' : 'Em breve - preço a confirmar';
   const PRICE_PLACEHOLDER = isEN ? 'pricing to be announced' : 'preço a confirmar';
   const STORIES_SOON      = isEN ? 'Soon, you could be part of the Lyvoo story.' : 'Em breve poderá fazer parte da história da Lyvoo.';
+  const GUARANTEE_NOTE    = isEN ? 'No commitment to join · we’ll email you the moment spots open' : 'Entrada sem compromisso · avisamos assim que a lista abrir';
 
   /* ─────────── CSS ─────────── */
   const style = document.createElement('style');
@@ -72,6 +73,14 @@
     badge.className = 'prelaunch-soon-badge';
     badge.textContent = SOON_LABEL;
     el.insertAdjacentElement('afterend', badge);
+  });
+
+  /* ─────────── 2b. Micro-cópia de subscrição/cancelamento sob o CTA → nota de lista de espera ───────────
+     Com o preço escondido, falar de "cancelamento" / "sem renovação" mesmo por baixo do botão
+     "Junte-se à lista de espera" levanta a pergunta do dinheiro sem a responder. Trocamos por uma
+     garantia adequada à lista de espera (reduz o atrito de entrar, sem mencionar pagamento). */
+  document.querySelectorAll('.sp-guarantee').forEach((el) => {
+    el.textContent = GUARANTEE_NOTE;
   });
 
   /* ─────────── 3b. Secção "Histórias reais" → ainda sem testemunhos ─────────── */
