@@ -5,7 +5,7 @@
  * Enquanto a marca não está operacional, este script:
  *  1) troca os CTAs de registo/login/dashboard por um CTA para a lista de espera
  *  2) esconde blocos de preço estruturados (com selo "Em breve")
- *  3) mascara menções textuais ao preço do Programa Lyvoo (€359/ano)
+ *  3) mascara menções textuais ao preço do Programa Lyvoo (qualquer valor: €359, €365, …)
  *
  * INTERRUPTOR ÚNICO - para repor o site normal, basta mudar para `false`
  * (ou remover a tag <script src="prelaunch.js">). Nada mais precisa de mudar.
@@ -87,9 +87,12 @@
     tstGrid.insertAdjacentElement('afterend', soon);
   }
 
-  /* ─────────── 3. Menções textuais a "€359/ano" ou "€359/year" → mascaradas ─────────── */
-  const priceTestRe    = /\(?\s*€\s?359\s?\/\s?(ano|year)\s*\)?/i;
-  const priceReplaceRe = /\(?\s*€\s?359\s?\/\s?(ano|year)\s*\)?/gi;
+  /* ─────────── 3. Menções textuais a "€XXX/ano" ou "€XXX/year" → mascaradas ───────────
+     Usa \d{2,4} (e não um número fixo) porque €359 e €365 coexistem no site — assim
+     nenhum preço do programa escapa no pré-lançamento. Não apanha "€800-1500" (anchor
+     de mercado) nem "€15" (taxa logística), pois esses não têm "/ano" ou "/year". */
+  const priceTestRe    = /\(?\s*€\s?\d{2,4}\s?\/\s?(ano|year)\s*\)?/i;
+  const priceReplaceRe = /\(?\s*€\s?\d{2,4}\s?\/\s?(ano|year)\s*\)?/gi;
 
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
