@@ -3,9 +3,8 @@
 import { initializeApp }          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth }                from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore }           from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-// App Check desativado temporariamente — ver nota mais abaixo.
-// import { initializeAppCheck, ReCaptchaV3Provider }
-//                                   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js';
+import { initializeAppCheck, ReCaptchaV3Provider }
+                                 from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check.js';
 
 const firebaseConfig = {
   apiKey:            "AIzaSyDdz33PHjwC5vDqSMh9ts1H7Q1tuJG6H38",
@@ -19,30 +18,31 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// ── App Check (reCAPTCHA v3) — DESATIVADO TEMPORARIAMENTE ─────────────────────
-// O App Check nunca chegou a ser ativado no backend (Firebase Console → App Check
-// continua em "Get started"). Entretanto a chave reCAPTCHA foi migrada para a
-// gestão "Enterprise" no Cloud Console, o que partiu a validação do token v3:
-// o cliente enviava tokens que o Identity Toolkit passou a rejeitar com
-// `auth/firebase-app-check-token-is-invalid`, bloqueando TODO o login (email e
-// Google). Como o backend não exige App Check, a solução correta é deixar de
-// enviar o token partido — o site funciona normalmente sem ele.
+// ── App Check (reCAPTCHA v3) ─────────────────────────────────────────────────
+// Site key v3 NOVA (15 Jun 2026), criada no console clássico (Score based v3).
+// NÃO voltar à antiga 6Lei…SAM4: essa foi migrada para Enterprise e, com o
+// ReCaptchaV3Provider, fazia o Identity Toolkit rejeitar TODOS os tokens
+// (auth/firebase-app-check-token-is-invalid) → bloqueava todo o login.
+// O *secret* desta key vive só na Firebase Console → App Check (nunca no código).
 //
-// PARA REATIVAR (quando o App Check estiver bem configurado):
-//   1. Firebase Console → App Check → ativar a API e registar a app web com o
-//      provider reCAPTCHA (v3 OU Enterprise — tem de bater certo com o código).
-//   2. Registar o debug token para localhost em App Check → Apps → ⋮ → Manage
-//      debug tokens (o anterior era 1bb5cd7b-e99f-4bbe-8948-88d35e009f14).
-//   3. Descomentar o bloco abaixo (e ajustar o provider para o tipo de chave).
-//   4. Só DEPOIS pôr a Authentication/Firestore em "Enforced".
+// PRÉ-REQUISITOS no backend (Firebase Console → App Check), por ordem:
+//   1. Registar a app web com o provider reCAPTCHA v3 + o secret desta key nova.
+//   2. App Check → Manage debug tokens → adicionar o token que o SDK imprime na
+//      consola do browser na 1ª carga em localhost (ver abaixo).
+//   3. Manter Authentication e Firestore em UNENFORCED/Monitor; só depois de
+//      confirmar tokens válidos no Monitor é que se passa a Enforced.
 //
-// if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-//   self.FIREBASE_APPCHECK_DEBUG_TOKEN = '1bb5cd7b-e99f-4bbe-8948-88d35e009f14';
-// }
-// initializeAppCheck(app, {
-//   provider: new ReCaptchaV3Provider('6LeiwBQtAAAAAPHxgJAnSv0FwV6CZiN1VQVUSAM4'),
-//   isTokenAutoRefreshEnabled: true
-// });
+// NÃO hardcodear o valor do debug token: este ficheiro é servido publicamente, e
+// um token fixo aqui seria um bypass ao App Check assim que estiver Enforced.
+// Com `= true`, o SDK gera um token por-browser e imprime-o na consola; regista-se
+// esse em Manage debug tokens. Em produção (lyvoo.pt) esta linha nunca corre.
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6Lfbgx8tAAAAAGwkr0VPyki1t9kvAmu8ySjUck58'),
+  isTokenAutoRefreshEnabled: true
+});
 
 export const auth = getAuth(app);
 auth.languageCode = 'pt';
