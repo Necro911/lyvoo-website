@@ -43,13 +43,16 @@
       --border:      #E3E8EA;
       --ink:         #0B1215;
       --ink-2:       #3A4A50;
-      --ink-3:       #7A8F96;
+      --ink-3:       #6B8088;
       --dark-bg:     #060F16;
       --dark-surface:#0F1518;
       --dark-border: rgba(255,255,255,0.08);
     }
 
     html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px;
+    }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
@@ -152,7 +155,7 @@
     .nav-login { border: 1.5px solid rgba(255,255,255,0.22) !important; border-radius: 999px !important; padding: 8px 18px !important; color: rgba(255,255,255,0.75) !important; font-weight: 600 !important; transition: border-color 0.2s, color 0.2s !important; }
     .nav-login:hover { border-color: rgba(255,255,255,0.5) !important; color: #fff !important; background: transparent !important; }
     .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
-    .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
+    .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
     .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
     .nav-mob { display: none; background: none; border: none; cursor: pointer; color: #fff; padding: 6px; }
@@ -199,7 +202,7 @@
     }
     .proof-item { display: flex; flex-direction: column; gap: 2px; }
     .proof-num { font-size: 22px; font-weight: 800; letter-spacing: -0.04em; }
-    .proof-label { font-size: 12px; color: rgba(255,255,255,0.35); font-weight: 500; }
+    .proof-label { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 500; }
     .proof-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.12); }
 
     /* Hero canvas - health orbit visual */
@@ -400,7 +403,7 @@
       border-color: rgba(61,217,232,0.3);
       color: rgba(255,255,255,0.88);
     }
-    .conditions-note { text-align: center; margin-top: 40px; font-size: 13px; color: rgba(255,255,255,0.3); }
+    .conditions-note { text-align: center; margin-top: 40px; font-size: 13px; color: rgba(255,255,255,0.45); }
 
     /* ── Head-to-head comparison table ── */
     .vs-section { background: #fff; }
