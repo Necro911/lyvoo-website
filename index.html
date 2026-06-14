@@ -1218,13 +1218,24 @@
     ────────────────────────────────────────── */
     @media (max-width: 960px) {
       .hero-inner { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
-      .hero-left { padding-bottom: 60px; }
+      /* Mobile: versão compacta do orbe (anel + score), sem os cartões flutuantes
+         nem a legenda — dá ao hero o visual de assinatura em vez do vazio anterior,
+         sem risco de overflow (.hero tem overflow:hidden). */
+      .hero-right { display: flex; padding-bottom: 0; }
+      .hero-canvas { width: 100%; max-width: 300px; height: auto; }
+      .hc-orbit { width: 240px; height: 240px; }
+      .hc-glow, .hc-metric, .hc-legend { display: none; }
+      .hc-sd-num { font-size: 46px; }
+      .hero-left { padding-bottom: 24px; }
       .process-step { grid-template-columns: 1fr; gap: 40px; }
       .process-step.reverse .step-text { order: 1; }
       .process-step.reverse .step-visual { order: 2; }
       .app-inner { grid-template-columns: 1fr; }
-      .app-mockup-wrap { display: none; }
+      /* Mobile: mostrar o telemóvel (UI real da app) sem as bolhas flutuantes —
+         resolve "o produto nunca é mostrado em mobile". .app-section tem
+         overflow:hidden, por isso o ligeiro tilt 3D não causa scroll lateral. */
+      .app-mockup-wrap { display: flex; width: 100%; max-width: 280px; height: auto; margin: 8px auto 0; }
+      .app-bubble { display: none; }
       .modules-grid { grid-template-columns: 1fr 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .nav-links-center, .nav-links-right { display: none; }
