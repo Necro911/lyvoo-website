@@ -288,21 +288,27 @@
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { auth } from './lyvoo-firebase.js';
 
-  const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com', 'hello@lyvoo.pt'];
   const nextPage = new URLSearchParams(window.location.search).get('next') || null;
   // Em telemóvel, os pop-ups são frequentemente bloqueados (Safari iOS, browsers
   // in-app). Usamos o fluxo de redirect, mais fiável nestes contextos.
   const isMobile = /Android|iPhone|iPad|iPod|Mobile|Silk/i.test(navigator.userAgent);
 
-  function destino(email) {
+  // Encaminhamento por role baseado no custom claim { admin:true } (sem emails
+  // hardcoded). O admin.html revalida o claim server-side de qualquer forma.
+  async function destino(user) {
     if (nextPage) return nextPage;
-    return ADMIN_EMAILS.includes(email) ? 'admin.html' : 'dashboard.html';
+    try {
+      const t = await user.getIdTokenResult();
+      return t.claims.admin === true ? 'admin.html' : 'dashboard.html';
+    } catch {
+      return 'dashboard.html';
+    }
   }
 
   // Se já estiver autenticado, redirecionar conforme o role
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(auth, async user => {
     if (!user) return;
-    window.location.replace(destino(user.email));
+    window.location.replace(await destino(user));
   });
 
   // Processar o regresso de um login via redirect (mobile). O onAuthStateChanged
@@ -414,7 +420,7 @@
     setBtnLoading(true);
     try {
       const cred = await signInWithEmailAndPassword(auth, emailVal, pwVal);
-      window.location.href = destino(cred.user.email);
+      window.location.href = await destino(cred.user);
     } catch (err) {
       mostrarMensagem(mensagemErro(err.code, err));
       setBtnLoading(false);
@@ -435,7 +441,7 @@
     const provider = new GoogleAuthProvider();
     try {
       const cred = await signInWithPopup(auth, provider);
-      window.location.href = destino(cred.user.email);
+      window.location.href = await destino(cred.user);
     } catch (err) {
       console.error('[login] login Google falhou:', err.code, err);
       if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {

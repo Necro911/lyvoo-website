@@ -6,19 +6,16 @@ rules_version = '2';
 // Para publicar: Firebase Console → Firestore Database → Regras → colar → Publicar
 // (ou via CLI: firebase deploy --only firestore:rules)
 //
-// O acesso de administrador baseia-se no custom claim { admin: true } no token
-// (definido com set-admin-claims.js), com fallback para os emails da equipa —
-// os mesmos de ADMIN_EMAILS em admin.html e login.html.
+// O acesso de administrador baseia-se EXCLUSIVAMENTE no custom claim
+// { admin: true } no token (definido com set-admin-claims.js). Não há fallback
+// por email — para promover alguém a admin, corre set-admin-claims.js.
 // ─────────────────────────────────────────────────────────────────────────────
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      return request.auth != null && (
-        request.auth.token.admin == true ||
-        request.auth.token.email in ['ricardo.lyvoo@gmail.com', 'hello@lyvoo.pt']
-      );
+      return request.auth != null && request.auth.token.admin == true;
     }
 
     function isOwner(uid) {

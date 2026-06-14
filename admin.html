@@ -912,8 +912,6 @@
   import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where, onSnapshot, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
-  const ADMIN_EMAILS = ['ricardo.lyvoo@gmail.com','hello@lyvoo.pt'];
-
   const ESTADO_LABELS = { 1:'Sem plano ativo', 2:'Kit a caminho', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação · Kit a caminho', 6:'Reavaliação · Laboratório a processar', 7:'Reavaliação · Resultados disponíveis' };
 
   // ── Biomarcadores: categorias pré-definidas ─────────────────────────
@@ -3152,7 +3150,7 @@
     // Verificar custom claim { admin: true } no token JWT (server-side)
     // force:true garante que o token está actualizado com os custom claims mais recentes
     const tokenResult = await user.getIdTokenResult(true);
-    const isAdmin = tokenResult.claims.admin === true || ADMIN_EMAILS.includes(user.email);
+    const isAdmin = tokenResult.claims.admin === true;
     if (!isAdmin) { document.getElementById('access-denied').style.display = 'block'; return; }
 
     document.getElementById('admin-email').textContent = user.email;

@@ -128,15 +128,14 @@ exports.syncBusySlots = onDocumentWritten(
 );
 
 // Backfill único da coleção busySlots a partir dos agendamentos existentes.
-// Chamável só por admin (claim ou email da equipa). Correr UMA vez após o deploy
+// Chamável só por admin (custom claim { admin:true }). Correr UMA vez após o deploy
 // se já existirem marcações: no browser, autenticado como admin →
 //   const fn = httpsCallable(getFunctions(app,'europe-west1'),'backfillBusySlots'); await fn();
 exports.backfillBusySlots = require('firebase-functions/v2/https').onCall(
   { region: 'europe-west1' },
   async (request) => {
     const token = request.auth && request.auth.token;
-    const isAdmin = token && (token.admin === true ||
-      ['ricardo.lyvoo@gmail.com', 'hello@lyvoo.pt'].includes(token.email));
+    const isAdmin = token && token.admin === true;
     if (!isAdmin) throw new Error('unauthorized');
 
     const snap = await db.collection('agendamentosNutri').get();
