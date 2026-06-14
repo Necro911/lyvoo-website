@@ -3,7 +3,19 @@ Thumbs.db
 *.log
 node_modules/
 .claude/
-serviceAccountKey.json
+
+# Secrets & service-account keys
+# Case-robust (Windows core.ignorecase mascara, mas Linux/CI é case-sensitive)
+# + nomes típicos das chaves admin do Firebase
+[Ss]ervice[Aa]ccount*.json
+*firebase-adminsdk*.json
 set-admin-claims.js
-package.json
-package-lock.json
+*.pem
+.env
+.env.local
+
+# Manifestos de tooling SÓ na raiz (não é um projeto npm).
+# Ancorado com "/" para não engolir functions/package.json,
+# que TEM de ser versionado para o deploy das Cloud Functions.
+/package.json
+/package-lock.json
