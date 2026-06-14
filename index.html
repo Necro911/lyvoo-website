@@ -53,6 +53,16 @@
     a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
       outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px;
     }
+    /* Respeitar quem pediu menos movimento (WCAG 2.3.3 / vestibular): neutraliza
+       animações contínuas (orbe, cartões, pílulas) e o smooth-scroll. */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
@@ -264,12 +274,15 @@
       display: flex; flex-direction: column; gap: 3px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
-    .hc-m1 { top: 4%; right: 6%;  animation: floatCard 5s ease-in-out infinite; }
-    .hc-m2 { top: 44%; right: -2%; animation: floatCard 6s ease-in-out infinite 1.2s; }
-    .hc-m3 { bottom: 8%; left: 4%; animation: floatCard 5.5s ease-in-out infinite 0.6s; }
-    @keyframes floatCard {
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(-9px); }
+    /* Os cartões entram uma vez (escalonados) e ficam em repouso — o movimento
+       perpétuo competia com o título/CTA pela atenção e dava um ar "inquieto".
+       A vida do hero fica no brilho suave do orbe, não em cartões a flutuar. */
+    .hc-m1 { top: 4%; right: 6%;  animation: floatCardIn 0.8s ease-out 0.35s both; }
+    .hc-m2 { top: 44%; right: -2%; animation: floatCardIn 0.8s ease-out 0.55s both; }
+    .hc-m3 { bottom: 8%; left: 4%; animation: floatCardIn 0.8s ease-out 0.75s both; }
+    @keyframes floatCardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .hcm-label { font-size: 10px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; white-space: nowrap; }
     .hcm-val   { font-size: 14px; font-weight: 750; white-space: nowrap; }

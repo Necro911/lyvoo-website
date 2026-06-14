@@ -100,10 +100,16 @@
     .hc-sd-max{font-size:14px;color:rgba(255,255,255,0.3);margin-top:2px}
     .hc-sd-badge{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.28);color:#4ADE80;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px}
     .hc-metric{position:absolute;background:rgba(8,14,18,0.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:11px 16px;display:flex;flex-direction:column;gap:3px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-    .hc-m1{top:4%;right:6%;animation:floatCard 5s ease-in-out infinite}
-    .hc-m2{top:44%;right:-2%;animation:floatCard 6s ease-in-out infinite 1.2s}
-    .hc-m3{bottom:8%;left:4%;animation:floatCard 5.5s ease-in-out infinite 0.6s}
-    @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+    /* Cards enter once (staggered) then rest — perpetual motion competed with the
+       headline/CTA for attention. Hero life stays in the soft orb glow. */
+    .hc-m1{top:4%;right:6%;animation:floatCardIn 0.8s ease-out 0.35s both}
+    .hc-m2{top:44%;right:-2%;animation:floatCardIn 0.8s ease-out 0.55s both}
+    .hc-m3{bottom:8%;left:4%;animation:floatCardIn 0.8s ease-out 0.75s both}
+    @keyframes floatCardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important}
+    }
     .hcm-label{font-size:10px;color:rgba(255,255,255,0.38);text-transform:uppercase;letter-spacing:0.07em;font-weight:600;white-space:nowrap}
     .hcm-val{font-size:14px;font-weight:750;white-space:nowrap}.hcm-stat{font-size:10px;color:rgba(255,255,255,0.3);white-space:nowrap}
     .hc-legend{position:absolute;bottom:0;left:50%;transform:translateX(-50%);display:flex;gap:16px;background:rgba(8,14,18,0.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:8px 20px}
