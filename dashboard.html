@@ -1836,16 +1836,13 @@
   async function bkLoadBusy(dateStrs) {
     _bkBusy = {};
     try {
-      const snaps = await getDocs(query(
-        collection(db, 'agendamentosNutri'),
-        where('data', '>=', dateStrs[0]),
-        where('data', '<=', dateStrs[dateStrs.length - 1])
-      ));
+      // Lê a ocupação a partir de busySlots (sem PII), mantido pela Cloud
+      // Function syncBusySlots — agendamentosNutri deixou de ser legível pelo
+      // cliente por conter PII (nome, email, link). (Fix 3)
+      const datas = [...new Set(dateStrs)];
+      const snaps = await Promise.all(datas.map(d => getDoc(doc(db, 'busySlots', d))));
       snaps.forEach(s => {
-        const a = s.data();
-        if (a.estado === 'cancelada') return; // horário cancelado volta a ficar livre
-        if (!_bkBusy[a.data]) _bkBusy[a.data] = new Set();
-        _bkBusy[a.data].add(a.hora);
+        if (s.exists()) _bkBusy[s.id] = new Set(s.data().horas || []);
       });
     } catch (e) {
       console.error('Erro ao carregar disponibilidade:', e);
@@ -2233,13 +2230,11 @@
     msg.className = 'bk-msg';
     msg.innerHTML = '<span class="bk-spinner"></span> A confirmar…';
     try {
-      // Verificar novamente disponibilidade (evitar conflitos de última hora)
-      const checkSnap = await getDocs(query(
-        collection(db, 'agendamentosNutri'),
-        where('data', '==', _bkSelectedDate),
-        where('hora', '==', _bkSelectedTime)
-      ));
-      const ocupado = checkSnap.docs.some(s => s.data().estado !== 'cancelada');
+      // Verificar novamente disponibilidade via busySlots (sem PII). Atualizado
+      // pela Cloud Function ~em segundos; conflitos raros são reconciliados pela
+      // equipa. (Fix 3 — o cliente já não pode ler agendamentosNutri de outros.)
+      const bsSnap = await getDoc(doc(db, 'busySlots', _bkSelectedDate));
+      const ocupado = bsSnap.exists() && (bsSnap.data().horas || []).includes(_bkSelectedTime);
       if (ocupado) {
         msg.className = 'bk-msg err';
         msg.textContent = 'Este horário acabou de ser reservado. Escolha outro.';

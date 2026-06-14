@@ -1,4 +1,5 @@
 const { onRequest } = require('firebase-functions/v2/https');
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const Stripe = require('stripe');
@@ -83,5 +84,73 @@ exports.stripeWebhook = onRequest(
 
     // Outros eventos: apenas confirmar receção.
     res.status(200).send('ok (evento ignorado)');
+  }
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// busySlots — espelho SEM PII da ocupação de agendamentosNutri. (Fix 3)
+//
+// agendamentosNutri contém PII (nome, email, link de videochamada), por isso
+// deixou de ser legível por qualquer cliente. O calendário de marcação precisa
+// apenas de saber QUE horas estão ocupadas por dia — este trigger mantém
+// busySlots/{data} = { data, horas:[...] } (só horas), que é o único que o
+// cliente lê. Escrito via Admin SDK, logo ignora as regras de segurança.
+// ─────────────────────────────────────────────────────────────────────────────
+exports.syncBusySlots = onDocumentWritten(
+  { document: 'agendamentosNutri/{agId}', region: 'europe-west1' },
+  async (event) => {
+    const before = event.data && event.data.before.exists ? event.data.before.data() : null;
+    const after  = event.data && event.data.after.exists  ? event.data.after.data()  : null;
+
+    // Recalcular as datas afetadas (antes e depois — cobre criação, alteração de
+    // data, cancelamento e eliminação).
+    const datas = new Set();
+    if (before && before.data) datas.add(before.data);
+    if (after  && after.data)  datas.add(after.data);
+
+    for (const data of datas) {
+      const snap = await db.collection('agendamentosNutri').where('data', '==', data).get();
+      const horas = [...new Set(
+        snap.docs
+          .map((d) => d.data())
+          .filter((a) => a.estado !== 'cancelada')
+          .map((a) => a.hora)
+          .filter(Boolean)
+      )];
+      const ref = db.collection('busySlots').doc(data);
+      if (horas.length) {
+        await ref.set({ data, horas });
+      } else {
+        await ref.delete().catch(() => {});
+      }
+    }
+  }
+);
+
+// Backfill único da coleção busySlots a partir dos agendamentos existentes.
+// Chamável só por admin (claim ou email da equipa). Correr UMA vez após o deploy
+// se já existirem marcações: no browser, autenticado como admin →
+//   const fn = httpsCallable(getFunctions(app,'europe-west1'),'backfillBusySlots'); await fn();
+exports.backfillBusySlots = require('firebase-functions/v2/https').onCall(
+  { region: 'europe-west1' },
+  async (request) => {
+    const token = request.auth && request.auth.token;
+    const isAdmin = token && (token.admin === true ||
+      ['ricardo.lyvoo@gmail.com', 'hello@lyvoo.pt'].includes(token.email));
+    if (!isAdmin) throw new Error('unauthorized');
+
+    const snap = await db.collection('agendamentosNutri').get();
+    const porData = {};
+    snap.docs.forEach((d) => {
+      const a = d.data();
+      if (!a.data || !a.hora || a.estado === 'cancelada') return;
+      (porData[a.data] = porData[a.data] || new Set()).add(a.hora);
+    });
+    const batch = db.batch();
+    Object.entries(porData).forEach(([data, set]) => {
+      batch.set(db.collection('busySlots').doc(data), { data, horas: [...set] });
+    });
+    await batch.commit();
+    return { datas: Object.keys(porData).length };
   }
 );
