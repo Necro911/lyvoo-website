@@ -25,15 +25,36 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == uid;
     }
 
+    // Campos controlados pelo servidor/admin — o cliente NUNCA os pode alterar.
+    // estado/plano/pagamento são definidos pelo webhook Stripe (Admin SDK, que
+    // ignora estas regras) e pelo admin (via isAdmin). Sem isto, um cliente
+    // autenticado podia fazer updateDoc({estado:4}) no seu próprio doc e saltar
+    // o pagamento / desbloquear a área de resultados. (Fix 1 — OWASP A01)
+    function ownerKeepsLockedFields() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+        'estado','estadoLabel','plano','planoNome','planoValidoAte',
+        'stripeSessionId','cicloAtual'
+      ]);
+    }
+
     // ── Perfis de cliente (registar/dashboard) + gestão clínica (admin) ──
     match /users/{uid} {
-      allow create: if isOwner(uid);
-      allow read, update: if isOwner(uid) || isAdmin();
+      // Registo: só o próprio, e o doc só pode nascer em estado 1 (sem pagamento).
+      allow create: if isAdmin() || (
+        isOwner(uid)
+        && request.resource.data.estado == 1
+        && !request.resource.data.keys().hasAny(['stripeSessionId','planoValidoAte','cicloAtual'])
+      );
+      // Update: o admin pode tudo; o dono só se NÃO mexer nos campos bloqueados
+      // (pode editar perfil, responder a convites de consulta, marcar notificações
+      //  como vistas, pedir eliminação RGPD — nada disso toca nos campos acima).
+      allow update: if isAdmin() || (isOwner(uid) && ownerKeepsLockedFields());
+      allow read:   if isOwner(uid) || isAdmin();
       allow delete: if isAdmin();
 
       // Histórico de análises: escrito pelo admin, lido pelo cliente
       match /analises/{analiseId} {
-        allow read: if isOwner(uid) || isAdmin();
+        allow read:  if isOwner(uid) || isAdmin();
         allow write: if isAdmin();
       }
     }
@@ -53,6 +74,10 @@ service cloud.firestore {
     // ── Marcações de consultas de nutrição ──
     // Leitura por qualquer autenticado: o calendário de agendamento precisa de
     // ver os horários ocupados de todos os clientes (bkLoadBusy na dashboard).
+    // ⚠️ Fix 3 (pendente): isto expõe PII de saúde (quem marcou, quando) a todos
+    // os clientes. Substituir por um doc derivado `busySlots` (só horas, sem PII)
+    // ou uma Cloud Function de disponibilidade, e restringir esta leitura a:
+    //   allow read: if isAdmin() || resource.data.uid == request.auth.uid;
     match /agendamentosNutri/{agId} {
       allow read: if request.auth != null;
       allow create: if isAdmin() ||
@@ -62,9 +87,22 @@ service cloud.firestore {
     }
 
     // ── Lista de espera (formulário público em contacto.html) ──
-    // create/update sem auth: o formulário do site é submetido por visitantes.
+    // Submetida por visitantes (sem auth) via setDoc com id derivado do email,
+    // por isso create+update têm de continuar abertos — MAS validados: forma de
+    // email, nº de campos limitado e mensagem com teto (anti-spam/anti-custo).
+    // Removido o antigo `update: if true` (permitia reescrever qualquer entrada).
+    // Proteção real contra bots = re-ativar App Check. (Fix 2)
     match /waitlist/{entryId} {
-      allow create, update: if true;
+      function validWaitlist() {
+        return request.resource.data.email is string
+          && request.resource.data.email.size() > 3
+          && request.resource.data.email.size() < 200
+          && request.resource.data.keys().hasAll(['email','criadoEm'])
+          && request.resource.data.size() <= 10
+          && (!('mensagem' in request.resource.data)
+              || request.resource.data.mensagem.size() < 2000);
+      }
+      allow create, update: if validWaitlist();
       allow read, delete: if isAdmin();
     }
   }

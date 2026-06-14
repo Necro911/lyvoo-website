@@ -38,22 +38,20 @@ exports.stripeWebhook = onRequest(
 
       try {
         const userRef = db.collection('users').doc(uid);
-        const snap = await userRef.get();
 
-        if (!snap.exists) {
-          console.warn('Utilizador não encontrado para uid', uid);
-          res.status(200).send('ok (utilizador inexistente)');
-          return;
-        }
+        // Transação: read-check-write atómico. Evita que eventos concorrentes ou
+        // reenviados pelo Stripe processem o mesmo pagamento duas vezes. (Fix 4)
+        const resultado = await db.runTransaction(async (tx) => {
+          const snap = await tx.get(userRef);
+          if (!snap.exists) return 'inexistente';
 
-        const estadoAtual = snap.data().estado || 1;
+          const estadoAtual = snap.data().estado || 1;
+          // Só avança quem ainda não comprou o plano base.
+          if (estadoAtual > 1) return 'ignorado';
 
-        // Só avança quem ainda não comprou o plano base.
-        // Evita reabrir/repetir o ciclo se o pagamento for re-processado.
-        if (estadoAtual <= 1) {
           const validoAte = new Date();
           validoAte.setFullYear(validoAte.getFullYear() + 1);
-          await userRef.update({
+          tx.update(userRef, {
             estado: 2,
             estadoLabel: 'Kit a caminho',
             stripeSessionId: session.id,
@@ -61,9 +59,18 @@ exports.stripeWebhook = onRequest(
             planoValidoAte: validoAte.toISOString(),
             atualizadoEm: admin.firestore.FieldValue.serverTimestamp()
           });
+          return 'avancado';
+        });
+
+        if (resultado === 'inexistente') {
+          console.warn('Utilizador não encontrado para uid', uid);
+          res.status(200).send('ok (utilizador inexistente)');
+          return;
+        }
+        if (resultado === 'avancado') {
           console.log(`Estado do utilizador ${uid} avançado para 2 (kit a caminho)`);
         } else {
-          console.log(`Utilizador ${uid} já em estado ${estadoAtual}, ignorado`);
+          console.log(`Utilizador ${uid} já tinha plano ativo, ignorado`);
         }
 
         res.status(200).send('ok');
