@@ -1,0 +1,89 @@
+name: Firebase deploy
+
+# CI/CD das Firestore rules/indexes + Cloud Functions. (B2)
+#
+# Estratégia: VALIDA em cada push/PR (sem segredos); só faz DEPLOY para produção
+# depois de aprovação manual (GitHub Environment "production"). O frontend (HTML)
+# é servido pelo GitHub Pages e NÃO é tocado por este workflow.
+#
+# ─── Setup necessário (uma vez), do lado do repositório/GCP ───────────────────
+# 1. Service account de CI (least privilege) com os papéis para deploy:
+#      - Firebase Rules Admin            (roles/firebaserules.admin)
+#      - Cloud Datastore Index Admin     (roles/datastore.indexAdmin)
+#      - Cloud Functions Admin           (roles/cloudfunctions.admin)
+#      - Service Account User            (roles/iam.serviceAccountUser)
+#      - Cloud Build Editor              (roles/cloudbuild.builds.editor)
+#      - Artifact Registry Writer        (roles/artifactregistry.writer)
+#      - Secret Manager Secret Accessor  (roles/secretmanager.secretAccessor)
+#    Gera uma chave JSON dessa SA.
+# 2. GitHub → Settings → Secrets and variables → Actions → New secret:
+#      FIREBASE_SERVICE_ACCOUNT = (conteúdo do JSON da SA)
+# 3. GitHub → Settings → Environments → New environment "production" →
+#    "Required reviewers" = tu. (É isto que cria o passo de aprovação manual.)
+# Depois disto, qualquer push ao master que mexa em rules/functions valida e
+# fica à espera da tua aprovação para ir a produção. Podes também correr à mão
+# em Actions → "Firebase deploy" → Run workflow.
+# ──────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'firestore.rules'
+      - 'firestore.indexes.json'
+      - 'firebase.json'
+      - 'functions/**'
+  pull_request:
+    paths:
+      - 'firestore.rules'
+      - 'firestore.indexes.json'
+      - 'firebase.json'
+      - 'functions/**'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate (rules + functions)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+      - name: Install function deps
+        working-directory: functions
+        run: npm ci
+      - name: Syntax-check functions
+        run: node --check functions/index.js
+      - name: Validate firestore.indexes.json
+        run: node -e "JSON.parse(require('fs').readFileSync('firestore.indexes.json','utf8')); console.log('indexes JSON ok')"
+      - name: Compile Firestore rules (emulator, no auth)
+        run: npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo "echo rules compiled OK"
+
+  deploy:
+    name: Deploy to production
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: production   # exige aprovação manual se tiver "Required reviewers"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: functions/package-lock.json
+      - name: Install function deps
+        working-directory: functions
+        run: npm ci
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      # Sem --force: um deploy normal (sem remoções) passa em modo não-interativo;
+      # uma operação destrutiva (apagar função/índice) FALHA em vez de a executar
+      # às cegas — força tratamento humano.
+      - name: Deploy rules, indexes and functions
+        run: npx -y firebase-tools@15 deploy --only firestore,functions --project lyvoo-9d54b --non-interactive

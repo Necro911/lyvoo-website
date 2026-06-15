@@ -13,12 +13,13 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **B2** — CI/CD para deploy de rules/functions
-2. **S7** — CSP + headers de segurança
-3. **D5** — Eliminação RGPD automatizada
+1. **S7** — CSP + headers de segurança
+2. **D5** — Eliminação RGPD automatizada
+3. **F3** — Header/footer partilhados
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (validação de perfil), B3 (observabilidade
-> do webhook) e F4 (SEO: canonical + hreflang + JSON-LD) concluídos a 15-Jun-2026.
+> do webhook) e F4 (SEO) concluídos a 15-Jun-2026.
+> ◐ B2 (CI/CD): workflow commitado — falta o setup no GitHub (secret + environment).
 
 ---
 
@@ -50,7 +51,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | ☑ | ID | Tarefa | Dif. | Tempo | Risco | Benefício | Ficheiros |
 |---|----|--------|------|-------|-------|-----------|-----------|
 | x | B1 | Upgrade Node 20→22 + firebase-functions 7 / admin 13 — deployed em `nodejs22` (15-Jun) | Média | — | — | Alto | `functions/package.json` |
-| ☐ | B2 | CI/CD — GitHub Action para deploy de rules/functions | Média | 4-6h | Baixo | Médio | `.github/workflows/`, `firebase.json` |
+| ◐ | B2 | CI/CD — GitHub Action (valida sempre + deploy com aprovação). Workflow commitado 15-Jun; **falta no GitHub:** secret `FIREBASE_SERVICE_ACCOUNT` + environment `production` com reviewer | Média | — | Baixo | Médio | `.github/workflows/firebase-deploy.yml` |
 | x | B3 | Logs estruturados + webhookErrors + alerta — done 15-Jun | Fácil | — | — | Médio | `functions/index.js`, `firestore.rules` |
 | ☐ | B4 | Min-instances/região p/ cold-start do webhook (se necessário) | Fácil | 1-2h | Baixo | Baixo | `functions/index.js` |
 
@@ -94,7 +95,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☑ D4  Validar campos perfil     → FEITO (15-Jun)
 ☑ B3  Logs/alerta webhook       → FEITO (15-Jun)
 ☑ F4  SEO básico                → FEITO (canonical+hreflang+JSON-LD, 15-Jun)
-☐ B2  CI/CD deploy              → segurança operacional
+◐ B2  CI/CD deploy              → workflow FEITO; falta setup GitHub (secret + environment)
 ☐ S7  CSP + headers             → hardening extra
 ☐ C3  ESLint/Prettier           → qualidade contínua
 ☐ D5  Eliminação RGPD auto      → compliance
