@@ -34,6 +34,23 @@ service cloud.firestore {
       ]);
     }
 
+    // Validação dos campos de perfil editáveis pelo cliente: cada um, quando
+    // presente no doc resultante, tem de ser string e dentro de um tamanho
+    // razoável. Defesa em profundidade sobre o field-lock — impede tipos errados
+    // ou blobs gigantes nos campos livres. O admin não está sujeito a isto. (D4)
+    function validProfileFields(d) {
+      return (!('firstName' in d)    || (d.firstName is string    && d.firstName.size()    <= 100))
+        && (!('lastName' in d)       || (d.lastName is string     && d.lastName.size()     <= 100))
+        && (!('phone' in d)          || (d.phone is string        && d.phone.size()        <= 40))
+        && (!('dob' in d)            || (d.dob is string          && d.dob.size()          <= 20))
+        && (!('genero' in d)         || (d.genero is string       && d.genero.size()       <= 40))
+        && (!('morada' in d)         || (d.morada is string       && d.morada.size()       <= 250))
+        && (!('distrito' in d)       || (d.distrito is string     && d.distrito.size()     <= 80))
+        && (!('concelho' in d)       || (d.concelho is string     && d.concelho.size()     <= 80))
+        && (!('codigoPostal' in d)   || (d.codigoPostal is string && d.codigoPostal.size() <= 20))
+        && (!('email' in d)          || (d.email is string        && d.email.size()        <= 254));
+    }
+
     // ── Perfis de cliente (registar/dashboard) + gestão clínica (admin) ──
     match /users/{uid} {
       // Registo: só o próprio, e o doc só pode nascer em estado 1 (sem pagamento).
@@ -41,11 +58,12 @@ service cloud.firestore {
         isOwner(uid)
         && request.resource.data.estado == 1
         && !request.resource.data.keys().hasAny(['stripeSessionId','planoValidoAte','cicloAtual','clienteId','seq'])
+        && validProfileFields(request.resource.data)
       );
       // Update: o admin pode tudo; o dono só se NÃO mexer nos campos bloqueados
       // (pode editar perfil, responder a convites de consulta, marcar notificações
       //  como vistas, pedir eliminação RGPD — nada disso toca nos campos acima).
-      allow update: if isAdmin() || (isOwner(uid) && ownerKeepsLockedFields());
+      allow update: if isAdmin() || (isOwner(uid) && ownerKeepsLockedFields() && validProfileFields(request.resource.data));
       allow read:   if isOwner(uid) || isAdmin();
       allow delete: if isAdmin();
 
