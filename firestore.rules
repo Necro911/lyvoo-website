@@ -128,6 +128,14 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ── Registo de auditoria de eliminações RGPD (sem PII) ──
+    // Escrito só pelo Admin SDK (Cloud Function eliminarUtilizadorRGPD). Lido só
+    // pelo admin. Prova de conformidade com o direito ao apagamento. (D5)
+    match /eliminacoesRGPD/{uid} {
+      allow read:  if isAdmin();
+      allow write: if false;
+    }
+
     // ── Lista de espera (formulário público em contacto.html) ──
     // Submetida por visitantes (sem auth) via setDoc com id derivado do email,
     // por isso create+update têm de continuar abertos — MAS validados: forma de

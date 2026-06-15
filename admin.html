@@ -449,7 +449,10 @@
             <div class="notify-box-title" style="color:var(--red)">Pedido de eliminação de conta (RGPD)</div>
             <div class="notify-box-sub" id="del-req-sub">O cliente pediu o apagamento dos seus dados. Processe a eliminação e marque como tratado.</div>
           </div>
-          <button class="btn-notify" id="del-req-btn" onclick="marcarEliminacaoTratada()" style="background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.35);color:var(--red)">Marcar como tratado</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-notify" id="del-req-btn" onclick="marcarEliminacaoTratada()" style="background:rgba(248,113,113,0.12);border-color:rgba(248,113,113,0.35);color:var(--red)">Marcar como tratado</button>
+            <button class="btn-notify" id="del-req-del-btn" onclick="eliminarDadosRGPD()" style="background:var(--red);border-color:var(--red);color:#fff">Eliminar dados (RGPD)</button>
+          </div>
         </div>
 
         <!-- Notificação ao cliente (aparece quando estado = 4) -->
@@ -913,7 +916,10 @@
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where, onSnapshot, orderBy, limit, startAfter, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-functions.js';
   import { auth, db } from './lyvoo-firebase.js';
+
+  const _fnEliminarRGPD = httpsCallable(getFunctions(auth.app, 'europe-west1'), 'eliminarUtilizadorRGPD');
 
   const ESTADO_LABELS = { 1:'Sem plano ativo', 2:'Kit a caminho', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação · Kit a caminho', 6:'Reavaliação · Laboratório a processar', 7:'Reavaliação · Resultados disponíveis' };
 
@@ -3153,6 +3159,35 @@
       console.error(e);
       showMsg('msg-geral', 'Erro: ' + e.message, true);
       if (btn) btn.disabled = false;
+    }
+  };
+
+  // ── Eliminação definitiva RGPD (cascata via Cloud Function) ──────────
+  window.eliminarDadosRGPD = async function() {
+    if (!currentUID) return;
+    const u = allUsers.find(x => x.uid === currentUID);
+    const nome = u ? ([u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || currentUID) : currentUID;
+    const conf = prompt(`ELIMINAÇÃO DEFINITIVA (RGPD) de "${nome}".\n\nApaga perfil, análises, chat, marcações e a conta de acesso — IRREVERSÍVEL.\n(Registos financeiros/Stripe são retidos por obrigação legal.)\n\nPara confirmar, escreve ELIMINAR:`);
+    if (conf !== 'ELIMINAR') { if (conf !== null) alert('Cancelado — o texto não corresponde a "ELIMINAR".'); return; }
+    const btn = document.getElementById('del-req-del-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'A eliminar…'; }
+    try {
+      await auth.currentUser?.getIdToken(true);
+      const res = await _fnEliminarRGPD({ uid: currentUID });
+      const apag = res && res.data ? res.data.agendamentos : 0;
+      // Remover da lista local e fechar o detalhe
+      allUsers = allUsers.filter(x => x.uid !== currentUID);
+      currentUID = null;
+      document.getElementById('del-req-box').style.display = 'none';
+      document.getElementById('detail-content').style.display = 'none';
+      document.getElementById('detail-empty').style.display = 'block';
+      refreshStats();
+      applyFilters();
+      showMsg('msg-geral', '✓ Dados eliminados (RGPD). Marcações apagadas: ' + apag, false);
+    } catch(e) {
+      console.error(e);
+      showMsg('msg-geral', 'Erro ao eliminar: ' + (e.message || e), true);
+      if (btn) { btn.disabled = false; btn.textContent = 'Eliminar dados (RGPD)'; }
     }
   };
 

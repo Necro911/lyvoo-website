@@ -13,13 +13,12 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **D5** — Eliminação RGPD automatizada
-2. **F3** — Header/footer partilhados
-3. **F2** — Acessibilidade WCAG
+1. **F3** — Header/footer partilhados
+2. **F2** — Acessibilidade WCAG
+3. **P4** — Otimizar imagens (lazy-load)
 
-> ✅ B1 (Node 22), P1 (paginação), D4 (validação de perfil), B3 (observabilidade
-> do webhook), F4 (SEO) e S7 (CSP) concluídos a 15-Jun-2026.
-> ◐ B2 (CI/CD): workflow commitado — falta o setup no GitHub (secret + environment).
+> ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
+> B2 (CI/CD ativo) e D5 (eliminação RGPD em cascata) concluídos a 15-Jun-2026.
 
 ---
 
@@ -43,7 +42,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | D1 | Idempotência do pagamento (transação) | — | — | — | Alto | `functions/index.js` |
 | x | D2/D3 | Consistência `busySlots` via trigger + backfill | — | — | — | Médio | `functions/index.js` |
 | x | D4 | Validar tipos/tamanhos dos campos do perfil nas regras — done 15-Jun | Fácil | — | — | Médio | `firestore.rules` |
-| ☐ | D5 | Automatizar eliminação RGPD (hoje manual) | Média | 4-6h | Médio | Médio | `functions/index.js`, `dashboard.html`, `firestore.rules` |
+| x | D5 | Eliminação RGPD em cascata via Cloud Function (admin-only) + auditoria — done 15-Jun (validado em dados sintéticos) | Média | — | Médio | Médio | `functions/index.js`, `admin.html`, `firestore.rules` |
 | ☐ | D6 | Consistência de fuso/datas dos agendamentos + edge cases | Fácil | 2h | Baixo | Baixo | `dashboard.html`, `functions/index.js` |
 
 ## 3. 🏗️ Arquitetura de backend
@@ -51,7 +50,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | ☑ | ID | Tarefa | Dif. | Tempo | Risco | Benefício | Ficheiros |
 |---|----|--------|------|-------|-------|-----------|-----------|
 | x | B1 | Upgrade Node 20→22 + firebase-functions 7 / admin 13 — deployed em `nodejs22` (15-Jun) | Média | — | — | Alto | `functions/package.json` |
-| ◐ | B2 | CI/CD — GitHub Action (valida sempre + deploy com aprovação). Workflow commitado 15-Jun; **falta no GitHub:** secret `FIREBASE_SERVICE_ACCOUNT` + environment `production` com reviewer | Média | — | Baixo | Médio | `.github/workflows/firebase-deploy.yml` |
+| x | B2 | CI/CD — GitHub Action (valida sempre + deploy com aprovação). Ativo: secret + environment `production` configurados 15-Jun | Média | — | Baixo | Médio | `.github/workflows/firebase-deploy.yml` |
 | x | B3 | Logs estruturados + webhookErrors + alerta — done 15-Jun | Fácil | — | — | Médio | `functions/index.js`, `firestore.rules` |
 | ☐ | B4 | Min-instances/região p/ cold-start do webhook (se necessário) | Fácil | 1-2h | Baixo | Baixo | `functions/index.js` |
 
@@ -95,10 +94,10 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☑ D4  Validar campos perfil     → FEITO (15-Jun)
 ☑ B3  Logs/alerta webhook       → FEITO (15-Jun)
 ☑ F4  SEO básico                → FEITO (canonical+hreflang+JSON-LD, 15-Jun)
-◐ B2  CI/CD deploy              → workflow FEITO; falta setup GitHub (secret + environment)
+☑ B2  CI/CD deploy              → FEITO (workflow + setup GitHub, 15-Jun)
 ☑ S7  CSP + headers             → FEITO (CSP meta nas 44 páginas, testado, 15-Jun)
 ☐ C3  ESLint/Prettier           → qualidade contínua
-☐ D5  Eliminação RGPD auto      → compliance
+☑ D5  Eliminação RGPD auto      → FEITO (cascata + auditoria, 15-Jun)
 ☐ P4/P5 imagens + render        → velocidade percebida
 ☐ F2  Acessibilidade            → inclusão + SEO
 ☐ F3  Header/footer partilhado  → base para F1

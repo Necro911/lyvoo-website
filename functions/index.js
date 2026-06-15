@@ -1,4 +1,4 @@
-const { onRequest } = require('firebase-functions/v2/https');
+const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
 const { onDocumentWritten, onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const logger = require('firebase-functions/logger');
@@ -225,5 +225,64 @@ exports.assignClienteId = onDocumentCreated(
       seq,
       arquivado: data.arquivado === true
     }, { merge: true });
+  }
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// eliminarUtilizadorRGPD — direito ao apagamento (RGPD art. 17). (D5)
+//
+// Chamável SÓ por admin. Apaga em cascata os dados do utilizador: perfil
+// (users/{uid} + subcoleção analises), chat (chats/{uid} + mensagens), marcações
+// (agendamentosNutri do uid — cada delete dispara syncBusySlots, que limpa
+// busySlots) e a conta de Auth. Deixa um registo SEM PII em eliminacoesRGPD/{uid}
+// para demonstrar conformidade. NÃO toca em registos financeiros (Stripe), que
+// têm de ser retidos por obrigação legal.
+// ─────────────────────────────────────────────────────────────────────────────
+exports.eliminarUtilizadorRGPD = onCall(
+  { region: 'europe-west1' },
+  async (request) => {
+    const token = request.auth && request.auth.token;
+    if (!token || token.admin !== true) {
+      throw new HttpsError('permission-denied', 'Apenas administradores.');
+    }
+    const uid = request.data && request.data.uid;
+    if (!uid || typeof uid !== 'string') {
+      throw new HttpsError('invalid-argument', 'uid em falta.');
+    }
+
+    // Salvaguarda: nunca eliminar uma conta de administrador.
+    try {
+      const alvo = await admin.auth().getUser(uid);
+      if (alvo.customClaims && alvo.customClaims.admin === true) {
+        throw new HttpsError('failed-precondition', 'Não é possível eliminar uma conta de administrador.');
+      }
+    } catch (e) {
+      if (e instanceof HttpsError) throw e;
+      // A conta Auth pode já não existir — seguir para limpar o Firestore.
+    }
+
+    // 1. Marcações do utilizador (cada delete dispara syncBusySlots → busySlots)
+    const ags = await db.collection('agendamentosNutri').where('uid', '==', uid).get();
+    for (const d of ags.docs) await d.ref.delete();
+
+    // 2. Chat + mensagens, e 3. perfil + subcoleção análises (recursivo)
+    await db.recursiveDelete(db.collection('chats').doc(uid));
+    await db.recursiveDelete(db.collection('users').doc(uid));
+
+    // 4. Registo de auditoria (sem PII) — prova de conformidade RGPD
+    await db.collection('eliminacoesRGPD').doc(uid).set({
+      uid,
+      eliminadoEm: admin.firestore.FieldValue.serverTimestamp(),
+      porAdmin: token.email || token.uid || 'admin',
+      agendamentosApagados: ags.size
+    });
+
+    // 5. Conta de Auth (por fim)
+    let authApagada = false;
+    try { await admin.auth().deleteUser(uid); authApagada = true; }
+    catch (e) { logger.warn('[rgpd] conta Auth inexistente ao eliminar', { uid, erro: e.message }); }
+
+    logger.info('[rgpd] utilizador eliminado', { uid, agendamentos: ags.size, authApagada });
+    return { ok: true, agendamentos: ags.size, authApagada };
   }
 );
