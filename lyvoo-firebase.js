@@ -34,10 +34,14 @@ const app = initializeApp(firebaseConfig);
 //
 // NÃO hardcodear o valor do debug token: este ficheiro é servido publicamente, e
 // um token fixo aqui seria um bypass ao App Check assim que estiver Enforced.
-// Com `= true`, o SDK gera um token por-browser e imprime-o na consola; regista-se
-// esse em Manage debug tokens. Em produção (lyvoo.pt) esta linha nunca corre.
+// Em localhost, o programador pode fixar um token em localStorage (sobrevive a
+// limpezas de IndexedDB — sem este passo, `= true` gera um token NOVO sempre que
+// se limpa o storage, desincronizando-o do que está registado na Consola):
+//   localStorage.APPCHECK_DEBUG_TOKEN = '<uuid>'   // depois registar esse uuid
+// Sem ele, cai no `= true` (o SDK gera um e imprime-o na consola). Em produção
+// (lyvoo.pt) esta linha nunca corre.
 if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = localStorage.getItem('APPCHECK_DEBUG_TOKEN') || true;
 }
 initializeAppCheck(app, {
   provider: new ReCaptchaV3Provider('6Lfbgx8tAAAAAGwkr0VPyki1t9kvAmu8ySjUck58'),
