@@ -19,6 +19,10 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
 > B2 (CI/CD ativo) e D5 (eliminação RGPD em cascata) concluídos a 15-Jun-2026.
+> ✅ **Testes de regras** (16 casos, `@firebase/rules-unit-testing`) a correr no
+> CI (`validate`) — trancam o modelo de segurança. **Pendente:** testes de
+> functions (webhook idempotente, cascata RGPD, triggers) — precisam do auth
+> emulator + mock do Stripe.
 
 ---
 
