@@ -174,7 +174,7 @@
     .nav.on-light .nav-login:hover { border-color: var(--teal) !important; color: var(--ink) !important; }
     .nav.on-light .lang-toggle { border-color: rgba(11,82,90,0.16); }
     .nav.on-light .lang-toggle a { color: rgba(11,33,37,0.4); }
-    .nav.on-light .lang-toggle a.lang-active { background: rgba(11,82,90,0.1); color: var(--ink); }
+    .nav.on-light .lang-toggle .lang-active { background: rgba(11,82,90,0.1); color: var(--ink); }
     .nav.on-light .nav-mob { color: var(--ink); }
     .nav-inner {
       max-width: 1140px; margin: 0 auto; height: 100px;
@@ -200,7 +200,7 @@
     .nav-login:hover { border-color: rgba(255,255,255,0.5) !important; color: #fff !important; background: transparent !important; }
     .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
-    .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
     .nav-mob { display: none; background: none; border: none; cursor: pointer; color: #fff; padding: 6px; }
 
@@ -1476,11 +1476,11 @@
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
     <ul class="nav-links-right">
-      <li class="lang-toggle"><a href="#" class="lang-active">PT</a><a href="en/index.html">EN</a></li>
+      <li class="lang-toggle"><span class="lang-active" aria-current="page">PT</span><a href="en/index.html" aria-label="Switch to English / Mudar para inglês">EN</a></li>
       <li><a href="login.html" class="nav-login">Entrar</a></li>
       <li><a href="registar.html" class="nav-cta">Começar agora</a></li>
     </ul>
-    <button class="nav-mob" id="mobBtn" aria-label="Menu">
+    <button class="nav-mob" id="mobBtn" aria-label="Menu" aria-controls="mobMenu" aria-expanded="false">
       <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/>
       </svg>
@@ -1495,7 +1495,7 @@
   <a href="registar.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;">Começar agora</a>
   <div class="mob-lang">
     <span class="mob-lang-active">PT</span>
-    <a href="en/index.html">EN</a>
+    <a href="en/index.html" aria-label="Switch to English / Mudar para inglês">EN</a>
   </div>
 </div>
 
@@ -3680,11 +3680,12 @@
   // Mobile menu
   const mobBtn = document.getElementById('mobBtn');
   const mobMenu = document.getElementById('mobMenu');
-  mobBtn.addEventListener('click', (e) => { e.stopPropagation(); mobMenu.classList.toggle('open'); });
-  function closeMob() { mobMenu.classList.remove('open'); }
+  mobBtn.addEventListener('click', (e) => { e.stopPropagation(); const open = mobMenu.classList.toggle('open'); mobBtn.setAttribute('aria-expanded', open); });
+  function closeMob() { mobMenu.classList.remove('open'); mobBtn.setAttribute('aria-expanded', 'false'); }
   document.addEventListener('click', (e) => {
     if (mobMenu.classList.contains('open') && !mobMenu.contains(e.target) && e.target !== mobBtn) {
       mobMenu.classList.remove('open');
+      mobBtn.setAttribute('aria-expanded', 'false');
     }
   });
 

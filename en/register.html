@@ -25,7 +25,7 @@
     .nav-back:hover { color: rgba(255,255,255,0.8); }
     .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
-    .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
     .page { flex: 1; display: flex; align-items: center; justify-content: center; padding: 118px 24px 60px; }
     .card { background: #fff; border-radius: 28px; padding: 48px 44px; width: 100%; max-width: 460px; box-shadow: 0 32px 80px rgba(0,0,0,0.35); }
@@ -80,7 +80,7 @@
       <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;transform:translateY(0px);" />
     </a>
     <div style="display:flex;align-items:center;gap:12px;">
-      <div class="lang-toggle"><a href="../registar.html">PT</a><a href="#" class="lang-active">EN</a></div>
+      <div class="lang-toggle"><a href="../registar.html" aria-label="Mudar para português / Switch to Portuguese">PT</a><span class="lang-active" aria-current="page">EN</span></div>
       <a href="index.html" class="nav-back">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
         Back to homepage

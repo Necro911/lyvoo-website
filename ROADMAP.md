@@ -13,13 +13,13 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **F2** — Acessibilidade WCAG
-2. **C3** — ESLint/Prettier
+1. **C3** — ESLint/Prettier
+2. **D6** — Consistência de fuso/datas dos agendamentos
 3. **F3** — Header/footer partilhados (ver nota de risco abaixo)
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
-> B2 (CI/CD ativo), D5 (eliminação RGPD em cascata) e P4 (lazy-load) concluídos
-> a 15-Jun-2026.
+> B2 (CI/CD ativo), D5 (eliminação RGPD em cascata), P4 (lazy-load) e F2
+> (a11y — lang toggle + menu mobile) concluídos a 15-Jun-2026.
 >
 > ⚠️ **F3 (header/footer partilhados)** — adiado: o nav tem JS acoplado ao DOM
 > (scroll/`on-light`/menu mobile) e o footer tem anchors específicas da página
@@ -81,7 +81,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | ☑ | ID | Tarefa | Dif. | Tempo | Risco | Benefício | Ficheiros |
 |---|----|--------|------|-------|-------|-----------|-----------|
 | ☐ | F1 | Resolver duplicação PT/EN com templating/build | Difícil | 2-3d | Médio | Médio | `*.html` + `en/*.html` + tooling |
-| ☐ | F2 | Acessibilidade WCAG (aria, foco, teclado) | Média | 1d | Baixo | Médio | `*.html` |
+| x | F2 | Acessibilidade WCAG — done 15-Jun (parcial): toggle de idioma `PT/EN` deixou de ser link morto `href="#"` (agora `<span aria-current="page">` + `aria-label` descritivo no idioma alternativo); botão de menu mobile com `aria-expanded`/`aria-controls` sincronizados. Labels/alt/lang/focus-visible já estavam OK na auditoria. Pendente: `<main>`/skip-link (estrutural, melhor junto com F3) | Média | — | Baixo | Médio | `*.html`, `en/*.html`, `modulos/*.html`, `en/modulos/*.html` |
 | ☐ | F3 | Extrair header/footer/nav partilhados | Média | 4-6h | Baixo | Médio | `*.html` |
 | x | F4 | SEO — canonical + hreflang (PT↔EN) + JSON-LD nas 8 páginas principais — done 15-Jun (OG/sitemap/robots já existiam; falta hreflang nos /modulos) | Fácil | — | — | Médio | `*.html`, `en/*.html` |
 | ☐ | F5 | Polir UX de formulários (validação inline) | Fácil | 2-3h | Baixo | Baixo | `contacto.html`, `registar.html` |

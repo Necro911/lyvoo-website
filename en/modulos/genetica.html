@@ -72,7 +72,7 @@
     @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle { display: flex; } }
       .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
     .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.38); text-decoration: none; transition: all 0.2s; }
-    .lang-toggle a.lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
 </style>
   <script src="../../cookie-banner.js" defer></script>
@@ -88,7 +88,7 @@
       <li><a href="../../en/index.html">Home</a></li>
       <li><a href="../../en/index.html#atlas">What we test</a></li>
       <li><a href="../../en/contact.html">Contact</a></li>
-      <li class="lang-toggle"><a href="../../modulos/genetica.html">PT</a><a href="#" class="lang-active">EN</a></li>
+      <li class="lang-toggle"><a href="../../modulos/genetica.html" aria-label="Mudar para português / Switch to Portuguese">PT</a><span class="lang-active" aria-current="page">EN</span></li>
     </ul>
   </div>
 </nav>

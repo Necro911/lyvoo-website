@@ -90,7 +90,7 @@
     .nav.on-light .nav-login:hover{border-color:var(--teal) !important;color:var(--ink) !important}
     .nav.on-light .lang-toggle{border-color:rgba(11,82,90,0.16)}
     .nav.on-light .lang-toggle a{color:rgba(11,33,37,0.4)}
-    .nav.on-light .lang-toggle a.lang-active{background:rgba(11,82,90,0.1);color:var(--ink)}
+    .nav.on-light .lang-toggle .lang-active{background:rgba(11,82,90,0.1);color:var(--ink)}
     .nav.on-light .nav-mob{color:var(--ink)}
     .nav-inner{max-width:1140px;margin:0 auto;height:100px;display:flex;align-items:center;justify-content:space-between;position:relative}
     .nav-links-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:4px;list-style:none}
@@ -103,7 +103,7 @@
     .nav-login{border:1.5px solid rgba(255,255,255,0.22)!important;border-radius:999px!important;padding:8px 18px!important;color:rgba(255,255,255,0.75)!important;font-weight:600!important;transition:border-color 0.2s,color 0.2s!important}.nav-login:hover{border-color:rgba(255,255,255,0.5)!important;color:#fff!important;background:transparent!important}
     .lang-toggle{display:flex;align-items:center;border:1px solid rgba(255,255,255,0.14);border-radius:999px;overflow:hidden}
     .lang-toggle a{font-size:11px;font-weight:700;letter-spacing:0.04em;padding:5px 10px;color:rgba(255,255,255,0.38);text-decoration:none;transition:all 0.2s}
-    .lang-toggle a.lang-active{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85)}
+    .lang-toggle .lang-active{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85)}
     .lang-toggle a:hover:not(.lang-active){color:rgba(255,255,255,0.65)}
     .nav-mob{display:none;background:none;border:none;cursor:pointer;color:#fff;padding:6px}
     .hero{padding-top:130px;padding-bottom:0;background:linear-gradient(160deg,#030D10 0%,#060F16 55%,#04080E 100%);overflow:hidden;position:relative}
@@ -552,11 +552,11 @@
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <ul class="nav-links-right">
-      <li class="lang-toggle"><a href="../index.html">PT</a><a href="#" class="lang-active">EN</a></li>
+      <li class="lang-toggle"><a href="../index.html" aria-label="Mudar para português / Switch to Portuguese">PT</a><span class="lang-active" aria-current="page">EN</span></li>
       <li><a href="login.html" class="nav-login">Sign in</a></li>
       <li><a href="register.html" class="nav-cta">Get started</a></li>
     </ul>
-    <button class="nav-mob" id="mobBtn" aria-label="Menu">
+    <button class="nav-mob" id="mobBtn" aria-label="Menu" aria-controls="mobMenu" aria-expanded="false">
       <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/>
       </svg>
@@ -570,7 +570,7 @@
   <a href="login.html" onclick="closeMob()" style="text-align:center;color:rgba(0,0,0,0.65);">Sign in</a>
   <a href="register.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;margin-top:6px">Get started</a>
   <div class="mob-lang">
-    <a href="../index.html">PT</a>
+    <a href="../index.html" aria-label="Mudar para português / Switch to Portuguese">PT</a>
     <span class="mob-lang-active">EN</span>
   </div>
 </div>
@@ -1984,11 +1984,12 @@
   requestNavThemeUpdate();
   const mobBtn = document.getElementById('mobBtn');
   const mobMenu = document.getElementById('mobMenu');
-  mobBtn.addEventListener('click', (e) => { e.stopPropagation(); mobMenu.classList.toggle('open'); });
-  function closeMob() { mobMenu.classList.remove('open'); }
+  mobBtn.addEventListener('click', (e) => { e.stopPropagation(); const open = mobMenu.classList.toggle('open'); mobBtn.setAttribute('aria-expanded', open); });
+  function closeMob() { mobMenu.classList.remove('open'); mobBtn.setAttribute('aria-expanded', 'false'); }
   document.addEventListener('click', (e) => {
     if (mobMenu.classList.contains('open') && !mobMenu.contains(e.target) && e.target !== mobBtn) {
       mobMenu.classList.remove('open');
+      mobBtn.setAttribute('aria-expanded', 'false');
     }
   });
 
