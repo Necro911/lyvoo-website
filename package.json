@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Dev/test tooling for the Lyvoo site (Firestore rules tests). Not served by GitHub Pages.",
   "scripts": {
-    "test:rules": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo \"node --test test/\""
+    "test:rules": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo \"node --test test/firestore.rules.test.mjs\""
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^4.0.1",

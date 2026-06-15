@@ -74,7 +74,7 @@ jobs:
       - name: Validate firestore.indexes.json
         run: node -e "JSON.parse(require('fs').readFileSync('firestore.indexes.json','utf8')); console.log('indexes JSON ok')"
       - name: Test Firestore rules (emulator)   # compila E testa o modelo de segurança
-        run: npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo "node --test test/"
+        run: npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo "node --test test/firestore.rules.test.mjs"
 
   deploy:
     name: Deploy to production
