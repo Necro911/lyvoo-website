@@ -13,12 +13,19 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **F3** — Header/footer partilhados
-2. **F2** — Acessibilidade WCAG
-3. **P4** — Otimizar imagens (lazy-load)
+1. **F2** — Acessibilidade WCAG
+2. **C3** — ESLint/Prettier
+3. **F3** — Header/footer partilhados (ver nota de risco abaixo)
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
-> B2 (CI/CD ativo) e D5 (eliminação RGPD em cascata) concluídos a 15-Jun-2026.
+> B2 (CI/CD ativo), D5 (eliminação RGPD em cascata) e P4 (lazy-load) concluídos
+> a 15-Jun-2026.
+>
+> ⚠️ **F3 (header/footer partilhados)** — adiado: o nav tem JS acoplado ao DOM
+> (scroll/`on-light`/menu mobile) e o footer tem anchors específicas da página
+> (`#equipa`, `index.html#planos`). Extrair via fetch+injeção exigiria
+> reordenar scripts em 48 ficheiros e validar cada página — fazer como tarefa
+> dedicada (fase 1: só footer), não de seguida a outra tarefa.
 > ✅ **Testes** no CI (`validate`): **16 de regras** (`@firebase/rules-unit-testing`)
 > + **10 de functions** (webhook Stripe assinado/idempotente/400, cascata RGPD,
 > `assignClienteId` sequencial/idempotente, `syncBusySlots` criar/cancelar/apagar
@@ -66,7 +73,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | P1 | Paginação + clienteId persistente (CF) + stats por agregação — done 15-Jun | Média | — | — | Alto | `admin.html`, `functions/index.js`, `firestore.rules`, `firestore.indexes.json` |
 | ☐ | P2 | Pipeline de build/minify (HTML/CSS/JS) | Média | 1d | Médio | Médio | repo + tooling |
 | ☐ | P3 | Bundle/tree-shake do Firebase SDK | Média | 4-6h | Médio | Médio | `lyvoo-firebase.js`, `*.html` |
-| ☐ | P4 | Otimizar imagens (formatos modernos, lazy-load) | Fácil | 2-4h | Baixo | Médio | `assets/`, `*.html` |
+| x | P4 | Lazy-load das imagens abaixo do fold (`footer-logo`, `plano-nutricional.jpg`) — done 15-Jun. Logos do nav (above-the-fold) ficam eager de propósito. Conversão p/ formatos modernos (webp/avif) não feita — sem ferramenta de imagem disponível no ambiente | Fácil | — | — | Médio | `*.html`, `en/*.html`, `modulos/*.html`, `en/modulos/*.html` |
 | ☐ | P5 | Reduzir CSS/JS render-blocking (defer, critical CSS) | Fácil | 2-3h | Baixo | Baixo | `*.html` |
 
 ## 5. 🎨 Frontend
