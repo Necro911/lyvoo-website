@@ -102,3 +102,84 @@ test('RGPD: recusa eliminar uma conta de admin', async () => {
   await assert.rejects(wrapped({ data: { uid }, auth: { uid: 'admin1', token: { admin: true } } }));
   assert.ok(await auth.getUser(uid)); // a conta NÃO foi apagada
 });
+
+// ── assignClienteId ──────────────────────────────────────────────────────────
+test('assignClienteId: atribui clienteId sequencial e incrementa o contador', async () => {
+  await db.doc('counters/users').set({ seq: 0 });
+
+  const uid1 = 'cli_' + Date.now() + '_a';
+  await db.collection('users').doc(uid1).set({ estado: 1 });
+  const wrapped = fft.wrap(fns.assignClienteId);
+  await wrapped(fft.firestore.makeDocumentSnapshot({ estado: 1 }, `users/${uid1}`));
+
+  const d1 = await db.collection('users').doc(uid1).get();
+  assert.strictEqual(d1.data().clienteId, 'C0001');
+  assert.strictEqual(d1.data().seq, 1);
+  assert.strictEqual(d1.data().arquivado, false);
+
+  const uid2 = 'cli_' + Date.now() + '_b';
+  await db.collection('users').doc(uid2).set({ estado: 1 });
+  await wrapped(fft.firestore.makeDocumentSnapshot({ estado: 1 }, `users/${uid2}`));
+  const d2 = await db.collection('users').doc(uid2).get();
+  assert.strictEqual(d2.data().clienteId, 'C0002');
+
+  const counter = await db.doc('counters/users').get();
+  assert.strictEqual(counter.data().seq, 2);
+});
+
+test('assignClienteId: idempotente — não reatribui se já tiver clienteId', async () => {
+  const uid = 'cli_idem_' + Date.now();
+  await db.collection('users').doc(uid).set({ estado: 1, clienteId: 'C9999', seq: 9999 });
+  const before = await db.doc('counters/users').get();
+  const seqBefore = (before.exists && before.data().seq) || 0;
+
+  const wrapped = fft.wrap(fns.assignClienteId);
+  await wrapped(fft.firestore.makeDocumentSnapshot({ estado: 1, clienteId: 'C9999', seq: 9999 }, `users/${uid}`));
+
+  const after = await db.collection('users').doc(uid).get();
+  assert.strictEqual(after.data().clienteId, 'C9999'); // inalterado
+  const counter = await db.doc('counters/users').get();
+  assert.strictEqual(counter.data().seq, seqBefore); // contador não avançou
+});
+
+// ── syncBusySlots ────────────────────────────────────────────────────────────
+test('syncBusySlots: criação de marcação adiciona hora a busySlots/{data}', async () => {
+  const data = '2099-03-10';
+  await db.collection('busySlots').doc(data).delete().catch(() => {});
+
+  const agId = 'ag_' + Date.now();
+  const ag = { uid: 'u1', data, hora: '10:00', estado: 'confirmada' };
+  await db.collection('agendamentosNutri').doc(agId).set(ag);
+
+  const wrapped = fft.wrap(fns.syncBusySlots);
+  const after = fft.firestore.makeDocumentSnapshot(ag, `agendamentosNutri/${agId}`);
+  const before = fft.firestore.makeDocumentSnapshot(undefined, `agendamentosNutri/${agId}`);
+  await wrapped(fft.makeChange(before, after));
+
+  const slot = await db.collection('busySlots').doc(data).get();
+  assert.deepStrictEqual(slot.data().horas, ['10:00']);
+});
+
+test('syncBusySlots: cancelamento remove a hora; eliminar a última hora apaga o doc', async () => {
+  const data = '2099-03-11';
+  await db.collection('busySlots').doc(data).delete().catch(() => {});
+
+  const agId = 'ag_' + Date.now();
+  const ativo = { uid: 'u1', data, hora: '11:00', estado: 'confirmada' };
+  await db.collection('agendamentosNutri').doc(agId).set(ativo);
+  const wrapped = fft.wrap(fns.syncBusySlots);
+  await wrapped(fft.makeChange(
+    fft.firestore.makeDocumentSnapshot(undefined, `agendamentosNutri/${agId}`),
+    fft.firestore.makeDocumentSnapshot(ativo, `agendamentosNutri/${agId}`)
+  ));
+  assert.deepStrictEqual((await db.collection('busySlots').doc(data).get()).data().horas, ['11:00']);
+
+  // Cancelar a marcação → a hora deixa de estar ocupada → último slot → doc apagado
+  const cancelada = { ...ativo, estado: 'cancelada' };
+  await db.collection('agendamentosNutri').doc(agId).set(cancelada);
+  await wrapped(fft.makeChange(
+    fft.firestore.makeDocumentSnapshot(ativo, `agendamentosNutri/${agId}`),
+    fft.firestore.makeDocumentSnapshot(cancelada, `agendamentosNutri/${agId}`)
+  ));
+  assert.strictEqual((await db.collection('busySlots').doc(data).get()).exists, false);
+});
