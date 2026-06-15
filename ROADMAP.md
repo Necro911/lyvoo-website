@@ -13,12 +13,12 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **S7** — CSP + headers de segurança
-2. **D5** — Eliminação RGPD automatizada
-3. **F3** — Header/footer partilhados
+1. **D5** — Eliminação RGPD automatizada
+2. **F3** — Header/footer partilhados
+3. **F2** — Acessibilidade WCAG
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (validação de perfil), B3 (observabilidade
-> do webhook) e F4 (SEO) concluídos a 15-Jun-2026.
+> do webhook), F4 (SEO) e S7 (CSP) concluídos a 15-Jun-2026.
 > ◐ B2 (CI/CD): workflow commitado — falta o setup no GitHub (secret + environment).
 
 ---
@@ -33,7 +33,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | S4 | Webhook Stripe atómico (idempotente) | Média | — | — | Alto | `functions/index.js` |
 | x | S5 | Admin por custom-claims-only (sem fallback de email) | Fácil | — | — | Médio | `firestore.rules`, `functions/index.js`, `admin.html`, `login.html` |
 | x | S6 | App Check Enforced (reCAPTCHA v3 nova) | Média | — | — | Alto | `lyvoo-firebase.js` |
-| ☐ | S7 | CSP + headers de segurança (via `<meta http-equiv>`) | Média | 3-5h | Médio | Médio | todas as `*.html` |
+| x | S7 | CSP + Referrer-Policy via `<meta>` nas 44 páginas — done 15-Jun (testado no preview: Firebase/AppCheck/fontes/EmailJS ok). Headers-only (X-Frame-Options/Permissions-Policy/CSP report-only) p/ quando houver CDN à frente | Média | — | Médio | Médio | todas as `*.html` |
 | ☐ | S8 | Fixar versão do Firebase SDK / avaliar SRI ou self-host | Fácil | 2h | Baixo | Baixo | `lyvoo-firebase.js`, `*.html` |
 
 ## 2. 🟠 Integridade de dados
@@ -96,7 +96,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☑ B3  Logs/alerta webhook       → FEITO (15-Jun)
 ☑ F4  SEO básico                → FEITO (canonical+hreflang+JSON-LD, 15-Jun)
 ◐ B2  CI/CD deploy              → workflow FEITO; falta setup GitHub (secret + environment)
-☐ S7  CSP + headers             → hardening extra
+☑ S7  CSP + headers             → FEITO (CSP meta nas 44 páginas, testado, 15-Jun)
 ☐ C3  ESLint/Prettier           → qualidade contínua
 ☐ D5  Eliminação RGPD auto      → compliance
 ☐ P4/P5 imagens + render        → velocidade percebida
