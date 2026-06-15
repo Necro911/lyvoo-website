@@ -52,6 +52,10 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: functions/package-lock.json
+      - uses: actions/setup-java@v4   # emulador do firebase-tools 15 exige JDK 21+
+        with:
+          distribution: temurin
+          java-version: '21'
       - name: Install function deps
         working-directory: functions
         run: npm ci
