@@ -5,11 +5,18 @@
   "type": "module",
   "description": "Dev/test tooling for the Lyvoo site (Firestore rules tests). Not served by GitHub Pages.",
   "scripts": {
-    "test:rules": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo \"node --test test/firestore.rules.test.mjs\""
+    "test:rules": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo \"node --test test/firestore.rules.test.mjs\"",
+    "lint": "eslint functions test",
+    "format": "prettier --check functions test"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@firebase/rules-unit-testing": "^4.0.1",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
     "firebase": "^11.0.0",
-    "firebase-admin": "^14.0.0"
+    "firebase-admin": "^14.0.0",
+    "globals": "^15.15.0",
+    "prettier": "^3.8.4"
   }
 }

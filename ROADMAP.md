@@ -13,8 +13,8 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **C3** — ESLint/Prettier
-2. **D6** — Consistência de fuso/datas dos agendamentos
+1. **D6** — Consistência de fuso/datas dos agendamentos
+2. **B4** — Min-instances/região do webhook
 3. **F3** — Header/footer partilhados (ver nota de risco abaixo)
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
@@ -93,7 +93,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | C0 | `.gitignore` robusto + remover scratch + reconciliar preço | — | — | — | Baixo | `.gitignore` |
 | ☐ | C1 | Extrair JS/CSS inline para ficheiros próprios | Média | 1d | Médio | Médio | `*.html` |
 | ☐ | C2 | Remover código morto + consolidar duplicação (depende de F1/F3) | Média | 4-6h | Baixo | Baixo | `*.html` |
-| ☐ | C3 | Setup ESLint + Prettier (e lint nas functions) | Fácil | 2-3h | Baixo | Médio | repo, `functions/` |
+| x | C3 | ESLint 9 (flat config) + Prettier, cobrindo `functions/` e `test/` — done 15-Jun. `npm run lint` / `npm run format`, e passo "Lint" no CI `validate`. Código existente já passa (formatado uma vez com `prettier --write`) | Fácil | — | Baixo | Médio | repo, `functions/`, `eslint.config.js`, `.prettierrc.json` |
 | ☐ | C4 | Documentar arquitetura (estados 1-7, fluxo Stripe, coleções) | Fácil | 2-3h | Baixo | Médio | `README.md`/`CLAUDE.md` |
 
 ---
@@ -108,7 +108,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☑ F4  SEO básico                → FEITO (canonical+hreflang+JSON-LD, 15-Jun)
 ☑ B2  CI/CD deploy              → FEITO (workflow + setup GitHub, 15-Jun)
 ☑ S7  CSP + headers             → FEITO (CSP meta nas 44 páginas, testado, 15-Jun)
-☐ C3  ESLint/Prettier           → qualidade contínua
+☑ C3  ESLint/Prettier           → FEITO (15-Jun)
 ☑ D5  Eliminação RGPD auto      → FEITO (cascata + auditoria, 15-Jun)
 ☐ P4/P5 imagens + render        → velocidade percebida
 ☐ F2  Acessibilidade            → inclusão + SEO

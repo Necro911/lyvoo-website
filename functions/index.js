@@ -8,7 +8,7 @@ const Stripe = require('stripe');
 admin.initializeApp();
 const db = admin.firestore();
 
-const STRIPE_SECRET_KEY     = defineSecret('STRIPE_SECRET_KEY');
+const STRIPE_SECRET_KEY = defineSecret('STRIPE_SECRET_KEY');
 const STRIPE_WEBHOOK_SECRET = defineSecret('STRIPE_WEBHOOK_SECRET');
 
 // Regista uma falha crítica do webhook Stripe: log estruturado em severidade
@@ -22,7 +22,7 @@ async function registarErroWebhook(tipo, dados) {
       tipo,
       ...dados,
       resolvido: false,
-      criadoEm: admin.firestore.FieldValue.serverTimestamp()
+      criadoEm: admin.firestore.FieldValue.serverTimestamp(),
     });
   } catch (e) {
     logger.error('[stripe-webhook] falha ao gravar webhookErrors', { erro: e.message });
@@ -45,7 +45,10 @@ exports.stripeWebhook = onRequest(
       // configurado (que faria FALHAR todos os pagamentos reais). Log em ERROR
       // com marcador para o alerta apanhar um pico — sem gravar em webhookErrors
       // (evita encher a coleção com tentativas aleatórias).
-      logger.error('[stripe-webhook] assinatura inválida', { alert: 'stripe-webhook', motivo: err.message });
+      logger.error('[stripe-webhook] assinatura inválida', {
+        alert: 'stripe-webhook',
+        motivo: err.message,
+      });
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
     }
@@ -58,8 +61,9 @@ exports.stripeWebhook = onRequest(
         // Pagamento concluído sem referência ao utilizador → não conseguimos
         // atribuir. Crítico: alguém pagou e não sabemos quem.
         await registarErroWebhook('checkout_sem_uid', {
-          sessionId: session.id, eventId: event.id,
-          mensagem: 'checkout.session.completed sem client_reference_id'
+          sessionId: session.id,
+          eventId: event.id,
+          mensagem: 'checkout.session.completed sem client_reference_id',
         });
         res.status(200).send('ok (sem uid)');
         return;
@@ -86,7 +90,7 @@ exports.stripeWebhook = onRequest(
             stripeSessionId: session.id,
             cicloAtual: 1,
             planoValidoAte: validoAte.toISOString(),
-            atualizadoEm: admin.firestore.FieldValue.serverTimestamp()
+            atualizadoEm: admin.firestore.FieldValue.serverTimestamp(),
           });
           return 'avancado';
         });
@@ -95,18 +99,26 @@ exports.stripeWebhook = onRequest(
           // Pagou, mas o uid não tem documento em users → crítico (conta paga
           // sem perfil). Regista para reconciliação manual.
           await registarErroWebhook('utilizador_inexistente', {
-            uid, sessionId: session.id, eventId: event.id,
-            mensagem: 'Pagamento recebido para um uid sem documento em users'
+            uid,
+            sessionId: session.id,
+            eventId: event.id,
+            mensagem: 'Pagamento recebido para um uid sem documento em users',
           });
           res.status(200).send('ok (utilizador inexistente)');
           return;
         }
         if (resultado === 'avancado') {
-          logger.info('[stripe-webhook] utilizador avançado para estado 2 (kit a caminho)',
-            { uid, sessionId: session.id, eventId: event.id });
+          logger.info('[stripe-webhook] utilizador avançado para estado 2 (kit a caminho)', {
+            uid,
+            sessionId: session.id,
+            eventId: event.id,
+          });
         } else {
-          logger.info('[stripe-webhook] ignorado — utilizador já tinha plano ativo',
-            { uid, sessionId: session.id, eventId: event.id });
+          logger.info('[stripe-webhook] ignorado — utilizador já tinha plano ativo', {
+            uid,
+            sessionId: session.id,
+            eventId: event.id,
+          });
         }
 
         res.status(200).send('ok');
@@ -114,7 +126,10 @@ exports.stripeWebhook = onRequest(
         // Erro a processar um pagamento válido → crítico. Devolve 500 para o
         // Stripe RE-TENTAR o evento, e regista para reconciliação manual.
         await registarErroWebhook('erro_processamento', {
-          uid, sessionId: session.id, eventId: event.id, mensagem: err.message
+          uid,
+          sessionId: session.id,
+          eventId: event.id,
+          mensagem: err.message,
         });
         res.status(500).send('Erro interno');
       }
@@ -140,23 +155,25 @@ exports.syncBusySlots = onDocumentWritten(
   { document: 'agendamentosNutri/{agId}', region: 'europe-west1' },
   async (event) => {
     const before = event.data && event.data.before.exists ? event.data.before.data() : null;
-    const after  = event.data && event.data.after.exists  ? event.data.after.data()  : null;
+    const after = event.data && event.data.after.exists ? event.data.after.data() : null;
 
     // Recalcular as datas afetadas (antes e depois — cobre criação, alteração de
     // data, cancelamento e eliminação).
     const datas = new Set();
     if (before && before.data) datas.add(before.data);
-    if (after  && after.data)  datas.add(after.data);
+    if (after && after.data) datas.add(after.data);
 
     for (const data of datas) {
       const snap = await db.collection('agendamentosNutri').where('data', '==', data).get();
-      const horas = [...new Set(
-        snap.docs
-          .map((d) => d.data())
-          .filter((a) => a.estado !== 'cancelada')
-          .map((a) => a.hora)
-          .filter(Boolean)
-      )];
+      const horas = [
+        ...new Set(
+          snap.docs
+            .map((d) => d.data())
+            .filter((a) => a.estado !== 'cancelada')
+            .map((a) => a.hora)
+            .filter(Boolean)
+        ),
+      ];
       const ref = db.collection('busySlots').doc(data);
       if (horas.length) {
         await ref.set({ data, horas });
@@ -220,11 +237,14 @@ exports.assignClienteId = onDocumentCreated(
       return next;
     });
 
-    await snap.ref.set({
-      clienteId: 'C' + String(seq).padStart(4, '0'),
-      seq,
-      arquivado: data.arquivado === true
-    }, { merge: true });
+    await snap.ref.set(
+      {
+        clienteId: 'C' + String(seq).padStart(4, '0'),
+        seq,
+        arquivado: data.arquivado === true,
+      },
+      { merge: true }
+    );
   }
 );
 
@@ -238,51 +258,58 @@ exports.assignClienteId = onDocumentCreated(
 // para demonstrar conformidade. NÃO toca em registos financeiros (Stripe), que
 // têm de ser retidos por obrigação legal.
 // ─────────────────────────────────────────────────────────────────────────────
-exports.eliminarUtilizadorRGPD = onCall(
-  { region: 'europe-west1' },
-  async (request) => {
-    const token = request.auth && request.auth.token;
-    if (!token || token.admin !== true) {
-      throw new HttpsError('permission-denied', 'Apenas administradores.');
+exports.eliminarUtilizadorRGPD = onCall({ region: 'europe-west1' }, async (request) => {
+  const token = request.auth && request.auth.token;
+  if (!token || token.admin !== true) {
+    throw new HttpsError('permission-denied', 'Apenas administradores.');
+  }
+  const uid = request.data && request.data.uid;
+  if (!uid || typeof uid !== 'string') {
+    throw new HttpsError('invalid-argument', 'uid em falta.');
+  }
+
+  // Salvaguarda: nunca eliminar uma conta de administrador.
+  try {
+    const alvo = await admin.auth().getUser(uid);
+    if (alvo.customClaims && alvo.customClaims.admin === true) {
+      throw new HttpsError(
+        'failed-precondition',
+        'Não é possível eliminar uma conta de administrador.'
+      );
     }
-    const uid = request.data && request.data.uid;
-    if (!uid || typeof uid !== 'string') {
-      throw new HttpsError('invalid-argument', 'uid em falta.');
-    }
+  } catch (e) {
+    if (e instanceof HttpsError) throw e;
+    // A conta Auth pode já não existir — seguir para limpar o Firestore.
+  }
 
-    // Salvaguarda: nunca eliminar uma conta de administrador.
-    try {
-      const alvo = await admin.auth().getUser(uid);
-      if (alvo.customClaims && alvo.customClaims.admin === true) {
-        throw new HttpsError('failed-precondition', 'Não é possível eliminar uma conta de administrador.');
-      }
-    } catch (e) {
-      if (e instanceof HttpsError) throw e;
-      // A conta Auth pode já não existir — seguir para limpar o Firestore.
-    }
+  // 1. Marcações do utilizador (cada delete dispara syncBusySlots → busySlots)
+  const ags = await db.collection('agendamentosNutri').where('uid', '==', uid).get();
+  for (const d of ags.docs) await d.ref.delete();
 
-    // 1. Marcações do utilizador (cada delete dispara syncBusySlots → busySlots)
-    const ags = await db.collection('agendamentosNutri').where('uid', '==', uid).get();
-    for (const d of ags.docs) await d.ref.delete();
+  // 2. Chat + mensagens, e 3. perfil + subcoleção análises (recursivo)
+  await db.recursiveDelete(db.collection('chats').doc(uid));
+  await db.recursiveDelete(db.collection('users').doc(uid));
 
-    // 2. Chat + mensagens, e 3. perfil + subcoleção análises (recursivo)
-    await db.recursiveDelete(db.collection('chats').doc(uid));
-    await db.recursiveDelete(db.collection('users').doc(uid));
-
-    // 4. Registo de auditoria (sem PII) — prova de conformidade RGPD
-    await db.collection('eliminacoesRGPD').doc(uid).set({
+  // 4. Registo de auditoria (sem PII) — prova de conformidade RGPD
+  await db
+    .collection('eliminacoesRGPD')
+    .doc(uid)
+    .set({
       uid,
       eliminadoEm: admin.firestore.FieldValue.serverTimestamp(),
       porAdmin: token.email || token.uid || 'admin',
-      agendamentosApagados: ags.size
+      agendamentosApagados: ags.size,
     });
 
-    // 5. Conta de Auth (por fim)
-    let authApagada = false;
-    try { await admin.auth().deleteUser(uid); authApagada = true; }
-    catch (e) { logger.warn('[rgpd] conta Auth inexistente ao eliminar', { uid, erro: e.message }); }
-
-    logger.info('[rgpd] utilizador eliminado', { uid, agendamentos: ags.size, authApagada });
-    return { ok: true, agendamentos: ags.size, authApagada };
+  // 5. Conta de Auth (por fim)
+  let authApagada = false;
+  try {
+    await admin.auth().deleteUser(uid);
+    authApagada = true;
+  } catch (e) {
+    logger.warn('[rgpd] conta Auth inexistente ao eliminar', { uid, erro: e.message });
   }
-);
+
+  logger.info('[rgpd] utilizador eliminado', { uid, agendamentos: ags.size, authApagada });
+  return { ok: true, agendamentos: ags.size, authApagada };
+});
