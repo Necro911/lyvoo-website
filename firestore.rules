@@ -120,6 +120,14 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ── Erros do webhook Stripe (observabilidade) ──
+    // Escritos só pelo Admin SDK (Cloud Function stripeWebhook). Lidos só pelo
+    // admin (para reconciliar pagamentos que falharam o processamento). (B3)
+    match /webhookErrors/{errId} {
+      allow read:  if isAdmin();
+      allow write: if false;
+    }
+
     // ── Lista de espera (formulário público em contacto.html) ──
     // Submetida por visitantes (sem auth) via setDoc com id derivado do email,
     // por isso create+update têm de continuar abertos — MAS validados: forma de

@@ -1,6 +1,7 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const { onDocumentWritten, onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
+const logger = require('firebase-functions/logger');
 const admin = require('firebase-admin');
 const Stripe = require('stripe');
 
@@ -9,6 +10,24 @@ const db = admin.firestore();
 
 const STRIPE_SECRET_KEY     = defineSecret('STRIPE_SECRET_KEY');
 const STRIPE_WEBHOOK_SECRET = defineSecret('STRIPE_WEBHOOK_SECRET');
+
+// Regista uma falha crítica do webhook Stripe: log estruturado em severidade
+// ERROR com o marcador { alert: 'stripe-webhook' } (para um alerta baseado em
+// logs no Cloud Monitoring) E um registo durável em webhookErrors/ para
+// reconciliação manual (ex.: alguém pagou mas não conseguimos processar). (B3)
+async function registarErroWebhook(tipo, dados) {
+  logger.error(`[stripe-webhook] ${tipo}`, { alert: 'stripe-webhook', tipo, ...dados });
+  try {
+    await db.collection('webhookErrors').add({
+      tipo,
+      ...dados,
+      resolvido: false,
+      criadoEm: admin.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (e) {
+    logger.error('[stripe-webhook] falha ao gravar webhookErrors', { erro: e.message });
+  }
+}
 
 // Webhook do Stripe: confirma a compra do Plano Base e avança o cliente
 // do estado 1 (sem plano) para o estado 2 (kit a caminho).
@@ -22,7 +41,11 @@ exports.stripeWebhook = onRequest(
     try {
       event = stripe.webhooks.constructEvent(req.rawBody, sig, STRIPE_WEBHOOK_SECRET.value());
     } catch (err) {
-      console.error('Assinatura do webhook inválida:', err.message);
+      // Assinatura inválida: pode ser ruído de scanners OU um webhook secret mal
+      // configurado (que faria FALHAR todos os pagamentos reais). Log em ERROR
+      // com marcador para o alerta apanhar um pico — sem gravar em webhookErrors
+      // (evita encher a coleção com tentativas aleatórias).
+      logger.error('[stripe-webhook] assinatura inválida', { alert: 'stripe-webhook', motivo: err.message });
       res.status(400).send(`Webhook Error: ${err.message}`);
       return;
     }
@@ -32,7 +55,12 @@ exports.stripeWebhook = onRequest(
       const uid = session.client_reference_id;
 
       if (!uid) {
-        console.warn('checkout.session.completed sem client_reference_id', session.id);
+        // Pagamento concluído sem referência ao utilizador → não conseguimos
+        // atribuir. Crítico: alguém pagou e não sabemos quem.
+        await registarErroWebhook('checkout_sem_uid', {
+          sessionId: session.id, eventId: event.id,
+          mensagem: 'checkout.session.completed sem client_reference_id'
+        });
         res.status(200).send('ok (sem uid)');
         return;
       }
@@ -64,25 +92,37 @@ exports.stripeWebhook = onRequest(
         });
 
         if (resultado === 'inexistente') {
-          console.warn('Utilizador não encontrado para uid', uid);
+          // Pagou, mas o uid não tem documento em users → crítico (conta paga
+          // sem perfil). Regista para reconciliação manual.
+          await registarErroWebhook('utilizador_inexistente', {
+            uid, sessionId: session.id, eventId: event.id,
+            mensagem: 'Pagamento recebido para um uid sem documento em users'
+          });
           res.status(200).send('ok (utilizador inexistente)');
           return;
         }
         if (resultado === 'avancado') {
-          console.log(`Estado do utilizador ${uid} avançado para 2 (kit a caminho)`);
+          logger.info('[stripe-webhook] utilizador avançado para estado 2 (kit a caminho)',
+            { uid, sessionId: session.id, eventId: event.id });
         } else {
-          console.log(`Utilizador ${uid} já tinha plano ativo, ignorado`);
+          logger.info('[stripe-webhook] ignorado — utilizador já tinha plano ativo',
+            { uid, sessionId: session.id, eventId: event.id });
         }
 
         res.status(200).send('ok');
       } catch (err) {
-        console.error('Erro ao atualizar utilizador', uid, err);
+        // Erro a processar um pagamento válido → crítico. Devolve 500 para o
+        // Stripe RE-TENTAR o evento, e regista para reconciliação manual.
+        await registarErroWebhook('erro_processamento', {
+          uid, sessionId: session.id, eventId: event.id, mensagem: err.message
+        });
         res.status(500).send('Erro interno');
       }
       return;
     }
 
     // Outros eventos: apenas confirmar receção.
+    logger.info('[stripe-webhook] evento ignorado', { tipo: event.type, eventId: event.id });
     res.status(200).send('ok (evento ignorado)');
   }
 );

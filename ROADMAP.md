@@ -13,12 +13,12 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **B3** — Logs estruturados + alerta de falha no webhook Stripe
-2. **F4** — SEO básico (meta, Open Graph, JSON-LD, sitemap)
-3. **B2** — CI/CD para deploy de rules/functions
+1. **F4** — SEO básico (meta, Open Graph, JSON-LD, sitemap)
+2. **B2** — CI/CD para deploy de rules/functions
+3. **S7** — CSP + headers de segurança
 
-> ✅ B1 (Node 22), P1 (paginação + clienteId + stats por agregação) e D4
-> (validação dos campos de perfil) concluídos a 15-Jun-2026.
+> ✅ B1 (Node 22), P1 (paginação), D4 (validação de perfil) e B3 (observabilidade
+> do webhook) concluídos a 15-Jun-2026.
 
 ---
 
@@ -51,7 +51,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 |---|----|--------|------|-------|-------|-----------|-----------|
 | x | B1 | Upgrade Node 20→22 + firebase-functions 7 / admin 13 — deployed em `nodejs22` (15-Jun) | Média | — | — | Alto | `functions/package.json` |
 | ☐ | B2 | CI/CD — GitHub Action para deploy de rules/functions | Média | 4-6h | Baixo | Médio | `.github/workflows/`, `firebase.json` |
-| ☐ | B3 | Observabilidade — logs estruturados + alerta de falha no webhook | Fácil | 2-3h | Baixo | Médio | `functions/index.js` |
+| x | B3 | Logs estruturados + webhookErrors + alerta — done 15-Jun | Fácil | — | — | Médio | `functions/index.js`, `firestore.rules` |
 | ☐ | B4 | Min-instances/região p/ cold-start do webhook (se necessário) | Fácil | 1-2h | Baixo | Baixo | `functions/index.js` |
 
 ## 4. ⚡ Performance
@@ -92,7 +92,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☑ B1  Node 22 + libs            → FEITO (nodejs22, 15-Jun)
 ☑ P1  Paginar loadUsers         → FEITO (paginação + clienteId + stats agregadas, 15-Jun)
 ☑ D4  Validar campos perfil     → FEITO (15-Jun)
-☐ B3  Logs/alerta webhook       → visibilidade de pagamentos
+☑ B3  Logs/alerta webhook       → FEITO (15-Jun)
 ☐ F4  SEO básico                → ROI de lançamento
 ☐ B2  CI/CD deploy              → segurança operacional
 ☐ S7  CSP + headers             → hardening extra
