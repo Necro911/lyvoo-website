@@ -13,9 +13,11 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **B1** — Upgrade Node 20→22 + libs Firebase (deploy bloqueia a 30-Out-2026)
-2. **P1** — Paginar `loadUsers()` no admin
-3. **D4** — Validar campos do perfil nas regras
+1. **P1** — Paginar `loadUsers()` no admin
+2. **D4** — Validar campos do perfil nas regras
+3. **B3** — Logs estruturados + alerta de falha no webhook Stripe
+
+> ✅ B1 concluído a 15-Jun-2026 (functions em `nodejs22`).
 
 ---
 
@@ -46,7 +48,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 | ☑ | ID | Tarefa | Dif. | Tempo | Risco | Benefício | Ficheiros |
 |---|----|--------|------|-------|-------|-----------|-----------|
-| ☐ | B1 | Upgrade Node 20→22 + `firebase-functions`/`firebase-admin` @latest (⏰ 30-Out-2026) | Média | 3-5h | Médio | Alto | `functions/package.json`, `functions/index.js` |
+| x | B1 | Upgrade Node 20→22 + firebase-functions 7 / admin 13 — deployed em `nodejs22` (15-Jun) | Média | — | — | Alto | `functions/package.json` |
 | ☐ | B2 | CI/CD — GitHub Action para deploy de rules/functions | Média | 4-6h | Baixo | Médio | `.github/workflows/`, `firebase.json` |
 | ☐ | B3 | Observabilidade — logs estruturados + alerta de falha no webhook | Fácil | 2-3h | Baixo | Médio | `functions/index.js` |
 | ☐ | B4 | Min-instances/região p/ cold-start do webhook (se necessário) | Fácil | 1-2h | Baixo | Baixo | `functions/index.js` |
@@ -86,7 +88,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ## Ordem de execução (one-at-a-time)
 
 ```
-☐ B1  Node 22 + libs            → desbloqueia deploys futuros
+☑ B1  Node 22 + libs            → FEITO (nodejs22, 15-Jun)
 ☐ P1  Paginar loadUsers         → escala do admin
 ☐ D4  Validar campos perfil     → fecha o flanco do field-lock
 ☐ B3  Logs/alerta webhook       → visibilidade de pagamentos
