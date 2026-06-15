@@ -14,8 +14,6 @@ set-admin-claims.js
 .env
 .env.local
 
-# Manifestos de tooling SÓ na raiz (não é um projeto npm).
-# Ancorado com "/" para não engolir functions/package.json,
-# que TEM de ser versionado para o deploy das Cloud Functions.
-/package.json
-/package-lock.json
+# O package.json/package-lock.json da raiz SÃO versionados: declaram o tooling
+# de testes (@firebase/rules-unit-testing) que o CI instala para correr os
+# testes de regras. (functions/package.json também é versionado, p/ o deploy.)

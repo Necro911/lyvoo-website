@@ -1,0 +1,15 @@
+{
+  "name": "lyvoo-tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Dev/test tooling for the Lyvoo site (Firestore rules tests). Not served by GitHub Pages.",
+  "scripts": {
+    "test:rules": "npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo \"node --test test/\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.0.0",
+    "firebase-admin": "^14.0.0"
+  }
+}

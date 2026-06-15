@@ -33,12 +33,20 @@ on:
       - 'firestore.indexes.json'
       - 'firebase.json'
       - 'functions/**'
+      - 'test/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/firebase-deploy.yml'
   pull_request:
     paths:
       - 'firestore.rules'
       - 'firestore.indexes.json'
       - 'firebase.json'
       - 'functions/**'
+      - 'test/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/firebase-deploy.yml'
   workflow_dispatch:
 
 jobs:
@@ -56,6 +64,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+      - name: Install test deps (root)
+        run: npm ci
       - name: Install function deps
         working-directory: functions
         run: npm ci
@@ -63,8 +73,8 @@ jobs:
         run: node --check functions/index.js
       - name: Validate firestore.indexes.json
         run: node -e "JSON.parse(require('fs').readFileSync('firestore.indexes.json','utf8')); console.log('indexes JSON ok')"
-      - name: Compile Firestore rules (emulator, no auth)
-        run: npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo "echo rules compiled OK"
+      - name: Test Firestore rules (emulator)   # compila E testa o modelo de segurança
+        run: npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo "node --test test/"
 
   deploy:
     name: Deploy to production
