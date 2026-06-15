@@ -75,6 +75,8 @@ jobs:
         run: node -e "JSON.parse(require('fs').readFileSync('firestore.indexes.json','utf8')); console.log('indexes JSON ok')"
       - name: Test Firestore rules (emulator)   # compila E testa o modelo de segurança
         run: npx -y firebase-tools@15 emulators:exec --only firestore --project demo-lyvoo "node --test test/firestore.rules.test.mjs"
+      - name: Test Cloud Functions (emulators)   # webhook Stripe + cascata RGPD
+        run: npx -y firebase-tools@15 emulators:exec --only firestore,auth --project demo-lyvoo "node --test functions/test/functions.test.js"
 
   deploy:
     name: Deploy to production
