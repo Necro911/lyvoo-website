@@ -400,6 +400,7 @@
       <button class="ef-btn" data-e="arquivados" onclick="setEstadoFilter('arquivados')" style="color:var(--txt-3)">Arquivados</button>
     </div>
     <div class="user-list" id="user-list"></div>
+    <button id="load-more-users" onclick="loadMoreUsers()" style="display:none;width:calc(100% - 24px);margin:8px 12px;padding:8px;border-radius:8px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--txt-2);font-family:inherit;font-size:12px;cursor:pointer;">Carregar mais clientes</button>
   </aside>
 
   <!-- ── DETAIL PANEL ── -->
@@ -909,7 +910,7 @@
 
 <script type="module">
   import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where, onSnapshot, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+  import { collection, getDocs, doc, getDoc, setDoc, updateDoc, addDoc, arrayUnion, serverTimestamp, query, where, onSnapshot, orderBy, limit, startAfter, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
 
   const ESTADO_LABELS = { 1:'Sem plano ativo', 2:'Kit a caminho', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação · Kit a caminho', 6:'Reavaliação · Laboratório a processar', 7:'Reavaliação · Resultados disponíveis' };
@@ -1029,6 +1030,9 @@
   };
 
   let allUsers = [];
+  let _lastUserDoc = null;      // cursor de paginação (último doc carregado)
+  let _allUsersLoaded = false;  // true quando já não há mais páginas
+  const USERS_PAGE = 50;        // tamanho de página
   let _chatMeta = {};
   let _chatUnsubMsgs = null;
 
@@ -1444,38 +1448,76 @@
     }).join('');
   }
 
+  // ── Carregamento paginado de utilizadores (P1) ────────────────────────
+  // Em vez de ler TODA a coleção, carrega por páginas (mais recentes primeiro)
+  // com cursor. O clienteId já vem persistido no doc (Cloud Function
+  // assignClienteId) e as stats são calculadas por queries de agregação
+  // (refreshStats) — nada disto exige ter todos os clientes em memória.
   async function loadUsers() {
     try {
-      const snap = await getDocs(collection(db,'users'));
       allUsers = [];
-      snap.forEach(d => allUsers.push({uid:d.id,...d.data()}));
-      // Atribui um ID de cliente sequencial (mais antigo = nº 1), só para uso interno do admin.
-      const porAntiguidade = [...allUsers].sort((a,b) => (a.criadoEm?.toMillis?.()??0) - (b.criadoEm?.toMillis?.()??0));
-      porAntiguidade.forEach((u, i) => { u.clienteId = 'C' + String(i+1).padStart(4,'0'); });
-      allUsers.sort((a,b) => (b.criadoEm?.toMillis?.()??0) - (a.criadoEm?.toMillis?.()??0));
-      const ativos = allUsers.filter(u => !u.arquivado);
-      const total = ativos.length || 1;
-      const counts = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0};
-      ativos.forEach(u => { const e = u.estado||1; if (counts[e]!==undefined) counts[e]++; });
+      _lastUserDoc = null;
+      _allUsersLoaded = false;
+      const snap = await getDocs(query(collection(db,'users'), orderBy('criadoEm','desc'), limit(USERS_PAGE)));
+      snap.forEach(d => allUsers.push({ uid: d.id, ...d.data() }));
+      _lastUserDoc = snap.docs[snap.docs.length - 1] || null;
+      _allUsersLoaded = snap.size < USERS_PAGE;
+      refreshStats();
+      updateLoadMoreBtn();
+      applyFilters();
+    } catch(e) { console.error(e); }
+  }
+
+  async function loadMoreUsers() {
+    if (_allUsersLoaded || !_lastUserDoc) return;
+    const btn = document.getElementById('load-more-users');
+    if (btn) { btn.disabled = true; btn.textContent = 'A carregar…'; }
+    try {
+      const snap = await getDocs(query(collection(db,'users'), orderBy('criadoEm','desc'), startAfter(_lastUserDoc), limit(USERS_PAGE)));
+      snap.forEach(d => allUsers.push({ uid: d.id, ...d.data() }));
+      _lastUserDoc = snap.docs[snap.docs.length - 1] || _lastUserDoc;
+      _allUsersLoaded = snap.size < USERS_PAGE;
+      applyFilters();
+    } catch(e) { console.error(e); }
+    if (btn) { btn.disabled = false; btn.textContent = 'Carregar mais clientes'; }
+    updateLoadMoreBtn();
+  }
+  window.loadMoreUsers = loadMoreUsers;
+
+  function updateLoadMoreBtn() {
+    const btn = document.getElementById('load-more-users');
+    if (btn) btn.style.display = _allUsersLoaded ? 'none' : 'block';
+  }
+
+  // Stats do dashboard via agregação (getCountFromServer) — escala a qualquer
+  // dimensão sem ler todos os docs. Conta utilizadores ATIVOS (arquivado==false)
+  // no total e por estado. (P1)
+  async function refreshStats() {
+    try {
+      const col = collection(db, 'users');
+      const ativos = (await getCountFromServer(query(col, where('arquivado','==',false)))).data().count;
+      const counts = {1:0,2:0,3:0,4:0,5:0,6:0,7:0};
+      await Promise.all([1,2,3,4,5,6,7].map(async e => {
+        counts[e] = (await getCountFromServer(query(col, where('arquivado','==',false), where('estado','==',e)))).data().count;
+      }));
+      const total = ativos || 1;
       // Agregados (ciclo contínuo): kit = 2+5, lab = 3+6, resultados = 4+7, reavaliação = 5+6+7
       const cResultados = counts[4] + counts[7];
       const cKit        = counts[2] + counts[5];
       const cLab        = counts[3] + counts[6];
       const cReaval     = counts[5] + counts[6] + counts[7];
-      document.getElementById('s-total').textContent  = ativos.length;
+      document.getElementById('s-total').textContent  = ativos;
       document.getElementById('s-active').textContent = cResultados;
       document.getElementById('s-e1').textContent     = counts[1];
       document.getElementById('s-e2').textContent     = cKit;
       document.getElementById('s-e3').textContent     = cLab;
       document.getElementById('s-e5').textContent     = cReaval;
-      // Barras de proporção
       const barVals = { 4: cResultados, 1: counts[1], 2: cKit, 3: cLab, 5: cReaval };
       Object.entries(barVals).forEach(([e, v]) => {
         const bar = document.getElementById(`s-bar-${e}`);
         if (bar) bar.style.width = Math.round((v/total)*100) + '%';
       });
-      renderList(ativos);
-    } catch(e) { console.error(e); }
+    } catch(e) { console.error('Erro ao calcular stats:', e); }
   }
 
   document.getElementById('search-input').addEventListener('input', applyFilters);
@@ -2693,6 +2735,7 @@
       codigoPostal:   document.getElementById('g-cp').value.trim(),
     };
     await saveDoc(data, 'msg-geral');
+    refreshStats(); // estado pode ter mudado → atualizar contadores
 
     // ── Email automático quando estado passa a resultados (4 ou 7) ──
     const passou_a_resultados = (selectedEstado === 4 || selectedEstado === 7) && estadoAnterior !== selectedEstado;
@@ -3078,6 +3121,7 @@
 
       showMsg('msg-geral', '✓ Reavaliação iniciada · Resultados anteriores arquivados no histórico', false);
       applyFilters();
+      refreshStats();
 
     } catch(e) {
       console.error(e);
@@ -3136,6 +3180,7 @@
       const btn = document.getElementById('btn-arquivar');
       if (btn) btn.textContent = isArquivado ? 'Arquivar cliente' : 'Restaurar cliente';
       applyFilters();
+      refreshStats();
     } catch(e) {
       alert('Erro: ' + e.message);
     }

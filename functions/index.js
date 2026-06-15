@@ -1,5 +1,5 @@
 const { onRequest } = require('firebase-functions/v2/https');
-const { onDocumentWritten } = require('firebase-functions/v2/firestore');
+const { onDocumentWritten, onDocumentCreated } = require('firebase-functions/v2/firestore');
 const { defineSecret } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const Stripe = require('stripe');
@@ -151,5 +151,39 @@ exports.backfillBusySlots = require('firebase-functions/v2/https').onCall(
     });
     await batch.commit();
     return { datas: Object.keys(porData).length };
+  }
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// assignClienteId — atribui um clienteId sequencial e PERSISTENTE a cada novo
+// utilizador (C0001, C0002, …), via um contador atómico em counters/users. (P1)
+//
+// Antes, o admin numerava os clientes no browser carregando TODA a coleção e
+// ordenando por antiguidade — o que obrigava a ler todos os docs em cada abertura.
+// Agora o número é gravado uma vez no doc, no momento da criação, e o admin pode
+// paginar a lista sem perder a numeração. Também garante arquivado:false para que
+// as queries de contagem das stats (where arquivado==false) incluam o doc.
+// ─────────────────────────────────────────────────────────────────────────────
+exports.assignClienteId = onDocumentCreated(
+  { document: 'users/{uid}', region: 'europe-west1' },
+  async (event) => {
+    const snap = event.data;
+    if (!snap) return;
+    const data = snap.data() || {};
+    if (data.clienteId) return; // idempotente — já atribuído
+
+    const counterRef = db.doc('counters/users');
+    const seq = await db.runTransaction(async (tx) => {
+      const c = await tx.get(counterRef);
+      const next = ((c.exists && c.data().seq) || 0) + 1;
+      tx.set(counterRef, { seq: next }, { merge: true });
+      return next;
+    });
+
+    await snap.ref.set({
+      clienteId: 'C' + String(seq).padStart(4, '0'),
+      seq,
+      arquivado: data.arquivado === true
+    }, { merge: true });
   }
 );
