@@ -13,12 +13,12 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **F4** — SEO básico (meta, Open Graph, JSON-LD, sitemap)
-2. **B2** — CI/CD para deploy de rules/functions
-3. **S7** — CSP + headers de segurança
+1. **B2** — CI/CD para deploy de rules/functions
+2. **S7** — CSP + headers de segurança
+3. **D5** — Eliminação RGPD automatizada
 
-> ✅ B1 (Node 22), P1 (paginação), D4 (validação de perfil) e B3 (observabilidade
-> do webhook) concluídos a 15-Jun-2026.
+> ✅ B1 (Node 22), P1 (paginação), D4 (validação de perfil), B3 (observabilidade
+> do webhook) e F4 (SEO: canonical + hreflang + JSON-LD) concluídos a 15-Jun-2026.
 
 ---
 
@@ -71,7 +71,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | ☐ | F1 | Resolver duplicação PT/EN com templating/build | Difícil | 2-3d | Médio | Médio | `*.html` + `en/*.html` + tooling |
 | ☐ | F2 | Acessibilidade WCAG (aria, foco, teclado) | Média | 1d | Baixo | Médio | `*.html` |
 | ☐ | F3 | Extrair header/footer/nav partilhados | Média | 4-6h | Baixo | Médio | `*.html` |
-| ☐ | F4 | SEO — meta tags, Open Graph, JSON-LD, sitemap | Fácil | 3-4h | Baixo | Médio | `*.html`, `sitemap.xml` |
+| x | F4 | SEO — canonical + hreflang (PT↔EN) + JSON-LD nas 8 páginas principais — done 15-Jun (OG/sitemap/robots já existiam; falta hreflang nos /modulos) | Fácil | — | — | Médio | `*.html`, `en/*.html` |
 | ☐ | F5 | Polir UX de formulários (validação inline) | Fácil | 2-3h | Baixo | Baixo | `contacto.html`, `registar.html` |
 
 ## 6. 🧹 Limpeza de código
@@ -93,7 +93,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☑ P1  Paginar loadUsers         → FEITO (paginação + clienteId + stats agregadas, 15-Jun)
 ☑ D4  Validar campos perfil     → FEITO (15-Jun)
 ☑ B3  Logs/alerta webhook       → FEITO (15-Jun)
-☐ F4  SEO básico                → ROI de lançamento
+☑ F4  SEO básico                → FEITO (canonical+hreflang+JSON-LD, 15-Jun)
 ☐ B2  CI/CD deploy              → segurança operacional
 ☐ S7  CSP + headers             → hardening extra
 ☐ C3  ESLint/Prettier           → qualidade contínua
