@@ -110,7 +110,7 @@ test('assignClienteId: atribui clienteId sequencial e incrementa o contador', as
   const uid1 = 'cli_' + Date.now() + '_a';
   await db.collection('users').doc(uid1).set({ estado: 1 });
   const wrapped = fft.wrap(fns.assignClienteId);
-  await wrapped(fft.firestore.makeDocumentSnapshot({ estado: 1 }, `users/${uid1}`));
+  await wrapped({ data: fft.firestore.makeDocumentSnapshot({ estado: 1 }, `users/${uid1}`) });
 
   const d1 = await db.collection('users').doc(uid1).get();
   assert.strictEqual(d1.data().clienteId, 'C0001');
@@ -119,7 +119,7 @@ test('assignClienteId: atribui clienteId sequencial e incrementa o contador', as
 
   const uid2 = 'cli_' + Date.now() + '_b';
   await db.collection('users').doc(uid2).set({ estado: 1 });
-  await wrapped(fft.firestore.makeDocumentSnapshot({ estado: 1 }, `users/${uid2}`));
+  await wrapped({ data: fft.firestore.makeDocumentSnapshot({ estado: 1 }, `users/${uid2}`) });
   const d2 = await db.collection('users').doc(uid2).get();
   assert.strictEqual(d2.data().clienteId, 'C0002');
 
@@ -134,7 +134,7 @@ test('assignClienteId: idempotente — não reatribui se já tiver clienteId', a
   const seqBefore = (before.exists && before.data().seq) || 0;
 
   const wrapped = fft.wrap(fns.assignClienteId);
-  await wrapped(fft.firestore.makeDocumentSnapshot({ estado: 1, clienteId: 'C9999', seq: 9999 }, `users/${uid}`));
+  await wrapped({ data: fft.firestore.makeDocumentSnapshot({ estado: 1, clienteId: 'C9999', seq: 9999 }, `users/${uid}`) });
 
   const after = await db.collection('users').doc(uid).get();
   assert.strictEqual(after.data().clienteId, 'C9999'); // inalterado
@@ -154,7 +154,7 @@ test('syncBusySlots: criação de marcação adiciona hora a busySlots/{data}', 
   const wrapped = fft.wrap(fns.syncBusySlots);
   const after = fft.firestore.makeDocumentSnapshot(ag, `agendamentosNutri/${agId}`);
   const before = fft.firestore.makeDocumentSnapshot(undefined, `agendamentosNutri/${agId}`);
-  await wrapped(fft.makeChange(before, after));
+  await wrapped({ data: fft.makeChange(before, after) });
 
   const slot = await db.collection('busySlots').doc(data).get();
   assert.deepStrictEqual(slot.data().horas, ['10:00']);
@@ -168,18 +168,18 @@ test('syncBusySlots: cancelamento remove a hora; eliminar a última hora apaga o
   const ativo = { uid: 'u1', data, hora: '11:00', estado: 'confirmada' };
   await db.collection('agendamentosNutri').doc(agId).set(ativo);
   const wrapped = fft.wrap(fns.syncBusySlots);
-  await wrapped(fft.makeChange(
+  await wrapped({ data: fft.makeChange(
     fft.firestore.makeDocumentSnapshot(undefined, `agendamentosNutri/${agId}`),
     fft.firestore.makeDocumentSnapshot(ativo, `agendamentosNutri/${agId}`)
-  ));
+  ) });
   assert.deepStrictEqual((await db.collection('busySlots').doc(data).get()).data().horas, ['11:00']);
 
   // Cancelar a marcação → a hora deixa de estar ocupada → último slot → doc apagado
   const cancelada = { ...ativo, estado: 'cancelada' };
   await db.collection('agendamentosNutri').doc(agId).set(cancelada);
-  await wrapped(fft.makeChange(
+  await wrapped({ data: fft.makeChange(
     fft.firestore.makeDocumentSnapshot(ativo, `agendamentosNutri/${agId}`),
     fft.firestore.makeDocumentSnapshot(cancelada, `agendamentosNutri/${agId}`)
-  ));
+  ) });
   assert.strictEqual((await db.collection('busySlots').doc(data).get()).exists, false);
 });
