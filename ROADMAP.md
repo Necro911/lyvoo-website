@@ -13,11 +13,12 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **P1** — Paginar `loadUsers()` no admin
-2. **D4** — Validar campos do perfil nas regras
-3. **B3** — Logs estruturados + alerta de falha no webhook Stripe
+1. **D4** — Validar campos do perfil nas regras
+2. **B3** — Logs estruturados + alerta de falha no webhook Stripe
+3. **F4** — SEO básico (meta, Open Graph, JSON-LD, sitemap)
 
-> ✅ B1 concluído a 15-Jun-2026 (functions em `nodejs22`).
+> ✅ B1 (Node 22) e P1 (paginação + clienteId persistente + stats por agregação)
+> concluídos a 15-Jun-2026.
 
 ---
 
@@ -57,7 +58,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 | ☑ | ID | Tarefa | Dif. | Tempo | Risco | Benefício | Ficheiros |
 |---|----|--------|------|-------|-------|-----------|-----------|
-| ☐ | P1 | Paginar/limitar `loadUsers()` (hoje sem limite) | Média | 3-5h | Baixo | Alto | `admin.html` |
+| x | P1 | Paginação + clienteId persistente (CF) + stats por agregação — done 15-Jun | Média | — | — | Alto | `admin.html`, `functions/index.js`, `firestore.rules`, `firestore.indexes.json` |
 | ☐ | P2 | Pipeline de build/minify (HTML/CSS/JS) | Média | 1d | Médio | Médio | repo + tooling |
 | ☐ | P3 | Bundle/tree-shake do Firebase SDK | Média | 4-6h | Médio | Médio | `lyvoo-firebase.js`, `*.html` |
 | ☐ | P4 | Otimizar imagens (formatos modernos, lazy-load) | Fácil | 2-4h | Baixo | Médio | `assets/`, `*.html` |
@@ -89,7 +90,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ```
 ☑ B1  Node 22 + libs            → FEITO (nodejs22, 15-Jun)
-☐ P1  Paginar loadUsers         → escala do admin
+☑ P1  Paginar loadUsers         → FEITO (paginação + clienteId + stats agregadas, 15-Jun)
 ☐ D4  Validar campos perfil     → fecha o flanco do field-lock
 ☐ B3  Logs/alerta webhook       → visibilidade de pagamentos
 ☐ F4  SEO básico                → ROI de lançamento
