@@ -1440,6 +1440,13 @@
     }
     @media (max-width: 600px) {
       .ba-grid { grid-template-columns: repeat(2, 1fr); }
+      .ba-topbar { flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px 16px 12px; }
+      .ba-filters { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+      .ba-filter { display: inline-flex; justify-content: center; font-size: 10px; padding: 5px 11px; }
+      .ba-filter[data-mobile-primary] {
+        order: -1; flex: 1; min-width: calc(50% - 3px);
+        font-size: 12px; padding: 9px 0;
+      }
     }
 
     /* ── Texto cinzento mais legível em secções dark (mobile) ── */
@@ -1879,11 +1886,11 @@
         <div class="ba-topbar">
           <span class="ba-headline">Biomarcadores da Lyvoo</span>
           <div class="ba-filters">
-            <button class="ba-filter active" data-cat="todos">Todos</button>
+            <button class="ba-filter active" data-cat="todos" data-mobile-primary>Todos</button>
             <button class="ba-filter" data-cat="vitaminas">Vitaminas</button>
             <button class="ba-filter" data-cat="hormonal-masculino">Hormonal Masculino</button>
             <button class="ba-filter" data-cat="hormonal-feminino">Hormonal Feminino</button>
-            <button class="ba-filter" data-cat="base">Painel base</button>
+            <button class="ba-filter" data-cat="base" data-mobile-primary>Painel Base</button>
             <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
             <button class="ba-filter" data-cat="dst-ist">DST/IST Completo</button>
             <button class="ba-filter" data-cat="hepatite-b">Hepatite B</button>
