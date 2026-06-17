@@ -11,9 +11,19 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ---
 
-## Próximos 3 (maior ROI)
+## Estado: pronto para lançamento ✅ (16-Jun-2026)
 
-1. **F3** — Header/footer partilhados (ver nota de risco abaixo)
+As tiers de **segurança, integridade de dados, backend, CI/CD e testes** estão
+concluídas. Os itens em aberto (**F3, F1, C1, C2, P2, P3**) são **dívida
+estrutural / DX** — não user-facing, não bloqueiam o lançamento — e foram
+**adiados deliberadamente para pós-lançamento** (decisão de 16-Jun: evitar
+refactors arquiteturais de risco médio-alto perto do lançamento). Todos
+dependem entre si de uma decisão prévia: **introduzir ou não um build step**
+(hoje o site é HTML estático puro servido pelo GitHub Pages).
+
+### Quando se retomar (ordem sugerida)
+
+1. **F3** — Header/footer partilhados (keystone; ver nota de risco abaixo)
 2. **C1** — Extrair JS/CSS inline (depende de F3)
 3. **F1** — Templating PT/EN (mata a dívida estrutural; depende de F3)
 
