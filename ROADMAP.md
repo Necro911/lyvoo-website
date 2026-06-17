@@ -14,8 +14,8 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ## Próximos 3 (maior ROI)
 
 1. **D6** — Consistência de fuso/datas dos agendamentos
-2. **B4** — Min-instances/região do webhook
-3. **F3** — Header/footer partilhados (ver nota de risco abaixo)
+2. **F3** — Header/footer partilhados (ver nota de risco abaixo)
+3. **P5** — Reduzir CSS/JS render-blocking (defer, critical CSS)
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
 > B2 (CI/CD ativo), D5 (eliminação RGPD em cascata), P4 (lazy-load) e F2
@@ -45,7 +45,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | S5 | Admin por custom-claims-only (sem fallback de email) | Fácil | — | — | Médio | `firestore.rules`, `functions/index.js`, `admin.html`, `login.html` |
 | x | S6 | App Check Enforced (reCAPTCHA v3 nova) | Média | — | — | Alto | `lyvoo-firebase.js` |
 | x | S7 | CSP + Referrer-Policy via `<meta>` nas 44 páginas — done 15-Jun (testado no preview: Firebase/AppCheck/fontes/EmailJS ok). Headers-only (X-Frame-Options/Permissions-Policy/CSP report-only) p/ quando houver CDN à frente | Média | — | Médio | Médio | todas as `*.html` |
-| ☐ | S8 | Fixar versão do Firebase SDK / avaliar SRI ou self-host | Fácil | 2h | Baixo | Baixo | `lyvoo-firebase.js`, `*.html` |
+| x | S8 | Fixar versão do Firebase SDK / avaliar SRI ou self-host — 16-Jun: SDK já fixado em 10.12.2; SRI inviável para imports ES dinâmicos do gstatic; self-host adiado. | Fácil | — | — | Baixo | `lyvoo-firebase.js`, `*.html` |
 
 ## 2. 🟠 Integridade de dados
 
@@ -64,7 +64,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | B1 | Upgrade Node 20→22 + firebase-functions 7 / admin 13 — deployed em `nodejs22` (15-Jun) | Média | — | — | Alto | `functions/package.json` |
 | x | B2 | CI/CD — GitHub Action (valida sempre + deploy com aprovação). Ativo: secret + environment `production` configurados 15-Jun | Média | — | Baixo | Médio | `.github/workflows/firebase-deploy.yml` |
 | x | B3 | Logs estruturados + webhookErrors + alerta — done 15-Jun | Fácil | — | — | Médio | `functions/index.js`, `firestore.rules` |
-| ☐ | B4 | Min-instances/região p/ cold-start do webhook (se necessário) | Fácil | 1-2h | Baixo | Baixo | `functions/index.js` |
+| x | B4 | Min-instances/região p/ cold-start do webhook (se necessário) — 16-Jun: região já era europe-west1; minInstances deliberadamente não definido pré-lançamento (custo recorrente) — Stripe re-tenta entregas, por isso um cold-start ocasional é inofensivo. Comentário no código. | Fácil | — | — | Baixo | `functions/index.js` |
 
 ## 4. ⚡ Performance
 

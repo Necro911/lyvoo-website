@@ -31,6 +31,9 @@ async function registarErroWebhook(tipo, dados) {
 
 // Webhook do Stripe: confirma a compra do Plano Base e avança o cliente
 // do estado 1 (sem plano) para o estado 2 (kit a caminho).
+// (B4) região já é europe-west1 (perto de utilizador e Stripe EU);
+// minInstances NÃO definido pré-lançamento (custo recorrente) — Stripe re-tenta
+// entregas, por isso um cold-start ocasional é inofensivo.
 exports.stripeWebhook = onRequest(
   { secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET], region: 'europe-west1' },
   async (req, res) => {
