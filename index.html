@@ -1441,12 +1441,10 @@
     @media (max-width: 600px) {
       .ba-grid { grid-template-columns: repeat(2, 1fr); }
       .ba-topbar { flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px 16px 12px; }
-      .ba-filters { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
-      .ba-filter { display: inline-flex; justify-content: center; font-size: 10px; padding: 5px 11px; }
-      .ba-filter[data-mobile-primary] {
-        order: -1; flex: 1; min-width: calc(50% - 3px);
-        font-size: 12px; padding: 9px 0;
-      }
+      .ba-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+      .ba-filter { display: flex; justify-content: center; font-size: 10px; padding: 6px 8px; }
+      .ba-filter[data-mobile-primary] { font-size: 12px; padding: 9px 0; }
+      .ba-filter-wide { grid-column: 1 / -1; white-space: normal; }
     }
 
     /* ── Texto cinzento mais legível em secções dark (mobile) ── */
@@ -1887,17 +1885,17 @@
           <span class="ba-headline">Biomarcadores da Lyvoo</span>
           <div class="ba-filters">
             <button class="ba-filter active" data-cat="todos" data-mobile-primary>Todos</button>
+            <button class="ba-filter" data-cat="base" data-mobile-primary>Painel Base</button>
             <button class="ba-filter" data-cat="vitaminas">Vitaminas</button>
+            <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
             <button class="ba-filter" data-cat="hormonal-masculino">Hormonal Masculino</button>
             <button class="ba-filter" data-cat="hormonal-feminino">Hormonal Feminino</button>
-            <button class="ba-filter" data-cat="base" data-mobile-primary>Painel Base</button>
-            <button class="ba-filter" data-cat="cardio-avancado">Cardio Avançado</button>
-            <button class="ba-filter" data-cat="dst-ist">DST/IST Completo</button>
-            <button class="ba-filter" data-cat="hepatite-b">Hepatite B</button>
-            <button class="ba-filter" data-cat="intolerancias">Intolerâncias Alimentares</button>
             <button class="ba-filter" data-cat="fertilidade">Fertilidade</button>
             <button class="ba-filter" data-cat="tiroide-completo">Tiroide Completo</button>
             <button class="ba-filter" data-cat="stress">Stress</button>
+            <button class="ba-filter" data-cat="hepatite-b">Hepatite B</button>
+            <button class="ba-filter ba-filter-wide" data-cat="dst-ist">DST/IST Completo</button>
+            <button class="ba-filter ba-filter-wide" data-cat="intolerancias">Intolerâncias Alimentares</button>
           </div>
         </div>
         <div class="ba-body">
