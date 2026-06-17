@@ -15,7 +15,6 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 1. **D6** — Consistência de fuso/datas dos agendamentos
 2. **F3** — Header/footer partilhados (ver nota de risco abaixo)
-3. **P5** — Reduzir CSS/JS render-blocking (defer, critical CSS)
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
 > B2 (CI/CD ativo), D5 (eliminação RGPD em cascata), P4 (lazy-load) e F2
@@ -74,7 +73,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | ☐ | P2 | Pipeline de build/minify (HTML/CSS/JS) | Média | 1d | Médio | Médio | repo + tooling |
 | ☐ | P3 | Bundle/tree-shake do Firebase SDK | Média | 4-6h | Médio | Médio | `lyvoo-firebase.js`, `*.html` |
 | x | P4 | Lazy-load das imagens abaixo do fold (`footer-logo`, `plano-nutricional.jpg`) — done 15-Jun. Logos do nav (above-the-fold) ficam eager de propósito. Conversão p/ formatos modernos (webp/avif) não feita — sem ferramenta de imagem disponível no ambiente | Fácil | — | — | Médio | `*.html`, `en/*.html`, `modulos/*.html`, `en/modulos/*.html` |
-| ☐ | P5 | Reduzir CSS/JS render-blocking (defer, critical CSS) | Fácil | 2-3h | Baixo | Baixo | `*.html` |
+| x | P5 | Reduzir CSS/JS render-blocking (defer, critical CSS) — 16-Jun: scripts locais já tinham defer, fontes com preconnect+display=swap, CSS inline (sem stylesheet externo bloqueante); único recurso bloqueante (EmailJS CDN) passou a defer nas 5 páginas de formulário (contacto.html, registar.html, admin.html, en/contact.html, en/register.html). | Fácil | — | — | Baixo | `*.html` |
 
 ## 5. 🎨 Frontend
 
