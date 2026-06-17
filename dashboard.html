@@ -1825,6 +1825,13 @@
   };
 
   // ── Agendar consulta de nutrição (calendário disponibilizado pela equipa) ──
+  // CONVENÇÃO DE DATAS (D6): as datas dos slots são strings 'YYYY-MM-DD'. Para as
+  // comparar/formatar SEM erro de fuso, fazer SEMPRE `new Date(str + 'T00:00:00')`
+  // (meia-noite LOCAL) — nunca `new Date(str)`, que interpreta como UTC e pode
+  // saltar um dia em fusos negativos. O "hoje" é ancorado com setHours(0,0,0,0)
+  // e os busySlots são indexados pela própria string (comparação textual), por
+  // isso a disponibilidade é independente de fuso. bkIso() constrói a string a
+  // partir das partes LOCAIS da data. Manter este padrão em qualquer novo código.
   const BK_DOW = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   const BK_DOW_LONG = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
   const BK_MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];

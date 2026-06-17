@@ -13,8 +13,9 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 
 ## Próximos 3 (maior ROI)
 
-1. **D6** — Consistência de fuso/datas dos agendamentos
-2. **F3** — Header/footer partilhados (ver nota de risco abaixo)
+1. **F3** — Header/footer partilhados (ver nota de risco abaixo)
+2. **C1** — Extrair JS/CSS inline (depende de F3)
+3. **F1** — Templating PT/EN (mata a dívida estrutural; depende de F3)
 
 > ✅ B1 (Node 22), P1 (paginação), D4 (perfil), B3 (webhook), F4 (SEO), S7 (CSP),
 > B2 (CI/CD ativo), D5 (eliminação RGPD em cascata), P4 (lazy-load) e F2
@@ -54,7 +55,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | D2/D3 | Consistência `busySlots` via trigger + backfill | — | — | — | Médio | `functions/index.js` |
 | x | D4 | Validar tipos/tamanhos dos campos do perfil nas regras — done 15-Jun | Fácil | — | — | Médio | `firestore.rules` |
 | x | D5 | Eliminação RGPD em cascata via Cloud Function (admin-only) + auditoria — done 15-Jun (validado em dados sintéticos) | Média | — | Médio | Médio | `functions/index.js`, `admin.html`, `firestore.rules` |
-| ☐ | D6 | Consistência de fuso/datas dos agendamentos + edge cases | Fácil | 2h | Baixo | Baixo | `dashboard.html`, `functions/index.js` |
+| x | D6 | Consistência de fuso/datas dos agendamentos — done 16-Jun (auditoria): o código já parseia datas `YYYY-MM-DD` como meia-noite LOCAL (`new Date(str+'T00:00:00')`), ancora "hoje" com `setHours(0,0,0,0)` e indexa `busySlots` pela string (comparação textual, independente de fuso); `bkIso()` usa partes locais. Sem bug de UTC-shift. Adicionado comentário de convenção em `dashboard.html` para travar regressões | Fácil | — | Baixo | Baixo | `dashboard.html`, `functions/index.js` |
 
 ## 3. 🏗️ Arquitetura de backend
 
