@@ -94,7 +94,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | ☐ | C1 | Extrair JS/CSS inline para ficheiros próprios | Média | 1d | Médio | Médio | `*.html` |
 | ☐ | C2 | Remover código morto + consolidar duplicação (depende de F1/F3) | Média | 4-6h | Baixo | Baixo | `*.html` |
 | x | C3 | ESLint 9 (flat config) + Prettier, cobrindo `functions/` e `test/` — done 15-Jun. `npm run lint` / `npm run format`, e passo "Lint" no CI `validate`. Código existente já passa (formatado uma vez com `prettier --write`) | Fácil | — | Baixo | Médio | repo, `functions/`, `eslint.config.js`, `.prettierrc.json` |
-| ☐ | C4 | Documentar arquitetura (estados 1-7, fluxo Stripe, coleções) | Fácil | 2-3h | Baixo | Médio | `README.md`/`CLAUDE.md` |
+| x | C4 | Documentar arquitetura (estados 1-7, fluxo Stripe, coleções) — 17-Jun: README.md com arquitetura (coleções, estados 1-7, fluxo Stripe, functions, segurança, CI/CD) | Fácil | 2-3h | Baixo | Médio | `README.md` |
 
 ---
 
@@ -116,5 +116,5 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 ☐ F1  Templating PT/EN          → mata a dívida estrutural
 ☐ C1/C2 extrair inline + dead   → arrumação final
 ☐ P2/P3 build/minify + bundle   → otimização final
-☐ C4  Documentação              → onboarding
+☑ C4  Documentação              → FEITO (README.md com arquitetura, 17-Jun)
 ```
