@@ -110,6 +110,9 @@
     .form-success p { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
 
     .form-error { font-size: 13px; color: #EF4444; text-align: center; margin-top: 8px; display: none; }
+    /* Inline field validation */
+    .field input.error, .field textarea.error { border-color: #EF4444; }
+    .field-error { font-size: 12px; color: #EF4444; margin-top: 2px; display: none; }
 
     /* INFO SIDE */
     .info-side { display: flex; flex-direction: column; gap: 24px; }
@@ -219,17 +222,20 @@
           <div class="field-row">
             <div class="field">
               <label for="firstName">Nome</label>
-              <input type="text" id="firstName" placeholder="Ricardo" autocomplete="given-name" />
+              <input type="text" id="firstName" placeholder="Ricardo" autocomplete="given-name" aria-describedby="firstNameError" />
+              <span class="field-error" id="firstNameError" role="alert">Introduza o seu nome.</span>
             </div>
             <div class="field">
               <label for="lastName">Apelido</label>
-              <input type="text" id="lastName" placeholder="Silva" autocomplete="family-name" />
+              <input type="text" id="lastName" placeholder="Silva" autocomplete="family-name" aria-describedby="lastNameError" />
+              <span class="field-error" id="lastNameError" role="alert">Introduza o seu apelido.</span>
             </div>
           </div>
 
           <div class="field">
             <label for="email">Email <span style="color:#EF4444">*</span></label>
-            <input type="email" id="email" placeholder="o.seu@email.pt" autocomplete="email" required />
+            <input type="email" id="email" placeholder="o.seu@email.pt" autocomplete="email" required aria-describedby="emailError" />
+            <span class="field-error" id="emailError" role="alert">Introduza um email válido.</span>
           </div>
 
           <div class="field">
@@ -376,6 +382,73 @@
       : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg> Entrar na lista de espera';
   }
 
+  // ── Inline field validation helpers ──
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setFieldError(inputEl, errorEl, msg) {
+    inputEl.classList.add('error');
+    inputEl.setAttribute('aria-invalid', 'true');
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+
+  function clearFieldError(inputEl, errorEl) {
+    inputEl.classList.remove('error');
+    inputEl.setAttribute('aria-invalid', 'false');
+    errorEl.style.display = 'none';
+  }
+
+  const firstNameInput = document.getElementById('firstName');
+  const lastNameInput  = document.getElementById('lastName');
+  const emailInput     = document.getElementById('email');
+  const firstNameErr   = document.getElementById('firstNameError');
+  const lastNameErr    = document.getElementById('lastNameError');
+  const emailErr       = document.getElementById('emailError');
+
+  // Touch tracking — re-validate on input only after first blur
+  const touched = new Set();
+
+  function validateFirstName() {
+    if (!firstNameInput.value.trim()) {
+      setFieldError(firstNameInput, firstNameErr, 'Introduza o seu nome.');
+      return false;
+    }
+    clearFieldError(firstNameInput, firstNameErr);
+    return true;
+  }
+
+  function validateLastName() {
+    if (!lastNameInput.value.trim()) {
+      setFieldError(lastNameInput, lastNameErr, 'Introduza o seu apelido.');
+      return false;
+    }
+    clearFieldError(lastNameInput, lastNameErr);
+    return true;
+  }
+
+  function validateEmail() {
+    const val = emailInput.value.trim();
+    if (!val) {
+      setFieldError(emailInput, emailErr, 'O email é obrigatório.');
+      return false;
+    }
+    if (!EMAIL_RE.test(val)) {
+      setFieldError(emailInput, emailErr, 'Introduza um email válido.');
+      return false;
+    }
+    clearFieldError(emailInput, emailErr);
+    return true;
+  }
+
+  firstNameInput.addEventListener('blur', () => { touched.add('firstName'); validateFirstName(); });
+  firstNameInput.addEventListener('input', () => { if (touched.has('firstName')) validateFirstName(); });
+
+  lastNameInput.addEventListener('blur', () => { touched.add('lastName'); validateLastName(); });
+  lastNameInput.addEventListener('input', () => { if (touched.has('lastName')) validateLastName(); });
+
+  emailInput.addEventListener('blur', () => { touched.add('email'); validateEmail(); });
+  emailInput.addEventListener('input', () => { if (touched.has('email')) validateEmail(); });
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errEl.style.display = 'none';
@@ -385,6 +458,15 @@
     const lastName  = document.getElementById('lastName').value.trim();
     const interesse = document.getElementById('interesse').value;
     const mensagem  = document.getElementById('mensagem').value.trim();
+
+    // Run all validations on submit
+    touched.add('firstName'); touched.add('lastName'); touched.add('email');
+    const ok = validateFirstName() & validateLastName() & validateEmail();
+    if (!ok) {
+      // Focus first invalid field
+      [firstNameInput, lastNameInput, emailInput].find(el => el.getAttribute('aria-invalid') === 'true')?.focus();
+      return;
+    }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       errEl.textContent = 'Introduza um email válido.';

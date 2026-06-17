@@ -83,7 +83,7 @@ Risco: prob. de partir produção · Benefício: Baixo · Médio · Alto · Crí
 | x | F2 | Acessibilidade WCAG — done 15-Jun (parcial): toggle de idioma `PT/EN` deixou de ser link morto `href="#"` (agora `<span aria-current="page">` + `aria-label` descritivo no idioma alternativo); botão de menu mobile com `aria-expanded`/`aria-controls` sincronizados. Labels/alt/lang/focus-visible já estavam OK na auditoria. Pendente: `<main>`/skip-link (estrutural, melhor junto com F3) | Média | — | Baixo | Médio | `*.html`, `en/*.html`, `modulos/*.html`, `en/modulos/*.html` |
 | ☐ | F3 | Extrair header/footer/nav partilhados | Média | 4-6h | Baixo | Médio | `*.html` |
 | x | F4 | SEO — canonical + hreflang (PT↔EN) + JSON-LD nas 8 páginas principais — done 15-Jun (OG/sitemap/robots já existiam; falta hreflang nos /modulos) | Fácil | — | — | Médio | `*.html`, `en/*.html` |
-| ☐ | F5 | Polir UX de formulários (validação inline) | Fácil | 2-3h | Baixo | Baixo | `contacto.html`, `registar.html` |
+| x | F5 | Polir UX de formulários (validação inline) — done 16-Jun: validação inline (blur+input, aria-invalid/aria-describedby) em contacto/registar PT+EN; lógica de submissão (EmailJS/Firebase) intacta | Fácil | — | — | Baixo | `contacto.html`, `registar.html`, `en/contact.html`, `en/register.html` |
 
 ## 6. 🧹 Limpeza de código
 

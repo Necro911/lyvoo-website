@@ -115,24 +115,26 @@
       <div class="field-row">
         <div class="field">
           <label for="firstName">First name</label>
-          <input type="text" id="firstName" name="firstName" placeholder="James" autocomplete="given-name" />
+          <input type="text" id="firstName" name="firstName" placeholder="James" autocomplete="given-name" aria-describedby="firstNameError" />
+          <span class="field-error" id="firstNameError" role="alert">Please enter your first name.</span>
         </div>
         <div class="field">
           <label for="lastName">Last name</label>
-          <input type="text" id="lastName" name="lastName" placeholder="Smith" autocomplete="family-name" />
+          <input type="text" id="lastName" name="lastName" placeholder="Smith" autocomplete="family-name" aria-describedby="lastNameError" />
+          <span class="field-error" id="lastNameError" role="alert">Please enter your last name.</span>
         </div>
       </div>
 
       <div class="field">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" />
-        <span class="field-error" id="emailError">Please enter a valid email address.</span>
+        <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" aria-describedby="emailError" />
+        <span class="field-error" id="emailError" role="alert">Please enter a valid email address.</span>
       </div>
 
       <div class="field">
         <label for="password">Password</label>
         <div class="input-wrap">
-          <input type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" />
+          <input type="password" id="password" name="password" placeholder="At least 8 characters" autocomplete="new-password" aria-describedby="passwordError" />
           <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password">
             <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
@@ -142,11 +144,14 @@
         <span class="field-error" id="passwordError">Password must be at least 8 characters.</span>
       </div>
 
-      <div class="terms">
-        <input type="checkbox" id="terms" name="terms" />
-        <label for="terms">
-          I have read and accept Lyvoo's <a href="../termos.html" target="_blank">Terms of Service</a> and confirm I have read the <a href="../privacidade.html" target="_blank">Privacy Policy</a>.
-        </label>
+      <div class="field">
+        <div class="terms">
+          <input type="checkbox" id="terms" name="terms" aria-describedby="termsError" />
+          <label for="terms">
+            I have read and accept Lyvoo's <a href="../termos.html" target="_blank">Terms of Service</a> and confirm I have read the <a href="../privacidade.html" target="_blank">Privacy Policy</a>.
+          </label>
+        </div>
+        <span class="field-error" id="termsError" role="alert">You must accept the Terms of Service and Privacy Policy to continue.</span>
       </div>
 
       <div class="terms" style="margin-top:-4px;">
@@ -258,6 +263,7 @@
     window.location.href = '../dashboard.html';
   }
 
+  // ── Password visibility toggle ──
   const togglePw = document.getElementById('togglePw');
   const pwInput  = document.getElementById('password');
   const eyeIcon  = document.getElementById('eyeIcon');
@@ -269,37 +275,141 @@
       : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
   });
 
-  const form       = document.getElementById('registerForm');
-  const emailInput = document.getElementById('email');
-  const emailErr   = document.getElementById('emailError');
-  const pwErr      = document.getElementById('passwordError');
+  // ── Inline field validation helpers ──
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setFieldError(inputEl, errorEl, msg) {
+    inputEl.classList.add('error');
+    inputEl.setAttribute('aria-invalid', 'true');
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+
+  function clearFieldError(inputEl, errorEl) {
+    inputEl.classList.remove('error');
+    inputEl.setAttribute('aria-invalid', 'false');
+    errorEl.style.display = 'none';
+  }
+
+  // ── Field references ──
+  const form           = document.getElementById('registerForm');
+  const firstNameInput = document.getElementById('firstName');
+  const lastNameInput  = document.getElementById('lastName');
+  const emailInput     = document.getElementById('email');
+  const firstNameErr   = document.getElementById('firstNameError');
+  const lastNameErr    = document.getElementById('lastNameError');
+  const emailErr       = document.getElementById('emailError');
+  const pwErr          = document.getElementById('passwordError');
+  const termsInput     = document.getElementById('terms');
+  const termsErr       = document.getElementById('termsError');
+
+  // Touch tracking — re-validate on input only after first blur
+  const touched = new Set();
+
+  function validateFirstName() {
+    if (!firstNameInput.value.trim()) {
+      setFieldError(firstNameInput, firstNameErr, 'Please enter your first name.');
+      return false;
+    }
+    clearFieldError(firstNameInput, firstNameErr);
+    return true;
+  }
+
+  function validateLastName() {
+    if (!lastNameInput.value.trim()) {
+      setFieldError(lastNameInput, lastNameErr, 'Please enter your last name.');
+      return false;
+    }
+    clearFieldError(lastNameInput, lastNameErr);
+    return true;
+  }
+
+  function validateEmail() {
+    const val = emailInput.value.trim();
+    if (!val) {
+      setFieldError(emailInput, emailErr, 'Email is required.');
+      return false;
+    }
+    if (!EMAIL_RE.test(val)) {
+      setFieldError(emailInput, emailErr, 'Please enter a valid email address.');
+      return false;
+    }
+    clearFieldError(emailInput, emailErr);
+    return true;
+  }
+
+  function validatePassword() {
+    if (pwInput.value.length < 8) {
+      setFieldError(pwInput, pwErr, 'Password must be at least 8 characters.');
+      return false;
+    }
+    clearFieldError(pwInput, pwErr);
+    return true;
+  }
+
+  function validateTerms() {
+    if (!termsInput.checked) {
+      termsErr.style.display = 'block';
+      return false;
+    }
+    termsErr.style.display = 'none';
+    return true;
+  }
+
+  firstNameInput.addEventListener('blur', () => { touched.add('firstName'); validateFirstName(); });
+  firstNameInput.addEventListener('input', () => { if (touched.has('firstName')) validateFirstName(); });
+
+  lastNameInput.addEventListener('blur', () => { touched.add('lastName'); validateLastName(); });
+  lastNameInput.addEventListener('input', () => { if (touched.has('lastName')) validateLastName(); });
+
+  emailInput.addEventListener('blur', () => { touched.add('email'); validateEmail(); });
+  emailInput.addEventListener('input', () => {
+    if (touched.has('email')) validateEmail();
+    limparErroGlobal();
+  });
+
+  pwInput.addEventListener('blur', () => { touched.add('password'); validatePassword(); });
+  pwInput.addEventListener('input', () => {
+    if (touched.has('password')) validatePassword();
+    limparErroGlobal();
+  });
+
+  termsInput.addEventListener('change', () => { if (touched.has('terms')) validateTerms(); });
 
   form.addEventListener('submit', async (e) => {
-    e.preventDefault(); limparErroGlobal();
-    let valido = true;
-    const emailVal = emailInput.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { emailInput.classList.add('error'); emailErr.style.display = 'block'; valido = false; } else { emailInput.classList.remove('error'); emailErr.style.display = 'none'; }
-    if (pwInput.value.length < 8) { pwInput.classList.add('error'); pwErr.style.display = 'block'; valido = false; } else { pwInput.classList.remove('error'); pwErr.style.display = 'none'; }
-    if (!document.getElementById('terms').checked) { mostrarErroGlobal('You must accept the Terms of Service and Privacy Policy to continue.'); valido = false; }
-    if (!valido) return;
+    e.preventDefault();
+    limparErroGlobal();
+
+    // Mark all as touched and run all validations
+    touched.add('firstName'); touched.add('lastName');
+    touched.add('email'); touched.add('password'); touched.add('terms');
+    const ok = validateFirstName() & validateLastName() & validateEmail() & validatePassword() & validateTerms();
+    if (!ok) {
+      // Focus first invalid text field
+      [firstNameInput, lastNameInput, emailInput, pwInput].find(el => el.getAttribute('aria-invalid') === 'true')?.focus();
+      return;
+    }
+
     setBtnLoading(true);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, emailVal, pwInput.value);
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName  = document.getElementById('lastName').value.trim();
+      const emailVal  = emailInput.value.trim();
+      const cred      = await createUserWithEmailAndPassword(auth, emailVal, pwInput.value);
+      const firstName = firstNameInput.value.trim();
+      const lastName  = lastNameInput.value.trim();
       const nome = [firstName, lastName].filter(Boolean).join(' ');
       if (nome) await updateProfile(cred.user, { displayName: nome });
       await guardarPerfil(cred.user, { firstName, lastName });
       await notificarConsentimentoMarketing(cred.user, document.getElementById('marketing').checked);
       aoAutenticar(cred.user);
-    } catch (err) { setBtnLoading(false); mostrarErroGlobal(mensagemErro(err.code)); }
+    } catch (err) {
+      setBtnLoading(false);
+      mostrarErroGlobal(mensagemErro(err.code));
+    }
   });
 
-  emailInput.addEventListener('input', () => { emailInput.classList.remove('error'); emailErr.style.display = 'none'; limparErroGlobal(); });
-  pwInput.addEventListener('input', () => { pwInput.classList.remove('error'); pwErr.style.display = 'none'; limparErroGlobal(); });
-
   document.getElementById('btnGoogle').addEventListener('click', async (e) => {
-    e.preventDefault(); limparErroGlobal();
+    e.preventDefault();
+    limparErroGlobal();
     if (!document.getElementById('terms').checked) {
       mostrarErroGlobal('You must accept the Terms of Service and Privacy Policy before continuing with Google.');
       return;
@@ -311,7 +421,10 @@
       await guardarPerfil(result.user, { firstName: partes[0] || '', lastName: partes.slice(1).join(' ') });
       await notificarConsentimentoMarketing(result.user, document.getElementById('marketing').checked);
       aoAutenticar(result.user);
-    } catch (err) { setGoogleLoading(false); if (err.code !== 'auth/popup-closed-by-user') mostrarErroGlobal(mensagemErro(err.code)); }
+    } catch (err) {
+      setGoogleLoading(false);
+      if (err.code !== 'auth/popup-closed-by-user') mostrarErroGlobal(mensagemErro(err.code));
+    }
   });
 </script>
 
