@@ -82,6 +82,25 @@
     .lf-links { display: flex; gap: 20px; }
     .lf-links a, .lf-cookies { font-size: 12.5px; color: rgba(255,255,255,0.25); text-decoration: none; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
     .lf-links a:hover, .lf-cookies:hover { color: rgba(255,255,255,0.5); }
+    /* ── Chart visual (passo 4) ── */
+    .chart-visual { display: flex; flex-direction: column; gap: 14px; }
+    .chart-header { display: flex; flex-direction: column; gap: 4px; }
+    .chart-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+    .chart-sub { font-size: 10.5px; color: rgba(255,255,255,0.35); letter-spacing: 0.01em; }
+    .chart-legend { display: flex; align-items: center; gap: 16px; }
+    .chart-leg-item { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: rgba(255,255,255,0.55); font-weight: 600; }
+    .chart-leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .chart-area { width: 100%; }
+    .line-chart { width: 100%; height: 90px; display: block; overflow: visible; }
+    .chart-labels { display: flex; justify-content: space-between; margin-top: 6px; }
+    .chart-label { font-size: 9.5px; color: rgba(255,255,255,0.3); font-weight: 600; }
+    .chart-improvements { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
+    .chart-imp-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; text-align: center; }
+    .imp-name { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+    .imp-change { font-size: 15px; font-weight: 800; letter-spacing: -0.03em; }
+    .imp-neg { color: #4ADE80; }
+    .imp-pos { color: #3DD9E8; }
+
     @media (max-width: 860px) {
       .cf-step { grid-template-columns: 1fr; gap: 32px; }
       .cf-step.cf-rev .cf-text, .cf-step.cf-rev .cf-visual { order: 0; }
@@ -313,7 +332,7 @@
             <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório comparativo início vs. 6 meses</li>
           </ul>
         </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F); padding:0; border-color:rgba(61,217,232,0.15); display:flex; align-items:center; justify-content:center;">
+        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F); padding:0; border-color:rgba(61,217,232,0.15); display:flex; align-items:center; justify-content:center; aspect-ratio:unset; overflow:visible;">
           <div class="chart-visual" style="background:transparent; width:100%; max-width:380px; padding:32px;">
             <div class="chart-header">
               <div class="chart-title">Evolução comparativa - 12 meses</div>
@@ -327,16 +346,32 @@
             <div class="chart-area">
               <svg class="line-chart" viewBox="0 0 300 100" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="lineGrad4" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#3DD9E8"/>
-                    <stop offset="100%" stop-color="#8B5CF6"/>
+                  <linearGradient id="fillCyan" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="fillViolet" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
                   </linearGradient>
                 </defs>
-                <polyline points="0,72 30,71 60,70 90,71 120,72 150,70 180,69 210,71 240,70 270,69 300,68" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="5,4"/>
-                <polyline points="0,72 30,65 60,58 90,52 120,46 150,40 180,36 210,32 240,28 270,24 300,18" fill="none" stroke="url(#lineGrad4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="0" cy="72" r="3" fill="rgba(255,255,255,0.3)"/>
-                <circle cx="150" cy="40" r="4" fill="#3DD9E8"/>
-                <circle cx="300" cy="18" r="5" fill="#8B5CF6"/>
+                <!-- grid lines -->
+                <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                <line x1="0" y1="75" x2="300" y2="75" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                <!-- baseline: Início (dashed) -->
+                <polyline points="0,72 300,72" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="5,4"/>
+                <!-- area fills -->
+                <polygon points="0,72 75,60 150,40 150,100 0,100" fill="url(#fillCyan)"/>
+                <polygon points="150,40 225,28 300,18 300,100 150,100" fill="url(#fillViolet)"/>
+                <!-- 6 meses line: Início → 6 meses (cyan) -->
+                <polyline points="0,72 75,60 150,40" fill="none" stroke="#3DD9E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- 12 meses line: 6 meses → 12 meses (violet) -->
+                <polyline points="150,40 225,28 300,18" fill="none" stroke="#8B5CF6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- dots -->
+                <circle cx="0"   cy="72" r="3.5" fill="rgba(255,255,255,0.35)"/>
+                <circle cx="150" cy="40" r="4.5" fill="#3DD9E8" stroke="#0D1A1F" stroke-width="1.5"/>
+                <circle cx="300" cy="18" r="4.5" fill="#8B5CF6" stroke="#0D1A1F" stroke-width="1.5"/>
               </svg>
             </div>
             <div class="chart-labels">
