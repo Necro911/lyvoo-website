@@ -226,6 +226,56 @@
     .meal-opcao-ou span { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); white-space:nowrap; }
     .meal-opcao-ou::before, .meal-opcao-ou::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
     .meal-desc--alt { color:var(--txt-2); }
+    /* ── Plano alimentar v2 — sistema de nutrição adaptativo ── */
+    /* Cabeçalho de resumo diário (acima da lista de refeições) */
+    .meal-day { display:flex; align-items:center; gap:0; flex-wrap:wrap;
+      background:linear-gradient(105deg,rgba(61,217,232,0.07) 0%,rgba(139,92,246,0.05) 60%,var(--panel) 100%);
+      border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin-bottom:14px; }
+    .meal-day-block { display:flex; flex-direction:column; gap:3px; padding:0 18px; }
+    .meal-day-block:first-child { padding-left:0; }
+    .meal-day-val { font-size:19px; font-weight:800; color:var(--txt); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+    .meal-day-label { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--txt-3); }
+    .meal-day-bars { display:flex; flex-direction:column; gap:5px; min-width:148px; padding:0 18px; }
+    .meal-day-bar { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--txt-2); }
+    .meal-day-bar-track { flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,0.06); overflow:hidden; }
+    .meal-day-bar-fill { height:100%; border-radius:999px; }
+    .meal-day-bar b { color:var(--txt); font-variant-numeric:tabular-nums; width:30px; text-align:right; }
+    .meal-day-adh { margin-left:auto; display:flex; align-items:center; gap:12px; padding-left:18px; }
+    .meal-day-ring { width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .meal-day-ring-center { width:38px; height:38px; border-radius:50%; background:var(--panel-2); display:flex; align-items:center; justify-content:center; box-shadow:inset 0 0 0 1px var(--line); font-size:12px; font-weight:800; color:var(--txt); font-variant-numeric:tabular-nums; }
+    .meal-day-adh-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-3); line-height:1.5; }
+    .meal-day-adh-label b { display:block; font-size:12.5px; color:var(--txt-2); }
+    /* Segmentação por período */
+    .meal-period { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); margin:18px 0 9px; display:flex; align-items:center; gap:10px; }
+    .meal-period:first-child { margin-top:4px; }
+    .meal-period::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
+    /* Enriquecimento do cartão de refeição */
+    .meal-card { align-items:flex-start; }
+    .meal-time { margin-top:2px; }
+    .meal-meta { display:flex; flex-direction:column; gap:9px; margin-top:11px; }
+    .meal-rationale { display:flex; gap:7px; font-size:12.5px; color:var(--txt-2); line-height:1.5; }
+    .meal-rationale svg { width:14px; height:14px; flex-shrink:0; color:var(--cyan); margin-top:2px; }
+    .meal-tags { display:flex; flex-wrap:wrap; gap:6px; }
+    .meal-tag { font-size:10.5px; font-weight:700; letter-spacing:0.02em; padding:3px 10px 3px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:6px; border:1px solid; }
+    .meal-tag::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+    .meal-macros { display:flex; gap:7px; flex-wrap:wrap; }
+    .meal-macro { font-size:11px; font-weight:600; color:var(--txt-2); background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:8px; padding:3px 10px; font-variant-numeric:tabular-nums; }
+    .meal-macro b { color:var(--txt); font-weight:800; }
+    .meal-suggest { display:flex; gap:9px; align-items:flex-start; background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.22); border-radius:11px; padding:10px 13px; font-size:12.5px; color:var(--txt-2); line-height:1.55; }
+    .meal-suggest svg { width:15px; height:15px; flex-shrink:0; color:var(--violet); margin-top:1px; }
+    .meal-suggest b { color:var(--txt); font-weight:700; }
+    .meal-actions { display:flex; gap:8px; margin-top:13px; flex-wrap:wrap; }
+    .meal-act { font-size:11.5px; font-weight:700; color:var(--txt-2); background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:9px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:color .16s, border-color .16s, background .16s; font-family:'Inter',sans-serif; }
+    .meal-act:hover { color:var(--txt); border-color:var(--line-2); background:rgba(255,255,255,0.06); }
+    .meal-act svg { width:13px; height:13px; flex-shrink:0; }
+    .meal-card--done { opacity:0.6; }
+    .meal-card--done .meal-act--done { color:var(--green); border-color:rgba(74,222,128,0.4); background:rgba(74,222,128,0.1); }
+    @media (max-width: 640px) {
+      .meal-day-adh { margin-left:0; padding-left:0; }
+      .meal-day-block:first-child { padding-left:0; }
+      .meal-card { gap:16px; padding:18px; }
+      .meal-time { font-size:18px; }
+    }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
@@ -3091,6 +3141,86 @@
   }
 
   // ── Render: Plano alimentar ───────────────────────────────────────────
+  // ── Plano alimentar v2 — motor de inteligência ────────────────────────
+  // Liga cada refeição ao foco clínico REAL do plano. Nunca inventa valores
+  // laboratoriais nem macros — apenas mapeia palavras-chave do objectivo/
+  // priorizar/reduzir para etiquetas de insight, filtradas por afinidade.
+  const INSIGHT_DEFS = [
+    { re:/glic|insulin|a[çc][úu]c|diabet|hba1c/i,                         label:'Controlo glicémico',   rgba:'61,217,232'  },
+    { re:/colesterol|ldl|hdl|lip[ií]d|triglic|apob|cardiovasc|satura/i,   label:'Gestão lipídica',      rgba:'139,92,246'  },
+    { re:/inflama|[óo]mega|antioxidant|polifen/i,                         label:'Anti-inflamatório',    rgba:'74,222,128'  },
+    { re:/recuper|treino|muscul|prote[íi]|massa magra|for[çc]a/i,         label:'Recuperação',          rgba:'251,191,36'  },
+    { re:/intestin|fibra|microbi|digest|fermenta/i,                       label:'Saúde intestinal',     rgba:'74,222,128'  },
+    { re:/energia|fadiga|ferro|b12|folato|vitamina d/i,                   label:'Energia & vitalidade', rgba:'251,191,36'  },
+  ];
+  const MEAL_AFFINITY = {
+    'Pequeno-almoço':['Controlo glicémico','Energia & vitalidade'],
+    'Meio da manhã':['Controlo glicémico'],
+    'Almoço':['Gestão lipídica','Saúde intestinal'],
+    'Lanche':['Energia & vitalidade'],
+    'Pré-treino':['Energia & vitalidade'],
+    'Pós-treino':['Recuperação'],
+    'Jantar':['Anti-inflamatório','Gestão lipídica'],
+    'Ceia':['Recuperação'],
+  };
+  function mealPeriodOf(r) {
+    if (r.hora && /^\d{1,2}:/.test(r.hora)) {
+      const h = parseInt(r.hora, 10);
+      return h < 11 ? 'Manhã' : (h < 17 ? 'Tarde' : 'Noite');
+    }
+    if (['Pequeno-almoço','Meio da manhã'].includes(r.nome)) return 'Manhã';
+    if (['Jantar','Ceia'].includes(r.nome)) return 'Noite';
+    return 'Tarde';
+  }
+  // Usa r.tags se o backend os fornecer; senão deriva do foco real do plano.
+  function deriveMealInsights(r, planFocus) {
+    if (Array.isArray(r.tags) && r.tags.length) {
+      return r.tags.slice(0,2).map(t => {
+        const d = INSIGHT_DEFS.find(x => x.label === t);
+        return { label:t, rgba:(d && d.rgba) || '94,108,114' };
+      });
+    }
+    if (!planFocus.length) return [];
+    const aff = MEAL_AFFINITY[r.nome] || [];
+    return planFocus.slice()
+      .sort((a,b) => (aff.includes(b.label)?1:0) - (aff.includes(a.label)?1:0))
+      .slice(0,2);
+  }
+  // Estado de interação do cliente (troca de opção + sugestões abertas).
+  let _mealSwapIdx = {};
+  let _mealSuggestOpen = {};
+  function _adhKey() {
+    const uid = (typeof auth !== 'undefined' && auth && auth.currentUser) ? auth.currentUser.uid : 'anon';
+    const t = new Date(); t.setHours(0,0,0,0);
+    const iso = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+    return `lyvoo_adh_${uid}_${iso}`;
+  }
+  function _adhGet() { try { return new Set(JSON.parse(localStorage.getItem(_adhKey())||'[]')); } catch(e){ return new Set(); } }
+  function _adhSave(s) { try { localStorage.setItem(_adhKey(), JSON.stringify([...s])); } catch(e){} }
+  // Sugestão "IA" — ancorada nos alimentos a priorizar do plano real (mock seguro,
+  // claramente uma sugestão, sem números fabricados).
+  function mealSuggestionFor(r, pa) {
+    const pri = (pa.priorizar||[]);
+    const alvo = pri.length ? pri[(r.nome||'').length % pri.length] : null;
+    if (alvo) return `Para reforçar o seu objectivo, experimente adicionar <b>${alvo}</b> a esta refeição.`;
+    return `Mantenha porções de proteína e vegetais visíveis no prato — equilíbrio simples e eficaz.`;
+  }
+  window.mealSwap = function(i) {
+    const pa = window._planoData; if (!pa || !pa.refeicoes) return;
+    const r = pa.refeicoes[i]; const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
+    if (ops.length < 2) { if (window.toast) toast('Sem alternativas neste plano — peça uma à equipa clínica.'); return; }
+    _mealSwapIdx[i] = ((_mealSwapIdx[i]||0) + 1) % ops.length;
+    renderPlano(pa);
+  };
+  window.mealImprove = function(i) {
+    _mealSuggestOpen[i] = !_mealSuggestOpen[i];
+    renderPlano(window._planoData);
+  };
+  window.mealToggleDone = function(i) {
+    const s = _adhGet(); s.has(i) ? s.delete(i) : s.add(i); _adhSave(s);
+    renderPlano(window._planoData);
+  };
+
   function renderPlano(pa) {
     const container = document.getElementById('plano-content');
     const temConteudo = pa && (pa.objectivo || pa.kcal || (pa.refeicoes && pa.refeicoes.length) || (pa.priorizar && pa.priorizar.length) || (pa.reduzir && pa.reduzir.length) || pa.obs);
@@ -3137,31 +3267,88 @@
         icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>`
       },
     };
-    const refeicoes = pa.refeicoes && pa.refeicoes.length
-      ? `<div class="sec-list-section">
-          <div class="sec-list-title" style="color:var(--cyan);margin-bottom:14px">Plano de refeições</div>
-          <div class="meal-plan-list">
-            ${pa.refeicoes.map(r => {
-              const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>` };
-              return `<div class="meal-card" style="background:linear-gradient(105deg,rgba(61,217,232,0.14) 0%,rgba(139,92,246,0.10) 50%,var(--panel) 85%);border-color:rgba(61,217,232,0.22);box-shadow:0 0 0 0 rgba(61,217,232,0);" onmouseenter="this.style.boxShadow='0 8px 32px rgba(61,217,232,0.12)'" onmouseleave="this.style.boxShadow='none'">
-                <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
-                <div class="meal-body">
-                  <div class="meal-name">${r.nome}</div>
-                  ${(() => {
-                    const ops = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : []);
-                    if (!ops.length) return '';
-                    if (ops.length === 1) return `<div class="meal-desc">${ops[0]}</div>`;
-                    return ops.map((o, i) => i === 0
-                      ? `<div class="meal-desc">${o}</div>`
-                      : `<div class="meal-opcao-ou"><span>ou</span></div><div class="meal-desc meal-desc--alt">${o}</div>`
-                    ).join('');
-                  })()}
-                </div>
-                ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
-              </div>`;
-            }).join('')}
+    // Foco clínico do plano (derivado do objectivo + priorizar + reduzir reais)
+    const _focusText = [pa.objectivo, pa.objectivoDesc, ...(pa.priorizar||[]), ...(pa.reduzir||[])].filter(Boolean).join(' · ');
+    const planFocus = INSIGHT_DEFS.filter(d => d.re.test(_focusText)).map(d => ({ label:d.label, rgba:d.rgba }));
+
+    const refeicoes = (() => {
+      if (!pa.refeicoes || !pa.refeicoes.length) return '';
+      const done = _adhGet();
+      const total = pa.refeicoes.length;
+      const hasMacros = (prot + gord + hidr) > 0;
+      const fallbackIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`;
+
+      // Cabeçalho de resumo diário: kcal + macros REAIS + aderência do utilizador
+      const adhPct = total ? Math.round(done.size / total * 100) : 0;
+      const macroBar = (label, val, color) => `<div class="meal-day-bar"><span style="width:54px">${label}</span><span class="meal-day-bar-track"><span class="meal-day-bar-fill" style="width:${val}%;background:${color}"></span></span><b>${val}%</b></div>`;
+      const daySummary = `<div class="meal-day">
+        ${pa.kcal ? `<div class="meal-day-block"><span class="meal-day-val">${pa.kcal}</span><span class="meal-day-label">kcal / dia</span></div>` : ''}
+        <div class="meal-day-block"><span class="meal-day-val">${total}</span><span class="meal-day-label">refeições</span></div>
+        ${hasMacros ? `<div class="meal-day-bars">
+          ${macroBar('Proteína', prot, 'var(--cyan)')}
+          ${macroBar('Gordura', gord, 'var(--violet)')}
+          ${macroBar('Hidratos', hidr, 'var(--green)')}
+        </div>` : ''}
+        <div class="meal-day-adh">
+          <div class="meal-day-ring" style="background:conic-gradient(var(--green) 0% ${adhPct}%, rgba(255,255,255,0.08) ${adhPct}% 100%)">
+            <div class="meal-day-ring-center">${adhPct}%</div>
           </div>
+          <div class="meal-day-adh-label">Aderência<b>${done.size}/${total} hoje</b></div>
+        </div>
+      </div>`;
+
+      // Cartões agrupados por período (Manhã / Tarde / Noite)
+      let lastPeriod = null;
+      const cards = pa.refeicoes.map((r, i) => {
+        const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:fallbackIcon };
+        const period = mealPeriodOf(r);
+        const periodLabel = period !== lastPeriod ? (lastPeriod = period, `<div class="meal-period">${period}</div>`) : '';
+
+        // Opções com troca aplicada (mealSwap roda a opção primária — dados reais)
+        const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
+        const off = _mealSwapIdx[i] || 0;
+        const rot = ops.length ? ops.slice(off).concat(ops.slice(0, off)) : [];
+        const opsHtml = !rot.length ? '' : (rot.length === 1
+          ? `<div class="meal-desc">${rot[0]}</div>`
+          : rot.map((o, k) => k === 0
+              ? `<div class="meal-desc">${o}</div>`
+              : `<div class="meal-opcao-ou"><span>ou</span></div><div class="meal-desc meal-desc--alt">${o}</div>`).join(''));
+
+        // Insights clínicos, macros (só se reais), rationale e sugestão
+        const insights = deriveMealInsights(r, planFocus);
+        const tagsHtml = insights.length ? `<div class="meal-tags">${insights.map(t => `<span class="meal-tag" style="color:rgb(${t.rgba});background:rgba(${t.rgba},0.1);border-color:rgba(${t.rgba},0.28)">${t.label}</span>`).join('')}</div>` : '';
+        const macrosHtml = (r.macros && (r.macros.p!=null||r.macros.c!=null||r.macros.f!=null)) ? `<div class="meal-macros">
+          ${r.macros.p!=null?`<span class="meal-macro">P <b>${r.macros.p}g</b></span>`:''}
+          ${r.macros.c!=null?`<span class="meal-macro">HC <b>${r.macros.c}g</b></span>`:''}
+          ${r.macros.f!=null?`<span class="meal-macro">G <b>${r.macros.f}g</b></span>`:''}
         </div>` : '';
+        const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
+        const sugHtml = _mealSuggestOpen[i] ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg><span><b>Sugestão Lyvoo:</b> ${mealSuggestionFor(r, pa)}</span></div>` : '';
+
+        const isDone = done.has(i);
+        const swapDis = ops.length < 2;
+        return `${periodLabel}<div class="meal-card${isDone?' meal-card--done':''}" style="background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
+          <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
+          <div class="meal-body">
+            <div class="meal-name">${r.nome||'Refeição'}</div>
+            ${opsHtml}
+            ${(ratHtml||tagsHtml||macrosHtml||sugHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${sugHtml}</div>` : ''}
+            <div class="meal-actions">
+              <button class="meal-act" onclick="mealSwap(${i})"${swapDis?' style="opacity:.5"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Trocar</button>
+              <button class="meal-act" onclick="mealImprove(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Melhorar</button>
+              <button class="meal-act meal-act--done" onclick="mealToggleDone(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>${isDone?'Feito':'Marcar feito'}</button>
+            </div>
+          </div>
+          ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
+        </div>`;
+      }).join('');
+
+      return `<div class="sec-list-section">
+        <div class="sec-list-title" style="color:var(--cyan);margin-bottom:14px">Plano de refeições</div>
+        ${daySummary}
+        <div class="meal-plan-list">${cards}</div>
+      </div>`;
+    })();
 
     // Donut de macros (gradiente conic) — só faz sentido se houver distribuição
     const temMacros = (prot + gord + hidr) > 0;
