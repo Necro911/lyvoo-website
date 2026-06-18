@@ -102,7 +102,7 @@
     }
     .lc-cat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .lc-cat-name { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-    .lc-cat-desc { font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.5; }
+    .lc-cat-desc { font-size: 11.5px; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
     /* Toggle switch */
     .lc-toggle { position: relative; width: 38px; height: 21px; flex-shrink: 0; }
