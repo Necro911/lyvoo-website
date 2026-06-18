@@ -22,6 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="cookie-banner.js" defer></script>
   <script src="scroll-top.js" defer></script>
+  <script src="prelaunch.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -38,9 +39,11 @@
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
-    .lang-toggle { display: flex; align-items: center; gap: 4px; }
-    .lang-toggle a, .lang-toggle span { font-size: 13px; font-weight: 600; padding: 5px 10px; border-radius: 7px; }
-    .lang-active { color: #fff; background: rgba(255,255,255,0.10); }
+    .nav-cta:hover { opacity: 0.88; background: #fff !important; }
+    .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    .lang-toggle a { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
+    .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
     .hero { background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%); padding: 140px 0 72px; text-align: center; position: relative; overflow: hidden; }
     .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%); }
     .hero .container { position: relative; }
@@ -124,7 +127,7 @@
       <li><a href="index.html#atlas">O que testamos</a></li>
       <li><a href="faq.html">FAQ</a></li>
       <li><a href="contacto.html">Contacto</a></li>
-      <li class="lang-toggle"><span class="lang-active" aria-current="page">PT</span><a href="en/how-it-works.html" aria-label="Switch to English / Mudar para ingl&#234;s">EN</a></li>
+      <li class="lang-toggle"><a class="lang-active" aria-current="page">PT</a><a href="en/how-it-works.html" aria-label="Switch to English / Mudar para ingl&#234;s">EN</a></li>
       <li><a href="registar.html" class="nav-cta">Come&#231;ar agora</a></li>
     </ul>
   </div>
