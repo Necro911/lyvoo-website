@@ -2211,203 +2211,240 @@
 </div><!-- /dark-continuum -->
 
 
-<!-- ── STEP 4: Plano nutricional - layer white ── -->
-<section class="step-layer layer-off">
+<!-- ── ESTRATÉGIA UNIFICADA: Nutrição + Suplementação (motor de biomarcadores) ── -->
+<section class="step-layer layer-off bm-section" id="suplementacao" style="padding: 92px 0;">
+  <style>
+    /* === Bloco "motor de decisão clínica" === */
+    .bm-grid { display: grid; grid-template-columns: 1fr 1.04fr; gap: 64px; align-items: center; }
+    .bm-copy .label { color: var(--teal-light); }
+    .bm-h { font-size: clamp(28px, 3.4vw, 42px); font-weight: 850; letter-spacing: -0.04em; line-height: 1.12; color: var(--ink); margin-bottom: 14px; }
+    .bm-sub { font-size: clamp(16px, 1.8vw, 19px); font-weight: 700; letter-spacing: -0.02em; color: var(--teal); margin-bottom: 16px; }
+    .bm-lead { font-size: 15px; line-height: 1.7; color: var(--ink-2); max-width: 460px; margin-bottom: 26px; }
+    /* flow chips */
+    .bm-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 6px; margin-bottom: 28px; }
+    .bm-flow span { font-size: 11.5px; font-weight: 700; letter-spacing: 0.01em; color: var(--teal); background: rgba(11,82,90,0.07); border: 1px solid rgba(11,82,90,0.12); padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+    .bm-flow span.accent { color: #fff; background: linear-gradient(120deg, var(--teal-light), var(--cyan)); border-color: transparent; }
+    .bm-flow i { color: var(--ink-3); font-style: normal; font-weight: 700; opacity: 0.55; }
+    /* bullets */
+    .bm-bullets { display: flex; flex-direction: column; gap: 16px; }
+    .bm-bullet { display: flex; align-items: flex-start; gap: 13px; }
+    .bm-bullet-ico { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(11,82,90,0.08); color: var(--teal); }
+    .bm-bullet-ico svg { width: 15px; height: 15px; }
+    .bm-bullet-t { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .bm-bullet-d { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
+
+    /* === Dashboard unificado (lado direito) === */
+    .bm-visual { display: flex; justify-content: center; }
+    .bm-dash {
+      position: relative; width: 100%; max-width: 480px;
+      background: linear-gradient(165deg, #0A161D 0%, #060F16 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px;
+      padding: 22px 22px 20px; overflow: hidden;
+      box-shadow: 0 34px 80px rgba(6,15,22,0.30), 0 4px 14px rgba(6,15,22,0.18), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .bm-dash::before { content: ''; position: absolute; top: -40%; right: -30%; width: 70%; height: 70%; background: radial-gradient(circle, rgba(61,217,232,0.12) 0%, transparent 70%); pointer-events: none; }
+    .bm-dash::after  { content: ''; position: absolute; bottom: -35%; left: -25%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%); pointer-events: none; }
+    .bm-dash > * { position: relative; z-index: 1; }
+
+    .bm-dh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .bm-dh-id { display: flex; align-items: center; gap: 11px; }
+    .bm-mono { width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg, var(--teal-light), var(--cyan)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #042227; flex-shrink: 0; }
+    .bm-dh-name { font-size: 13.5px; font-weight: 700; color: #fff; line-height: 1.2; }
+    .bm-dh-sub { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; }
+    .bm-dh-score { text-align: right; }
+    .bm-dh-score b { font-size: 26px; font-weight: 850; color: #fff; letter-spacing: -0.04em; line-height: 1; }
+    .bm-dh-score b span { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4); }
+    .bm-dh-delta { display: inline-block; margin-top: 3px; font-size: 9.5px; font-weight: 700; color: #4ADE80; background: rgba(74,222,128,0.12); border-radius: 999px; padding: 2px 8px; }
+
+    .bm-cap { font-size: 9px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.34); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .bm-cap span { color: rgba(255,255,255,0.3); letter-spacing: 0.04em; }
+
+    /* biomarker bars */
+    .bm-bars { display: flex; flex-direction: column; gap: 9px; }
+    .bm-row { display: grid; grid-template-columns: 92px 1fr auto; align-items: center; gap: 10px; }
+    .bm-row-n { font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.78); }
+    .bm-track { height: 6px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
+    .bm-fill { height: 100%; border-radius: 999px; }
+    .bm-tag { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+
+    /* engine connector */
+    .bm-engine { display: flex; align-items: center; gap: 10px; margin: 16px 0 14px; }
+    .bm-engine-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14)); }
+    .bm-engine-line.r { background: linear-gradient(90deg, rgba(255,255,255,0.14), transparent); }
+    .bm-engine-chip { display: flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; color: var(--cyan); background: rgba(61,217,232,0.08); border: 1px solid rgba(61,217,232,0.22); border-radius: 999px; padding: 5px 11px; white-space: nowrap; }
+    .bm-engine-chip svg { width: 12px; height: 12px; }
+
+    /* outputs */
+    .bm-outputs { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .bm-out { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 13px 13px 14px; }
+    .bm-out-kcal { font-size: 19px; font-weight: 850; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 2px; }
+    .bm-out-kcal span { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.38); }
+    .bm-macros { display: flex; flex-direction: column; gap: 7px; margin-top: 11px; }
+    .bm-macro { display: grid; grid-template-columns: 50px 1fr 26px; align-items: center; gap: 7px; }
+    .bm-macro-n { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); }
+    .bm-macro-v { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.85); text-align: right; font-variant-numeric: tabular-nums; }
+    .bm-macro-track { height: 4px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
+    .bm-macro-fill { height: 100%; border-radius: 999px; }
+    /* supplement pills */
+    .bm-supps { display: flex; flex-direction: column; gap: 8px; margin-top: 11px; }
+    .bm-supp { display: flex; align-items: center; gap: 9px; }
+    .bm-pill { width: 22px; height: 11px; border-radius: 999px; flex-shrink: 0; position: relative; overflow: hidden; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.18); }
+    .bm-pill i { position: absolute; top: 0; bottom: 0; width: 50%; }
+    .bm-pill i.l { left: 0; } .bm-pill i.r { right: 0; }
+    .bm-supp-n { font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,0.78); flex: 1; line-height: 1.15; }
+    .bm-supp-d { font-size: 9.5px; font-weight: 700; white-space: nowrap; }
+
+    /* progress */
+    .bm-prog { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 14px; }
+    .bm-prog-spark { flex: 1; }
+    .bm-prog-meta { text-align: right; flex-shrink: 0; }
+    .bm-prog-meta b { font-size: 16px; font-weight: 850; color: #4ADE80; letter-spacing: -0.03em; line-height: 1; display: block; }
+    .bm-prog-meta span { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 0.03em; }
+
+    @media (max-width: 980px) {
+      .bm-grid { grid-template-columns: 1fr; gap: 44px; }
+      .bm-lead { max-width: none; }
+      .bm-visual { order: -1; }
+    }
+    @media (max-width: 560px) {
+      .bm-flow { gap: 6px 5px; }
+      .bm-flow span { font-size: 10.5px; padding: 5px 10px; }
+      .bm-row { grid-template-columns: 78px 1fr auto; }
+    }
+  </style>
+
   <div class="container">
-    <div class="process-step reverse">
+    <div class="bm-grid">
 
-      <!-- Visual: imagem do plano nutricional -->
-      <div class="step-visual fade">
-        <div class="step4-img-wrap">
-          <img src="images/plano-nutricional.jpg" alt="Plano alimentar personalizado Lyvoo - tablet com dados nutricionais e alimentos saudáveis"  loading="lazy" decoding="async" />
+      <!-- ── LEFT: copy ── -->
+      <div class="bm-copy">
+        <span class="label fade">Motor de decisão clínica</span>
+        <h2 class="bm-h fade fade-d1">Os seus <span class="grad-text">biomarcadores</span> definem o seu plano.</h2>
+        <p class="bm-sub fade fade-d1">Nutrição e suplementação na mesma estratégia — não dois serviços, uma decisão.</p>
+        <p class="bm-lead fade fade-d2">A Lyvoo lê os seus marcadores, interpreta-os clinicamente e traduz cada valor em ações concretas: o que come e o que suplementa. Sem modas, sem doses genéricas — apenas o que os seus dados pedem.</p>
+
+        <div class="bm-flow fade fade-d2">
+          <span>Biomarcadores</span><i>→</i>
+          <span>Interpretação</span><i>→</i>
+          <span class="accent">Nutrição + Suplementação</span><i>→</i>
+          <span>Otimização</span>
         </div>
-      </div>
 
-      <!-- Texto -->
-      <div class="step-text fade fade-d1">
-        <h3><span class="grad-text">Nutrição</span> que<br/>parte dos seus<br/>biomarcadores</h3>
-        <div class="step-subhead">Nada de métodos. Nada de modas.</div>
-        <p>O seu nutricionista interpreta os resultados das análises e constrói um plano alimentar à sua medida. Com macros calculados, lista de alimentos e notas clínicas específicas para o seu perfil metabólico.</p>
-        <div class="step-detail">
-          <div class="step-detail-item siphox-check">
-            <div class="siphox-check-icon">
-              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <div class="bm-bullets fade fade-d3">
+          <div class="bm-bullet">
+            <div class="bm-bullet-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div>
+            <div>
+              <div class="bm-bullet-t">Precisão clínica</div>
+              <div class="bm-bullet-d">Macros e doses calculados sobre os seus valores reais, não sobre médias populacionais.</div>
             </div>
-            <span><strong>Macros personalizados</strong> - Macronutrientes calculados sobre os seus resultados, não sobre médias populacionais</span>
           </div>
-          <div class="step-detail-item siphox-check">
-            <div class="siphox-check-icon">
-              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="bm-bullet">
+            <div class="bm-bullet-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+            <div>
+              <div class="bm-bullet-t">Uma única estratégia</div>
+              <div class="bm-bullet-d">Alimentação e suplementação derivam da mesma leitura de biomarcadores e do mesmo objetivo.</div>
             </div>
-            <span><strong>Adaptado a si e não o contrário</strong> - A Lyvoo respeita os seus gostos e preferências</span>
           </div>
-          <div class="step-detail-item siphox-check">
-            <div class="siphox-check-icon">
-              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="bm-bullet">
+            <div class="bm-bullet-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></div>
+            <div>
+              <div class="bm-bullet-t">Otimização contínua</div>
+              <div class="bm-bullet-d">A cada reavaliação medimos o impacto real nos seus marcadores e ajustamos o plano.</div>
             </div>
-            <span><strong>Acompanhamento contínuo</strong> - Não tem de esperar pelos 6 meses. Mantemos contacto ao longo do progresso</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Suplementação — fundido no mesmo bloco "o seu plano" (#5): remove a secção
-         e o padding duplo entre as duas; o border-top do process-step separa
-         subtilmente as duas partes. Anchor #suplementacao preservado no div. -->
-    <div class="process-step" id="suplementacao" style="margin-top: clamp(64px, 9vw, 104px)">
-
-      <!-- Texto - esquerda -->
-      <div class="step-text fade">
-        <h3><span class="grad-text">Suplementação</span><br/>Inteligente</h3>
-        <div class="step-subhead">Com base nos seus biomarcadores e na ciência.</div>
-        <p>O seu médico identifica as deficiências reais nos seus resultados e recomenda apenas os suplementos que fazem sentido para o seu perfil. Com dosagem, forma e timing otimizados.</p>
-        <div class="step-detail">
-          <div class="step-detail-item siphox-check">
-            <div class="siphox-check-icon">
-              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span><strong>Recomendações fundamentadas</strong> - Apenas suplementos com evidência clínica direta para o seu perfil</span>
-          </div>
-          <div class="step-detail-item siphox-check">
-            <div class="siphox-check-icon">
-              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span><strong>Dosagem personalizada</strong> - Calculada sobre os seus valores reais, não sobre doses genéricas</span>
-          </div>
-          <div class="step-detail-item siphox-check">
-            <div class="siphox-check-icon">
-              <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span><strong>Validado a cada 6 meses</strong> - Na reavaliação medimos o impacto real de cada suplemento nos seus biomarcadores</span>
           </div>
         </div>
       </div>
 
-      <!-- Visual - direita -->
-      <div class="step-visual fade fade-d1">
-        <svg width="100%" viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg" style="border-radius:20px;overflow:hidden;">
-          <defs>
-            <!-- Glow -->
-            <filter id="sfGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="7" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <!-- Background -->
-            <linearGradient id="sfBg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#040D12"/>
-              <stop offset="100%" stop-color="#06131A"/>
-            </linearGradient>
-            <!-- Atmospheric glows -->
-            <radialGradient id="sfG1" cx="78%" cy="12%" r="52%">
-              <stop offset="0%" stop-color="#0D5C65" stop-opacity="0.45"/>
-              <stop offset="100%" stop-color="#0D5C65" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="sfG2" cx="12%" cy="92%" r="42%">
-              <stop offset="0%" stop-color="#4C1D95" stop-opacity="0.28"/>
-              <stop offset="100%" stop-color="#4C1D95" stop-opacity="0"/>
-            </radialGradient>
-            <!-- Pill half gradients -->
-            <linearGradient id="sfPDa" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#92400E"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
-            <linearGradient id="sfPDb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDE68A"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
-            <linearGradient id="sfPMa" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#064E3B"/></linearGradient>
-            <linearGradient id="sfPMb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#22D3EE"/></linearGradient>
-            <linearGradient id="sfPOa" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4C1D95"/><stop offset="100%" stop-color="#3B0764"/></linearGradient>
-            <linearGradient id="sfPOb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C4B5FD"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
-            <linearGradient id="sfPZa" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#064E3B"/><stop offset="100%" stop-color="#065F46"/></linearGradient>
-            <linearGradient id="sfPZb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6EE7B7"/><stop offset="100%" stop-color="#34D399"/></linearGradient>
-          </defs>
+      <!-- ── RIGHT: unified dashboard ── -->
+      <div class="bm-visual fade fade-d2">
+        <div class="bm-dash">
 
-          <!-- BG layers -->
-          <rect width="480" height="420" fill="url(#sfBg)"/>
-          <rect width="480" height="420" fill="url(#sfG1)"/>
-          <rect width="480" height="420" fill="url(#sfG2)"/>
+          <!-- header -->
+          <div class="bm-dh">
+            <div class="bm-dh-id">
+              <div class="bm-mono">RS</div>
+              <div>
+                <div class="bm-dh-name">Ricardo S.</div>
+                <div class="bm-dh-sub">ESTRATÉGIA PERSONALIZADA</div>
+              </div>
+            </div>
+            <div class="bm-dh-score">
+              <b>87<span>/100</span></b>
+              <div class="bm-dh-delta">+12 · 90 dias</div>
+            </div>
+          </div>
 
-          <!-- Subtle grid lines -->
-          <line x1="0" y1="118" x2="480" y2="118" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-          <line x1="0" y1="338" x2="480" y2="338" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <!-- biomarkers -->
+          <div class="bm-cap">Biomarcadores <span>7 analisados</span></div>
+          <div class="bm-bars">
+            <div class="bm-row">
+              <div class="bm-row-n">Vitamina D</div>
+              <div class="bm-track"><div class="bm-fill" style="width:28%;background:linear-gradient(90deg,#F59E0B,#FBBF24)"></div></div>
+              <div class="bm-tag" style="color:#FBBF24;background:rgba(245,158,11,0.14)">Baixo</div>
+            </div>
+            <div class="bm-row">
+              <div class="bm-row-n">LDL</div>
+              <div class="bm-track"><div class="bm-fill" style="width:66%;background:linear-gradient(90deg,#8B5CF6,#A78BFA)"></div></div>
+              <div class="bm-tag" style="color:#A78BFA;background:rgba(139,92,246,0.14)">Elevado</div>
+            </div>
+            <div class="bm-row">
+              <div class="bm-row-n">HbA1c</div>
+              <div class="bm-track"><div class="bm-fill" style="width:84%;background:linear-gradient(90deg,#0D7A87,#3DD9E8)"></div></div>
+              <div class="bm-tag" style="color:#4ADE80;background:rgba(74,222,128,0.14)">Ótimo</div>
+            </div>
+          </div>
 
-          <!-- ── HEADER ── -->
-          <!-- Active chip -->
-          <rect x="36" y="30" width="134" height="22" rx="11" fill="rgba(61,217,232,0.12)" stroke="rgba(61,217,232,0.28)" stroke-width="1"/>
-          <circle cx="53" cy="41" r="4" fill="#3DD9E8" filter="url(#sfGlow)"/>
-          <text x="64" y="46" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#3DD9E8" letter-spacing="0.06em">PROTOCOLO ATIVO</text>
-          <!-- Count bubble -->
-          <circle cx="428" cy="54" r="28" fill="rgba(61,217,232,0.08)" stroke="rgba(61,217,232,0.22)" stroke-width="1.5"/>
-          <text x="428" y="50" text-anchor="middle" font-family="Inter,sans-serif" font-size="20" font-weight="900" fill="white">4</text>
-          <text x="428" y="67" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.5" font-weight="700" fill="rgba(61,217,232,0.65)" letter-spacing="0.05em">SUPLEM.</text>
-          <!-- Title -->
-          <text x="36" y="88" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="white" letter-spacing="-0.04em">Suplementação</text>
-          <text x="36" y="107" font-family="Inter,sans-serif" font-size="10.5" fill="rgba(255,255,255,0.32)">Personalizada com base nos seus biomarcadores</text>
+          <!-- engine connector -->
+          <div class="bm-engine">
+            <div class="bm-engine-line"></div>
+            <div class="bm-engine-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9zM2 9h2M2 15h2M20 9h2M20 15h2M9 2v2M15 2v2M9 20v2M15 20v2"/></svg>
+              Interpretação clínica
+            </div>
+            <div class="bm-engine-line r"></div>
+          </div>
 
-          <!-- ── ROW 1: Vitamina D3 ── -->
-          <rect x="36" y="126" width="408" height="46" rx="11" fill="rgba(245,158,11,0.07)" stroke="rgba(245,158,11,0.18)" stroke-width="1"/>
-          <!-- 2-tone pill: left half dark-amber, right half light-amber, centered at (66,149) -->
-          <g transform="translate(66,149)">
-            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPDa)"/>
-            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPDb)"/>
-            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <text x="94" y="144" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Vitamina D3</text>
-          <text x="94" y="160" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">25(OH)D deficiente · 18 ng/mL detetado</text>
-          <rect x="338" y="134" width="98" height="22" rx="11" fill="rgba(245,158,11,0.16)"/>
-          <text x="387" y="149" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#F59E0B">4 000 UI · dia</text>
+          <!-- outputs: nutrition + supplements -->
+          <div class="bm-outputs">
+            <div class="bm-out">
+              <div class="bm-cap">Nutrição</div>
+              <div class="bm-out-kcal">2 100<span> kcal/dia</span></div>
+              <div class="bm-macros">
+                <div class="bm-macro"><span class="bm-macro-n">Proteína</span><div class="bm-macro-track"><div class="bm-macro-fill" style="width:80%;background:#3DD9E8"></div></div><span class="bm-macro-v">35%</span></div>
+                <div class="bm-macro"><span class="bm-macro-n">Hidratos</span><div class="bm-macro-track"><div class="bm-macro-fill" style="width:62%;background:#0D7A87"></div></div><span class="bm-macro-v">40%</span></div>
+                <div class="bm-macro"><span class="bm-macro-n">Gordura</span><div class="bm-macro-track"><div class="bm-macro-fill" style="width:50%;background:#8B5CF6"></div></div><span class="bm-macro-v">25%</span></div>
+              </div>
+            </div>
+            <div class="bm-out">
+              <div class="bm-cap">Suplementação</div>
+              <div class="bm-supps">
+                <div class="bm-supp"><span class="bm-pill"><i class="l" style="background:#92400E"></i><i class="r" style="background:#FBBF24"></i></span><span class="bm-supp-n">Vitamina D3</span><span class="bm-supp-d" style="color:#FBBF24">4 000 UI</span></div>
+                <div class="bm-supp"><span class="bm-pill"><i class="l" style="background:#3B0764"></i><i class="r" style="background:#A78BFA"></i></span><span class="bm-supp-n">Ómega-3</span><span class="bm-supp-d" style="color:#A78BFA">2 g</span></div>
+                <div class="bm-supp"><span class="bm-pill"><i class="l" style="background:#0B525A"></i><i class="r" style="background:#3DD9E8"></i></span><span class="bm-supp-n">Magnésio</span><span class="bm-supp-d" style="color:#3DD9E8">300 mg</span></div>
+              </div>
+            </div>
+          </div>
 
-          <!-- ── ROW 2: Magnésio ── -->
-          <rect x="36" y="182" width="408" height="46" rx="11" fill="rgba(61,217,232,0.07)" stroke="rgba(61,217,232,0.14)" stroke-width="1"/>
-          <g transform="translate(66,205)">
-            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPMa)"/>
-            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPMb)"/>
-            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <text x="94" y="200" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Magnésio Bisglicinato</text>
-          <text x="94" y="216" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Limítrofe · Mg sérico 0.74 mmol/L</text>
-          <rect x="338" y="190" width="98" height="22" rx="11" fill="rgba(61,217,232,0.13)"/>
-          <text x="387" y="205" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#3DD9E8">300 mg · noite</text>
+          <!-- progress -->
+          <div class="bm-prog">
+            <div class="bm-prog-spark">
+              <div class="bm-cap" style="margin-bottom:6px">Otimização contínua</div>
+              <svg viewBox="0 0 200 34" preserveAspectRatio="none" style="width:100%;height:30px;display:block">
+                <defs>
+                  <linearGradient id="bmSpark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.28"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient>
+                </defs>
+                <path d="M2,28 L42,25 L82,21 L122,15 L162,10 L198,4 L198,34 L2,34 Z" fill="url(#bmSpark)"/>
+                <polyline points="2,28 42,25 82,21 122,15 162,10 198,4" fill="none" stroke="#3DD9E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="198" cy="4" r="3" fill="#3DD9E8"/>
+              </svg>
+            </div>
+            <div class="bm-prog-meta">
+              <b>+12</b>
+              <span>Score · 90 dias</span>
+            </div>
+          </div>
 
-          <!-- ── ROW 3: Ómega-3 ── -->
-          <rect x="36" y="238" width="408" height="46" rx="11" fill="rgba(139,92,246,0.07)" stroke="rgba(139,92,246,0.14)" stroke-width="1"/>
-          <g transform="translate(66,261)">
-            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPOa)"/>
-            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPOb)"/>
-            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <text x="94" y="256" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Ómega-3 EPA/DHA</text>
-          <text x="94" y="272" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">LDL 5.8 mmol/L · Proteção cardiovascular</text>
-          <rect x="330" y="246" width="106" height="22" rx="11" fill="rgba(139,92,246,0.13)"/>
-          <text x="383" y="261" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#A78BFA">2 g EPA+DHA · dia</text>
-
-          <!-- ── ROW 4: Zinco ── -->
-          <rect x="36" y="294" width="408" height="36" rx="11" fill="rgba(52,211,153,0.07)" stroke="rgba(52,211,153,0.14)" stroke-width="1"/>
-          <g transform="translate(66,312)">
-            <path d="M -16 -6 A 6 6 0 0 0 -16 6 L 0 6 L 0 -6 Z" fill="url(#sfPZa)"/>
-            <path d="M 0 -6 L 16 -6 A 6 6 0 0 1 16 6 L 0 6 Z" fill="url(#sfPZb)"/>
-            <line x1="0" y1="-6" x2="0" y2="6" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
-            <path d="M -12 -4 Q 0 -5.5 12 -4" stroke="rgba(255,255,255,0.28)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <text x="94" y="308" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Zinco Gluconato</text>
-          <text x="94" y="323" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.35)">Prevenção · perfil imunológico e hormonal</text>
-          <rect x="354" y="301" width="82" height="22" rx="11" fill="rgba(52,211,153,0.13)"/>
-          <text x="395" y="316" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#34D399">15 mg · dia</text>
-
-          <!-- ── IMPACT SECTION ── -->
-          <text x="36" y="358" font-family="Inter,sans-serif" font-size="8.5" font-weight="700" fill="rgba(255,255,255,0.28)" letter-spacing="0.1em">IMPACTO ESPERADO · 90 DIAS</text>
-          <!-- Metric 1 -->
-          <rect x="36" y="368" width="124" height="38" rx="10" fill="rgba(245,158,11,0.09)" stroke="rgba(245,158,11,0.2)" stroke-width="1"/>
-          <text x="50" y="385" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#F59E0B">+210%</text>
-          <text x="50" y="399" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.32)">Vitamina D normalizada</text>
-          <!-- Metric 2 -->
-          <rect x="172" y="368" width="124" height="38" rx="10" fill="rgba(139,92,246,0.09)" stroke="rgba(139,92,246,0.2)" stroke-width="1"/>
-          <text x="186" y="385" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#A78BFA">−18%</text>
-          <text x="186" y="399" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.32)">LDL Colesterol</text>
-          <!-- Metric 3 -->
-          <rect x="308" y="368" width="136" height="38" rx="10" fill="rgba(61,217,232,0.09)" stroke="rgba(61,217,232,0.2)" stroke-width="1"/>
-          <text x="322" y="385" font-family="Inter,sans-serif" font-size="15" font-weight="800" fill="#3DD9E8">↑ Score</text>
-          <text x="322" y="399" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.32)">Recuperação e sono</text>
-        </svg>
+        </div>
       </div>
 
     </div>
