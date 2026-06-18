@@ -308,16 +308,17 @@
       display: flex; flex-direction: column; gap: 3px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
-    /* Os cartões entram uma vez (escalonados) e ficam em repouso — o movimento
-       perpétuo competia com o título/CTA pela atenção e dava um ar "inquieto".
-       A vida do hero fica no brilho suave do orbe, não em cartões a flutuar. */
-    .hc-m1 { top: 4%; right: 6%;  animation: floatCardIn 0.8s ease-out 0.35s both; }
-    .hc-m2 { top: 44%; right: -2%; animation: floatCardIn 0.8s ease-out 0.55s both; }
-    .hc-m3 { bottom: 8%; left: 4%; animation: floatCardIn 0.8s ease-out 0.75s both; }
     @keyframes floatCardIn {
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    @keyframes floatDrift {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-9px); }
+    }
+    .hc-m1 { top: 4%; right: 6%;   animation: floatCardIn 0.8s ease-out 0.35s both, floatDrift 5.2s ease-in-out 1.15s infinite; }
+    .hc-m2 { top: 44%; right: -2%; animation: floatCardIn 0.8s ease-out 0.55s both, floatDrift 6.1s ease-in-out 1.35s infinite; }
+    .hc-m3 { bottom: 8%; left: 4%; animation: floatCardIn 0.8s ease-out 0.75s both, floatDrift 4.8s ease-in-out 1.55s infinite; }
     .hcm-label { font-size: 10px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; white-space: nowrap; }
     .hcm-val   { font-size: 14px; font-weight: 750; white-space: nowrap; }
     .hcm-stat  { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; }

@@ -137,10 +137,11 @@
     .hc-metric{position:absolute;background:rgba(8,14,18,0.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:11px 16px;display:flex;flex-direction:column;gap:3px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
     /* Cards enter once (staggered) then rest — perpetual motion competed with the
        headline/CTA for attention. Hero life stays in the soft orb glow. */
-    .hc-m1{top:4%;right:6%;animation:floatCardIn 0.8s ease-out 0.35s both}
-    .hc-m2{top:44%;right:-2%;animation:floatCardIn 0.8s ease-out 0.55s both}
-    .hc-m3{bottom:8%;left:4%;animation:floatCardIn 0.8s ease-out 0.75s both}
     @keyframes floatCardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes floatDrift{0%,100%{transform:translateY(0px)}50%{transform:translateY(-9px)}}
+    .hc-m1{top:4%;right:6%;animation:floatCardIn 0.8s ease-out 0.35s both,floatDrift 5.2s ease-in-out 1.15s infinite}
+    .hc-m2{top:44%;right:-2%;animation:floatCardIn 0.8s ease-out 0.55s both,floatDrift 6.1s ease-in-out 1.35s infinite}
+    .hc-m3{bottom:8%;left:4%;animation:floatCardIn 0.8s ease-out 0.75s both,floatDrift 4.8s ease-in-out 1.55s infinite}
     a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
     @media (prefers-reduced-motion: reduce){
       *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important}
