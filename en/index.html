@@ -320,7 +320,8 @@
     .mod-footer{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
     .mod-add{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--teal-light);text-decoration:none;cursor:pointer}
     .mod-add::after{content:'';position:absolute;inset:0;border-radius:20px}
-    .cta-section{padding:130px 0;text-align:center;position:relative;overflow:hidden;background:linear-gradient(140deg,#0A1415 0%,#051520 50%,#0D0820 100%)}
+    .cta-footer-wrap{position:relative;overflow:hidden;background:linear-gradient(180deg,#0A1415 0%,#051520 35%,#0D0820 68%,#060A0C 100%)}
+    .cta-section{padding:130px 0;text-align:center;position:relative;overflow:hidden}
     .cta-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 110%,rgba(61,217,232,0.14) 0%,transparent 65%),radial-gradient(ellipse 50% 50% at 20% 20%,rgba(139,92,246,0.1) 0%,transparent 60%)}
     .cta-section h2{font-size:clamp(32px,5.5vw,68px);font-weight:850;letter-spacing:-0.045em;color:#fff;max-width:780px;margin:0 auto 18px;line-height:1.1;position:relative}
     .cta-section p{font-size:18px;color:rgba(255,255,255,0.5);max-width:460px;margin:0 auto 44px;line-height:1.75;position:relative}
@@ -445,7 +446,7 @@
     .faq-foot a{color:var(--teal-light);font-weight:600;text-decoration:none}
     .faq-foot a:hover{text-decoration:underline}
     @media(max-width:760px){.tst-grid{grid-template-columns:1fr}.tst-card.feature{grid-column:span 1;flex-direction:column;gap:24px;align-items:flex-start}}
-    .footer{background:#060A0C;padding:64px 0 36px}
+    .footer{padding:64px 0 36px}
     .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:56px}
     .footer-brand-text{font-size:14px;color:rgba(255,255,255,0.6);margin-top:14px;max-width:240px;line-height:1.7}
     .footer-col h5{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:18px}
@@ -1519,9 +1520,10 @@
 </section>
 
 <!-- WAITLIST -->
+<div class="cta-footer-wrap">
+  <div class="cta-glow"></div>
 <!-- CTA -->
 <section class="cta-section">
-  <div class="cta-glow"></div>
   <div class="container">
     <span class="label label-light fade" style="display:block;text-align:center;margin-bottom:20px">Start today</span>
     <h2 class="fade fade-d1">The first step<br/>is understanding where you stand.</h2>
@@ -1562,6 +1564,7 @@
     </div>
   </div>
 </footer>
+</div>
 
 <script>
   const nav = document.getElementById('nav');
