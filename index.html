@@ -2219,7 +2219,10 @@
     .bm-flow span.accent { color: #fff; background: linear-gradient(120deg, var(--teal-light), var(--cyan)); border-color: transparent; }
     .bm-flow i { color: var(--ink-3); font-style: normal; font-weight: 700; opacity: 0.55; }
     /* bullets */
-    .bm-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 820px; margin: 0 auto; align-items: start; }
+    .bm-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 820px; margin: 32px auto 0; align-items: stretch; }
+    .bm-cards .how-card { transform: none !important; height: 100%; }
+    .bm-cards .how-card:hover { transform: translateY(-4px) !important; }
+    .bm-cards .how-num { display: none; }
     .bm-bullet-ico { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(11,82,90,0.08); color: var(--teal); }
     .bm-bullet-ico svg { width: 15px; height: 15px; }
     .bm-bullet-t { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
