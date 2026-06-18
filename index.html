@@ -906,6 +906,7 @@
     .modules-header h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 14px; }
     .modules-header p { font-size: 17px; color: var(--ink-2); max-width: 640px; margin: 0 auto; line-height: 1.75; }
     .modules-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .modules-toggle { display: none; }
     .module-card {
       background: var(--surface); border: 1.5px solid var(--border);
       border-radius: 20px; padding: 26px;
@@ -1318,6 +1319,13 @@
       .app-mockup-wrap { display: flex; width: 100%; max-width: 280px; height: auto; margin: 8px auto 0; }
       .app-bubble { display: none; }
       .modules-grid { grid-template-columns: 1fr 1fr; }
+      .modules-grid.collapsed .module-card:nth-child(n+7) { display: none; }
+      .modules-toggle { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 28px auto 0; padding: 12px 26px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: transparent; color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
+      .modules-toggle svg { transition: transform 0.25s; }
+      .modules-toggle.open svg { transform: rotate(180deg); }
+      .modules-toggle .mt-label-less { display: none; }
+      .modules-toggle.open .mt-label-more { display: none; }
+      .modules-toggle.open .mt-label-less { display: inline; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .nav-links-center, .nav-links-right { display: none; }
       .nav-mob { display: flex; margin-left: auto; }
@@ -2013,7 +2021,7 @@
       <h2 class="fade fade-d1"><span class="grad-text">Profundidade</span> quando precisar</h2>
       <p class="fade fade-d2">Adicione análises especializadas ao seu plano.<br/>Cada módulo inclui análise, interpretação clínica e recomendações específicas.</p>
     </div>
-    <div class="modules-grid">
+    <div class="modules-grid collapsed" id="modulesGrid">
 
       <div class="module-card module-card--highlight fade">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3Q12 6 15 9Q12 12 9 15Q12 18 15 21"/><path d="M15 3Q12 6 9 9Q12 12 15 15Q12 18 9 21" stroke-opacity="0.3" stroke-dasharray="2.5 2"/><line x1="9" y1="3" x2="15" y2="3"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="21" x2="15" y2="21"/></svg></div>
@@ -2100,8 +2108,26 @@
       </div>
 
     </div>
+    <button class="modules-toggle" id="modulesToggle" onclick="toggleModules()" aria-expanded="false" aria-controls="modulesGrid">
+      <span class="mt-label-more">Ver mais</span>
+      <span class="mt-label-less">Ver menos</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
   </div>
 </section>
+<script>
+  function toggleModules() {
+    var grid = document.getElementById('modulesGrid');
+    var btn = document.getElementById('modulesToggle');
+    var collapsing = !grid.classList.contains('collapsed');
+    grid.classList.toggle('collapsed');
+    btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(!collapsing));
+    if (collapsing) {
+      document.getElementById('modulos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+</script>
 
 <!-- ── CONDIÇÕES MONITORIZADAS ── -->
 <section class="step-layer layer-dark conditions-section" id="condicoes">
