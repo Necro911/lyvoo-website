@@ -222,10 +222,15 @@
       flex-shrink: 0; font-variant-numeric: tabular-nums;
       position: relative; z-index: 1; opacity: 0.9;
     }
-    .meal-opcao-ou { display:flex; align-items:center; gap:10px; margin:6px 0 4px; }
-    .meal-opcao-ou span { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); white-space:nowrap; }
-    .meal-opcao-ou::before, .meal-opcao-ou::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
-    .meal-desc--alt { color:var(--txt-2); }
+    .meal-name-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; }
+    .meal-name-row .meal-name { margin-bottom:0; flex:1; min-width:0; }
+    .meal-swap-btn { flex-shrink:0; display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; font-family:'Inter',sans-serif; color:var(--cyan); background:rgba(61,217,232,0.08); border:1px solid rgba(61,217,232,0.25); border-radius:8px; padding:4px 10px; cursor:pointer; transition:background .16s, border-color .16s; white-space:nowrap; }
+    .meal-swap-btn:hover { background:rgba(61,217,232,0.15); border-color:rgba(61,217,232,0.45); }
+    .meal-swap-btn svg { width:12px; height:12px; }
+    @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
+    @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
+    .meal-swapping-out { animation:meal-swap-out .19s ease-out forwards; pointer-events:none; }
+    .meal-swapping-in  { animation:meal-swap-in  .22s ease-out forwards; }
     /* ── Plano alimentar v2 — sistema de nutrição adaptativo ── */
     /* Cabeçalho de resumo diário (acima da lista de refeições) */
     .meal-day { display:flex; align-items:center; gap:0; flex-wrap:wrap;
@@ -3209,8 +3214,19 @@
     const pa = window._planoData; if (!pa || !pa.refeicoes) return;
     const r = pa.refeicoes[i]; const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
     if (ops.length < 2) { if (window.toast) toast('Sem alternativas neste plano — peça uma à equipa clínica.'); return; }
-    _mealSwapIdx[i] = ((_mealSwapIdx[i]||0) + 1) % ops.length;
-    renderPlano(pa);
+    const descEl = document.querySelector(`.meal-desc[data-meal="${i}"]`);
+    const doSwap = () => {
+      _mealSwapIdx[i] = ((_mealSwapIdx[i]||0) + 1) % ops.length;
+      renderPlano(pa);
+      requestAnimationFrame(() => {
+        const newEl = document.querySelector(`.meal-desc[data-meal="${i}"]`);
+        if (newEl) { newEl.classList.add('meal-swapping-in'); newEl.addEventListener('animationend', () => newEl.classList.remove('meal-swapping-in'), { once: true }); }
+      });
+    };
+    if (descEl) {
+      descEl.classList.add('meal-swapping-out');
+      descEl.addEventListener('animationend', doSwap, { once: true });
+    } else { doSwap(); }
   };
   window.mealImprove = function(i) {
     _mealSuggestOpen[i] = !_mealSuggestOpen[i];
@@ -3304,15 +3320,11 @@
         const period = mealPeriodOf(r);
         const periodLabel = period !== lastPeriod ? (lastPeriod = period, `<div class="meal-period">${period}</div>`) : '';
 
-        // Opções com troca aplicada (mealSwap roda a opção primária — dados reais)
+        // Opções com troca aplicada — mostra apenas a opção activa
         const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
         const off = _mealSwapIdx[i] || 0;
-        const rot = ops.length ? ops.slice(off).concat(ops.slice(0, off)) : [];
-        const opsHtml = !rot.length ? '' : (rot.length === 1
-          ? `<div class="meal-desc">${rot[0]}</div>`
-          : rot.map((o, k) => k === 0
-              ? `<div class="meal-desc">${o}</div>`
-              : `<div class="meal-opcao-ou"><span>ou</span></div><div class="meal-desc meal-desc--alt">${o}</div>`).join(''));
+        const activeOp = ops.length ? ops[off % ops.length] : null;
+        const opsHtml = activeOp ? `<div class="meal-desc" data-meal="${i}">${activeOp}</div>` : '';
 
         // Insights clínicos, macros (só se reais), rationale e sugestão
         const insights = deriveMealInsights(r, planFocus);
@@ -3330,11 +3342,13 @@
         return `${periodLabel}<div class="meal-card${isDone?' meal-card--done':''}" style="background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
           <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
           <div class="meal-body">
-            <div class="meal-name">${r.nome||'Refeição'}</div>
+            <div class="meal-name-row">
+              <span class="meal-name">${r.nome||'Refeição'}</span>
+              ${!swapDis ? `<button class="meal-swap-btn" onclick="mealSwap(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Trocar</button>` : ''}
+            </div>
             ${opsHtml}
             ${(ratHtml||tagsHtml||macrosHtml||sugHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${sugHtml}</div>` : ''}
             <div class="meal-actions">
-              <button class="meal-act" onclick="mealSwap(${i})"${swapDis?' style="opacity:.5"':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Trocar</button>
               <button class="meal-act" onclick="mealImprove(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Melhorar</button>
               <button class="meal-act meal-act--done" onclick="mealToggleDone(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>${isDone?'Feito':'Marcar feito'}</button>
             </div>
