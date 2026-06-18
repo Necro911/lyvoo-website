@@ -224,23 +224,23 @@
     }
     .meal-name-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; }
     .meal-name-row .meal-name { margin-bottom:0; flex:1; min-width:0; }
-    /* Botão "alternativa" — fora da caixa, lado direito, ícone de reciclagem */
-    .meal-row { display:flex; align-items:stretch; gap:10px; }
+    /* Botão "alternativa" — fora da caixa, lado direito, circular, ícone de reciclagem */
+    .meal-row { display:flex; align-items:center; gap:10px; }
     .meal-row > .meal-card { flex:1; min-width:0; }
     .meal-alt-btn {
-      flex-shrink:0; width:66px;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px;
-      border:1px solid rgba(61,217,232,0.22); border-radius:18px;
+      flex-shrink:0; width:74px; height:74px; border-radius:50%;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+      border:1px solid rgba(61,217,232,0.22);
       background:rgba(61,217,232,0.05); color:var(--cyan);
-      font-size:10px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
+      font-size:9px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
       cursor:pointer; transition:background .16s, border-color .16s, transform .16s;
     }
     .meal-alt-btn:hover { background:rgba(61,217,232,0.13); border-color:rgba(61,217,232,0.45); transform:translateY(-1px); }
-    .meal-alt-btn svg { width:19px; height:19px; transition:transform .45s ease; }
+    .meal-alt-btn svg { width:18px; height:18px; transition:transform .45s ease; }
     .meal-alt-btn:hover svg { transform:rotate(-120deg); }
     @media (max-width:560px) {
-      .meal-alt-btn { width:54px; font-size:9px; }
-      .meal-alt-btn svg { width:16px; height:16px; }
+      .meal-alt-btn { width:60px; height:60px; font-size:8px; gap:3px; }
+      .meal-alt-btn svg { width:15px; height:15px; }
     }
     @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
