@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.googleapis.com https://*.google.com; frame-src 'self' https://*.google.com https://recaptcha.net https://*.firebaseapp.com; worker-src 'self' blob:" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="icon" href="images/og-image.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Como funciona - Lyvoo</title>
+  <meta name="description" content="Da analise ao plano em quatro passos simples: subscreva, recolha em casa, relatorio integrado e otimizacao continua da sua saude." />
+  <link rel="canonical" href="https://lyvoo.pt/como-funciona.html" />
+  <link rel="alternate" hreflang="pt-PT" href="https://lyvoo.pt/como-funciona.html" />
+  <link rel="alternate" hreflang="en" href="https://lyvoo.pt/en/how-it-works.html" />
+  <link rel="alternate" hreflang="x-default" href="https://lyvoo.pt/como-funciona.html" />
+  <meta property="og:title" content="Como funciona - Lyvoo" />
+  <meta property="og:description" content="Da analise ao plano em quatro passos simples." />
+  <meta property="og:image" content="https://lyvoo.pt/images/og-image.png" />
+  <meta property="og:site_name" content="Lyvoo" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="cookie-banner.js" defer></script>
+  <script src="scroll-top.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
+      --violet: #8B5CF6; --purple: #9B6FD4; --bg: #FFFFFF; --surface: #F6F8F9;
+      --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .nav-logo { text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
+    .lang-toggle { display: flex; align-items: center; gap: 4px; }
+    .lang-toggle a, .lang-toggle span { font-size: 13px; font-weight: 600; padding: 5px 10px; border-radius: 7px; }
+    .lang-active { color: #fff; background: rgba(255,255,255,0.10); }
+    .hero { background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%); padding: 140px 0 72px; text-align: center; position: relative; overflow: hidden; }
+    .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%); }
+    .hero .container { position: relative; }
+    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(30px, 5vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 16px; line-height: 1.1; }
+    .hero p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+    .fade { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade.in { opacity: 1; transform: translateY(0); }
+    .fade-d1 { transition-delay: 0.1s; }
+    /* ── Como funciona (cf) ── */
+    .cf-section { background: #fff; padding: 96px 0 110px; }
+    .cf-steps { display: flex; flex-direction: column; }
+    .cf-step { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; padding: 56px 0; }
+    .cf-step + .cf-step { border-top: 1px solid var(--border); }
+    .cf-step.cf-rev .cf-text { order: 2; }
+    .cf-step.cf-rev .cf-visual { order: 1; }
+    .cf-numrow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .cf-circle { width: 38px; height: 38px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cf-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-light); }
+    .cf-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: #EEF9F9; color: var(--teal); border: 1px solid rgba(11,82,90,0.15); margin-left: auto; }
+    .cf-text h3 { font-size: clamp(22px, 2.8vw, 33px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 14px; color: var(--ink); }
+    .cf-text p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin: 0 0 22px; }
+    .cf-checks { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .cf-checks li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); }
+    .cf-chk { width: 22px; height: 22px; border-radius: 50%; background: var(--teal); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .cf-visual { border-radius: 24px; overflow: hidden; aspect-ratio: 4 / 3; background: linear-gradient(145deg, #F0F9FA 0%, #E6F3F5 100%); border: 1px solid rgba(11,82,90,0.1); display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 48px rgba(11,82,90,0.08); }
+    .cf-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .footer { background: linear-gradient(180deg, #0D0820 0%, #060A0C 60%); padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; }
+    .footer-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 700px; height: 300px; background: radial-gradient(ellipse, rgba(11,82,90,0.25) 0%, transparent 70%); pointer-events: none; }
+    .lf-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .lf-brand { font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 14px; line-height: 1.6; }
+    .lf-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; }
+    .lf-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .lf-col li a { font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
+    .lf-col li a:hover { color: #fff; }
+    .lf-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; font-size: 12.5px; color: rgba(255,255,255,0.25); flex-wrap: wrap; gap: 12px; }
+    .lf-links { display: flex; gap: 20px; }
+    .lf-links a, .lf-cookies { font-size: 12.5px; color: rgba(255,255,255,0.25); text-decoration: none; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
+    .lf-links a:hover, .lf-cookies:hover { color: rgba(255,255,255,0.5); }
+    @media (max-width: 860px) {
+      .cf-step { grid-template-columns: 1fr; gap: 32px; }
+      .cf-step.cf-rev .cf-text, .cf-step.cf-rev .cf-visual { order: 0; }
+    }
+    @media (max-width: 680px) {
+      .nav-links > li { display: none; }
+      .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; }
+      .lf-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" style="display:flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/><path d="M5 8h14"/></svg>In&#237;cio</a></li>
+      <li><a href="como-funciona.html" style="color:#fff;" aria-current="page">Como funciona</a></li>
+      <li><a href="index.html#atlas">O que testamos</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li class="lang-toggle"><span class="lang-active" aria-current="page">PT</span><a href="en/how-it-works.html" aria-label="Switch to English / Mudar para ingl&#234;s">EN</a></li>
+      <li><a href="registar.html" class="nav-cta">Come&#231;ar agora</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <span class="label">Como funciona</span>
+    <h1>Da an&#225;lise <span class="grad-text">ao plano</span></h1>
+    <p>Quatro passos simples, do registo &#224; otimiza&#231;&#227;o cont&#237;nua da sua sa&#250;de.</p>
+  </div>
+</section>
+
+<section class="cf-section">
+  <div class="container">
+    <div class="cf-steps">
+
+      <!-- 1 -->
+      <div class="cf-step fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">1</div>
+            <span class="cf-tag">Torne-se membro</span>
+            <span class="cf-badge">Hoje</span>
+          </div>
+          <h3>Subscreva e receba o kit em casa.</h3>
+          <p>Um único programa anual, tudo incluído. O kit de análise chega à sua morada em 48h, com tudo o que precisa para a análise em casa.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Pagamento anual único, sem surpresas</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Acompanhamento médico incluído</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Cancele quando quiser</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#F2EAE0,#EFE4D6); padding:0;">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cfPath1" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient>
+              <filter id="cfGlowP1"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="cfShadowP1"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#7A5A3A" flood-opacity="0.16"/></filter>
+            </defs>
+            <!-- Ambient glow -->
+            <circle cx="370" cy="110" r="120" fill="#3DD9E8" opacity="0.07"/>
+            <!-- Journey track + gradient progress -->
+            <path d="M70,260 C130,235 150,225 190,210 C240,193 270,175 310,160 C350,145 380,125 410,110" fill="none" stroke="rgba(11,82,90,0.14)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
+            <path d="M70,260 C130,235 150,225 190,210 C240,193 270,175 310,160 C350,145 380,125 410,110" fill="none" stroke="url(#cfPath1)" stroke-width="3" stroke-linecap="round" filter="url(#cfGlowP1)"/>
+            <!-- Waypoints -->
+            <circle cx="70" cy="260" r="7" fill="#fff" stroke="#0B525A" stroke-width="2.5"/>
+            <text x="70" y="288" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#5B4A36">Confirmado</text>
+            <circle cx="190" cy="210" r="7" fill="#fff" stroke="#0B525A" stroke-width="2.5"/>
+            <text x="190" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#5B4A36">Preparado</text>
+            <circle cx="310" cy="160" r="7" fill="#fff" stroke="#0B525A" stroke-width="2.5"/>
+            <text x="310" y="188" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#5B4A36">Enviado</text>
+            <circle cx="410" cy="110" r="11" fill="url(#cfPath1)" filter="url(#cfGlowP1)"/>
+            <circle cx="410" cy="110" r="11" fill="none" stroke="white" stroke-width="2"/>
+            <text x="410" y="138" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#0B525A">Entregue</text>
+            <!-- Badge: chega em 48h -->
+            <rect x="46" y="56" width="148" height="64" rx="16" fill="white" filter="url(#cfShadowP1)"/>
+            <text x="120" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#9C8A6E" letter-spacing="0.04em">CHEGA EM</text>
+            <text x="120" y="106" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="800" fill="#0B525A" letter-spacing="-0.5">48 horas</text>
+            <!-- Badge: tudo incluído -->
+            <rect x="266" y="246" width="172" height="56" rx="16" fill="white" filter="url(#cfShadowP1)"/>
+            <circle cx="292" cy="268" r="9" fill="#4ADE80"/>
+            <svg x="286" y="262" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <text x="309" y="265" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#5B4A36">Tudo incluído no kit</text>
+            <text x="309" y="278" font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#9C8A6E">sem custos extra</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="cf-step cf-rev fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">2</div>
+            <span class="cf-tag">Recolha em casa</span>
+            <span class="cf-badge">Dia 1</span>
+          </div>
+          <h3>Faça a recolha. Sem dor, sem deslocações.</h3>
+          <p>Uma simples picada capilar recolhe a amostra em 5 minutos. Siga as instruções da app. Depois, agende com o estafeta para recolher a amostra.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sem agulhas nem flebotomia</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Recolha em 5 minutos no conforto de casa</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Envio pré-pago para laboratório certificado</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#F8FFFE,#EBF7F8); padding:0;">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cfGauge2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient>
+              <radialGradient id="cfCenter2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0E3A40"/><stop offset="100%" stop-color="#082A2F"/></radialGradient>
+              <filter id="cfGlow2"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="cfShadow2"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B525A" flood-opacity="0.10"/></filter>
+            </defs>
+            <!-- Ambient glow -->
+            <circle cx="240" cy="230" r="160" fill="#3DD9E8" opacity="0.05"/>
+            <!-- Gauge: recolha em poucos minutos -->
+            <path d="M96,230 A144,144 0 0 1 384,230" fill="none" stroke="rgba(61,217,232,0.14)" stroke-width="16" stroke-linecap="round"/>
+            <path d="M96,230 A144,144 0 0 1 384,230" fill="none" stroke="url(#cfGauge2)" stroke-width="16" stroke-linecap="round"
+                  stroke-dasharray="362 452" filter="url(#cfGlow2)"/>
+            <circle cx="357" cy="146" r="7" fill="#3DD9E8" filter="url(#cfGlow2)"/>
+            <!-- Scale labels -->
+            <text x="92"  y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">0</text>
+            <text x="240" y="74"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">5 min</text>
+            <text x="392" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">10 min</text>
+            <!-- Center hub -->
+            <circle cx="240" cy="230" r="76" fill="url(#cfCenter2)"/>
+            <circle cx="240" cy="230" r="76" stroke="rgba(61,217,232,0.18)" stroke-width="1"/>
+            <text x="240" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" letter-spacing="0.06em">RECOLHA EM</text>
+            <text x="240" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="#fff" letter-spacing="-0.5">5 min</text>
+            <text x="240" y="268" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#3DD9E8" font-weight="600">Sem agulhas</text>
+            <!-- Badge: picada capilar -->
+            <rect x="166" y="20" width="148" height="50" rx="14" fill="white" filter="url(#cfShadow2)"/>
+            <circle cx="190" cy="45" r="10" fill="#3DD9E8"/>
+            <text x="208" y="42" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#0B525A">Picada capilar</text>
+            <text x="208" y="54" font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#6B9298">simples e rápida</text>
+            <!-- Badge: envio pré-pago -->
+            <rect x="28" y="296" width="130" height="44" rx="14" fill="white" filter="url(#cfShadow2)"/>
+            <circle cx="50" cy="318" r="9" fill="#4ADE80"/>
+            <svg x="44" y="312" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <text x="67" y="316" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#0B525A">Envio pré-pago</text>
+            <text x="67" y="328" font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#6B9298">incluído no kit</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="cf-step fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">3</div>
+            <span class="cf-tag">Interpretação integrada</span>
+            <span class="cf-badge">7-10 dias</span>
+          </div>
+          <h3>Relatório médico. Consulta de nutrição.</h3>
+          <p>Quando os resultados ficam prontos, recebe um relatório com interpretação clínica real de cada biomarcador. Agendamos também uma consulta de nutrição para traduzir os resultados em ação concreta.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Interpretação médica de cada biomarcador fora do ideal</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Consulta de nutrição agendada após os resultados</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório na app em linguagem clara e acessível</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#F0F9FA,#E8F4F6); padding:0;">
+          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="cfHub3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#0B525A"/></radialGradient>
+              <linearGradient id="cfLine3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.55"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient>
+              <filter id="cfGlow3"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="cfShadow3"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B525A" flood-opacity="0.10"/></filter>
+            </defs>
+            <!-- Ambient glow -->
+            <circle cx="240" cy="180" r="160" fill="#8B5CF6" opacity="0.04"/>
+            <!-- Connecting lines: biomarcadores → relatório -->
+            <g stroke="url(#cfLine3)" stroke-width="1.5">
+              <line x1="240" y1="180" x2="127" y2="115"/>
+              <line x1="240" y1="180" x2="240" y2="50"/>
+              <line x1="240" y1="180" x2="353" y2="115"/>
+              <line x1="240" y1="180" x2="353" y2="245"/>
+              <line x1="240" y1="180" x2="127" y2="245"/>
+            </g>
+            <!-- Biomarker nodes -->
+            <g font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#0B525A" text-anchor="middle">
+              <circle cx="127" cy="115" r="20" fill="white" filter="url(#cfShadow3)"/>
+              <text x="127" y="119">LDL</text>
+              <circle cx="240" cy="50" r="20" fill="white" filter="url(#cfShadow3)"/>
+              <text x="240" y="54">Vit D</text>
+              <circle cx="353" cy="115" r="20" fill="white" filter="url(#cfShadow3)"/>
+              <text x="353" y="119">PCR</text>
+              <circle cx="353" cy="245" r="20" fill="white" filter="url(#cfShadow3)"/>
+              <text x="353" y="249">HbA1c</text>
+              <circle cx="127" cy="245" r="20" fill="white" filter="url(#cfShadow3)"/>
+              <text x="127" y="249">TSH</text>
+            </g>
+            <!-- Hub: relatório integrado -->
+            <circle cx="240" cy="180" r="46" fill="url(#cfHub3)" filter="url(#cfGlow3)"/>
+            <circle cx="240" cy="180" r="46" fill="none" stroke="white" stroke-width="2" opacity="0.35"/>
+            <text x="240" y="177" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white" letter-spacing="0.04em">RELATÓRIO</text>
+            <text x="240" y="190" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,0.85)">integrado</text>
+            <!-- Badge: médico -->
+            <rect x="20" y="20" width="148" height="50" rx="14" fill="white" filter="url(#cfShadow3)"/>
+            <circle cx="44" cy="45" r="12" fill="#0B525A"/>
+            <text x="44" y="49" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">M</text>
+            <text x="64" y="49" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#111827">Médico</text>
+            <!-- Badge: nutricionista -->
+            <rect x="312" y="290" width="148" height="50" rx="14" fill="white" filter="url(#cfShadow3)"/>
+            <circle cx="336" cy="315" r="12" fill="#8B5CF6"/>
+            <text x="336" y="319" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">N</text>
+            <text x="356" y="319" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#111827">Nutricionista</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="cf-step cf-rev fade">
+        <div class="cf-text">
+          <div class="cf-numrow">
+            <div class="cf-circle">4</div>
+            <span class="cf-tag">Acompanhe e otimize</span>
+            <span class="cf-badge">6 meses</span>
+          </div>
+          <h3>Plano que evolui consigo. Reavaliado.</h3>
+          <p>Ao fim de 6 meses repete o painel e comparamos os resultados com o seu início para provar a evolução.</p>
+          <ul class="cf-checks">
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Reavaliação a cada 6 meses com novo painel completo</li>
+            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório comparativo início vs. 6 meses</li>
+          </ul>
+        </div>
+        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F); padding:0; border-color:rgba(61,217,232,0.15); display:flex; align-items:center; justify-content:center;">
+          <div class="chart-visual" style="background:transparent; width:100%; max-width:380px; padding:32px;">
+            <div class="chart-header">
+              <div class="chart-title">Evolução comparativa - 12 meses</div>
+              <div class="chart-sub">Início vs. 6 meses vs. 12 meses · Ricardo M.</div>
+            </div>
+            <div class="chart-legend">
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:rgba(255,255,255,0.25)"></div>Início</div>
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#3DD9E8"></div>6 meses</div>
+              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#8B5CF6"></div>12 meses</div>
+            </div>
+            <div class="chart-area">
+              <svg class="line-chart" viewBox="0 0 300 100" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lineGrad4" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#3DD9E8"/>
+                    <stop offset="100%" stop-color="#8B5CF6"/>
+                  </linearGradient>
+                </defs>
+                <polyline points="0,72 30,71 60,70 90,71 120,72 150,70 180,69 210,71 240,70 270,69 300,68" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="5,4"/>
+                <polyline points="0,72 30,65 60,58 90,52 120,46 150,40 180,36 210,32 240,28 270,24 300,18" fill="none" stroke="url(#lineGrad4)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="0" cy="72" r="3" fill="rgba(255,255,255,0.3)"/>
+                <circle cx="150" cy="40" r="4" fill="#3DD9E8"/>
+                <circle cx="300" cy="18" r="5" fill="#8B5CF6"/>
+              </svg>
+            </div>
+            <div class="chart-labels">
+              <span class="chart-label">Início</span>
+              <span class="chart-label">3 meses</span>
+              <span class="chart-label">6 meses</span>
+              <span class="chart-label">9 meses</span>
+              <span class="chart-label">12 meses</span>
+            </div>
+            <div class="chart-improvements">
+              <div class="chart-imp-card">
+                <div class="imp-name">LDL</div>
+                <div class="imp-change imp-neg">-18%</div>
+              </div>
+              <div class="chart-imp-card">
+                <div class="imp-name">PCR</div>
+                <div class="imp-change imp-neg">-34%</div>
+              </div>
+              <div class="chart-imp-card">
+                <div class="imp-name">Score</div>
+                <div class="imp-change imp-pos">+12 pts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="lf-grid">
+      <div>
+        <a href="index.html"><img src="images/logo.png" alt="Lyvoo" style="height:38px;width:auto;display:block;" /></a>
+        <p class="lf-brand">Preven&#231;&#227;o personalizada em sa&#250;de.<br/>Sem sair de casa. Feito em Portugal.</p>
+      </div>
+      <div class="lf-col"><h5>Produto</h5><ul>
+        <li><a href="como-funciona.html" style="color:#fff">Como funciona</a></li>
+        <li><a href="index.html#atlas">O que testamos</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Empresa</h5><ul>
+        <li><a href="index.html#equipa">Sobre n&#243;s</a></li>
+        <li><a href="index.html#equipa">Equipa cl&#237;nica</a></li>
+      </ul></div>
+      <div class="lf-col"><h5>Suporte</h5><ul>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="privacidade.html">Privacidade</a></li>
+        <li><a href="termos.html">Termos</a></li>
+      </ul></div>
+    </div>
+    <div class="lf-bottom">
+      <span>&#169; 2026 Lyvoo. Todos os direitos reservados.</span>
+      <div class="lf-links">
+        <a href="privacidade.html">Pol&#237;tica de privacidade</a>
+        <a href="termos.html">Termos de servi&#231;o</a>
+        <button class="lf-cookies" onclick="window.LyvooCookies&amp;&amp;window.LyvooCookies.abrirDefinicoes()">Gerir cookies</button>
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
