@@ -479,7 +479,7 @@
     .conditions-header h2 { font-size: clamp(28px, 3.8vw, 50px); font-weight: 800; letter-spacing: -0.04em; color: #fff; line-height: 1.15; margin: 14px 0 16px; }
     .conditions-header p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; margin: 0 auto; line-height: 1.7; }
     .conditions-track-wrap { display: flex; flex-direction: column; gap: 12px; }
-    .conditions-track { display: flex; gap: 10px; width: max-content; }
+    .conditions-track { display: flex; width: max-content; }
     .conditions-track-wrap > div:nth-child(1) .conditions-track { animation: marquee-left 38s linear infinite; }
     .conditions-track-wrap > div:nth-child(2) .conditions-track { animation: marquee-right 42s linear infinite; }
     .conditions-track-wrap > div:nth-child(3) .conditions-track { animation: marquee-left 35s linear infinite; }
@@ -487,7 +487,7 @@
     @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
     .conditions-track-wrap > div { overflow-x: hidden; padding: 5px 0; }
     .condition-pill {
-      flex-shrink: 0; white-space: nowrap;
+      flex-shrink: 0; white-space: nowrap; margin-right: 10px;
       padding: 9px 18px; border-radius: 999px;
       font-size: 13.5px; font-weight: 500; font-family: 'Inter', sans-serif;
       border: 1px solid rgba(61,217,232,0.15);
@@ -3256,6 +3256,34 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  // ── Marquee de condições (loop infinito sem quebras) ──
+  // O loop usa translateX de 0 → -50%, logo o track tem de conter exactamente
+  // duas metades idênticas, e cada metade tem de ser pelo menos tão larga como
+  // o ecrã. Caso contrário, ao chegar a -50% aparece um espaço vazio até ao
+  // reinício. Replicamos o conteúdo base até cada metade cobrir o viewport.
+  (function () {
+    const tracks = document.querySelectorAll('.conditions-track');
+    function build() {
+      tracks.forEach(track => {
+        const wrap = track.parentElement;
+        if (!track.dataset.unit) track.dataset.unit = track.innerHTML;
+        // 1 unidade base
+        track.innerHTML = track.dataset.unit;
+        // repete a unidade até a metade cobrir o ecrã (com folga)
+        let guard = 0;
+        while (track.scrollWidth < wrap.clientWidth + 80 && guard < 20) {
+          track.insertAdjacentHTML('beforeend', track.dataset.unit);
+          guard++;
+        }
+        // duplica a metade construída → duas metades iguais para o -50%
+        track.innerHTML = track.innerHTML + track.innerHTML;
+      });
+    }
+    build();
+    let t;
+    window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 200); });
+  })();
 
   // ── Biomarker Atlas ──
   const CAT_COLORS = {
