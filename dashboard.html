@@ -224,9 +224,24 @@
     }
     .meal-name-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; }
     .meal-name-row .meal-name { margin-bottom:0; flex:1; min-width:0; }
-    .meal-swap-btn { flex-shrink:0; display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; font-family:'Inter',sans-serif; color:var(--cyan); background:rgba(61,217,232,0.08); border:1px solid rgba(61,217,232,0.25); border-radius:8px; padding:4px 10px; cursor:pointer; transition:background .16s, border-color .16s; white-space:nowrap; }
-    .meal-swap-btn:hover { background:rgba(61,217,232,0.15); border-color:rgba(61,217,232,0.45); }
-    .meal-swap-btn svg { width:12px; height:12px; }
+    /* Botão "alternativa" — fora da caixa, lado direito, ícone de reciclagem */
+    .meal-row { display:flex; align-items:stretch; gap:10px; }
+    .meal-row > .meal-card { flex:1; min-width:0; }
+    .meal-alt-btn {
+      flex-shrink:0; width:66px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px;
+      border:1px solid rgba(61,217,232,0.22); border-radius:18px;
+      background:rgba(61,217,232,0.05); color:var(--cyan);
+      font-size:10px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
+      cursor:pointer; transition:background .16s, border-color .16s, transform .16s;
+    }
+    .meal-alt-btn:hover { background:rgba(61,217,232,0.13); border-color:rgba(61,217,232,0.45); transform:translateY(-1px); }
+    .meal-alt-btn svg { width:19px; height:19px; transition:transform .45s ease; }
+    .meal-alt-btn:hover svg { transform:rotate(-120deg); }
+    @media (max-width:560px) {
+      .meal-alt-btn { width:54px; font-size:9px; }
+      .meal-alt-btn svg { width:16px; height:16px; }
+    }
     @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
     .meal-swapping-out { animation:meal-swap-out .19s ease-out forwards; pointer-events:none; }
@@ -3339,21 +3354,24 @@
 
         const isDone = done.has(i);
         const swapDis = ops.length < 2;
-        return `${periodLabel}<div class="meal-card${isDone?' meal-card--done':''}" style="background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
-          <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
-          <div class="meal-body">
-            <div class="meal-name-row">
-              <span class="meal-name">${r.nome||'Refeição'}</span>
-              ${!swapDis ? `<button class="meal-swap-btn" onclick="mealSwap(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Trocar</button>` : ''}
+        const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>alternativa</span></button>` : '';
+        return `${periodLabel}<div class="meal-row">
+          <div class="meal-card${isDone?' meal-card--done':''}" style="background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
+            <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
+            <div class="meal-body">
+              <div class="meal-name-row">
+                <span class="meal-name">${r.nome||'Refeição'}</span>
+              </div>
+              ${opsHtml}
+              ${(ratHtml||tagsHtml||macrosHtml||sugHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${sugHtml}</div>` : ''}
+              <div class="meal-actions">
+                <button class="meal-act" onclick="mealImprove(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Melhorar</button>
+                <button class="meal-act meal-act--done" onclick="mealToggleDone(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>${isDone?'Feito':'Marcar feito'}</button>
+              </div>
             </div>
-            ${opsHtml}
-            ${(ratHtml||tagsHtml||macrosHtml||sugHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${sugHtml}</div>` : ''}
-            <div class="meal-actions">
-              <button class="meal-act" onclick="mealImprove(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Melhorar</button>
-              <button class="meal-act meal-act--done" onclick="mealToggleDone(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>${isDone?'Feito':'Marcar feito'}</button>
-            </div>
+            ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
           </div>
-          ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
+          ${altBtn}
         </div>`;
       }).join('');
 
