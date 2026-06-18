@@ -89,7 +89,7 @@
     #lc-modal-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
     #lc-modal-sub { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
     #lc-modal-close {
-      background: none; border: none; color: rgba(255,255,255,0.3);
+      background: none; border: none; color: rgba(255,255,255,0.6);
       cursor: pointer; padding: 2px; flex-shrink: 0; margin-left: 10px;
       transition: color 0.2s;
     }
