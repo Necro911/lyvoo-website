@@ -64,6 +64,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <style>
+    /* prelaunch-no-flash: esconde o preço de imediato, antes do prelaunch.js (defer) correr, para evitar o flash do valor antes de 'Em breve'. Remover esta linha junto com prelaunch.js quando o site for lançado. */
+    .hero-price-wrap, .sp-price-wrap { visibility: hidden; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {

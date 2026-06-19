@@ -59,6 +59,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
+    /* prelaunch-no-flash: hides the price immediately, before prelaunch.js (defer) runs, to avoid flashing the value before 'Coming soon'. Remove this line together with prelaunch.js at launch. */
+    .hero-price-wrap, .sp-price-wrap { visibility: hidden; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal:#0B525A;--teal-light:#0D7A87;--cyan:#3DD9E8;--violet:#8B5CF6;--purple:#9B6FD4;
