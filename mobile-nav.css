@@ -1,0 +1,14 @@
+/* Shared mobile hamburger menu styles for isolated pages (mirrors index.html's mobile nav). */
+.nav-mob { display: none; background: none; border: none; cursor: pointer; color: #fff; padding: 6px; }
+.nav.on-light .nav-mob { color: var(--ink); }
+.mob-menu { display: none; position: fixed; top: 100px; left: 0; right: 0; z-index: 99; background: rgba(255,255,255,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); flex-direction: column; gap: 4px; padding: 16px 20px; }
+.mob-menu.open { display: flex; }
+.mob-menu a { text-decoration: none; color: var(--ink); font-size: 16px; font-weight: 500; padding: 12px 14px; border-radius: 10px; }
+.mob-menu a:hover { background: var(--surface); }
+.mob-lang { display: flex; justify-content: center; align-items: center; gap: 0; margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+.mob-lang span, .mob-lang a { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; padding: 8px 22px !important; border-radius: 999px; margin: 0; }
+.mob-lang .mob-lang-active, .mob-lang .lang-active { background: var(--teal); color: #fff; }
+@media (max-width: 700px) {
+  .nav-links { display: none !important; }
+  .nav-mob { display: flex; margin-left: auto; }
+}
