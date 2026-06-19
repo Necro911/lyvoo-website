@@ -158,11 +158,33 @@
 <script type="module">
   import {
     signInWithEmailAndPassword, signInWithPopup,
+    getRedirectResult,
     sendPasswordResetEmail, GoogleAuthProvider, onAuthStateChanged
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { auth } from '../lyvoo-firebase.js';
 
-  onAuthStateChanged(auth, user => { if (user) window.location.replace('../dashboard.html'); });
+  const nextPage = new URLSearchParams(window.location.search).get('next') || null;
+
+  // Role-based redirect based on the { admin:true } custom claim (no hardcoded
+  // emails). admin.html re-validates the claim server-side regardless.
+  async function destino(user) {
+    if (nextPage) return nextPage;
+    try {
+      const t = await user.getIdTokenResult();
+      return t.claims.admin === true ? '../admin.html' : '../dashboard.html';
+    } catch {
+      return '../dashboard.html';
+    }
+  }
+
+  onAuthStateChanged(auth, async user => { if (user) window.location.replace(await destino(user)); });
+
+  getRedirectResult(auth).catch(err => {
+    if (err?.code && err.code !== 'auth/popup-closed-by-user') {
+      mostrarMensagem(mensagemErro(err.code, err));
+    }
+    setGoogleLoading(false);
+  });
 
   const erros = {
     'auth/user-not-found':         'No account found with this email address.',
@@ -174,9 +196,16 @@
     'auth/popup-closed-by-user':   'Authentication cancelled.',
     'auth/popup-blocked':          'Pop-up blocked by your browser. Please allow pop-ups for this site.',
     'auth/network-request-failed': 'Connection error. Please check your internet connection.',
+    'auth/requests-from-referer-blocked': 'Unauthorised domain. Please contact support.',
+    'auth/unauthorized-domain':    'Unauthorised domain. Please contact support.',
+    'auth/account-exists-with-different-credential': 'An account with this email already exists using a different method. Please sign in with email and password.',
+    'auth/operation-not-supported-in-this-environment': "This browser doesn't support this sign-in method. Please try another browser.",
   };
 
-  function mensagemErro(code) { return erros[code] || 'An unexpected error occurred. Please try again.'; }
+  function mensagemErro(code, err) {
+    if (err !== undefined) console.error('[login] authentication failed:', code, err);
+    return erros[code] || `An unexpected error occurred (${code || 'no code'}). Please try again.`;
+  }
 
   function mostrarMensagem(msg, tipo = 'erro') {
     let el = document.getElementById('globalMsg');
@@ -217,14 +246,30 @@
     if (!pwVal) { document.getElementById('passwordError').style.display = 'block'; document.getElementById('password').classList.add('error'); valido = false; } else { document.getElementById('passwordError').style.display = 'none'; document.getElementById('password').classList.remove('error'); }
     if (!valido) return;
     setBtnLoading(true);
-    try { await signInWithEmailAndPassword(auth, emailVal, pwVal); window.location.href = '../dashboard.html'; }
-    catch (err) { mostrarMensagem(mensagemErro(err.code)); setBtnLoading(false); }
+    try { const cred = await signInWithEmailAndPassword(auth, emailVal, pwVal); window.location.href = await destino(cred.user); }
+    catch (err) { mostrarMensagem(mensagemErro(err.code, err)); setBtnLoading(false); }
   });
 
   document.getElementById('btnGoogle').addEventListener('click', async () => {
     limparMensagem(); setGoogleLoading(true);
-    try { await signInWithPopup(auth, new GoogleAuthProvider()); window.location.href = '../dashboard.html'; }
-    catch (err) { if (err.code !== 'auth/popup-closed-by-user') mostrarMensagem(mensagemErro(err.code)); setGoogleLoading(false); }
+    const provider = new GoogleAuthProvider();
+    try {
+      const cred = await signInWithPopup(auth, provider);
+      window.location.href = await destino(cred.user);
+    } catch (err) {
+      console.error('[login] Google sign-in failed:', err.code, err);
+      if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+        setGoogleLoading(false);
+        return;
+      }
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment') {
+        mostrarMensagem("Couldn't open the Google sign-in window. If you're inside another app (Instagram, Facebook…), open lyvoo.pt in Safari or Chrome and try again.");
+        setGoogleLoading(false);
+        return;
+      }
+      mostrarMensagem(mensagemErro(err.code, err));
+      setGoogleLoading(false);
+    }
   });
 
   document.getElementById('forgotLink').addEventListener('click', async e => {
@@ -232,7 +277,7 @@
     const emailVal = document.getElementById('email').value.trim();
     if (!emailVal || !/\S+@\S+\.\S+/.test(emailVal)) { mostrarMensagem('Enter your email address above and click "Forgot password?"'); document.getElementById('email').focus(); return; }
     try { await sendPasswordResetEmail(auth, emailVal); mostrarMensagem('Recovery email sent. Please check your inbox.', 'sucesso'); }
-    catch (err) { mostrarMensagem(mensagemErro(err.code)); }
+    catch (err) { mostrarMensagem(mensagemErro(err.code, err)); }
   });
 </script>
 
