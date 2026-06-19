@@ -1262,6 +1262,29 @@
     .faq-header { text-align: center; margin-bottom: 60px; }
     .faq-header h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 800; letter-spacing: -0.04em; margin: 14px 0 16px; }
     .faq-header p { font-size: 17px; color: var(--ink-2); max-width: 640px; margin: 0 auto; line-height: 1.75; }
+    .faq-wrap { max-width: 780px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-list.collapsed .faq-extra { display: none; }
+    .faq-q { width: 100%; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 4px; text-align: left; font-family: inherit; font-size: clamp(16px, 2vw, 19px); font-weight: 650; color: var(--ink); letter-spacing: -0.02em; transition: color 0.2s; }
+    .faq-q:hover { color: var(--teal-light); }
+    .faq-icon { flex-shrink: 0; width: 22px; height: 22px; position: relative; transition: transform 0.3s; }
+    .faq-icon::before, .faq-icon::after { content: ''; position: absolute; background: var(--teal-light); border-radius: 2px; transition: opacity 0.3s; }
+    .faq-icon::before { top: 10px; left: 3px; right: 3px; height: 2px; }
+    .faq-icon::after { left: 10px; top: 3px; bottom: 3px; width: 2px; }
+    .faq-item.open .faq-icon::after { opacity: 0; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .faq-a-inner { padding: 0 4px 24px; font-size: 15px; color: var(--ink-2); line-height: 1.75; max-width: 680px; }
+    .faq-a-inner a { color: var(--teal-light); }
+    .faq-foot { text-align: center; margin-top: 48px; font-size: 15px; color: var(--ink-3); }
+    .faq-foot a { color: var(--teal-light); font-weight: 600; text-decoration: none; }
+    .faq-foot a:hover { text-decoration: underline; }
+    .faq-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 28px auto 0; padding: 12px 26px; border-radius: 999px; border: 1.5px solid var(--border); background: transparent; color: var(--teal); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: border-color 0.2s; }
+    .faq-toggle:hover { border-color: var(--teal); }
+    .faq-toggle svg { transition: transform 0.25s; }
+    .faq-toggle.open svg { transform: rotate(180deg); }
+    .faq-toggle .ft-label-less { display: none; }
+    .faq-toggle.open .ft-label-more { display: none; }
+    .faq-toggle.open .ft-label-less { display: inline; }
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q {
       width: 100%; background: none; border: none; cursor: pointer;
@@ -1557,7 +1580,7 @@
       <li><a href="como-funciona.html">Como funciona</a></li>
       <li><a href="#atlas">O que testamos</a></li>
       <li><a href="equipa.html">Equipa</a></li>
-      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
     <ul class="nav-links-right">
@@ -1576,7 +1599,7 @@
   <a href="como-funciona.html" onclick="closeMob()">Como funciona</a>
   <a href="#atlas" onclick="closeMob()">O que testamos</a>
   <a href="equipa.html" onclick="closeMob()">Equipa</a>
-  <a href="faq.html" onclick="closeMob()">FAQ</a>
+  <a href="#faq" onclick="closeMob()">FAQ</a>
   <a href="contacto.html" onclick="closeMob()">Contacto</a>
   <a href="login.html" onclick="closeMob()" style="text-align:center;border:1.5px solid var(--border);margin-top:6px;">Entrar</a>
   <a href="registar.html" onclick="closeMob()" style="background:var(--teal);color:#fff;text-align:center;">Começar agora</a>
@@ -2830,6 +2853,86 @@
   </div>
 </section>
 
+<!-- ── FAQ ── -->
+<section class="step-layer layer-white" id="faq">
+  <div class="container">
+    <div class="faq-header fade">
+      <span class="label">Perguntas frequentes</span>
+      <h2 class="fade fade-d1">Tudo o que precisa <span class="grad-text">de saber</span></h2>
+      <p class="fade fade-d2">As respostas às dúvidas mais comuns, antes de começar.</p>
+    </div>
+    <div class="faq-wrap">
+      <div class="faq-list collapsed fade fade-d2" id="indexFaqList">
+        <div class="faq-item">
+          <button class="faq-q">Preciso de ir a um laboratório?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Não. Esse é o coração da Lyvoo. O kit de análises é enviado para a sua morada, faz a recolha de sangue por picada capilar em casa, e devolve a amostra no envelope pré-pago incluído. Sem filas, sem deslocações, sem marcações.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">A recolha em casa é segura e fiável?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Sim. O kit usa tecnologia de recolha capilar validada clinicamente, com instruções passo a passo e suporte pela app. As amostras são processadas em laboratórios acreditados segundo as normas ISO 15189, o mesmo padrão de qualidade dos melhores laboratórios clínicos.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Quanto tempo demoram os resultados?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Entre 7 a 10 dias úteis após o laboratório receber a sua amostra. Assim que estiverem prontos, recebe uma notificação na app com os resultados já interpretados e o seu relatório integrado.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">O que acontece se algum valor estiver alterado?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Qualquer marcador fora do ideal é analisado pela equipa médica, que o contextualiza no relatório e define um plano de ação. Recebe também recomendações nutricionais alinhadas com os seus resultados. Nunca fica sozinho com um número que não entende.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">O que está incluído no programa?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">O programa Lyvoo (€365/ano) inclui tudo numa só subscrição: painel base com 20 biomarcadores essenciais (até +50 com módulos adicionais), kit enviado para casa, laboratório certificado ISO 15189, relatório integrado médico e nutricional, plano alimentar personalizado, reavaliações completas a cada 6 meses (2 por ano) e acesso à app com suporte contínuo da equipa. Sem custos escondidos, sem extras obrigatórios.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">Isto substitui o meu médico de família?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Não. A Lyvoo é um serviço de medicina preventiva que complementa -em vez de substituir- os cuidados de saúde habituais. O nosso objetivo é dar-lhe visibilidade sobre a sua saúde e agir cedo, partilhando informação que pode levar ao seu médico assistente.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">Como funcionam as reavaliações a cada 6 meses?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Ao longo do programa anual recebe um novo kit a cada 6 meses para repetir o painel de análises (2 reavaliações por ano). Comparamos os resultados com a avaliação anterior e mostramos, em números, o que mudou. Em cada reavaliação, ajustamos o plano clínico e nutricional ao seu progresso real.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">Os meus dados de saúde estão protegidos?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Sim. Os seus dados são tratados em conformidade com o RGPD e armazenados com encriptação. A informação clínica é confidencial e nunca é partilhada com terceiros sem o seu consentimento explícito.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">Os meus dados são partilhados com seguradoras ou empregadores?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">Não. Os seus dados de saúde são estritamente confidenciais e nunca são partilhados com seguradoras, entidades patronais ou qualquer terceiro sem o seu consentimento explícito. Só a equipa clínica Lyvoo responsável pelo seu programa acede aos seus resultados, e exclusivamente para lhe prestar o serviço contratado.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">E se não conseguir fazer a recolha sozinho?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">O kit inclui um guia passo a passo detalhado e a app Lyvoo acompanha-o em cada etapa da recolha com instruções visuais. A grande maioria dos utilizadores não tem qualquer dificuldade. Caso a amostra seja insuficiente ou a recolha não tenha corrido bem, enviamos um novo kit sem custo adicional.</div></div>
+        </div>
+        <div class="faq-item faq-extra">
+          <button class="faq-q">Posso cancelar o programa a qualquer momento?<span class="faq-icon"></span></button>
+          <div class="faq-a"><div class="faq-a-inner">O programa não se renova automaticamente e não receberá cobranças surpresa. Pode cancelar gratuitamente antes do envio do kit. Após o envio mas antes da utilização da amostra, reembolsamos deduzindo €15 de custos logísticos. Após utilização do kit, o serviço está iniciado e não existe reembolso, salvo em caso de erro imputável à Lyvoo. Consulte a nossa <a href="termos.html#cancelamento">política de reembolso completa</a>.</div></div>
+        </div>
+      </div>
+
+      <button class="faq-toggle" id="indexFaqToggle" onclick="toggleIndexFaq()" aria-expanded="false" aria-controls="indexFaqList">
+        <span class="ft-label-more">Ver mais perguntas</span>
+        <span class="ft-label-less">Ver menos</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+
+      <div class="faq-foot fade">
+        Ainda tem dúvidas? <a href="mailto:hello@lyvoo.pt">Fale com a nossa equipa →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function toggleIndexFaq() {
+    const list = document.getElementById('indexFaqList');
+    const btn = document.getElementById('indexFaqToggle');
+    const collapsing = !list.classList.contains('collapsed');
+    list.classList.toggle('collapsed');
+    btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(!collapsing));
+    if (collapsing) document.getElementById('faq').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+
 <!-- ── PLANOS ── -->
 <section class="step-layer layer-off" id="planos">
   <div class="container">
@@ -2992,7 +3095,7 @@
       <div class="footer-col">
         <h5>Suporte</h5>
         <ul>
-          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="contacto.html">Contacto</a></li>
           <li><a href="privacidade.html">Privacidade</a></li>
           <li><a href="termos.html">Termos</a></li>
