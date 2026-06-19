@@ -37,6 +37,11 @@
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
     .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
     .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
+    .nav-cta:hover { opacity: 0.88; background: #fff !important; }
+    .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
+    .lang-toggle a, .lang-toggle span { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 0; color: rgba(255,255,255,0.6); text-decoration: none; transition: all 0.2s; }
+    .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
     .hero { background: var(--surface); border-bottom: 1px solid var(--border); padding: 64px 0 48px; }
     .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-light); margin-bottom: 14px; }
     .hero h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 12px; }
@@ -79,7 +84,7 @@
     .lf-cookies:hover { color: rgba(255,255,255,0.7); }
     @media (max-width: 768px) { .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; } }
     @media (max-width: 480px) { .lf-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li:has(> .nav-cta) { display: flex; } .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; } }
+    @media (max-width: 700px) { .nav-links { gap: 8px; } .nav-links > li { display: none; } .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; } .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; } }
   </style>
   <script src="../cookie-banner.js" defer></script>
   <script src="../scroll-top.js" defer></script>
@@ -93,9 +98,12 @@
       <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
     </a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="how-it-works.html">How it works</a></li>
       <li><a href="index.html#atlas">What we test</a></li>
       <li><a href="team.html">Team</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li class="lang-toggle"><a href="../privacidade.html" aria-label="Mudar para português / Switch to Portuguese">PT</a><a class="lang-active" aria-current="page">EN</a></li>
       <li><a href="register.html" class="nav-cta">Get started</a></li>
     </ul>
   </div>

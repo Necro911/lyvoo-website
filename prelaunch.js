@@ -58,6 +58,7 @@
   /* ─────────── 1b. CTAs de registo/dashboard → lista de espera (1 só botão) ─────────── */
   const signupPattern = /(^|\/)(registar|register|dashboard)\.html(\?|#|$)/i;
   document.querySelectorAll('a[href]').forEach((a) => {
+    if (a.closest('.lang-toggle')) return;
     const href = a.getAttribute('href') || '';
     if (!signupPattern.test(href)) return;
     const svg = a.querySelector('svg');

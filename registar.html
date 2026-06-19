@@ -45,6 +45,13 @@
       text-decoration: none; transition: color 0.2s;
     }
     .nav-back:hover { color: rgba(255,255,255,0.8); }
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    @media (max-width: 700px) {
+      .nav-links > li { display: none; }
+      .nav-links > li.lang-toggle { display: flex; }
+    }
 
     /* PAGE */
     .page {
@@ -196,13 +203,14 @@
     <a href="index.html" class="nav-logo">
       <img src="images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;transform:translateY(0px);" />
     </a>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <div class="lang-toggle"><span class="lang-active" aria-current="page">PT</span><a href="en/register.html" aria-label="Switch to English / Mudar para inglês">EN</a></div>
-      <a href="index.html" class="nav-back">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 3L5 8l5 5"/></svg>
-        Voltar ao início
-      </a>
-    </div>
+    <ul class="nav-links">
+      <li><a href="como-funciona.html">Como funciona</a></li>
+      <li><a href="index.html#atlas">O que testamos</a></li>
+      <li><a href="equipa.html">Equipa</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li class="lang-toggle"><a class="lang-active" aria-current="page">PT</a><a href="en/register.html" aria-label="Switch to English / Mudar para inglês">EN</a></li>
+    </ul>
   </div>
 </nav>
 
