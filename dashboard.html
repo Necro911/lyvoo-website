@@ -248,19 +248,6 @@
     .meal-swapping-out { animation:meal-swap-out .19s ease-out forwards; pointer-events:none; }
     .meal-swapping-in  { animation:meal-swap-in  .22s ease-out forwards; }
     /* ── Plano alimentar v2 — sistema de nutrição adaptativo ── */
-    /* Cabeçalho de resumo diário (acima da lista de refeições) */
-    .meal-day { display:flex; align-items:center; gap:0; flex-wrap:wrap;
-      background:linear-gradient(105deg,rgba(61,217,232,0.07) 0%,rgba(139,92,246,0.05) 60%,var(--panel) 100%);
-      border:1px solid var(--line); border-radius:16px; padding:16px 20px; margin-bottom:14px; }
-    .meal-day-block { display:flex; flex-direction:column; gap:3px; padding:0 18px; }
-    .meal-day-block:first-child { padding-left:0; }
-    .meal-day-val { font-size:19px; font-weight:800; color:var(--txt); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
-    .meal-day-label { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--txt-3); }
-    .meal-day-bars { display:flex; flex-direction:column; gap:5px; min-width:148px; padding:0 18px; }
-    .meal-day-bar { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--txt-2); }
-    .meal-day-bar-track { flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,0.06); overflow:hidden; }
-    .meal-day-bar-fill { height:100%; border-radius:999px; }
-    .meal-day-bar b { color:var(--txt); font-variant-numeric:tabular-nums; width:30px; text-align:right; }
     /* Segmentação por período */
     .meal-period { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); margin:18px 0 9px; display:flex; align-items:center; gap:10px; }
     .meal-period:first-child { margin-top:4px; }
@@ -285,7 +272,6 @@
     .meal-act:hover { color:var(--txt); border-color:var(--line-2); background:rgba(255,255,255,0.06); }
     .meal-act svg { width:13px; height:13px; flex-shrink:0; }
     @media (max-width: 640px) {
-      .meal-day-block:first-child { padding-left:0; }
       .meal-card { gap:16px; padding:18px; }
       .meal-time { font-size:18px; }
     }
@@ -3284,21 +3270,8 @@
 
     const refeicoes = (() => {
       if (!pa.refeicoes || !pa.refeicoes.length) return '';
-      const total = pa.refeicoes.length;
-      const hasMacros = (prot + gord + hidr) > 0;
       const fallbackIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`;
 
-      // Cabeçalho de resumo diário: kcal + macros REAIS
-      const macroBar = (label, val, color) => `<div class="meal-day-bar"><span style="width:54px">${label}</span><span class="meal-day-bar-track"><span class="meal-day-bar-fill" style="width:${val}%;background:${color}"></span></span><b>${val}%</b></div>`;
-      const daySummary = `<div class="meal-day">
-        ${pa.kcal ? `<div class="meal-day-block"><span class="meal-day-val">${pa.kcal}</span><span class="meal-day-label">kcal / dia</span></div>` : ''}
-        <div class="meal-day-block"><span class="meal-day-val">${total}</span><span class="meal-day-label">refeições</span></div>
-        ${hasMacros ? `<div class="meal-day-bars">
-          ${macroBar('Proteína', prot, 'var(--cyan)')}
-          ${macroBar('Gordura', gord, 'var(--violet)')}
-          ${macroBar('Hidratos', hidr, 'var(--green)')}
-        </div>` : ''}
-      </div>`;
 
       // Cartões agrupados por período (Manhã / Tarde / Noite)
       let lastPeriod = null;
@@ -3346,8 +3319,6 @@
       }).join('');
 
       return `<div class="sec-list-section">
-        <div class="sec-list-title" style="color:var(--cyan);margin-bottom:14px">Plano de refeições</div>
-        ${daySummary}
         <div class="meal-plan-list">${cards}</div>
       </div>`;
     })();
