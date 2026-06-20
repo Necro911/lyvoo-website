@@ -414,16 +414,24 @@
          bloco objetivo/resumo ficava empurrado 58px para a direita em mobile. */
       .plano-toprow { margin-left:0 !important; }
       #sec-plano-alimentar .sec-header { margin-left:0; }
-      .meal-thumb { width:46px; height:46px; align-self:flex-start; margin-top:1px; }
-      .meal-thumb svg { width:20px; height:20px; }
+      /* Ícone pequeno e numa linha própria (com a hora), em vez de ao lado do
+         texto — liberta toda a largura do cartão para o nome/descrição da
+         refeição, que era o que ficava espremido. */
+      .meal-thumb { width:30px; height:30px; order:1; margin:0; }
+      .meal-thumb svg { width:14px; height:14px; }
       /* Sem rail timeline em mobile, o min-height:140px (pensado para o
          desktop) deixava os cartões com muito espaço vazio. Encolhe ao
-         conteúdo e alinha o ícone/hora ao topo, junto ao nome da refeição. */
-      .meal-card { gap:13px; padding:16px; min-height:0; align-items:flex-start; }
+         conteúdo, empilha em 2 linhas: [ícone ... hora/alternativa] e depois
+         [nome + descrição a largura toda]. */
+      .meal-card { gap:8px; padding:16px; min-height:0; align-items:center; flex-wrap:wrap; }
       .meal-name { font-size:14px; }
       .meal-desc { font-size:13.5px; }
-      .meal-time { font-size:16px; }
-      .meal-side { align-items:flex-end; }
+      .meal-time { font-size:15px; }
+      .meal-side {
+        order:2; margin-left:auto;
+        flex-direction:row; align-items:center; gap:10px;
+      }
+      .meal-body { order:3; flex:1 1 100%; width:100%; }
     }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
