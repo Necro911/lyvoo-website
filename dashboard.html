@@ -3277,11 +3277,11 @@
     const MEAL_META = {
       'Pequeno-almoço': {
         color:'#3DD9E8', rgba:'61,217,232',
-        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>`
       },
       'Meio da manhã': {
         color:'#3DD9E8', rgba:'61,217,232',
-        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>`
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>`
       },
       'Almoço': {
         color:'#4ADE80', rgba:'74,222,128',
@@ -3297,15 +3297,15 @@
       },
       'Pós-treino': {
         color:'#A78BFA', rgba:'139,92,246',
-        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 3.5h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3"/><path d="M21 3.5h-1a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h1"/></svg>`
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8M9 2v6.5L4.5 16a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L15 8.5V2"/><path d="M7 14h10"/></svg>`
       },
       'Jantar': {
         color:'#A78BFA', rgba:'139,92,246',
-        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3v7"/></svg>`
       },
       'Ceia': {
         color:'#A78BFA', rgba:'139,92,246',
-        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>`
+        icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
       },
     };
     // Foco clínico do plano (derivado do objectivo + priorizar + reduzir reais)
@@ -3318,7 +3318,6 @@
 
 
       // Timeline contínua com rail à esquerda
-      const _thumbIco = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M5 2v20"/><path d="M19 15V2a4 4 0 0 0-4 4v5c0 1.1.9 2 2 2h2zm0 0v7"/></svg>`;
       const cards = pa.refeicoes.map((r, i) => {
         const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:fallbackIcon };
 
@@ -3346,7 +3345,7 @@
         return `<div class="meal-row">
           <div class="meal-rail"><div class="meal-rail-node" style="border-color:rgba(${m.rgba},0.5);color:${m.color};box-shadow:0 0 0 4px rgba(${m.rgba},0.07)">${m.icon}</div></div>
           <div class="meal-card" style="--meal-accent:${m.color};background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
-            <div class="meal-thumb" style="background:radial-gradient(circle at 34% 28%, rgba(${m.rgba},0.34), rgba(${m.rgba},0.10) 62%, var(--panel-2));border-color:rgba(${m.rgba},0.28);color:${m.color}">${_thumbIco}</div>
+            <div class="meal-thumb" style="background:radial-gradient(circle at 34% 28%, rgba(${m.rgba},0.34), rgba(${m.rgba},0.10) 62%, var(--panel-2));border-color:rgba(${m.rgba},0.28);color:${m.color}">${m.icon}</div>
             <div class="meal-body">
               <div class="meal-name-row">
                 <span class="meal-name">${r.nome||'Refeição'}</span>
