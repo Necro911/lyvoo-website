@@ -408,7 +408,11 @@
     @media (max-width: 560px) {
       .meal-rail { display:none; }
       .meal-row { gap:10px; }
-      .plano-toprow { margin-left:0; }
+      /* !important porque a regra base .plano-toprow (margin-left:58px, para
+         alinhar com o rail no desktop) está declarada DEPOIS deste media query
+         no ficheiro — sem !important, a ordem de origem fazia a base ganhar e o
+         bloco objetivo/resumo ficava empurrado 58px para a direita em mobile. */
+      .plano-toprow { margin-left:0 !important; }
       #sec-plano-alimentar .sec-header { margin-left:0; }
       .meal-thumb { width:46px; height:46px; align-self:flex-start; margin-top:1px; }
       .meal-thumb svg { width:20px; height:20px; }
