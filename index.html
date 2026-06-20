@@ -1018,8 +1018,10 @@
     .team-teaser-row.expanded { flex-direction: column; justify-content: center; align-items: center; gap: 40px; }
     .team-teaser-row.expanded .team-header-left { text-align: center; max-width: 640px; }
     .team-teaser-row.expanded .team-teaser-link { display: none; }
-    .team-reveal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; width: 100%; max-width: 0; opacity: 0; transform: translateX(60px); overflow: hidden; transition: max-width 0.6s cubic-bezier(.22,.61,.36,1), opacity 0.5s ease, transform 0.6s cubic-bezier(.22,.61,.36,1); }
-    .team-teaser-row.expanded .team-reveal-grid { max-width: 960px; opacity: 1; transform: translateX(0); }
+    .team-reveal-wrap { width: 100%; max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(.22,.61,.36,1), opacity 0.45s ease; }
+    .team-teaser-row.expanded .team-reveal-wrap { max-height: 700px; opacity: 1; }
+    .team-reveal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; max-width: 960px; margin: 0 auto; transform: translateX(90px); transition: transform 0.6s cubic-bezier(.22,.61,.36,1) 0.1s; }
+    .team-teaser-row.expanded .team-reveal-grid { transform: translateX(0); }
     .team-card-reveal { text-decoration: none; display: block; }
     @media (max-width: 860px) {
       .team-reveal-grid { grid-template-columns: 1fr 1fr; }
@@ -2858,6 +2860,7 @@
         </span>
         <span class="team-teaser-link-label">Conheça a equipa Lyvoo</span>
       </a>
+      <div class="team-reveal-wrap" id="teamRevealWrap">
       <div class="team-reveal-grid" id="teamRevealGrid">
         <a href="equipa.html" class="team-card team-card-reveal">
           <div class="team-photo">
@@ -2903,6 +2906,7 @@
             <p class="team-desc">Apaixonada por tecnologia e inovação, lidera a experiência de utilizador da Lyvoo. Garante que ferramentas complexas se tornam simples e acessíveis para quem mais importa: o utilizador.</p>
           </div>
         </a>
+      </div>
       </div>
     </div>
   </div>
