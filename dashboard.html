@@ -4341,8 +4341,8 @@
     _currentUser = user;
     window._currentUser = user;
     _lastLoad = Date.now();
-    initChat(user.uid);
     await carregarDados(user);
+    initChat(user.uid);
 
     // Esconder a máscara de loading agora que o painel está pronto
     const pageMask = document.getElementById('page-loading-mask');
