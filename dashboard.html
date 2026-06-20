@@ -225,24 +225,31 @@
     }
     .meal-name-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; }
     .meal-name-row .meal-name { margin-bottom:0; flex:1; min-width:0; }
-    /* Botão "alternativa" — fora da caixa, lado direito, circular, ícone de reciclagem */
-    .meal-row { display:flex; align-items:flex-start; gap:10px; }
+    /* Linha de refeição: rail (timeline) + cartão + botão alternativa */
+    .meal-row { display:flex; align-items:stretch; gap:14px; }
     .meal-row > .meal-card { flex:1; min-width:0; }
+    .meal-rail { position:relative; width:44px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .meal-rail::before { content:''; position:absolute; left:50%; top:0; bottom:-8px; transform:translateX(-50%); width:2px; background:rgba(255,255,255,0.09); }
+    .meal-row:first-child .meal-rail::before { top:50%; }
+    .meal-row:last-child .meal-rail::before { bottom:50%; }
+    .meal-rail-node { position:relative; z-index:1; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--bg); border:1.5px solid; }
+    .meal-rail-node svg { width:20px; height:20px; stroke-width:1.8; }
+    .meal-thumb { width:58px; height:58px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid; position:relative; z-index:1; overflow:hidden; }
+    .meal-thumb svg { width:24px; height:24px; opacity:0.5; }
     .meal-alt-btn {
-      flex-shrink:0; align-self:center; border-radius:999px;
-      display:inline-flex; align-items:center; gap:7px;
-      padding:9px 16px;
+      flex-shrink:0; align-self:center; width:76px; height:76px; border-radius:18px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
       border:1px solid rgba(61,217,232,0.22);
       background:rgba(61,217,232,0.06); color:var(--cyan);
-      font-size:11.5px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.01em;
-      cursor:pointer; transition:background .16s, border-color .16s, transform .16s;
+      font-size:9.5px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
+      cursor:pointer; transition:filter .16s, transform .16s;
     }
-    .meal-alt-btn:hover { background:rgba(61,217,232,0.14); border-color:rgba(61,217,232,0.45); transform:translateY(-1px); }
-    .meal-alt-btn svg { width:16px; height:16px; transition:transform .45s ease; }
+    .meal-alt-btn:hover { transform:translateY(-1px); filter:brightness(1.18); }
+    .meal-alt-btn svg { width:19px; height:19px; transition:transform .45s ease; }
     .meal-alt-btn:hover svg { transform:rotate(-120deg); }
     @media (max-width:560px) {
-      .meal-alt-btn { padding:8px 13px; font-size:11px; }
-      .meal-alt-btn svg { width:15px; height:15px; }
+      .meal-alt-btn { width:62px; height:62px; font-size:8.5px; }
+      .meal-alt-btn svg { width:16px; height:16px; }
     }
     @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
@@ -275,6 +282,16 @@
     @media (max-width: 640px) {
       .meal-card { gap:16px; padding:18px; }
       .meal-time { font-size:18px; }
+    }
+    @media (max-width: 560px) {
+      .meal-rail { display:none; }
+      .meal-row { gap:10px; }
+      .meal-thumb { width:46px; height:46px; }
+      .meal-thumb svg { width:20px; height:20px; }
+      .meal-card { gap:13px; padding:16px; }
+      .meal-name { font-size:14px; }
+      .meal-desc { font-size:13.5px; }
+      .meal-time { font-size:16px; }
     }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -331,8 +348,6 @@
     .metric-tile-val { font-size:20px; font-weight:800; color:var(--txt); letter-spacing:-0.02em; font-variant-numeric:tabular-nums; line-height:1; }
     .metric-tile-val small { font-size:11px; font-weight:600; color:var(--txt-3); margin-left:1px; }
     .metric-tile-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--txt-3); }
-    /* Acento de timeline no cartão de refeição */
-    .meal-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--meal-accent, var(--line-2)); opacity:0.85; }
     .meal-card:hover { box-shadow:0 12px 30px rgba(0,0,0,0.26); }
     /* Hidratação */
     .hydration-card { display:flex; align-items:center; gap:20px; margin:4px 0 20px; background:linear-gradient(105deg, rgba(61,217,232,0.10) 0%, rgba(139,92,246,0.06) 70%, var(--panel) 100%); border:1px solid var(--line); border-radius:18px; padding:18px 24px; }
@@ -3283,7 +3298,7 @@
         icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3v7"/></svg>`
       },
       'Lanche': {
-        color:'#A78BFA', rgba:'139,92,246',
+        color:'#FBBF24', rgba:'251,191,36',
         icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>`
       },
       'Pré-treino': {
@@ -3295,11 +3310,11 @@
         icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M3 3.5h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H3"/><path d="M21 3.5h-1a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h1"/></svg>`
       },
       'Jantar': {
-        color:'#FBBF24', rgba:'251,191,36',
+        color:'#A78BFA', rgba:'139,92,246',
         icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`
       },
       'Ceia': {
-        color:'#FBBF24', rgba:'251,191,36',
+        color:'#A78BFA', rgba:'139,92,246',
         icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>`
       },
     };
@@ -3312,12 +3327,10 @@
       const fallbackIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`;
 
 
-      // Cartões agrupados por período (Manhã / Tarde / Noite)
-      let lastPeriod = null;
+      // Timeline contínua com rail à esquerda
+      const _thumbIco = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M5 2v20"/><path d="M19 15V2a4 4 0 0 0-4 4v5c0 1.1.9 2 2 2h2zm0 0v7"/></svg>`;
       const cards = pa.refeicoes.map((r, i) => {
         const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:fallbackIcon };
-        const period = mealPeriodOf(r);
-        const periodLabel = period !== lastPeriod ? (lastPeriod = period, `<div class="meal-period">${period}</div>`) : '';
 
         // Opções com troca aplicada — mostra apenas a opção activa
         const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
@@ -3337,10 +3350,12 @@
         const sugHtml = _mealSuggestOpen[i] ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg><span><b>Sugestão Lyvoo:</b> ${mealSuggestionFor(r, pa)}</span></div>` : '';
 
         const swapDis = ops.length < 2;
-        const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Trocar por uma refeição alternativa" aria-label="Trocar por uma refeição alternativa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>Trocar</span></button>` : '';
-        return `${periodLabel}<div class="meal-row">
+        const swapAccent = m.color, swapRgba = m.rgba;
+        const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição" style="border-color:rgba(${swapRgba},0.32);background:rgba(${swapRgba},0.07);color:${swapAccent}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>Alternativa</span></button>` : '';
+        return `<div class="meal-row">
+          <div class="meal-rail"><div class="meal-rail-node" style="border-color:rgba(${m.rgba},0.5);color:${m.color};box-shadow:0 0 0 4px rgba(${m.rgba},0.07)">${m.icon}</div></div>
           <div class="meal-card" style="--meal-accent:${m.color};background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
-            <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
+            <div class="meal-thumb" style="background:radial-gradient(circle at 34% 28%, rgba(${m.rgba},0.34), rgba(${m.rgba},0.10) 62%, var(--panel-2));border-color:rgba(${m.rgba},0.28);color:${m.color}">${_thumbIco}</div>
             <div class="meal-body">
               <div class="meal-name-row">
                 <span class="meal-name">${r.nome||'Refeição'}</span>
