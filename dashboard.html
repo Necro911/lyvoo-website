@@ -261,11 +261,6 @@
     .meal-day-bar-track { flex:1; height:5px; border-radius:999px; background:rgba(255,255,255,0.06); overflow:hidden; }
     .meal-day-bar-fill { height:100%; border-radius:999px; }
     .meal-day-bar b { color:var(--txt); font-variant-numeric:tabular-nums; width:30px; text-align:right; }
-    .meal-day-adh { margin-left:auto; display:flex; align-items:center; gap:12px; padding-left:18px; }
-    .meal-day-ring { width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .meal-day-ring-center { width:38px; height:38px; border-radius:50%; background:var(--panel-2); display:flex; align-items:center; justify-content:center; box-shadow:inset 0 0 0 1px var(--line); font-size:12px; font-weight:800; color:var(--txt); font-variant-numeric:tabular-nums; }
-    .meal-day-adh-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-3); line-height:1.5; }
-    .meal-day-adh-label b { display:block; font-size:12.5px; color:var(--txt-2); }
     /* Segmentação por período */
     .meal-period { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); margin:18px 0 9px; display:flex; align-items:center; gap:10px; }
     .meal-period:first-child { margin-top:4px; }
@@ -289,10 +284,7 @@
     .meal-act { font-size:11.5px; font-weight:700; color:var(--txt-2); background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:9px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:color .16s, border-color .16s, background .16s; font-family:'Inter',sans-serif; }
     .meal-act:hover { color:var(--txt); border-color:var(--line-2); background:rgba(255,255,255,0.06); }
     .meal-act svg { width:13px; height:13px; flex-shrink:0; }
-    .meal-card--done { opacity:0.6; }
-    .meal-card--done .meal-act--done { color:var(--green); border-color:rgba(74,222,128,0.4); background:rgba(74,222,128,0.1); }
     @media (max-width: 640px) {
-      .meal-day-adh { margin-left:0; padding-left:0; }
       .meal-day-block:first-child { padding-left:0; }
       .meal-card { gap:16px; padding:18px; }
       .meal-time { font-size:18px; }
@@ -3210,14 +3202,6 @@
   // Estado de interação do cliente (troca de opção + sugestões abertas).
   let _mealSwapIdx = {};
   let _mealSuggestOpen = {};
-  function _adhKey() {
-    const uid = (typeof auth !== 'undefined' && auth && auth.currentUser) ? auth.currentUser.uid : 'anon';
-    const t = new Date(); t.setHours(0,0,0,0);
-    const iso = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
-    return `lyvoo_adh_${uid}_${iso}`;
-  }
-  function _adhGet() { try { return new Set(JSON.parse(localStorage.getItem(_adhKey())||'[]')); } catch(e){ return new Set(); } }
-  function _adhSave(s) { try { localStorage.setItem(_adhKey(), JSON.stringify([...s])); } catch(e){} }
   // Sugestão "IA" — ancorada nos alimentos a priorizar do plano real (mock seguro,
   // claramente uma sugestão, sem números fabricados).
   function mealSuggestionFor(r, pa) {
@@ -3248,11 +3232,6 @@
     _mealSuggestOpen[i] = !_mealSuggestOpen[i];
     renderPlano(window._planoData);
   };
-  window.mealToggleDone = function(i) {
-    const s = _adhGet(); s.has(i) ? s.delete(i) : s.add(i); _adhSave(s);
-    renderPlano(window._planoData);
-  };
-
   function renderPlano(pa) {
     const container = document.getElementById('plano-content');
     const temConteudo = pa && (pa.objectivo || pa.kcal || (pa.refeicoes && pa.refeicoes.length) || (pa.priorizar && pa.priorizar.length) || (pa.reduzir && pa.reduzir.length) || pa.obs);
@@ -3305,13 +3284,11 @@
 
     const refeicoes = (() => {
       if (!pa.refeicoes || !pa.refeicoes.length) return '';
-      const done = _adhGet();
       const total = pa.refeicoes.length;
       const hasMacros = (prot + gord + hidr) > 0;
       const fallbackIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`;
 
-      // Cabeçalho de resumo diário: kcal + macros REAIS + aderência do utilizador
-      const adhPct = total ? Math.round(done.size / total * 100) : 0;
+      // Cabeçalho de resumo diário: kcal + macros REAIS
       const macroBar = (label, val, color) => `<div class="meal-day-bar"><span style="width:54px">${label}</span><span class="meal-day-bar-track"><span class="meal-day-bar-fill" style="width:${val}%;background:${color}"></span></span><b>${val}%</b></div>`;
       const daySummary = `<div class="meal-day">
         ${pa.kcal ? `<div class="meal-day-block"><span class="meal-day-val">${pa.kcal}</span><span class="meal-day-label">kcal / dia</span></div>` : ''}
@@ -3321,12 +3298,6 @@
           ${macroBar('Gordura', gord, 'var(--violet)')}
           ${macroBar('Hidratos', hidr, 'var(--green)')}
         </div>` : ''}
-        <div class="meal-day-adh">
-          <div class="meal-day-ring" style="background:conic-gradient(var(--green) 0% ${adhPct}%, rgba(255,255,255,0.08) ${adhPct}% 100%)">
-            <div class="meal-day-ring-center">${adhPct}%</div>
-          </div>
-          <div class="meal-day-adh-label">Aderência<b>${done.size}/${total} hoje</b></div>
-        </div>
       </div>`;
 
       // Cartões agrupados por período (Manhã / Tarde / Noite)
@@ -3353,11 +3324,10 @@
         const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
         const sugHtml = _mealSuggestOpen[i] ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg><span><b>Sugestão Lyvoo:</b> ${mealSuggestionFor(r, pa)}</span></div>` : '';
 
-        const isDone = done.has(i);
         const swapDis = ops.length < 2;
         const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>alternativa</span></button>` : `<div style="flex-shrink:0;width:74px;height:74px"></div>`;
         return `${periodLabel}<div class="meal-row">
-          <div class="meal-card${isDone?' meal-card--done':''}" style="background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
+          <div class="meal-card" style="background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
             <div class="meal-icon" style="background:rgba(${m.rgba},0.12);color:${m.color};box-shadow:0 0 18px rgba(${m.rgba},0.2)">${m.icon}</div>
             <div class="meal-body">
               <div class="meal-name-row">
@@ -3367,7 +3337,6 @@
               ${(ratHtml||tagsHtml||macrosHtml||sugHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${sugHtml}</div>` : ''}
               <div class="meal-actions">
                 <button class="meal-act" onclick="mealImprove(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Melhorar</button>
-                <button class="meal-act meal-act--done" onclick="mealToggleDone(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>${isDone?'Feito':'Marcar feito'}</button>
               </div>
             </div>
             ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
