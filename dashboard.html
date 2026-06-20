@@ -3454,12 +3454,14 @@
   const BIOX_SEV   = { critico:0, atencao:1, otimo:2, '':3 };
   const _bioCap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
+  const BIOX_ESTADO = {
+    otimo:   'Dentro do intervalo ótimo',
+    atencao: 'Ligeiramente fora do ideal',
+    critico: 'Fora do intervalo recomendado',
+    '':      'Sem classificação',
+  };
   function bioInterp(r) {
-    const subj = BIO_SUBJECT[r.nome] || r.nome;
-    if (r.tag === 'otimo')   return _bioCap(subj) + ' em níveis ótimos';
-    if (r.tag === 'atencao') return _bioCap(subj) + ' ligeiramente fora do ideal';
-    if (r.tag === 'critico') return _bioCap(subj) + ' fora do intervalo recomendado';
-    return _bioCap(subj);
+    return `${r.nome} - ${BIOX_ESTADO[r.tag] || BIOX_ESTADO['']}`;
   }
   // Posição factual do valor face ao intervalo ótimo (acima / abaixo / dentro)
   function bioDir(r) {
@@ -3661,7 +3663,7 @@
           <span class="biox-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>
           <span class="biox-mid">
             <span class="biox-interp">${bioInterp(r)}</span>
-            <span class="biox-meta"><b>${r.nome}</b> · ${catLabel[r._cat] || 'Outros'}</span>
+            <span class="biox-meta">${catLabel[r._cat] || 'Outros'}</span>
           </span>
           <span class="biox-side">
             ${spark}
