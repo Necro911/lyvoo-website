@@ -3272,6 +3272,7 @@
     const dlBtn = document.getElementById('plano-pdf-btn');
     if (dlBtn) dlBtn.style.display = 'inline-flex';
     const prot = pa.proteina||0, gord = pa.gordura||0, hidr = pa.hidratos||0;
+    const protG = pa.proteinaG||0, gordG = pa.gorduraG||0, hidrG = pa.hidratosG||0, aguaL = (pa.agua||'').trim();
     const prTags = (pa.priorizar||[]).map(t=>`<span>${t}</span>`).join('');
     const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
 
@@ -3417,10 +3418,10 @@
           <span class="demo-pill" title="Valores ilustrativos — em breve com seguimento real">Exemplo</span>
         </div>
         <div class="metric-grid">
-          ${_mTile('251,191,36', _icoHCs, (hidr || '—'), 'g', 'HCs')}
-          ${_mTile('74,222,128', _icoProt, (prot || '—'), 'g', 'Proteína')}
-          ${_mTile('248,113,113', _icoLip, (gord || '—'), 'g', 'Lípidos')}
-          ${_mTile('61,217,232', _icoWater, '1,2', 'l', 'Água')}
+          ${_mTile('251,191,36', _icoHCs, (hidrG || '—'), 'g', 'HCs')}
+          ${_mTile('74,222,128', _icoProt, (protG || '—'), 'g', 'Proteína')}
+          ${_mTile('248,113,113', _icoLip, (gordG || '—'), 'g', 'Lípidos')}
+          ${_mTile('61,217,232', _icoWater, (aguaL || '—'), 'l', 'Água')}
         </div>
       </div>`;
 
