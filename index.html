@@ -1013,8 +1013,20 @@
     .team-header { text-align: center; margin-bottom: 60px; }
     .team-header h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin: 14px 0 16px; }
     .team-sub { font-size: 17px; color: var(--ink-2); max-width: 640px; margin: 0 auto; line-height: 1.75; }
-    .team-teaser-row { display: flex; align-items: center; justify-content: flex-start; gap: 56px; }
-    .team-header-left { text-align: left; max-width: 460px; }
+    .team-teaser-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 56px; transition: justify-content 0.4s, gap 0.4s; }
+    .team-header-left { text-align: left; max-width: 460px; transition: text-align 0.4s, max-width 0.4s; }
+    .team-teaser-row.expanded { flex-direction: column; justify-content: center; align-items: center; gap: 40px; }
+    .team-teaser-row.expanded .team-header-left { text-align: center; max-width: 640px; }
+    .team-teaser-row.expanded .team-teaser-link { display: none; }
+    .team-reveal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; width: 100%; max-width: 0; opacity: 0; transform: translateX(60px); overflow: hidden; transition: max-width 0.6s cubic-bezier(.22,.61,.36,1), opacity 0.5s ease, transform 0.6s cubic-bezier(.22,.61,.36,1); }
+    .team-teaser-row.expanded .team-reveal-grid { max-width: 960px; opacity: 1; transform: translateX(0); }
+    .team-card-reveal { text-decoration: none; display: block; }
+    @media (max-width: 860px) {
+      .team-reveal-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .team-reveal-grid { grid-template-columns: 1fr; max-width: 360px; }
+    }
     .team-header-left h2 { font-weight: 800; color: var(--ink); margin: 14px 0 16px; }
     .team-header-left .team-sub { margin: 0; }
     .team-teaser-link { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--teal); font-weight: 700; font-size: 15px; white-space: nowrap; flex-shrink: 0; transition: gap 0.25s; }
@@ -2834,21 +2846,76 @@
 <!-- ── EQUIPA ── -->
 <section class="step-layer layer-white" id="equipa">
   <div class="container">
-    <div class="team-teaser-row fade">
-      <div class="team-header-left">
+    <div class="team-teaser-row fade" id="teamTeaser">
+      <div class="team-header-left" id="teamHeaderLeft">
         <span class="label">A nossa equipa</span>
         <h2 class="fade fade-d1">Criado por quem acredita<br/>na <span class="grad-text">prevenção</span></h2>
         <p class="team-sub fade fade-d2">A Lyvoo nasceu da convicção de que a medicina preventiva deve ser acessível a todos. E que tecnologia e clínica se complementam.</p>
       </div>
-      <a href="equipa.html" class="team-teaser-link fade fade-d2">
+      <a href="equipa.html" class="team-teaser-link fade fade-d2" id="teamTeaserLink" onclick="handleTeamArrowClick(event)">
         <span class="team-teaser-arrow">
           <svg width="72" height="16" viewBox="0 0 72 16" fill="none"><line x1="0" y1="8" x2="62" y2="8" stroke="currentColor" stroke-width="2"/><path d="M56 2l8 6-8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
         </span>
-        <span>Conheça a equipa Lyvoo</span>
+        <span class="team-teaser-link-label">Conheça a equipa Lyvoo</span>
       </a>
+      <div class="team-reveal-grid" id="teamRevealGrid">
+        <a href="equipa.html" class="team-card team-card-reveal">
+          <div class="team-photo">
+            <div class="team-photo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+          </div>
+          <div class="team-info">
+            <div class="team-name">Ricardo Teixeira</div>
+            <div class="team-roles">
+              <span class="team-badge founder">CEO · Co-Founder</span>
+              <span class="team-badge nutri">Nutricionista</span>
+            </div>
+            <p class="team-desc">Nutricionista clínico com experiência em medicina preventiva e saúde metabólica. Fascinado pela ciência, fundou a Lyvoo para democratizar o acesso a intervenção nutricional baseada em biomarcadores.</p>
+          </div>
+        </a>
+        <a href="equipa.html" class="team-card team-card-reveal">
+          <div class="team-photo">
+            <div class="team-photo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+          </div>
+          <div class="team-info">
+            <div class="team-name">Jaime Abreu</div>
+            <div class="team-roles">
+              <span class="team-badge medico">Médico</span>
+            </div>
+            <p class="team-desc">Médico especialista em medicina preventiva. Responsável pela supervisão clínica dos programas Lyvoo e pela interpretação médica dos resultados laboratoriais.</p>
+          </div>
+        </a>
+        <a href="equipa.html" class="team-card team-card-reveal">
+          <div class="team-photo">
+            <div class="team-photo-placeholder">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+          </div>
+          <div class="team-info">
+            <div class="team-name">Lúcia Abreu</div>
+            <div class="team-roles">
+              <span class="team-badge founder">Co-Founder</span>
+              <span class="team-badge ux">UX Researcher</span>
+            </div>
+            <p class="team-desc">Apaixonada por tecnologia e inovação, lidera a experiência de utilizador da Lyvoo. Garante que ferramentas complexas se tornam simples e acessíveis para quem mais importa: o utilizador.</p>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
+<script>
+  function handleTeamArrowClick(e) {
+    const row = document.getElementById('teamTeaser');
+    if (!row.classList.contains('expanded')) {
+      e.preventDefault();
+      row.classList.add('expanded');
+    }
+  }
+</script>
 
 <!-- ── FAQ ── -->
 <section class="step-layer layer-white" id="faq">
