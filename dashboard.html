@@ -288,6 +288,7 @@
     @media (max-width: 560px) {
       .meal-rail { display:none; }
       .meal-row { gap:10px; }
+      .plano-toprow { margin-left:0; }
       .meal-thumb { width:46px; height:46px; }
       .meal-thumb svg { width:20px; height:20px; }
       .meal-card { gap:13px; padding:16px; }
@@ -331,7 +332,7 @@
     .plano-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .plano-legend-item b { color: var(--txt); margin-left: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
     /* Plano alimentar — topo premium (progresso + métricas) */
-    .plano-toprow { display:grid; grid-template-columns:1.5fr 1fr; gap:18px; margin-bottom:24px; align-items:stretch; }
+    .plano-toprow { display:grid; grid-template-columns:1.5fr 1fr; gap:18px; margin-bottom:24px; margin-left:58px; align-items:stretch; }
     .plano-toprow .plano-hero { margin-bottom:0; height:100%; }
     @keyframes donutSpin { from { transform:rotate(-14deg) scale(0.9); opacity:0; } to { transform:none; opacity:1; } }
     .plano-donut { animation:donutSpin .7s cubic-bezier(.22,.61,.36,1) both; }
