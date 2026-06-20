@@ -236,23 +236,23 @@
     .meal-rail-node svg { width:20px; height:20px; stroke-width:1.8; }
     .meal-thumb { width:58px; height:58px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid; position:relative; z-index:1; overflow:hidden; }
     .meal-thumb svg { width:24px; height:24px; opacity:0.5; }
+    /* Coluna lateral: hora + botão alternativa, empilhados dentro do cartão */
+    .meal-side { display:flex; flex-direction:column; align-items:flex-end; gap:9px; flex-shrink:0; position:relative; z-index:1; }
     .meal-alt-btn {
-      flex-shrink:0; align-self:center; width:76px; height:76px; border-radius:18px;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+      flex-shrink:0; border-radius:999px;
+      display:inline-flex; align-items:center; gap:6px;
+      padding:7px 13px;
       border:1px solid rgba(61,217,232,0.22);
       background:rgba(61,217,232,0.06); color:var(--cyan);
-      font-size:9.5px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
+      font-size:11px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.01em;
       cursor:pointer; transition:filter .16s, transform .16s;
     }
     .meal-alt-btn:hover { transform:translateY(-1px); filter:brightness(1.18); }
-    .meal-alt-btn svg { width:19px; height:19px; transition:transform .45s ease; }
+    .meal-alt-btn svg { width:14px; height:14px; transition:transform .45s ease; }
     .meal-alt-btn:hover svg { transform:rotate(-120deg); }
-    /* Espaçador para manter a largura do cartão igual quando não há botão */
-    .meal-alt-spacer { flex-shrink:0; width:76px; }
     @media (max-width:560px) {
-      .meal-alt-btn { width:62px; height:62px; font-size:8.5px; }
-      .meal-alt-btn svg { width:16px; height:16px; }
-      .meal-alt-spacer { width:62px; }
+      .meal-alt-btn { padding:6px 11px; font-size:10px; }
+      .meal-alt-btn svg { width:13px; height:13px; }
     }
     @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
@@ -3347,7 +3347,7 @@
 
         const swapDis = ops.length < 2;
         const swapAccent = m.color, swapRgba = m.rgba;
-        const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição" style="border-color:rgba(${swapRgba},0.32);background:rgba(${swapRgba},0.07);color:${swapAccent}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>Alternativa</span></button>` : '<div class="meal-alt-spacer" aria-hidden="true"></div>';
+        const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição" style="border-color:rgba(${swapRgba},0.32);background:rgba(${swapRgba},0.07);color:${swapAccent}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>Alternativa</span></button>` : '';
         return `<div class="meal-row">
           <div class="meal-rail"><div class="meal-rail-node" style="border-color:rgba(${m.rgba},0.5);color:${m.color};box-shadow:0 0 0 4px rgba(${m.rgba},0.07)">${m.icon}</div></div>
           <div class="meal-card" style="--meal-accent:${m.color};background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
@@ -3360,9 +3360,11 @@
               ${(ratHtml||tagsHtml||macrosHtml||notesHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${notesHtml}</div>` : ''}
               ${activeNota ? `<div class="meal-actions"><button class="meal-act" onclick="mealNotesToggle(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg>${_mealNotesOpen[i]?'Ocultar observações':'Observações'}</button></div>` : ''}
             </div>
-            ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
+            <div class="meal-side">
+              ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
+              ${altBtn}
+            </div>
           </div>
-          ${altBtn}
         </div>`;
       }).join('');
 
