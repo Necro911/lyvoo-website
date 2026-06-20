@@ -715,6 +715,15 @@
       transform-origin: top right;
     }
     .bell-popover.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+    /* Em mobile o popover de 310px sairia do ecrã (ancorado à direita do sino).
+       Fixa-o ao viewport, com margens laterais e largura fluida. */
+    @media (max-width: 560px) {
+      .bell-popover {
+        position: fixed; top: 62px; left: 12px; right: 12px; width: auto;
+        transform-origin: top center; transform: translateY(-6px) scale(0.98);
+      }
+      .bell-popover.open { transform: translateY(0) scale(1); }
+    }
     .bell-pop-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
     .bell-pop-title { font-size: 13px; font-weight: 700; color: var(--txt); }
     .bell-pop-mark { font-size: 11.5px; font-weight: 600; color: var(--cyan); cursor: pointer; background: none; border: none; font-family: inherit; }
@@ -901,6 +910,14 @@
       .row-4 { grid-template-columns: 1fr; }
       .bio-grid { grid-template-columns: 1fr 1fr; }
       .main { padding: 20px 16px 48px; }
+      /* Topbar mais compacta: o nome/plano já aparece na saudação, por isso
+         escondemos o bloco de utilizador para libertar espaço e evitar wrap. */
+      .topbar { gap: 12px; margin-bottom: 20px; align-items: center; }
+      .greeting h1 { font-size: 22px; }
+      .greeting p { font-size: 13px; }
+      .topbar-right { gap: 14px; }
+      .user-info { display: none; }
+      .user { padding: 0; }
     }
 
     /* ── Mobile bottom navigation (≤860px) ── */
@@ -911,24 +928,29 @@
       padding: 6px 0 max(6px, env(safe-area-inset-bottom));
     }
     .mob-nav-inner {
-      display: flex; align-items: center; justify-content: space-around;
+      display: flex; align-items: stretch; justify-content: space-between;
       max-width: 480px; margin: 0 auto;
     }
     .mob-nav-btn {
+      flex: 1 1 0; min-width: 0;
       display: flex; flex-direction: column; align-items: center; gap: 3px;
-      padding: 6px 14px; border-radius: 10px;
+      padding: 6px 2px; border-radius: 10px;
       background: none; border: none; cursor: pointer;
       color: var(--txt-3); transition: color 0.18s;
       font-family: 'Inter', sans-serif;
     }
     .mob-nav-btn.active { color: var(--cyan); }
-    .mob-nav-btn svg { width: 20px; height: 20px; }
-    .mob-nav-btn span { font-size: 9.5px; font-weight: 600; letter-spacing: 0.03em; white-space: nowrap; }
+    .mob-nav-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .mob-nav-btn span { font-size: 9px; font-weight: 600; letter-spacing: 0; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
     @media (max-width: 860px) {
       .mob-nav { display: block; }
       .main { padding-bottom: 84px; }
       .sec-wrap { padding-bottom: 84px; }
+      /* Impede pan horizontal acidental (qualquer filho largo de mais): sem
+         isto, a página desliza para os lados e a barra inferior fixa parece
+         "saltar" durante o scroll. */
+      html, body { overflow-x: hidden; max-width: 100%; }
     }
     @media (max-width: 560px) {
       .main { padding: 20px 16px 84px; }
@@ -1764,6 +1786,10 @@
     <button class="mob-nav-btn active" id="mn-painel" onclick="navSection('painel')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
       <span>Painel</span>
+    </button>
+    <button class="mob-nav-btn" id="mn-plano-alimentar" onclick="navSection('plano-alimentar')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+      <span>Plano</span>
     </button>
     <button class="mob-nav-btn" id="mn-biomarcadores" onclick="navSection('biomarcadores')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
@@ -4579,7 +4605,7 @@
     const expirado = !!d.planoValidoAte && new Date(d.planoValidoAte) < new Date();
     const bloqueado = semPlano || expirado;
     const LOCKAVEIS = ['sb-painel','sb-plano-alimentar','sb-suplementacao','sb-relatorio','sb-biomarcadores','sb-consultas'];
-    const MOB_LOCKAVEIS = ['mn-painel','mn-biomarcadores','mn-consultas'];
+    const MOB_LOCKAVEIS = ['mn-painel','mn-plano-alimentar','mn-biomarcadores','mn-consultas'];
     const storeLink = document.getElementById('sb-store');
     LOCKAVEIS.forEach(id => lockSidebar(id, bloqueado));
     MOB_LOCKAVEIS.forEach(id => document.getElementById(id)?.classList.toggle('mob-locked', bloqueado));
