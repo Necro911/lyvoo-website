@@ -72,10 +72,11 @@
     /* Estado badge no topbar */
     /* ── Secções internas ── */
     .sec-wrap { padding: 32px 32px 64px; max-width: none; }
-    .sec-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 20px; }
+    .sec-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 20px; flex-wrap: wrap; }
     .sec-title { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; color: var(--txt); margin-bottom: 4px; }
     .sec-sub { font-size: 13px; color: var(--txt-3); }
     .sec-legend { display: flex; align-items: center; font-size: 12px; color: var(--txt-3); flex-shrink: 0; }
+    .sec-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
     .sec-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
     .sec-btn { font-size: 13px; font-weight: 600; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); background: rgba(61,217,232,0.06); padding: 8px 16px; border-radius: 9px; text-decoration: none; transition: background 0.2s; white-space: nowrap; cursor: pointer; font-family: 'Inter', sans-serif; }
     .sec-btn:hover { background: rgba(61,217,232,0.12); }
@@ -918,6 +919,14 @@
       .topbar-right { gap: 14px; }
       .user-info { display: none; }
       .user { padding: 0; }
+      /* Cabeçalhos de secção: empilhar título e ações (ex.: botão Download
+         PDF + legenda) em vez de os manter lado a lado, onde transbordavam
+         para fora do ecrã. */
+      .sec-header { flex-direction: column; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+      .sec-header > div:first-child { min-width: 0; }
+      .sec-actions { align-items: flex-start; width: 100%; }
+      .sec-legend { flex-wrap: wrap; row-gap: 4px; }
+      #sec-plano-alimentar .sec-header { margin-left: 0 !important; }
     }
 
     /* ── Mobile bottom navigation (≤860px) ── */
@@ -954,7 +963,18 @@
     }
     @media (max-width: 560px) {
       .main { padding: 20px 16px 84px; }
-      .sec-wrap { padding: 20px 20px 84px; }
+      /* As secções herdam os 16px laterais do .main (estão lá dentro). Sem
+         padding horizontal próprio, o conteúdo das secções fica alinhado com
+         a saudação do topo, em vez de duplamente indentado. */
+      .sec-wrap { padding: 8px 0 84px; }
+      /* Os banners do painel usavam margem lateral de 32px (desktop), o que em
+         mobile criava um recuo inconsistente. Anula a margem horizontal para
+         alinhar com o resto do conteúdo. (IDs em vez de [style] porque o JS
+         reescreve o atributo style ao mostrar/esconder.) */
+      #reeval-banner, #results-banner, #convite-banner, #reagendar-banner,
+      #cancelada-banner, #nutri-cta, #novidades-banner {
+        margin-left: 0 !important; margin-right: 0 !important;
+      }
     }
 
     /* ── Lyvoo Store ─────────────────────────────────────────────────── */
@@ -1385,11 +1405,11 @@
 
     <!-- CTA: Agendar consulta de nutrição (estado 4, sem consulta agendada) -->
     <div id="nutri-cta" style="display:none; margin:0 32px 20px;">
-      <div style="display:flex; align-items:center; gap:20px; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px;">
+      <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; background:linear-gradient(135deg,rgba(139,92,246,0.10),rgba(61,217,232,0.05)); border:1px solid rgba(139,92,246,0.28); border-radius:16px; padding:20px 24px;">
         <div style="width:48px;height:48px;border-radius:14px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--violet);">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
-        <div style="flex:1;">
+        <div style="flex:1; min-width:200px;">
           <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;">Próximo passo</div>
           <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">Agende a sua consulta de nutrição</div>
           <div style="font-size:13px;color:var(--txt-2);line-height:1.6;">Os seus resultados estão prontos. Falta agendar a consulta com a sua nutricionista para traduzir os biomarcadores em ação concreta.</div>
@@ -1534,7 +1554,7 @@
           <h2 class="sec-title">Biomarcadores</h2>
           <p class="sec-sub" id="bio-sub">Resultados da sua análise</p>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+        <div class="sec-actions">
           <button class="plano-dl-btn" id="bio-pdf-btn" onclick="downloadBiomarcadoresPDF()" style="display:none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download PDF
