@@ -2618,6 +2618,17 @@
         return yy + lineH;
       }
 
+      // ── Helper: cartão branco com sombra suave ───────────────────────
+      function softCard(x, yy, wd, ht, r) {
+        doc.saveGraphicsState(); doc.setGState(new doc.GState({ opacity: 0.45 }));
+        doc.setFillColor(206, 216, 228);
+        doc.roundedRect(x + 0.7, yy + 1.1, wd, ht, r, r, 'F');
+        doc.restoreGraphicsState();
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
+        doc.roundedRect(x, yy, wd, ht, r, r, 'FD');
+      }
+
       // ── Header (logo centrado, fundo branco) ─────────────────────────
       const HEADER_H = 32;
       doc.setFillColor(255,255,255);
@@ -2692,12 +2703,12 @@
       // Decorative glow blobs (clipped to rounded card)
       doc.saveGraphicsState();
       doc.roundedRect(ml, y, cw, objH, 4, 4).clip().discardPath();
-      doc.setGState(new doc.GState({ opacity: 0.30 }));
-      doc.setFillColor(...VIOLET);
-      doc.circle(ml + cw - 14, y + 6, 24, 'F');
       doc.setGState(new doc.GState({ opacity: 0.22 }));
+      doc.setFillColor(...VIOLET);
+      doc.circle(ml + cw - 17, y + objH * 0.42, 12, 'F');
+      doc.setGState(new doc.GState({ opacity: 0.15 }));
       doc.setFillColor(...TEAL);
-      doc.circle(ml + cw - 38, y + objH + 6, 20, 'F');
+      doc.circle(ml + cw - 40, y + objH * 0.66, 9, 'F');
       doc.restoreGraphicsState();
 
       // Icon badge (target)
@@ -2725,6 +2736,91 @@
       }
       y += objH + 9;
 
+      // ── Resumo nutricional (distribuição + macros em g + água) ─────
+      const pPct = +pa.proteina || 0, gPct = +pa.gordura || 0, hPct = +pa.hidratos || 0;
+      const hasPct = (pPct + gPct + hPct) > 0;
+      const hcG = +pa.hidratosG || 0, prG = +pa.proteinaG || 0, goG = +pa.gorduraG || 0;
+      const aguaTxt = (pa.agua || '').trim();
+      const hasResumo = hasPct || hcG || prG || goG || aguaTxt;
+      if (hasResumo) {
+        const barBlock = hasPct ? 19 : 0;
+        const cardH = 9 + barBlock + 26 + 7;
+        newPageIfNeeded(cardH + 14);
+
+        // Título da secção + pílula de kcal
+        doc.setFillColor(...TEAL); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...TEXT);
+        doc.text('Resumo nutricional', ml + 6, y);
+        if (pa.kcal) {
+          const kt = String(pa.kcal);
+          doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
+          const ktw = doc.getTextWidth(kt) + 9;
+          doc.setFillColor(...TEAL); doc.saveGraphicsState(); doc.setGState(new doc.GState({ opacity: 0.12 }));
+          doc.roundedRect(W - mr - ktw, y - 5, ktw, 7.4, 3.7, 3.7, 'F'); doc.restoreGraphicsState();
+          doc.setTextColor(...TEAL_D); doc.text(kt, W - mr - ktw + 4.5, y);
+        }
+        y += 7;
+
+        const cardTop = y;
+        softCard(ml, cardTop, cw, cardH, 3.5);
+        let iy = cardTop + 9;
+
+        // Barra de distribuição de macronutrientes (%)
+        if (hasPct) {
+          const sum = pPct + gPct + hPct;
+          const segs = [
+            { p: pPct, c: [74,222,128],  d: [22,163,74],   l: 'Proteína' },
+            { p: gPct, c: [167,139,250], d: [109,40,217],  l: 'Gordura' },
+            { p: hPct, c: [61,217,232],  d: [13,122,135],  l: 'Hidratos' },
+          ];
+          const barX = ml + 9, barW = cw - 18, barY = iy, barH = 5.5;
+          // trilho
+          doc.setFillColor(238, 242, 247); doc.roundedRect(barX, barY, barW, barH, 2.75, 2.75, 'F');
+          let sx = barX;
+          segs.forEach((s, i) => {
+            const w = barW * (s.p / sum);
+            doc.setFillColor(...s.c);
+            doc.rect(sx + (i === 0 ? 0 : 0), barY, w, barH, 'F');
+            sx += w;
+          });
+          // reforçar cantos arredondados por cima
+          doc.setFillColor(238, 242, 247);
+          // legenda
+          const ly = barY + barH + 6;
+          let lx = barX;
+          segs.forEach(s => {
+            doc.setFillColor(...s.d); doc.circle(lx + 1.3, ly - 1.3, 1.3, 'F');
+            doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...TEXT);
+            doc.text(s.l, lx + 4.5, ly);
+            doc.setFont('helvetica','normal'); doc.setTextColor(...TEXT3);
+            doc.text(`${s.p}%`, lx + 4.5 + doc.getTextWidth(s.l) + 3, ly);
+            lx += barW / 3;
+          });
+          iy = ly + 7.5;
+        }
+
+        // Tiles: HCs / Proteína / Lípidos / Água
+        const tiles = [
+          { l: 'HCs',      v: hcG ? hcG + ' g' : '—',         c: [180,100,5]  },
+          { l: 'Proteína', v: prG ? prG + ' g' : '—',         c: [22,163,74]  },
+          { l: 'Lípidos',  v: goG ? goG + ' g' : '—',         c: [220,38,38]  },
+          { l: 'Água',     v: aguaTxt ? aguaTxt + ' L' : '—', c: [13,122,135] },
+        ];
+        const gap = 4, tw = (cw - 18 - 3 * gap) / 4, th = 24, tx0 = ml + 9;
+        tiles.forEach((t, i) => {
+          const tx = tx0 + i * (tw + gap);
+          doc.setFillColor(249, 251, 253); doc.setDrawColor(...LINE); doc.setLineWidth(0.2);
+          doc.roundedRect(tx, iy, tw, th, 2.5, 2.5, 'FD');
+          doc.setFillColor(...t.c); doc.roundedRect(tx, iy, tw, 1.6, 0.8, 0.8, 'F');
+          doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...TEXT3);
+          doc.text(t.l.toUpperCase(), tx + 5.5, iy + 9);
+          doc.setFont('helvetica','bold'); doc.setFontSize(13.5); doc.setTextColor(...TEXT);
+          doc.text(t.v, tx + 5.5, iy + 18.5);
+        });
+
+        y = cardTop + cardH + 11;
+      }
+
       // ── Refeições ─────────────────────────────────────────────────
       if (pa.refeicoes && pa.refeicoes.length) {
         newPageIfNeeded(16);
@@ -2735,87 +2831,68 @@
 
         for (const r of pa.refeicoes) {
           const ops = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : []);
-          const txtW = cw - (r.hora ? 36 : 10) - 12;
+          const txtW = cw - 18;
 
-          // Pre-calculate height
-          let inner = 14; // name row
+          // Pré-calcular altura
+          let inner = 17; // linha nome/hora
           ops.forEach((op, i) => {
-            if (i > 0) inner += 5.5; // "ou" row
+            if (i > 0) inner += 6; // pílula "OU"
             inner += doc.splitTextToSize(op, txtW).length * 4.7;
           });
-          const cardH = Math.max(inner + 6, 22);
+          const cardH = Math.max(inner + 6, 24);
 
           newPageIfNeeded(cardH + 5);
 
           const mc = MEAL_COLORS[r.nome] || TEXT2;
-          doc.setFillColor(...BG);
-          doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
-          doc.roundedRect(ml, y, cw, cardH, 3, 3, 'FD');
-          // left accent strip
-          doc.setFillColor(...mc); doc.roundedRect(ml, y, 3.2, cardH, 1.6, 1.6, 'F');
+          softCard(ml, y, cw, cardH, 3.5);
+          // barra de acento à esquerda
+          doc.setFillColor(...mc); doc.roundedRect(ml, y, 3, cardH, 1.5, 1.5, 'F');
 
-          // Meal name
+          // Nome da refeição
           doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...mc);
-          doc.text(r.nome, ml + 8, y + 9);
+          doc.text(r.nome, ml + 9, y + 9.5);
 
-          // Time
+          // Hora — pílula no canto superior direito
           if (r.hora) {
-            doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...mc);
-            doc.text(r.hora, W - mr - 4, y + 10, { align:'right' });
+            doc.setFont('helvetica','bold'); doc.setFontSize(9);
+            const tw = doc.getTextWidth(r.hora) + 9;
+            doc.setFillColor(...mc); doc.saveGraphicsState(); doc.setGState(new doc.GState({ opacity: 0.12 }));
+            doc.roundedRect(W - mr - tw - 2, y + 4.4, tw, 7.4, 3.7, 3.7, 'F'); doc.restoreGraphicsState();
+            doc.setTextColor(...mc); doc.text(r.hora, W - mr - tw - 2 + 4.5, y + 9.4);
           }
 
-          // Options
-          let oy = y + 15;
+          // Opções
+          let oy = y + 17;
           ops.forEach((op, i) => {
             if (i > 0) {
-              doc.setFont('helvetica','bold'); doc.setFontSize(7);
-              doc.setTextColor(...TEXT3); doc.text('OU', ml + 8, oy + 1); oy += 5.5;
+              doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+              const ow = doc.getTextWidth('OU') + 5;
+              doc.setFillColor(...LINE); doc.roundedRect(ml + 9, oy - 3.1, ow, 4.6, 2.3, 2.3, 'F');
+              doc.setTextColor(...TEXT2); doc.text('OU', ml + 9 + 2.5, oy);
+              oy += 6;
             }
             doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
             const lines = doc.splitTextToSize(op, txtW);
-            doc.text(lines, ml + 8, oy);
+            doc.text(lines, ml + 9, oy);
             oy += lines.length * 4.7;
           });
 
-          y += cardH + 4;
+          y += cardH + 5;
         }
         y += 2;
       }
 
-      // ── Priorizar / Reduzir ───────────────────────────────────────
-      const prio = pa.priorizar || [], redu = pa.reduzir || [];
-      if (prio.length || redu.length) {
-        newPageIfNeeded(28);
-
-        if (prio.length) {
-          doc.setFillColor(...GREEN); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
-          doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...TEXT);
-          doc.text('A priorizar', ml + 6, y); y += 6;
-          y = drawTags(prio, y, GREEN, [232,250,239]) + 4;
-        }
-        if (redu.length) {
-          newPageIfNeeded(20);
-          doc.setFillColor(...RED); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
-          doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...TEXT);
-          doc.text('A reduzir', ml + 6, y); y += 6;
-          y = drawTags(redu, y, RED, [253,235,235]) + 4;
-        }
-        y += 4;
-      }
-
       // ── Observações ───────────────────────────────────────────────
       if (pa.obs) {
-        const obsL = doc.splitTextToSize(pa.obs, cw - 12);
-        const obsH = 14 + obsL.length * 4.6;
+        const obsL = doc.splitTextToSize(pa.obs, cw - 16);
+        const obsH = 15 + obsL.length * 4.6;
         newPageIfNeeded(obsH + 4);
-        doc.setFillColor(...BG);
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.25);
-        doc.roundedRect(ml, y, cw, obsH, 3, 3, 'FD');
-        doc.setFillColor(...TEXT2); doc.roundedRect(ml, y, 3.2, obsH, 1.6, 1.6, 'F');
+        softCard(ml, y, cw, obsH, 3.5);
+        doc.setFillColor(...TEXT2); doc.roundedRect(ml, y, 3, obsH, 1.5, 1.5, 'F');
         doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...TEXT2);
-        doc.text('OBSERVAÇÕES', ml + 8, y + 7);
+        doc.text('OBSERVAÇÕES', ml + 9, y + 8);
         doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
-        doc.text(obsL, ml + 8, y + 13.5);
+        doc.text(obsL, ml + 9, y + 14.5);
       }
 
       // ── Footer em todas as páginas ────────────────────────────────
