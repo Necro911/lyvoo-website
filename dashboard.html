@@ -3242,17 +3242,9 @@
       .sort((a,b) => (aff.includes(b.label)?1:0) - (aff.includes(a.label)?1:0))
       .slice(0,2);
   }
-  // Estado de interação do cliente (troca de opção + sugestões abertas).
+  // Estado de interação do cliente (troca de opção + painel de observações aberto).
   let _mealSwapIdx = {};
-  let _mealSuggestOpen = {};
-  // Sugestão "IA" — ancorada nos alimentos a priorizar do plano real (mock seguro,
-  // claramente uma sugestão, sem números fabricados).
-  function mealSuggestionFor(r, pa) {
-    const pri = (pa.priorizar||[]);
-    const alvo = pri.length ? pri[(r.nome||'').length % pri.length] : null;
-    if (alvo) return `Para reforçar o seu objectivo, experimente adicionar <b>${alvo}</b> a esta refeição.`;
-    return `Mantenha porções de proteína e vegetais visíveis no prato — equilíbrio simples e eficaz.`;
-  }
+  let _mealNotesOpen = {};
   window.mealSwap = function(i) {
     const pa = window._planoData; if (!pa || !pa.refeicoes) return;
     const r = pa.refeicoes[i]; const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
@@ -3271,8 +3263,8 @@
       descEl.addEventListener('animationend', doSwap, { once: true });
     } else { doSwap(); }
   };
-  window.mealImprove = function(i) {
-    _mealSuggestOpen[i] = !_mealSuggestOpen[i];
+  window.mealNotesToggle = function(i) {
+    _mealNotesOpen[i] = !_mealNotesOpen[i];
     renderPlano(window._planoData);
   };
   function renderPlano(pa) {
@@ -3340,8 +3332,9 @@
         const off = _mealSwapIdx[i] || 0;
         const activeOp = ops.length ? ops[off % ops.length] : null;
         const opsHtml = activeOp ? `<div class="meal-desc" data-meal="${i}">${activeOp}</div>` : '';
+        const activeNota = (r.notas && r.notas[off % ops.length]) ? r.notas[off % ops.length].trim() : '';
 
-        // Insights clínicos, macros (só se reais), rationale e sugestão
+        // Insights clínicos, macros (só se reais), rationale e observações de preparo
         const insights = deriveMealInsights(r, planFocus);
         const tagsHtml = insights.length ? `<div class="meal-tags">${insights.map(t => `<span class="meal-tag" style="color:rgb(${t.rgba});background:rgba(${t.rgba},0.1);border-color:rgba(${t.rgba},0.28)">${t.label}</span>`).join('')}</div>` : '';
         const macrosHtml = (r.macros && (r.macros.p!=null||r.macros.c!=null||r.macros.f!=null)) ? `<div class="meal-macros">
@@ -3350,7 +3343,7 @@
           ${r.macros.f!=null?`<span class="meal-macro">G <b>${r.macros.f}g</b></span>`:''}
         </div>` : '';
         const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
-        const sugHtml = _mealSuggestOpen[i] ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg><span><b>Sugestão Lyvoo:</b> ${mealSuggestionFor(r, pa)}</span></div>` : '';
+        const notesHtml = (activeNota && _mealNotesOpen[i]) ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span><b>Observações:</b> ${activeNota}</span></div>` : '';
 
         const swapDis = ops.length < 2;
         const swapAccent = m.color, swapRgba = m.rgba;
@@ -3364,10 +3357,8 @@
                 <span class="meal-name">${r.nome||'Refeição'}</span>
               </div>
               ${opsHtml}
-              ${(ratHtml||tagsHtml||macrosHtml||sugHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${sugHtml}</div>` : ''}
-              <div class="meal-actions">
-                <button class="meal-act" onclick="mealImprove(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Melhorar</button>
-              </div>
+              ${(ratHtml||tagsHtml||macrosHtml||notesHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${notesHtml}</div>` : ''}
+              ${activeNota ? `<div class="meal-actions"><button class="meal-act" onclick="mealNotesToggle(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg>${_mealNotesOpen[i]?'Ocultar observações':'Observações'}</button></div>` : ''}
             </div>
             ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
           </div>
