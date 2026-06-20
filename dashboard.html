@@ -1512,7 +1512,13 @@
           <h2 class="sec-title">Biomarcadores</h2>
           <p class="sec-sub" id="bio-sub">Resultados da sua análise</p>
         </div>
-        <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Prioridade</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+          <button class="plano-dl-btn" id="bio-pdf-btn" onclick="downloadBiomarcadoresPDF()" style="display:none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </button>
+          <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Prioridade</div>
+        </div>
       </div>
       <div id="bio-content">
         <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Os seus resultados ainda não estão disponíveis. Em breve!</div>
@@ -2836,6 +2842,192 @@
     }
   };
 
+  // Cabeçalho partilhado dos PDF (logo recortado + faixa) — devolve o Y abaixo do cabeçalho
+  async function lyvooPdfHeader(doc, W, TEAL, TEAL_D) {
+    const HEADER_H = 32;
+    doc.setFillColor(255,255,255);
+    doc.rect(0, 0, W, HEADER_H, 'F');
+    try {
+      const resp = await fetch('images/logo.png');
+      const blob = await resp.blob();
+      const bmp  = await createImageBitmap(blob);
+      const cnv  = document.createElement('canvas');
+      cnv.width = bmp.width; cnv.height = bmp.height;
+      const ctx = cnv.getContext('2d');
+      ctx.drawImage(bmp, 0, 0);
+      const px = ctx.getImageData(0, 0, cnv.width, cnv.height).data;
+      let minX = cnv.width, minY = cnv.height, maxX = 0, maxY = 0;
+      for (let yy = 0; yy < cnv.height; yy++) {
+        for (let xx = 0; xx < cnv.width; xx++) {
+          if (px[(yy * cnv.width + xx) * 4 + 3] > 10) {
+            if (xx < minX) minX = xx; if (xx > maxX) maxX = xx;
+            if (yy < minY) minY = yy; if (yy > maxY) maxY = yy;
+          }
+        }
+      }
+      const cropW = maxX - minX + 1, cropH = maxY - minY + 1;
+      const out = document.createElement('canvas');
+      out.width = cropW; out.height = cropH;
+      out.getContext('2d').drawImage(cnv, minX, minY, cropW, cropH, 0, 0, cropW, cropH);
+      const logoW = 56, logoH = logoW * (cropH / cropW);
+      doc.addImage(out.toDataURL('image/png'), 'PNG', (W - logoW) / 2, (HEADER_H - logoH) / 2, logoW, logoH);
+    } catch (e) {
+      doc.setFont('helvetica','bold'); doc.setFontSize(16);
+      doc.setTextColor(...TEAL_D);
+      doc.text('lyvoo', W / 2, HEADER_H / 2 + 3, { align:'center' });
+    }
+    doc.setFillColor(...TEAL);
+    doc.rect(0, HEADER_H, W, 1.1, 'F');
+    return HEADER_H + 13;
+  }
+
+  // Exporta os biomarcadores em PDF — sempre a versão simplificada (lista por sistema)
+  window.downloadBiomarcadoresPDF = async function() {
+    const resultados = _bioLastResultados;
+    if (!resultados || !resultados.biomarcadores) { mostrarToast('Sem biomarcadores para exportar.', 'erro'); return; }
+    normalizeResultados(resultados);
+
+    const btn = document.getElementById('bio-pdf-btn');
+    const origHTML = btn?.innerHTML;
+    if (btn) { btn.disabled = true; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> A gerar…'; }
+
+    try {
+      if (!window.jspdf) {
+        await new Promise((ok, err) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+          s.onload = ok; s.onerror = err;
+          document.head.appendChild(s);
+        });
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      const W = 210, H = 297, ml = 18, mr = 18, cw = W - ml - mr;
+      const TEAL = [11,107,120], TEAL_D = [7,75,85];
+      const TEXT = [15,17,23], TEXT2 = [80,92,110], TEXT3 = [148,160,176];
+      const LINE = [218,226,236];
+      const GREEN = [22,163,74], AMBER = [180,100,5], RED = [220,38,38];
+      const STATUS = {
+        otimo:   { lbl:'Ótimo',      c:GREEN },
+        atencao: { lbl:'Atenção',    c:AMBER },
+        critico: { lbl:'Prioridade', c:RED },
+      };
+
+      // Colunas (x de início)
+      const cParam = ml, cVal = 74, cRef = 100, cOt = 134, cEst = 158, cDelta = W - mr;
+
+      let y = await lyvooPdfHeader(doc, W, TEAL, TEAL_D);
+
+      // Título + nome + data
+      const nomeCliente = window._planoNome || '';
+      const hoje = new Date().toLocaleDateString('pt-PT', { day:'numeric', month:'long', year:'numeric' });
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...TEAL);
+      doc.text('ANÁLISE DE BIOMARCADORES', ml, y);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT3);
+      doc.text(hoje, W - mr, y, { align:'right' });
+      y += 8;
+      if (nomeCliente) { doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...TEXT); doc.text(nomeCliente, ml, y); y += 4; }
+      if (resultados.dataAnalise) { y += 5; doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2); doc.text('Resultados da análise de ' + resultados.dataAnalise, ml, y); }
+      y += 6;
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y); y += 9;
+
+      function newPageIfNeeded(needed) {
+        if (y + needed > H - 20) { doc.addPage(); y = 20; return true; }
+        return false;
+      }
+      function headerRow() {
+        doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...TEXT3);
+        doc.text('PARÂMETRO', cParam, y);
+        doc.text('VALOR', cVal, y);
+        doc.text('REFERÊNCIA', cRef, y);
+        doc.text('ÓTIMO', cOt, y);
+        doc.text('ESTADO', cEst, y);
+        doc.text('Δ', cDelta, y, { align:'right' });
+        y += 2.5;
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y);
+        y += 5.5;
+      }
+
+      // Agrupar por sistema (ordem canónica) — versão simplificada
+      const grupos = {};
+      const vistos = new Set();
+      Object.values(resultados.biomarcadores).forEach(list => (list || []).forEach(r => {
+        if (!r || !r.valor || vistos.has(r.nome)) return;
+        vistos.add(r.nome);
+        const cat = BIO_SYSTEM_MAP[r.nome] || 'outros';
+        (grupos[cat] = grupos[cat] || []).push(r);
+      }));
+
+      BIO_SYSTEMS.forEach(({ key: cat, label }) => {
+        const g = grupos[cat];
+        if (!g || !g.length) return;
+        newPageIfNeeded(20);
+        // Título do sistema
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(...TEAL_D);
+        doc.text(label.toUpperCase(), ml, y); y += 5;
+        headerRow();
+
+        g.forEach(r => {
+          newPageIfNeeded(9);
+          const st = STATUS[r.tag] || { lbl:'—', c:TEXT3 };
+          doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
+          doc.text(doc.splitTextToSize(String(r.nome || ''), cVal - cParam - 3)[0], cParam, y);
+          doc.text(`${r.valor}${r.unidade ? ' ' + r.unidade : ''}`, cVal, y);
+          doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT2);
+          doc.text(doc.splitTextToSize(String(r.referencia || '—'), cOt - cRef - 3)[0], cRef, y);
+          doc.setTextColor(...GREEN);
+          doc.text(doc.splitTextToSize(String(r.refOtima || '—'), cEst - cOt - 3)[0], cOt, y);
+          // Pílula de estado
+          doc.setFont('helvetica','bold'); doc.setFontSize(7);
+          const pillW = doc.getTextWidth(st.lbl) + 4.6, pillH = 4.6;
+          doc.setFillColor(st.c[0], st.c[1], st.c[2]);
+          doc.saveGraphicsState(); doc.setGState(new doc.GState({ opacity: 0.13 }));
+          doc.roundedRect(cEst, y - 3.4, pillW, pillH, pillH/2, pillH/2, 'F');
+          doc.restoreGraphicsState();
+          doc.setTextColor(...st.c);
+          doc.text(st.lbl, cEst + 2.3, y);
+          // Delta (neutro, com seta)
+          if (r.delta) {
+            const down = /^[-↓]/.test(String(r.delta).trim());
+            doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT2);
+            doc.text(`${down ? '↓' : '↑'} ${String(r.delta).replace(/^[↑↓]\s?/, '')}`, cDelta, y, { align:'right' });
+          }
+          y += 4.2;
+          doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.line(ml, y, W - mr, y);
+          y += 4.6;
+        });
+        y += 5;
+      });
+
+      // Nota de rodapé informativa
+      newPageIfNeeded(16);
+      doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
+      doc.text(doc.splitTextToSize('Documento informativo. Os intervalos ótimos refletem as metas de prevenção Lyvoo. Interprete sempre os resultados com o acompanhamento da equipa clínica.', cw), ml, y);
+
+      // Rodapé com paginação
+      const total = doc.getNumberOfPages();
+      for (let p = 1; p <= total; p++) {
+        doc.setPage(p);
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.4); doc.setFillColor(...TEAL);
+        doc.rect(0, H - 16, W, 0.6, 'F');
+        doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...TEAL_D);
+        doc.text('Saúde personalizada . Prevenção inteligente. Impacto real.', W / 2, H - 9, { align:'center' });
+        doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
+        doc.text(`${p} / ${total}`, W - mr, H - 9, { align:'right' });
+      }
+
+      const slug = (window._planoNome || 'Cliente').replace(/\s+/g,'_').replace(/[^\w_]/g,'');
+      doc.save(`Lyvoo_Biomarcadores_${slug}.pdf`);
+
+    } catch(e) {
+      console.error('PDF error:', e);
+      mostrarToast('Erro ao gerar o PDF. Tente novamente.', 'erro');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+    }
+  };
+
   // ── Navegação entre secções ──────────────────────────────────────────
   const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','chat','store','perfil','conta'];
   const SECTION_TITLES = {
@@ -3373,6 +3565,8 @@
         lista += '</div></div>';
       });
       container.innerHTML = topbar + lista;
+      const pdfBtnL = document.getElementById('bio-pdf-btn');
+      if (pdfBtnL) pdfBtnL.style.display = 'inline-flex';
       return;
     }
 
@@ -3417,6 +3611,8 @@
     }).join('');
 
     container.innerHTML = topbar + `<div class="biox-list">${cards}</div>`;
+    const pdfBtn = document.getElementById('bio-pdf-btn');
+    if (pdfBtn) pdfBtn.style.display = 'inline-flex';
   }
 
   // ── Render: Mapa corporal (relatório) ────────────────────────────────
