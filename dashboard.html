@@ -3419,10 +3419,10 @@
         <div class="metric-tile-val">${val}${unit?`<small>${unit}</small>`:''}</div>
         <div class="metric-tile-lbl">${lbl}</div>
       </div>`;
-    const _icoMeals = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M5 2v20"/><path d="M19 15V2a4 4 0 0 0-4 4v5c0 1.1.9 2 2 2h2zm0 0v7"/></svg>`;
+    const _icoHCs = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
     const _icoProt = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11M6.5 17.5h11M4 4h1a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4M20 4h-1a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h1"/></svg>`;
+    const _icoLip = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8m3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5m-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11m3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>`;
     const _icoWater = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69 17 8a7 7 0 1 1-10 0z"/></svg>`;
-    const _icoAdh = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`;
     const metricsCard = `
       <div class="plano-metrics">
         <div class="plano-metrics-head">
@@ -3430,10 +3430,10 @@
           <span class="demo-pill" title="Valores ilustrativos — em breve com seguimento real">Exemplo</span>
         </div>
         <div class="metric-grid">
-          ${_mTile('61,217,232', _icoMeals, (pa.refeicoes?.length || '—'), '', 'Refeições')}
-          ${_mTile('74,222,128', _icoProt, '98', 'g', 'Proteína')}
-          ${_mTile('139,92,246', _icoWater, '1,2', 'L', 'Água')}
-          ${_mTile('251,191,36', _icoAdh, '92', '%', 'Aderência')}
+          ${_mTile('251,191,36', _icoHCs, (hidr || '—'), 'g', 'HCs')}
+          ${_mTile('74,222,128', _icoProt, (prot || '—'), 'g', 'Proteína')}
+          ${_mTile('248,113,113', _icoLip, (gord || '—'), 'g', 'Lípidos')}
+          ${_mTile('61,217,232', _icoWater, '1,2', 'l', 'Água')}
         </div>
       </div>`;
 
