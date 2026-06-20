@@ -185,6 +185,114 @@
     .bio-delta.up   { color: var(--green); }
     .bio-delta.down { color: var(--cyan); }
 
+    /* Biomarcadores — health intelligence (premium) */
+    .biox-filters { display:flex; flex-wrap:wrap; gap:9px; margin-bottom:22px; }
+    .biox-chip {
+      font-size:12.5px; font-weight:600; color:var(--txt-2);
+      background:var(--panel); border:1px solid var(--line); border-radius:999px;
+      padding:8px 16px; cursor:pointer; white-space:nowrap;
+      transition:background .18s, border-color .18s, color .18s, transform .12s;
+    }
+    .biox-chip:hover { border-color:var(--line-2); color:var(--txt); transform:translateY(-1px); }
+    .biox-chip.active {
+      color:#06281E; background:linear-gradient(135deg, var(--cyan), var(--green));
+      border-color:transparent; box-shadow:0 4px 18px -6px rgba(61,217,232,0.5);
+    }
+    .biox-chip .biox-chip-n { opacity:0.6; font-weight:700; margin-left:2px; }
+    .biox-chip.active .biox-chip-n { opacity:0.7; }
+    .biox-list { display:flex; flex-direction:column; gap:12px; }
+    .biox-empty { padding:48px 0; text-align:center; color:var(--txt-3); font-size:14px; }
+
+    .biox-card {
+      position:relative; border:1px solid var(--line); border-radius:18px; overflow:hidden;
+      background:linear-gradient(120deg, rgba(255,255,255,0.018), rgba(255,255,255,0) 60%), var(--panel);
+      transition:border-color .2s, transform .16s, box-shadow .22s;
+    }
+    .biox-card::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+      background:var(--biox-accent); opacity:0.85;
+    }
+    .biox-card:hover { transform:translateY(-1px); border-color:var(--line-2); box-shadow:0 14px 40px -22px var(--biox-glow); }
+    .biox-card.open { border-color:var(--line-2); box-shadow:0 18px 50px -26px var(--biox-glow); }
+
+    .biox-head {
+      display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:20px;
+      padding:18px 22px 18px 24px; cursor:pointer; width:100%; text-align:left;
+      background:none; border:none; color:inherit; font-family:inherit;
+    }
+    .biox-icon {
+      width:46px; height:46px; border-radius:13px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(var(--biox-accent-rgb),0.12); color:var(--biox-accent);
+      border:1px solid rgba(var(--biox-accent-rgb),0.22);
+    }
+    .biox-icon svg { width:22px; height:22px; stroke-width:1.8; }
+    .biox-mid { min-width:0; }
+    .biox-interp { display:block; font-size:16px; font-weight:700; color:var(--txt); letter-spacing:-0.01em; line-height:1.3; }
+    .biox-meta { display:block; font-size:12px; color:var(--txt-3); margin-top:3px; }
+    .biox-meta b { color:var(--txt-2); font-weight:600; }
+    .biox-side { display:flex; align-items:center; gap:18px; flex-shrink:0; }
+    .biox-spark { width:74px; height:34px; flex-shrink:0; position:relative; }
+    .biox-spark svg { width:100%; height:100%; overflow:visible; display:block; }
+    .biox-spark .sk-line { fill:none; stroke:var(--biox-accent); stroke-width:2; stroke-linecap:round; stroke-linejoin:round;
+      filter:drop-shadow(0 0 5px rgba(var(--biox-accent-rgb),0.55));
+      stroke-dasharray:var(--sk-len); stroke-dashoffset:var(--sk-len); animation:skDraw 1s ease forwards; }
+    .biox-spark .sk-dot { fill:var(--biox-accent); filter:drop-shadow(0 0 4px rgba(var(--biox-accent-rgb),0.8)); }
+    @keyframes skDraw { to { stroke-dashoffset:0; } }
+    .biox-valblock { text-align:right; min-width:62px; }
+    .biox-val { font-size:21px; font-weight:800; color:var(--txt); letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; }
+    .biox-val small { font-size:11px; font-weight:500; color:var(--txt-3); margin-left:1px; }
+    .biox-delta { font-size:11.5px; font-weight:600; margin-top:5px; display:flex; align-items:center; gap:3px; justify-content:flex-end; }
+    .biox-delta.up { color:var(--green); } .biox-delta.down { color:var(--cyan); } .biox-delta.flat { color:var(--txt-3); }
+    .biox-badge {
+      font-size:10.5px; font-weight:700; padding:5px 11px; border-radius:999px; white-space:nowrap;
+      letter-spacing:0.02em; border:1px solid;
+    }
+    .biox-badge.good { color:var(--green); background:rgba(74,222,128,0.10); border-color:rgba(74,222,128,0.28); }
+    .biox-badge.warn { color:var(--amber); background:rgba(251,191,36,0.10); border-color:rgba(251,191,36,0.28); }
+    .biox-badge.crit { color:var(--red);   background:rgba(248,113,113,0.10); border-color:rgba(248,113,113,0.28); }
+    .biox-badge.neutral { color:var(--txt-2); background:rgba(255,255,255,0.05); border-color:var(--line); }
+    .biox-chev { color:var(--txt-3); transition:transform .25s; display:flex; }
+    .biox-card.open .biox-chev { transform:rotate(180deg); }
+
+    .biox-detail { display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease; }
+    .biox-detail-inner { overflow:hidden; min-height:0; }
+    .biox-card.open .biox-detail { grid-template-rows:1fr; }
+    .biox-detail-pad { padding:4px 24px 24px; border-top:1px solid var(--line); margin-top:2px; }
+    .biox-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0; }
+    .biox-stat { background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:13px 15px; }
+    .biox-stat-l { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--txt-3); margin-bottom:6px; }
+    .biox-stat-v { font-size:15px; font-weight:700; color:var(--txt); }
+    .biox-stat-v.opt { color:var(--green); }
+    .biox-bar-wrap { margin:18px 0 6px; }
+    .biox-bar-head { display:flex; justify-content:space-between; font-size:11px; color:var(--txt-3); margin-bottom:9px; }
+    .biox-bar { position:relative; height:8px; border-radius:999px; background:rgba(255,255,255,0.06); }
+    .biox-bar-zone { position:absolute; top:0; bottom:0; border-radius:999px; }
+    .biox-bar-zone.ref { background:rgba(255,255,255,0.10); }
+    .biox-bar-zone.ot  { background:rgba(74,222,128,0.40); }
+    .biox-bar-dot { position:absolute; top:50%; width:14px; height:14px; border-radius:50%; transform:translate(-50%,-50%);
+      border:2.5px solid var(--bg); box-shadow:0 0 0 1px rgba(255,255,255,0.15), 0 2px 6px rgba(0,0,0,0.5); }
+    .biox-ladder { display:flex; flex-direction:column; gap:7px; margin-top:18px; }
+    .biox-ladder-row { display:grid; grid-template-columns:84px 1fr; align-items:center; gap:12px; font-size:12.5px; }
+    .biox-ladder-k { display:flex; align-items:center; gap:7px; color:var(--txt-2); font-weight:600; }
+    .biox-ladder-k .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .biox-ladder-v { color:var(--txt-3); font-variant-numeric:tabular-nums; }
+    .biox-ladder-row.hit .biox-ladder-v { color:var(--txt); font-weight:600; }
+    .biox-trend-chart { margin-top:18px; }
+    .biox-trend-chart svg { width:100%; height:96px; overflow:visible; display:block; }
+    .biox-note { margin-top:16px; font-size:12px; color:var(--txt-3); line-height:1.6; display:flex; gap:8px; }
+    .biox-note svg { width:14px; height:14px; flex-shrink:0; margin-top:1px; color:var(--txt-3); }
+    @media (max-width:680px) {
+      .biox-head { grid-template-columns:auto 1fr; gap:14px; padding:16px; row-gap:14px; }
+      .biox-icon { width:40px; height:40px; }
+      .biox-interp { font-size:14.5px; }
+      .biox-side { grid-column:1 / -1; justify-content:space-between; gap:12px; width:100%; }
+      .biox-spark { width:58px; height:30px; }
+      .biox-val { font-size:18px; }
+      .biox-stats { grid-template-columns:1fr; }
+      .biox-detail-pad { padding:4px 16px 20px; }
+    }
+
     /* Plano alimentar */
     .sec-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
     .sec-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 22px; }
@@ -1393,7 +1501,7 @@
           <h2 class="sec-title">Biomarcadores</h2>
           <p class="sec-sub" id="bio-sub">Resultados da sua análise</p>
         </div>
-        <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Crítico</div>
+        <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Prioridade</div>
       </div>
       <div id="bio-content">
         <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Os seus resultados ainda não estão disponíveis. Em breve!</div>
@@ -3023,6 +3131,157 @@
     return resultados;
   }
 
+  // ── Biomarcadores: camada de interpretação (health intelligence) ─────
+  // O que cada marcador mede (facto de referência) — combinado com o estado
+  // calculado por autoTag() para produzir uma interpretação honesta, sem
+  // inventar conselho clínico que o admin não tenha autorizado.
+  const BIO_SUBJECT = {
+    'HbA1c':'controlo glicémico', 'Colesterol total':'colesterol total',
+    'LDL':'colesterol LDL', 'HDL':'colesterol HDL', 'Triglicéridos':'triglicéridos',
+    'ApoB':'ApoB', 'Lp(a)':'lipoproteína(a)', 'hs-CRP':'inflamação (hs-CRP)',
+    'NT-proBNP':'esforço cardíaco (NT-proBNP)',
+    'ALT':'enzima hepática ALT', 'AST':'enzima hepática AST', 'GGT':'enzima hepática GGT',
+    'Fosfatase Alcalina':'fosfatase alcalina', 'Albumina':'albumina',
+    'Creatinina':'função renal (creatinina)', 'Ureia':'ureia',
+    'Proteína Total':'proteína total', 'Magnésio':'magnésio', 'Cálcio':'cálcio',
+    'Vitamina D':'vitamina D', 'Vitamina B12':'vitamina B12', 'Folato':'folato',
+    'Ferritina':'reservas de ferro', 'TSH':'função tiroideia (TSH)',
+    'FT4':'tiroxina livre (FT4)', 'T3':'triiodotironina (T3)',
+    'Testosterona Total':'testosterona total', 'Testosterona Livre':'testosterona livre',
+    'SHBG':'SHBG', 'PSA':'PSA', 'FSH':'FSH', 'LH':'LH', 'Estradiol':'estradiol',
+    'Progesterona':'progesterona', 'Prolactina':'prolactina', 'AMH':'reserva ovárica (AMH)',
+    'Cortisol':'cortisol',
+  };
+  const BIO_SYS_ICON = {
+    metabolico:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+    cardiovascular:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/>',
+    hepatico:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+    renal:'<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19C8.5 8.16 7.29 6.24 7 5c-.29 1.24-1.5 3.16-2.29 4.06C3.57 9.99 3 11.09 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A11 11 0 0 0 14 3c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a7 7 0 0 1-11.9 5"/>',
+    tiroide:'<path d="M12 3v9"/><path d="M5 8c0 4 3 8 7 8s7-4 7-8"/><circle cx="12" cy="13" r="1"/>',
+    hormonal:'<circle cx="12" cy="12" r="2.2"/><path d="M12 2a10 10 0 0 1 0 20"/><path d="M12 22a10 10 0 0 1 0-20"/>',
+    hematologia:'<path d="M12 2.69 17 8a7 7 0 1 1-10 0z"/>',
+    nutricional:'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/>',
+    outros:'<path d="M9 3h6M10 3v6l-4.5 9a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 9V3"/>',
+  };
+  const BIOX_ACCENT = {
+    otimo:   { c:'var(--green)', rgb:'74,222,128' },
+    atencao: { c:'var(--amber)', rgb:'251,191,36' },
+    critico: { c:'var(--red)',   rgb:'248,113,113' },
+    '':      { c:'var(--txt-2)', rgb:'157,170,176' },
+  };
+  const BIOX_LABEL = { otimo:'Ótimo', atencao:'Atenção', critico:'Prioridade', '':'—' };
+  const BIOX_CLS   = { otimo:'good', atencao:'warn', critico:'crit', '':'neutral' };
+  const BIOX_SEV   = { critico:0, atencao:1, otimo:2, '':3 };
+  const _bioCap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+
+  function bioInterp(r) {
+    const subj = BIO_SUBJECT[r.nome] || r.nome;
+    if (r.tag === 'otimo')   return _bioCap(subj) + ' em níveis ótimos';
+    if (r.tag === 'atencao') return _bioCap(subj) + ' ligeiramente fora do ideal';
+    if (r.tag === 'critico') return _bioCap(subj) + ' fora do intervalo recomendado';
+    return _bioCap(subj);
+  }
+  // Posição factual do valor face ao intervalo ótimo (acima / abaixo / dentro)
+  function bioDir(r) {
+    const val = parseFloat(String(r.valor).replace(',', '.'));
+    const ot = parseRefRange(r.refOtima) || parseRefRange(r.referencia);
+    if (isNaN(val) || !ot) return '';
+    if (ot.max != null && val > ot.max) return 'acima do intervalo ótimo';
+    if (ot.min != null && val < ot.min) return 'abaixo do intervalo ótimo';
+    return 'dentro do intervalo ótimo';
+  }
+  // Série histórica de um marcador (cronológica) a partir do histórico de análises
+  function bioSeries(nome) {
+    const hist = window._bioHistorico;
+    if (!Array.isArray(hist) || hist.length < 2) return [];
+    const pts = [];
+    for (let i = hist.length - 1; i >= 0; i--) {
+      const b = hist[i] && hist[i].biomarcadores; if (!b) continue;
+      let found = null;
+      for (const rows of Object.values(b)) {
+        const m = (rows || []).find(x => x && x.nome === nome && x.valor !== '' && x.valor != null);
+        if (m) { found = m; break; }
+      }
+      if (found) { const v = parseFloat(String(found.valor).replace(',', '.')); if (!isNaN(v)) pts.push(v); }
+    }
+    return pts;
+  }
+  function bioSpark(series) {
+    if (series.length < 2) return '';
+    const w = 74, h = 34, pad = 4;
+    const min = Math.min(...series), max = Math.max(...series), span = (max - min) || 1;
+    const X = i => pad + (i / (series.length - 1)) * (w - 2 * pad);
+    const Y = v => h - pad - ((v - min) / span) * (h - 2 * pad);
+    const d = series.map((v, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
+    let len = 0;
+    for (let i = 1; i < series.length; i++) len += Math.hypot(X(i) - X(i - 1), Y(series[i]) - Y(series[i - 1]));
+    const lx = X(series.length - 1).toFixed(1), ly = Y(series[series.length - 1]).toFixed(1);
+    return `<div class="biox-spark"><svg viewBox="0 0 ${w} ${h}" style="--sk-len:${Math.ceil(len)}"><path class="sk-line" d="${d}"/><circle class="sk-dot" cx="${lx}" cy="${ly}" r="2.6"/></svg></div>`;
+  }
+  function bioTrendChart(series, unidade) {
+    if (series.length < 2) return '';
+    const w = 600, h = 96, pad = 16, padT = 14, padB = 22;
+    const min = Math.min(...series), max = Math.max(...series), span = (max - min) || 1;
+    const X = i => pad + (i / (series.length - 1)) * (w - 2 * pad);
+    const Y = v => padT + (1 - (v - min) / span) * (h - padT - padB);
+    const line = series.map((v, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
+    const area = `M${X(0).toFixed(1)} ${(h - padB).toFixed(1)} ` + series.map((v, i) => `L${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ') + ` L${X(series.length - 1).toFixed(1)} ${(h - padB).toFixed(1)} Z`;
+    const dots = series.map((v, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3" fill="var(--biox-accent)"/>`).join('');
+    const first = `<text x="${X(0).toFixed(1)}" y="${h - 6}" font-size="10" fill="var(--txt-3)" text-anchor="start">${series[0]}</text>`;
+    const last  = `<text x="${X(series.length - 1).toFixed(1)}" y="${h - 6}" font-size="10" fill="var(--txt-2)" text-anchor="end">${series[series.length - 1]}${unidade ? ' ' + unidade : ''}</text>`;
+    return `<div class="biox-trend-chart"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+      <defs><linearGradient id="biox-grad-${Math.random().toString(36).slice(2,7)}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="var(--biox-accent)" stop-opacity="0.22"/><stop offset="100%" stop-color="var(--biox-accent)" stop-opacity="0"/></linearGradient></defs>
+      <path d="${area}" fill="rgba(var(--biox-accent-rgb),0.12)"/>
+      <path d="${line}" fill="none" stroke="var(--biox-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      ${dots}${first}${last}
+    </svg></div>`;
+  }
+  function bioDelta(r) {
+    if (!r.delta) return '<div class="biox-delta flat">—</div>';
+    const down = /^[-↓]/.test(String(r.delta).trim());
+    return `<div class="biox-delta ${down ? 'down' : 'up'}">${down ? '↓' : '↑'} ${String(r.delta).replace(/^[↑↓]\s?/, '')}</div>`;
+  }
+  // Barra de posição (valor vs. referência + zona ótima)
+  function bioBar(r) {
+    const val = parseFloat(String(r.valor).replace(',', '.'));
+    const norm = rg => { if (!rg) return null; let { min, max } = rg; if (min === null) min = 0; if (max === null) max = min * 2 || min + 1; return max > min ? { min, max } : null; };
+    const rf = norm(parseRefRange(r.referencia)), ot = norm(parseRefRange(r.refOtima));
+    const base = rf || ot; if (isNaN(val) || !base) return '';
+    const span = base.max - base.min, lo = base.min - span * 0.35, hi = base.max + span * 0.35;
+    const pct = x => Math.max(2, Math.min(98, ((x - lo) / (hi - lo)) * 100));
+    return `<div class="biox-bar-wrap">
+      <div class="biox-bar-head"><span>Intervalo de referência</span>${ot ? '<span style="color:var(--green)">Zona ótima Lyvoo</span>' : ''}</div>
+      <div class="biox-bar">
+        ${rf ? `<span class="biox-bar-zone ref" style="left:${pct(rf.min)}%;right:${(100 - pct(rf.max)).toFixed(1)}%"></span>` : ''}
+        ${ot ? `<span class="biox-bar-zone ot" style="left:${pct(ot.min)}%;right:${(100 - pct(ot.max)).toFixed(1)}%"></span>` : ''}
+        <span class="biox-bar-dot" style="left:${pct(val).toFixed(1)}%;background:${tagColor(r.tag)}"></span>
+      </div>
+    </div>`;
+  }
+  // Escada clínica: tiers reais autorizados pelo admin (ótimo / vigiar / ação)
+  function bioLadder(r) {
+    const rows = [
+      { k: 'Ótimo',  cls: 'otimo',   v: r.refOtima, c: 'var(--green)' },
+      { k: 'Vigiar', cls: 'atencao', v: r.refRisco, c: 'var(--amber)' },
+      { k: 'Ação',   cls: 'critico', v: r.refAcao,  c: 'var(--red)' },
+    ].filter(x => x.v);
+    if (!rows.length) return '';
+    return `<div class="biox-ladder">${rows.map(x =>
+      `<div class="biox-ladder-row${r.tag === x.cls ? ' hit' : ''}"><span class="biox-ladder-k"><span class="dot" style="background:${x.c}"></span>${x.k}</span><span class="biox-ladder-v">${x.v}${r.unidade ? ' ' + r.unidade : ''}</span></div>`
+    ).join('')}</div>`;
+  }
+
+  window.bioxFilter = function(cat, btn) {
+    document.querySelectorAll('.biox-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.biox-card').forEach(card => {
+      card.style.display = (cat === 'todos' || card.dataset.cat === cat) ? '' : 'none';
+    });
+  };
+  window.bioxToggle = function(btn) {
+    btn.closest('.biox-card').classList.toggle('open');
+  };
+
   function renderBiomarcadores(resultados) {
     normalizeResultados(resultados);
     const container = document.getElementById('bio-content');
@@ -3030,47 +3289,71 @@
     if (!resultados || !resultados.biomarcadores) return;
     if (resultados.dataAnalise) sub.textContent = 'Resultados da sua análise · ' + resultados.dataAnalise;
     const bio = resultados.biomarcadores;
-    // Achatar todos os módulos do admin e reagrupar por componente biológica
-    const grupos = {};
+    const catLabel = Object.fromEntries(BIO_SYSTEMS.map(s => [s.key, s.label]));
+
+    // Achatar todos os módulos, eliminar duplicados, anexar a componente biológica
+    const rows = [];
     const vistos = new Set();
-    Object.values(bio).forEach(rows => (rows||[]).forEach(r => {
-      if (!r || !r.valor) return;
-      if (vistos.has(r.nome)) return;
+    Object.values(bio).forEach(list => (list || []).forEach(r => {
+      if (!r || !r.valor || vistos.has(r.nome)) return;
       vistos.add(r.nome);
-      const sys = BIO_SYSTEM_MAP[r.nome] || 'outros';
-      (grupos[sys] = grupos[sys] || []).push(r);
+      r._cat = BIO_SYSTEM_MAP[r.nome] || 'outros';
+      rows.push(r);
     }));
-    let html = '';
-    BIO_SYSTEMS.forEach(({ key: cat, label }) => {
-      const activeRows = grupos[cat];
-      if (!activeRows || !activeRows.length) return;
-      html += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${label}</div><div class="bio-table">`;
-      html += `<div class="bio-thead">
-        <span>Parâmetro</span><span>Valor</span><span>Referência</span>
-        <span>Intervalo</span><span>Estado</span><span style="text-align:right">Δ</span>
-      </div>`;
-      activeRows.forEach(r => {
-        const tagCls  = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
-        const tagLbl  = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
-        const rowCls  = r.tag==='atencao'?'row-warn':r.tag==='critico'?'row-crit':'';
-        const barColor = tagColor(r.tag);
-        const delta = r.delta
-          ? (r.delta.startsWith('-')||r.delta.startsWith('↓')
-              ? `<span class="bio-delta down">${r.delta}</span>`
-              : `<span class="bio-delta up">${r.delta}</span>`)
-          : '<span class="bio-delta" style="color:var(--txt-3)">-</span>';
-        html += `<div class="bio-row ${rowCls}">
-          <span class="bio-name">${r.nome}</span>
-          <span class="bio-val">${r.valor} <small>${r.unidade||''}</small></span>
-          <span class="bio-range">${r.referencia||''}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${r.refOtima}</small>` : ''}</span>
-          ${sysRangeBar(r, barColor)}
-          <span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span>
-          ${delta}
-        </div>`;
-      });
-      html += '</div></div>';
+    if (!rows.length) return;
+
+    // Ordenar por severidade (prioridades primeiro) — ajuda o foco do utilizador
+    rows.sort((a, b) => (BIOX_SEV[a.tag] ?? 3) - (BIOX_SEV[b.tag] ?? 3));
+
+    // Chips de filtro — Todos + categorias presentes (na ordem canónica)
+    const presentes = BIO_SYSTEMS.filter(s => rows.some(r => r._cat === s.key));
+    let chips = `<button class="biox-chip active" onclick="bioxFilter('todos', this)">Todos <span class="biox-chip-n">${rows.length}</span></button>`;
+    presentes.forEach(s => {
+      const n = rows.filter(r => r._cat === s.key).length;
+      chips += `<button class="biox-chip" onclick="bioxFilter('${s.key}', this)">${s.label} <span class="biox-chip-n">${n}</span></button>`;
     });
-    if (html) container.innerHTML = html;
+
+    const cards = rows.map(r => {
+      const acc = BIOX_ACCENT[r.tag] || BIOX_ACCENT[''];
+      const icon = BIO_SYS_ICON[r._cat] || BIO_SYS_ICON.outros;
+      const series = bioSeries(r.nome);
+      const spark = bioSpark(series) || '<div class="biox-spark"></div>';
+      const dirNote = bioDir(r);
+      const trend = bioTrendChart(series, r.unidade);
+      const ladder = bioLadder(r);
+      const bar = bioBar(r);
+      return `<div class="biox-card" data-cat="${r._cat}" style="--biox-accent:${acc.c};--biox-accent-rgb:${acc.rgb};--biox-glow:rgba(${acc.rgb},0.45)">
+        <button class="biox-head" onclick="bioxToggle(this)" aria-expanded="false">
+          <span class="biox-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>
+          <span class="biox-mid">
+            <span class="biox-interp">${bioInterp(r)}</span>
+            <span class="biox-meta"><b>${r.nome}</b> · ${catLabel[r._cat] || 'Outros'}</span>
+          </span>
+          <span class="biox-side">
+            ${spark}
+            <span class="biox-valblock">
+              <span class="biox-val">${r.valor}<small>${r.unidade || ''}</small></span>
+              ${bioDelta(r)}
+            </span>
+            <span class="biox-badge ${BIOX_CLS[r.tag]}">${BIOX_LABEL[r.tag]}</span>
+            <span class="biox-chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          </span>
+        </button>
+        <div class="biox-detail"><div class="biox-detail-inner"><div class="biox-detail-pad">
+          <div class="biox-stats">
+            <div class="biox-stat"><div class="biox-stat-l">Resultado atual</div><div class="biox-stat-v">${r.valor} ${r.unidade || ''}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">Intervalo ótimo</div><div class="biox-stat-v opt">${r.refOtima || '—'}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">Referência</div><div class="biox-stat-v">${r.referencia || '—'}</div></div>
+          </div>
+          ${bar}
+          ${ladder}
+          ${trend ? `<div class="biox-bar-head" style="margin:20px 0 0">Evolução das últimas análises</div>${trend}` : ''}
+          ${dirNote ? `<div class="biox-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>O seu valor encontra-se <b style="color:var(--txt-2)">${dirNote}</b>. Acompanhe a evolução nas próximas análises com a equipa Lyvoo.</span></div>` : ''}
+        </div></div></div>
+      </div>`;
+    }).join('');
+
+    container.innerHTML = `<div class="biox-filters">${chips}</div><div class="biox-list">${cards}</div>`;
   }
 
   // ── Render: Mapa corporal (relatório) ────────────────────────────────
@@ -3874,7 +4157,13 @@
             orderBy('criadoEm', 'desc')
           ));
           const historico = snaps.docs.map(s => ({ id: s.id, ...s.data() }));
-          if (historico.length > 1) renderHistoricoSelector(historico);
+          if (historico.length > 1) {
+            historico.forEach(h => normalizeResultados(h));
+            window._bioHistorico = historico;
+            renderHistoricoSelector(historico);
+            // Re-render com o histórico disponível para activar as sparklines
+            if (d.resultados) renderBiomarcadores(d.resultados);
+          }
         } catch(e) { /* subcoleção ainda não existe */ }
 
         // Preencher campos do perfil
