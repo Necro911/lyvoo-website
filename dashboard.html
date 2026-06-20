@@ -239,20 +239,19 @@
     /* Coluna lateral: hora + botão alternativa, empilhados dentro do cartão */
     .meal-side { display:flex; flex-direction:column; align-items:flex-end; gap:9px; flex-shrink:0; position:relative; z-index:1; }
     .meal-alt-btn {
-      flex-shrink:0; border-radius:999px;
-      display:inline-flex; align-items:center; gap:6px;
-      padding:7px 13px;
+      flex-shrink:0; width:64px; height:64px; border-radius:16px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
       border:1px solid rgba(61,217,232,0.22);
       background:rgba(61,217,232,0.06); color:var(--cyan);
-      font-size:11px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.01em;
+      font-size:9px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
       cursor:pointer; transition:filter .16s, transform .16s;
     }
     .meal-alt-btn:hover { transform:translateY(-1px); filter:brightness(1.18); }
-    .meal-alt-btn svg { width:14px; height:14px; transition:transform .45s ease; }
+    .meal-alt-btn svg { width:17px; height:17px; transition:transform .45s ease; }
     .meal-alt-btn:hover svg { transform:rotate(-120deg); }
     @media (max-width:560px) {
-      .meal-alt-btn { padding:6px 11px; font-size:10px; }
-      .meal-alt-btn svg { width:13px; height:13px; }
+      .meal-alt-btn { width:54px; height:54px; font-size:8px; border-radius:14px; }
+      .meal-alt-btn svg { width:15px; height:15px; }
     }
     @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
