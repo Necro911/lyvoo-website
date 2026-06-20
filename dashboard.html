@@ -309,7 +309,7 @@
     .plano-hero-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); margin-bottom: 6px; }
     .plano-hero-title { font-size: 18px; font-weight: 800; color: var(--txt); margin-bottom: 6px; }
     .plano-hero-desc { font-size: 13px; color: var(--txt-2); line-height: 1.6; }
-    .plano-donut-wrap { display: flex; align-items: center; gap: 22px; flex-shrink: 0; }
+    .plano-donut-wrap { display: flex; align-items: center; justify-content: center; gap: 22px; flex-shrink: 0; }
     .plano-donut {
       width: 116px; height: 116px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
@@ -3211,9 +3211,9 @@
     'Almoço':['Gestão lipídica','Saúde intestinal'],
     'Lanche':['Energia & vitalidade'],
     'Pré-treino':['Energia & vitalidade'],
-    'Pós-treino':['Recuperação'],
+    'Pós-treino':['Energia & vitalidade'],
     'Jantar':['Anti-inflamatório','Gestão lipídica'],
-    'Ceia':['Recuperação'],
+    'Ceia':['Sono reparador'],
   };
   function mealPeriodOf(r) {
     if (r.hora && /^\d{1,2}:/.test(r.hora)) {
