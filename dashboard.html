@@ -1188,7 +1188,7 @@
         <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;">Os seus resultados estão prontos!</div>
         <div style="font-size:13px;color:var(--txt-2);">O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.</div>
       </div>
-      <button onclick="this.closest('#results-banner').style.display='none'; localStorage.setItem('lyvoo_resultados_banner_'+(window._currentUser?.uid||''), '1')" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
+      <button onclick="this.closest('#results-banner').style.display='none'; if(window._resultadosBannerKey) localStorage.setItem(window._resultadosBannerKey, '1')" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
     </div>
 
     <!-- Banner: convite de agendamento enviado pelo admin -->
@@ -4078,6 +4078,7 @@
       if (subFase === 'resultados') {
         const banner = document.getElementById('results-banner');
         const bKey = `lyvoo_resultados_banner_${user.uid}_e${estadoNum}`;
+        window._resultadosBannerKey = bKey;
         if (banner && !localStorage.getItem(bKey)) banner.style.display = 'flex';
 
         // CTA consulta de nutrição — se não há consulta futura agendada nem convite ativo
