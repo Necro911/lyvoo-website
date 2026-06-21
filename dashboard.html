@@ -1868,6 +1868,9 @@
   // ══════════════════════════════════════════════════════════════════════
   const I18N = {
     pt: {
+      'greeting.boa-noite': 'Boa noite',
+      'greeting.bom-dia': 'Bom dia',
+      'greeting.boa-tarde': 'Boa tarde',
       'greeting.subtitle': 'Acompanhe a sua saúde. Melhore o seu futuro.',
 
       // ── Biomarcadores: sistemas/categorias ──
@@ -2296,6 +2299,9 @@
       'store.mod.hepatite-b.desc': 'AgHBs. Rastreio de infeção pelo vírus da Hepatite B com interpretação clínica.',
     },
     en: {
+      'greeting.boa-noite': 'Good evening',
+      'greeting.bom-dia': 'Good morning',
+      'greeting.boa-tarde': 'Good afternoon',
       'greeting.subtitle': 'Track your health. Improve your future.',
 
       'bio.system.metabolico': 'Metabolism',
@@ -4140,10 +4146,10 @@
 
   function saudacao() {
     const h = new Date().getHours();
-    if (h < 6) return 'Boa noite';
-    if (h < 12) return 'Bom dia';
-    if (h < 20) return 'Boa tarde';
-    return 'Boa noite';
+    if (h < 6) return t('greeting.boa-noite');
+    if (h < 12) return t('greeting.bom-dia');
+    if (h < 20) return t('greeting.boa-tarde');
+    return t('greeting.boa-noite');
   }
 
   function iniciaisDe(nome) {
