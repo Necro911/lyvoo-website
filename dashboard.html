@@ -2073,6 +2073,7 @@
       'painel.bio.tag.otimo': 'Ótimo',
       'painel.bio.tag.atencao': 'Atenção',
       'painel.bio.tag.critico': 'Crítico',
+      'painel.score.dist-total': '{n} biomarcadores analisados',
       'painel.score-class.excelente': 'Excelente',
       'painel.score-class.bom': 'Bom',
       'painel.score-class.moderado': 'Moderado',
@@ -2488,6 +2489,7 @@
       'painel.bio.tag.otimo': 'Optimal',
       'painel.bio.tag.atencao': 'Attention',
       'painel.bio.tag.critico': 'Critical',
+      'painel.score.dist-total': '{n} biomarkers analysed',
       'painel.score-class.excelente': 'Excellent',
       'painel.score-class.bom': 'Good',
       'painel.score-class.moderado': 'Moderate',
@@ -5338,9 +5340,9 @@
         rows.forEach(r => { n[autoTag(r)]++; });
         const total = rows.length;
         const META = [
-          { k: 'otimo',   label: 'Ótimo',   color: 'var(--green)' },
-          { k: 'atencao', label: 'Atenção', color: 'var(--amber)' },
-          { k: 'critico', label: 'Crítico', color: 'var(--red)'   },
+          { k: 'otimo',   label: t('painel.bio.tag.otimo'),   color: 'var(--green)' },
+          { k: 'atencao', label: t('painel.bio.tag.atencao'), color: 'var(--amber)' },
+          { k: 'critico', label: t('painel.bio.tag.critico'), color: 'var(--red)'   },
         ];
         dist.innerHTML = META.map(m => `
           <div class="hs-dist-row">
@@ -5349,7 +5351,7 @@
             <span class="hs-dist-bar"><span data-w="${((n[m.k] / total) * 100).toFixed(0)}" style="background:${m.color}"></span></span>
             <span class="hs-dist-n" style="color:${m.color}">${n[m.k]}</span>
           </div>`).join('') +
-          `<div class="hs-dist-total">${total} biomarcadores analisados</div>`;
+          `<div class="hs-dist-total">${t('painel.score.dist-total', { n: total })}</div>`;
         requestAnimationFrame(() => requestAnimationFrame(() =>
           dist.querySelectorAll('.hs-dist-bar > span').forEach(b => b.style.width = b.dataset.w + '%')));
       }
