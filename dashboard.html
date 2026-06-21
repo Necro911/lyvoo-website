@@ -2124,6 +2124,36 @@
       'banner.novidades.sub': 'O seu perfil foi atualizado. Explore as novidades abaixo.',
       'banner.novidades.sub-resultados': 'Os seus resultados{data} estão disponíveis. Explore as novidades abaixo.',
 
+      // ── Calendário de marcação de consulta (modal "Agendar consulta") ──
+      'dia.abrev.0': 'Dom', 'dia.abrev.1': 'Seg', 'dia.abrev.2': 'Ter', 'dia.abrev.3': 'Qua',
+      'dia.abrev.4': 'Qui', 'dia.abrev.5': 'Sex', 'dia.abrev.6': 'Sáb',
+      'bk.titulo.reavaliacao': 'Agendar reavaliação dos 6 meses',
+      'bk.titulo.nutricao': 'Agendar consulta de nutrição',
+      'bk.titulo.sugestao': 'Sugerir nova data',
+      'bk.sub.default': 'Escolha o dia e o horário disponível com a sua nutricionista.',
+      'bk.sub.escolha': 'Escolha um dos horários disponibilizados pela sua equipa Lyvoo.',
+      'bk.sub.sugestao': 'Escolha uma das datas disponibilizadas pela sua equipa Lyvoo.',
+      'bk.escolha-dia-label': 'Escolha o dia',
+      'bk.confirmar': 'Confirmar marcação',
+      'bk.sugerir-esta-data': 'Sugerir esta data',
+      'bk.aviso.sem-horarios': 'A sua equipa Lyvoo ainda não disponibilizou horários para esta consulta. Vai receber uma notificação assim que estiverem disponíveis.',
+      'bk.aviso.aguarda-novas-datas': 'O seu pedido de novas datas foi enviado. A equipa Lyvoo irá disponibilizar nova margem de datas em breve.',
+      'bk.aviso.ja-agendada': 'Já tem esta consulta agendada para {data}{hora}.',
+      'bk.aviso.ja-agendada-hora': ' às {hora}',
+      'bk.loading-dias': 'A carregar dias disponíveis…',
+      'bk.selecione-dia': 'Selecione um dia',
+      'bk.hora-default': 'Hora',
+      'bk.hora-com-data': 'Hora · {dia}, {data}',
+      'bk.manha': 'Manhã',
+      'bk.tarde': 'Tarde',
+      'bk.sem-horas-dia': 'Sem horas disponíveis neste dia.',
+      'bk.sem-dias': 'Sem dias disponíveis de momento.',
+      'bk.confirmando': 'A confirmar…',
+      'bk.erro-reservado': 'Este horário acabou de ser reservado. Escolha outro.',
+      'bk.sugestao-enviada': '✓ Sugestão enviada à sua equipa Lyvoo!',
+      'bk.agendada-sucesso': '✓ Consulta agendada com sucesso!',
+      'bk.erro-agendar': 'Não foi possível agendar. Tente novamente.',
+
       // ── Nomes de meses/dias (cobre consultas, banners de reagendamento,
       // convites, calendário de marcação) ──
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Fev', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Abr',
@@ -2452,6 +2482,35 @@
       'banner.novidades.titulo': 'You have updates on your dashboard',
       'banner.novidades.sub': 'Your profile has been updated. Explore the updates below.',
       'banner.novidades.sub-resultados': 'Your results{data} are available. Explore the updates below.',
+
+      'dia.abrev.0': 'Sun', 'dia.abrev.1': 'Mon', 'dia.abrev.2': 'Tue', 'dia.abrev.3': 'Wed',
+      'dia.abrev.4': 'Thu', 'dia.abrev.5': 'Fri', 'dia.abrev.6': 'Sat',
+      'bk.titulo.reavaliacao': 'Schedule your 6-month reassessment',
+      'bk.titulo.nutricao': 'Schedule your nutrition appointment',
+      'bk.titulo.sugestao': 'Suggest a new date',
+      'bk.sub.default': 'Choose the day and available time with your nutritionist.',
+      'bk.sub.escolha': 'Choose one of the time slots made available by your Lyvoo team.',
+      'bk.sub.sugestao': 'Choose one of the dates made available by your Lyvoo team.',
+      'bk.escolha-dia-label': 'Choose the day',
+      'bk.confirmar': 'Confirm booking',
+      'bk.sugerir-esta-data': 'Suggest this date',
+      'bk.aviso.sem-horarios': 'Your Lyvoo team has not made time slots available for this appointment yet. You will be notified as soon as they are.',
+      'bk.aviso.aguarda-novas-datas': 'Your request for new dates has been sent. The Lyvoo team will make a new date range available shortly.',
+      'bk.aviso.ja-agendada': 'You already have this appointment scheduled for {data}{hora}.',
+      'bk.aviso.ja-agendada-hora': ' at {hora}',
+      'bk.loading-dias': 'Loading available days…',
+      'bk.selecione-dia': 'Select a day',
+      'bk.hora-default': 'Time',
+      'bk.hora-com-data': 'Time · {dia}, {data}',
+      'bk.manha': 'Morning',
+      'bk.tarde': 'Afternoon',
+      'bk.sem-horas-dia': 'No times available on this day.',
+      'bk.sem-dias': 'No days available at the moment.',
+      'bk.confirmando': 'Confirming…',
+      'bk.erro-reservado': 'This time slot has just been booked. Please choose another.',
+      'bk.sugestao-enviada': '✓ Suggestion sent to your Lyvoo team!',
+      'bk.agendada-sucesso': '✓ Appointment scheduled successfully!',
+      'bk.erro-agendar': 'We could not schedule the appointment. Please try again.',
 
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Feb', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Apr',
       'mes.abrev.4': 'May', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Aug',
@@ -2889,8 +2948,8 @@
     const confirmBtn = document.getElementById('bk-confirm');
     const horaLabel = document.getElementById('bk-hora-label');
     if (!_bkSelectedDate) {
-      wrap.innerHTML = '<div class="bk-empty">Selecione um dia</div>';
-      horaLabel.textContent = 'Hora';
+      wrap.innerHTML = `<div class="bk-empty">${t('bk.selecione-dia')}</div>`;
+      horaLabel.textContent = t('bk.hora-default');
       confirmBtn.disabled = true;
       return;
     }
@@ -2898,7 +2957,7 @@
     const horas = (slot ? slot.horas : []).slice().sort();
     const taken = _bkBusy[_bkSelectedDate] || new Set();
     const dt = new Date(_bkSelectedDate + 'T00:00:00');
-    horaLabel.textContent = `Hora · ${diaSemanaLongo(dt.getDay())}, ${dt.getDate()} ${mesAbrev(dt.getMonth())}`;
+    horaLabel.textContent = t('bk.hora-com-data', { dia: diaSemanaLongo(dt.getDay()), data: `${dt.getDate()} ${mesAbrev(dt.getMonth())}` });
     const chip = (h) => {
       const isTaken = taken.has(h);
       return `<button type="button" class="bk-time ${isTaken?'taken':''}" data-hora="${h}" ${isTaken?'disabled':''}>${h}</button>`;
@@ -2906,9 +2965,9 @@
     const manha = horas.filter(h => parseInt(h, 10) < 13);
     const tarde = horas.filter(h => parseInt(h, 10) >= 13);
     let html = '';
-    if (manha.length) html += `<div class="bk-period">Manhã</div>` + manha.map(chip).join('');
-    if (tarde.length) html += `<div class="bk-period">Tarde</div>` + tarde.map(chip).join('');
-    wrap.innerHTML = html || '<div class="bk-empty" style="grid-column:1/-1;">Sem horas disponíveis neste dia.</div>';
+    if (manha.length) html += `<div class="bk-period">${t('bk.manha')}</div>` + manha.map(chip).join('');
+    if (tarde.length) html += `<div class="bk-period">${t('bk.tarde')}</div>` + tarde.map(chip).join('');
+    wrap.innerHTML = html || `<div class="bk-empty" style="grid-column:1/-1;">${t('bk.sem-horas-dia')}</div>`;
     wrap.querySelectorAll('.bk-time:not(.taken)').forEach(btn => {
       btn.addEventListener('click', () => {
         _bkSelectedTime = btn.dataset.hora;
@@ -2929,7 +2988,7 @@
     const year = _bkView.getFullYear(), month = _bkView.getMonth();
     const curMonthStr = `${year}-${String(month+1).padStart(2,'0')}`;
     const today = new Date(); today.setHours(0,0,0,0);
-    const dowHead = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const dowHead = [0,1,2,3,4,5,6].map(i => t('dia.abrev.' + i));
     const firstDow = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month+1, 0).getDate();
     let cells = dowHead.map(d => `<div class="bk-cal-dow">${d}</div>`).join('');
@@ -2967,7 +3026,7 @@
       .sort((a,b) => a.data.localeCompare(b.data));
     _bkConviteSlots = slots;
     if (!slots.length) {
-      document.getElementById('bk-days').innerHTML = '<div class="bk-empty">Sem dias disponíveis de momento.</div>';
+      document.getElementById('bk-days').innerHTML = `<div class="bk-empty">${t('bk.sem-dias')}</div>`;
       document.getElementById('bk-times').innerHTML = '';
       document.getElementById('bk-hora-label').style.display = 'none';
       document.getElementById('bk-confirm').style.display = 'none';
@@ -2984,12 +3043,8 @@
     tipo = tipo || 'nutricao';
     const titulo = document.getElementById('bk-title');
     const sub = document.getElementById('bk-sub');
-    if (tipo === 'reavaliacao') {
-      titulo.textContent = 'Agendar reavaliação dos 6 meses';
-    } else {
-      titulo.textContent = 'Agendar consulta de nutrição';
-    }
-    sub.textContent = 'Escolha um dos horários disponibilizados pela sua equipa Lyvoo.';
+    titulo.textContent = tipo === 'reavaliacao' ? t('bk.titulo.reavaliacao') : t('bk.titulo.nutricao');
+    sub.textContent = t('bk.sub.escolha');
     document.getElementById('bk-overlay').dataset.tipo = tipo;
     document.getElementById('bk-overlay').dataset.mode = 'novo';
     document.getElementById('bk-msg').textContent = '';
@@ -2999,19 +3054,22 @@
     _bkConviteSlots = [];
     document.getElementById('bk-confirm').disabled = true;
     document.getElementById('bk-confirm').style.display = '';
-    document.getElementById('bk-confirm').textContent = 'Confirmar marcação';
+    document.getElementById('bk-confirm').textContent = t('bk.confirmar');
     document.getElementById('bk-days').innerHTML = '';
     document.getElementById('bk-times').innerHTML = '';
     document.getElementById('bk-overlay').classList.add('open');
 
     const convite = window._convite;
     if (!convite || convite.tipo !== tipo || convite.estado !== 'pendente' || !(convite.slots||[]).length) {
-      let aviso = 'A sua equipa Lyvoo ainda não disponibilizou horários para esta consulta. Vai receber uma notificação assim que estiverem disponíveis.';
+      let aviso = t('bk.aviso.sem-horarios');
       if (convite && convite.estado === 'cancelado_cliente') {
-        aviso = 'O seu pedido de novas datas foi enviado. A equipa Lyvoo irá disponibilizar nova margem de datas em breve.';
+        aviso = t('bk.aviso.aguarda-novas-datas');
       } else if (convite && convite.tipo === tipo && convite.estado === 'agendado' && convite.escolha?.data) {
         const ed = new Date(convite.escolha.data + 'T00:00:00');
-        aviso = `Já tem esta consulta agendada para ${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}${convite.escolha.hora ? ' às ' + convite.escolha.hora : ''}.`;
+        aviso = t('bk.aviso.ja-agendada', {
+          data: `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}`,
+          hora: convite.escolha.hora ? t('bk.aviso.ja-agendada-hora', { hora: convite.escolha.hora }) : ''
+        });
       }
       document.getElementById('bk-days').innerHTML = `<div class="bk-empty">${aviso}</div>`;
       document.getElementById('bk-times').innerHTML = '';
@@ -3021,8 +3079,8 @@
     }
 
     document.getElementById('bk-hora-label').style.display = '';
-    document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
-    document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
+    document.getElementById('bk-days').innerHTML = `<div class="bk-empty">${t('bk.loading-dias')}</div>`;
+    document.getElementById('bk-times').innerHTML = `<div class="bk-empty">${t('bk.selecione-dia')}</div>`;
     await bkRenderDays(convite);
   };
 
@@ -3032,8 +3090,8 @@
     const tipo = convite.tipo || 'nutricao';
     const titulo = document.getElementById('bk-title');
     const sub = document.getElementById('bk-sub');
-    titulo.textContent = 'Sugerir nova data';
-    sub.textContent = 'Escolha uma das datas disponibilizadas pela sua equipa Lyvoo.';
+    titulo.textContent = t('bk.titulo.sugestao');
+    sub.textContent = t('bk.sub.sugestao');
     document.getElementById('bk-overlay').dataset.tipo = tipo;
     document.getElementById('bk-overlay').dataset.mode = 'sugestao';
     document.getElementById('bk-msg').textContent = '';
@@ -3043,10 +3101,10 @@
     _bkConviteSlots = [];
     document.getElementById('bk-confirm').disabled = true;
     document.getElementById('bk-confirm').style.display = '';
-    document.getElementById('bk-confirm').textContent = 'Sugerir esta data';
+    document.getElementById('bk-confirm').textContent = t('bk.sugerir-esta-data');
     document.getElementById('bk-hora-label').style.display = '';
-    document.getElementById('bk-days').innerHTML = '<div class="bk-empty">A carregar dias disponíveis…</div>';
-    document.getElementById('bk-times').innerHTML = '<div class="bk-empty">Selecione um dia</div>';
+    document.getElementById('bk-days').innerHTML = `<div class="bk-empty">${t('bk.loading-dias')}</div>`;
+    document.getElementById('bk-times').innerHTML = `<div class="bk-empty">${t('bk.selecione-dia')}</div>`;
     document.getElementById('bk-overlay').classList.add('open');
     await bkRenderDays(convite);
   };
@@ -3261,11 +3319,14 @@
     const btn = document.getElementById('bk-confirm');
     const msg = document.getElementById('bk-msg');
     const tipo = document.getElementById('bk-overlay').dataset.tipo || 'nutricao';
+    // Fica sempre em PT — é gravado em agendamentosNutri.titulo e lido pelo
+    // admin.html (ferramenta interna, só em PT), independentemente do idioma
+    // do cliente que marcou a consulta.
     const titulo = tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de Nutrição';
     const modo = document.getElementById('bk-overlay').dataset.mode || 'novo';
     btn.disabled = true;
     msg.className = 'bk-msg';
-    msg.innerHTML = '<span class="bk-spinner"></span> A confirmar…';
+    msg.innerHTML = `<span class="bk-spinner"></span> ${t('bk.confirmando')}`;
     try {
       // Verificar novamente disponibilidade via busySlots (sem PII). Atualizado
       // pela Cloud Function ~em segundos; conflitos raros são reconciliados pela
@@ -3274,7 +3335,7 @@
       const ocupado = bsSnap.exists() && (bsSnap.data().horas || []).includes(_bkSelectedTime);
       if (ocupado) {
         msg.className = 'bk-msg err';
-        msg.textContent = 'Este horário acabou de ser reservado. Escolha outro.';
+        msg.textContent = t('bk.erro-reservado');
         await bkRenderDays(window._convite);
         return;
       }
@@ -3295,7 +3356,7 @@
         }
         document.getElementById('reagendar-banner').style.display = 'none';
         msg.className = 'bk-msg ok';
-        msg.textContent = '✓ Sugestão enviada à sua equipa Lyvoo!';
+        msg.textContent = t('bk.sugestao-enviada');
         setTimeout(() => {
           fecharAgendamento();
           carregarDados(_currentUser);
@@ -3333,7 +3394,7 @@
         console.error('Erro ao atualizar convite:', e);
       }
       msg.className = 'bk-msg ok';
-      msg.textContent = '✓ Consulta agendada com sucesso!';
+      msg.textContent = t('bk.agendada-sucesso');
       setTimeout(() => {
         fecharAgendamento();
         carregarDados(_currentUser);
@@ -3341,7 +3402,7 @@
     } catch (e) {
       console.error('Erro ao agendar consulta:', e);
       msg.className = 'bk-msg err';
-      msg.textContent = 'Não foi possível agendar. Tente novamente.';
+      msg.textContent = t('bk.erro-agendar');
       btn.disabled = false;
     }
   });
@@ -5894,16 +5955,16 @@
     <button class="bk-close" id="bk-close" aria-label="Fechar" data-i18n-title="a11y.close">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
     </button>
-    <div class="bk-title" id="bk-title">Agendar consulta de nutrição</div>
-    <div class="bk-sub" id="bk-sub">Escolha o dia e o horário disponível com a sua nutricionista.</div>
+    <div class="bk-title" id="bk-title" data-i18n="bk.titulo.nutricao">Agendar consulta de nutrição</div>
+    <div class="bk-sub" id="bk-sub" data-i18n="bk.sub.default">Escolha o dia e o horário disponível com a sua nutricionista.</div>
 
-    <div class="bk-label">Escolha o dia</div>
+    <div class="bk-label" data-i18n="bk.escolha-dia-label">Escolha o dia</div>
     <div class="bk-cal" id="bk-days"></div>
 
-    <div class="bk-label" id="bk-hora-label">Hora</div>
-    <div class="bk-times" id="bk-times"><div class="bk-empty">Selecione um dia</div></div>
+    <div class="bk-label" id="bk-hora-label" data-i18n="bk.hora-default">Hora</div>
+    <div class="bk-times" id="bk-times"><div class="bk-empty" data-i18n="bk.selecione-dia">Selecione um dia</div></div>
 
-    <button class="bk-confirm-btn" id="bk-confirm" disabled>Confirmar marcação</button>
+    <button class="bk-confirm-btn" id="bk-confirm" disabled data-i18n="bk.confirmar">Confirmar marcação</button>
     <div class="bk-msg" id="bk-msg"></div>
   </div>
 </div>
