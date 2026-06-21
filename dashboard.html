@@ -2026,6 +2026,89 @@
       'bell.mark-read': 'Marcar como visto',
       'bell.empty': 'Sem notificações novas',
       'topbar.logout-title': 'Sair',
+      'a11y.close': 'Fechar',
+
+      // ── Nomes de meses/dias (cobre consultas, banners de reagendamento,
+      // convites, calendário de marcação) ──
+      'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Fev', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Abr',
+      'mes.abrev.4': 'Mai', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Ago',
+      'mes.abrev.8': 'Set', 'mes.abrev.9': 'Out', 'mes.abrev.10': 'Nov', 'mes.abrev.11': 'Dez',
+      'mes.nome.0': 'Janeiro', 'mes.nome.1': 'Fevereiro', 'mes.nome.2': 'Março', 'mes.nome.3': 'Abril',
+      'mes.nome.4': 'Maio', 'mes.nome.5': 'Junho', 'mes.nome.6': 'Julho', 'mes.nome.7': 'Agosto',
+      'mes.nome.8': 'Setembro', 'mes.nome.9': 'Outubro', 'mes.nome.10': 'Novembro', 'mes.nome.11': 'Dezembro',
+      'dia.longo.0': 'Domingo', 'dia.longo.1': 'Segunda-feira', 'dia.longo.2': 'Terça-feira',
+      'dia.longo.3': 'Quarta-feira', 'dia.longo.4': 'Quinta-feira', 'dia.longo.5': 'Sexta-feira', 'dia.longo.6': 'Sábado',
+
+      // ── Consultas: cartões + modal de detalhe ──
+      'consultas.tag.realizada': 'Realizada',
+      'consultas.tag.confirmada': 'Confirmada',
+      'consultas.tag.agendada': 'Agendada',
+      'consultas.medico-fallback': 'Videochamada',
+      'consultas.entrar': 'Entrar',
+      'consultas.disponivel-hint': 'Disponível 5 min antes da consulta',
+      'consultas.detail.fallback-title': 'Consulta',
+      'consultas.detail.data': 'Data',
+      'consultas.detail.hora': 'Hora',
+      'consultas.detail.com': 'Com',
+      'consultas.detail.estado': 'Estado',
+      'consultas.detail.nutricionista-fallback': 'Nutricionista',
+      'consultas.detail.entrar': 'Entrar na consulta',
+      'consultas.detail.hint-5min': 'O botão "Entrar na consulta" fica disponível 5 minutos antes da hora marcada.',
+      'consultas.detail.hint-link-pending': 'O link da videochamada será disponibilizado aqui antes da consulta.',
+      'consultas.detail.cancelar': 'Cancelar consulta',
+      'consultas.detail.contact-hint': 'Para alterar ou cancelar esta consulta, contacte hello@lyvoo.pt.',
+      'consultas.detail.confirm-cancel': 'Tem a certeza que quer cancelar esta consulta? A equipa Lyvoo enviar-lhe-á novas datas.',
+      'consultas.detail.confirm-yes': 'Sim, cancelar',
+      'consultas.detail.confirm-no': 'Manter',
+      'consultas.detail.cancelled-ok': '✓ Consulta cancelada.',
+      'consultas.detail.cancelled-err': 'Erro ao cancelar. Tente novamente.',
+
+      // ── Conta: palavra-passe + eliminação de conta ──
+      'conta.password.sending': 'A enviar…',
+      'conta.password.sent': 'Email enviado para {email}. Verifique a sua caixa de entrada (e spam).',
+      'conta.password.sent-btn': 'Email enviado',
+      'conta.password.error': 'Não foi possível enviar o email. Tente novamente mais tarde.',
+      'conta.delete.pending-desc': 'Pedido de eliminação registado — a aguardar processamento pela equipa Lyvoo.',
+      'conta.delete.ver-pedido-btn': 'Ver pedido',
+      'conta.delete.modal-title': 'Eliminar conta',
+      'conta.delete.modal-body': 'Tem o direito ao apagamento dos seus dados (RGPD, art. 17.º). Ao confirmar, a equipa Lyvoo apaga permanentemente a sua conta e todos os dados associados — perfil, biomarcadores, plano alimentar, suplementação, consultas e histórico — no prazo máximo de 30 dias.',
+      'conta.delete.modal-irreversible': 'Esta ação é irreversível. Se tiver um plano ativo, será contactado(a) sobre eventuais implicações antes da eliminação.',
+      'conta.delete.modal-confirm-btn': 'Pedir eliminação da conta',
+      'conta.delete.registering': 'A registar…',
+      'conta.delete.register-error': 'Não foi possível registar o pedido. Tente novamente ou contacte hello@lyvoo.pt.',
+      'conta.delete.success': '✓ Pedido de eliminação registado{quando}. A equipa Lyvoo vai processar o apagamento dos seus dados e confirmará por email{email}. Para cancelar o pedido, contacte <a href="mailto:hello@lyvoo.pt" style="color:var(--cyan)">hello@lyvoo.pt</a>.',
+      'conta.delete.success-em': ' a {data}',
+
+      // ── Store: módulos adicionais (grid) ──
+      'store.mod.lock': 'Requer Plano Base ativo',
+      'store.mod.cta': 'Adicionar ao plano',
+      'store.btn.renovar': 'Renovar plano base',
+      'store.btn.ativo': '✓ Plano Base ativo',
+      'sec.store.mods-sub-active': 'Adicione módulos especializados ao seu plano através do chat com a equipa.',
+      'store.mod.genetica.nome': 'Teste Genético',
+      'store.mod.genetica.desc': 'Avalie a predisposição a doenças hereditárias e oriente medidas preventivas ou tratamentos.',
+      'store.mod.microbioma.nome': 'Microbioma',
+      'store.mod.microbioma.desc': 'Análise completa da flora intestinal: impacto na saúde metabólica, imunidade e bem-estar.',
+      'store.mod.vitaminas.nome': 'Vitaminas',
+      'store.mod.vitaminas.desc': 'Vitamina D, B12 e Folato. Avalie défices nutricionais que afetam energia e imunidade.',
+      'store.mod.intolerancias.nome': 'Teste de Intolerâncias Alimentares',
+      'store.mod.intolerancias.desc': 'Resposta imunitária (IgG) a 59 alimentos, organizados por grupo alimentar.',
+      'store.mod.hormonal-masculino.nome': 'Hormonal Masculino',
+      'store.mod.hormonal-masculino.desc': 'Testosterona total e livre, SHBG, PSA, FSH e LH. Avaliação hormonal masculina completa.',
+      'store.mod.hormonal-feminino.nome': 'Hormonal Feminino',
+      'store.mod.hormonal-feminino.desc': 'Estradiol, Progesterona, Prolactina, FSH, LH e SHBG. Ciclo, equilíbrio e menopausa.',
+      'store.mod.fertilidade.nome': 'Fertilidade',
+      'store.mod.fertilidade.desc': 'AMH, FSH, LH e Estradiol. Avalie a reserva ovárica e o equilíbrio hormonal.',
+      'store.mod.tiroide-completo.nome': 'Tiroide Completo',
+      'store.mod.tiroide-completo.desc': 'FT4 e T3, complementando o TSH do painel base para uma avaliação tiroideia completa.',
+      'store.mod.stress.nome': 'Stresse',
+      'store.mod.stress.desc': 'Cortisol matinal. Avalie o impacto do stresse crónico no sono, imunidade e metabolismo.',
+      'store.mod.cardio-avancado.nome': 'Cardio Avançado',
+      'store.mod.cardio-avancado.desc': 'Lp(a) e NT-proBNP. Aprofunde a avaliação de risco cardiovascular e função cardíaca.',
+      'store.mod.dst-ist.nome': 'Teste DST/IST Completo',
+      'store.mod.dst-ist.desc': 'Painel alargado de infeções sexualmente transmissíveis com interpretação clínica.',
+      'store.mod.hepatite-b.nome': 'Hepatite B',
+      'store.mod.hepatite-b.desc': 'AgHBs. Rastreio de infeção pelo vírus da Hepatite B com interpretação clínica.',
     },
     en: {
       'greeting.subtitle': 'Track your health. Improve your future.',
@@ -2178,6 +2261,84 @@
       'bell.mark-read': 'Mark as read',
       'bell.empty': 'No new notifications',
       'topbar.logout-title': 'Sign out',
+      'a11y.close': 'Close',
+
+      'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Feb', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Apr',
+      'mes.abrev.4': 'May', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Aug',
+      'mes.abrev.8': 'Sep', 'mes.abrev.9': 'Oct', 'mes.abrev.10': 'Nov', 'mes.abrev.11': 'Dec',
+      'mes.nome.0': 'January', 'mes.nome.1': 'February', 'mes.nome.2': 'March', 'mes.nome.3': 'April',
+      'mes.nome.4': 'May', 'mes.nome.5': 'June', 'mes.nome.6': 'July', 'mes.nome.7': 'August',
+      'mes.nome.8': 'September', 'mes.nome.9': 'October', 'mes.nome.10': 'November', 'mes.nome.11': 'December',
+      'dia.longo.0': 'Sunday', 'dia.longo.1': 'Monday', 'dia.longo.2': 'Tuesday',
+      'dia.longo.3': 'Wednesday', 'dia.longo.4': 'Thursday', 'dia.longo.5': 'Friday', 'dia.longo.6': 'Saturday',
+
+      'consultas.tag.realizada': 'Completed',
+      'consultas.tag.confirmada': 'Confirmed',
+      'consultas.tag.agendada': 'Scheduled',
+      'consultas.medico-fallback': 'Video call',
+      'consultas.entrar': 'Join',
+      'consultas.disponivel-hint': 'Available 5 min before the appointment',
+      'consultas.detail.fallback-title': 'Appointment',
+      'consultas.detail.data': 'Date',
+      'consultas.detail.hora': 'Time',
+      'consultas.detail.com': 'With',
+      'consultas.detail.estado': 'Status',
+      'consultas.detail.nutricionista-fallback': 'Nutritionist',
+      'consultas.detail.entrar': 'Join appointment',
+      'consultas.detail.hint-5min': 'The "Join appointment" button becomes available 5 minutes before the scheduled time.',
+      'consultas.detail.hint-link-pending': 'The video call link will be made available here before the appointment.',
+      'consultas.detail.cancelar': 'Cancel appointment',
+      'consultas.detail.contact-hint': 'To change or cancel this appointment, contact hello@lyvoo.pt.',
+      'consultas.detail.confirm-cancel': 'Are you sure you want to cancel this appointment? The Lyvoo team will send you new dates.',
+      'consultas.detail.confirm-yes': 'Yes, cancel',
+      'consultas.detail.confirm-no': 'Keep it',
+      'consultas.detail.cancelled-ok': '✓ Appointment cancelled.',
+      'consultas.detail.cancelled-err': 'Error cancelling. Please try again.',
+
+      'conta.password.sending': 'Sending…',
+      'conta.password.sent': 'Email sent to {email}. Check your inbox (and spam folder).',
+      'conta.password.sent-btn': 'Email sent',
+      'conta.password.error': 'We could not send the email. Please try again later.',
+      'conta.delete.pending-desc': 'Deletion request registered — awaiting processing by the Lyvoo team.',
+      'conta.delete.ver-pedido-btn': 'View request',
+      'conta.delete.modal-title': 'Delete account',
+      'conta.delete.modal-body': 'You have the right to erasure of your data (GDPR, art. 17). Once confirmed, the Lyvoo team will permanently delete your account and all associated data — profile, biomarkers, meal plan, supplementation, appointments and history — within a maximum of 30 days.',
+      'conta.delete.modal-irreversible': 'This action is irreversible. If you have an active plan, you will be contacted about any implications before deletion.',
+      'conta.delete.modal-confirm-btn': 'Request account deletion',
+      'conta.delete.registering': 'Registering…',
+      'conta.delete.register-error': 'We could not register the request. Please try again or contact hello@lyvoo.pt.',
+      'conta.delete.success': '✓ Deletion request registered{quando}. The Lyvoo team will process the deletion of your data and will confirm by email{email}. To cancel the request, contact <a href="mailto:hello@lyvoo.pt" style="color:var(--cyan)">hello@lyvoo.pt</a>.',
+      'conta.delete.success-em': ' on {data}',
+
+      'store.mod.lock': 'Requires an active Base Plan',
+      'store.mod.cta': 'Add to plan',
+      'store.btn.renovar': 'Renew base plan',
+      'store.btn.ativo': '✓ Base Plan active',
+      'sec.store.mods-sub-active': 'Add specialist modules to your plan via chat with the team.',
+      'store.mod.genetica.nome': 'Genetic Testing',
+      'store.mod.genetica.desc': 'Assess your predisposition to hereditary diseases and guide preventive measures or treatments.',
+      'store.mod.microbioma.nome': 'Microbiome',
+      'store.mod.microbioma.desc': 'Full gut flora analysis: impact on metabolic health, immunity and wellbeing.',
+      'store.mod.vitaminas.nome': 'Vitamins',
+      'store.mod.vitaminas.desc': 'Vitamin D, B12 and Folate. Assess nutritional deficiencies that affect energy and immunity.',
+      'store.mod.intolerancias.nome': 'Food Intolerance Test',
+      'store.mod.intolerancias.desc': 'Immune response (IgG) to 59 foods, organised by food group.',
+      'store.mod.hormonal-masculino.nome': 'Male Hormonal',
+      'store.mod.hormonal-masculino.desc': 'Total and free testosterone, SHBG, PSA, FSH and LH. Complete male hormonal assessment.',
+      'store.mod.hormonal-feminino.nome': 'Female Hormonal',
+      'store.mod.hormonal-feminino.desc': 'Oestradiol, Progesterone, Prolactin, FSH, LH and SHBG. Cycle, balance and menopause.',
+      'store.mod.fertilidade.nome': 'Fertility',
+      'store.mod.fertilidade.desc': 'AMH, FSH, LH and Oestradiol. Assess ovarian reserve and hormonal balance.',
+      'store.mod.tiroide-completo.nome': 'Extended Thyroid',
+      'store.mod.tiroide-completo.desc': 'FT4 and T3, complementing the base panel TSH for a complete thyroid assessment.',
+      'store.mod.stress.nome': 'Stress',
+      'store.mod.stress.desc': 'Morning cortisol. Assess the impact of chronic stress on sleep, immunity and metabolism.',
+      'store.mod.cardio-avancado.nome': 'Advanced Cardio',
+      'store.mod.cardio-avancado.desc': 'Lp(a) and NT-proBNP. Deepen your cardiovascular risk and cardiac function assessment.',
+      'store.mod.dst-ist.nome': 'Full STI Test',
+      'store.mod.dst-ist.desc': 'Extended panel of sexually transmitted infections with clinical interpretation.',
+      'store.mod.hepatite-b.nome': 'Hepatitis B',
+      'store.mod.hepatite-b.desc': 'HBsAg. Screening for Hepatitis B virus infection with clinical interpretation.',
     },
   };
   let _lang = 'pt';
@@ -2232,6 +2393,9 @@
       const pt = document.getElementById('pageTitle');
       if (pt && pt.textContent) pt.textContent = sectionTitle(activeBtn.id.replace('sb-', ''));
     }
+    // Grid de módulos da Store: gerado uma vez no arranque, não por
+    // carregarDados() — sem isto ficaria preso no idioma anterior.
+    renderStoreModulos();
     const u = auth.currentUser;
     if (u) {
       updateDoc(doc(db, 'users', u.uid), { lang }).catch(() => {});
@@ -2392,7 +2556,7 @@
       const isNew   = ts > vistoTs;
       const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       const ed = cf.data ? new Date(cf.data + 'T00:00:00') : null;
-      const novaDataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '-';
+      const novaDataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '-';
       _bellNotifs.push({
         titulo: 'Consulta confirmada',
         sub: `A sua consulta foi confirmada para ${novaDataStr}${cf.hora ? ' às ' + cf.hora : ''}.${cf.link ? ' Já tem o link de acesso disponível.' : ''}`,
@@ -2407,7 +2571,7 @@
       const isNew   = ts > vistoTs;
       const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
       const ed = d.consultaAlterada.data ? new Date(d.consultaAlterada.data + 'T00:00:00') : null;
-      const novaDataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '-';
+      const novaDataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '-';
       _bellNotifs.push({
         titulo: 'Consulta reagendada',
         sub: `A sua consulta foi alterada para ${novaDataStr}${d.consultaAlterada.hora ? ' às ' + d.consultaAlterada.hora : ''}.`,
@@ -2440,7 +2604,7 @@
       const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
       _bellNotifs.push({
         titulo: 'Consulta cancelada',
-        sub: `A sua consulta${ed ? ' de ' + ed.getDate() + ' ' + MESES[ed.getMonth()] : ''}${ca.hora ? ' às ' + ca.hora : ''} foi cancelada pela equipa Lyvoo.${ca.motivo ? ' Motivo: ' + escHtml(ca.motivo) : ''}`,
+        sub: `A sua consulta${ed ? ' de ' + ed.getDate() + ' ' + mesAbrev(ed.getMonth()) : ''}${ca.hora ? ' às ' + ca.hora : ''} foi cancelada pela equipa Lyvoo.${ca.motivo ? ' Motivo: ' + escHtml(ca.motivo) : ''}`,
         data: dataStr, unread: isNew
       });
       if (isNew) dot.style.display = 'block';
@@ -2481,16 +2645,16 @@
 
     btn.disabled = true;
     const orig = btn.textContent;
-    btn.textContent = 'A enviar…';
+    btn.textContent = t('conta.password.sending');
 
     try {
       await sendPasswordResetEmail(auth, email);
-      desc.textContent = `Email enviado para ${email}. Verifique a sua caixa de entrada (e spam).`;
-      btn.textContent = 'Email enviado';
+      desc.textContent = t('conta.password.sent', { email });
+      btn.textContent = t('conta.password.sent-btn');
       setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 30000);
     } catch (e) {
       console.error('Erro ao enviar reset de password:', e);
-      desc.textContent = 'Não foi possível enviar o email. Tente novamente mais tarde.';
+      desc.textContent = t('conta.password.error');
       btn.disabled = false;
       btn.textContent = orig;
     }
@@ -2505,8 +2669,8 @@
   // isso a disponibilidade é independente de fuso. bkIso() constrói a string a
   // partir das partes LOCAIS da data. Manter este padrão em qualquer novo código.
   const BK_DOW = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const BK_DOW_LONG = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
-  const BK_MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  function diaSemanaLongo(i) { return t('dia.longo.' + i); }
+  function mesNome(i) { return t('mes.nome.' + i); }
   let _bkSelectedDate = null;
   let _bkSelectedTime = null;
   let _bkBusy = {}; // { 'YYYY-MM-DD': Set('HH:MM') }
@@ -2544,7 +2708,7 @@
     const horas = (slot ? slot.horas : []).slice().sort();
     const taken = _bkBusy[_bkSelectedDate] || new Set();
     const dt = new Date(_bkSelectedDate + 'T00:00:00');
-    horaLabel.textContent = `Hora · ${BK_DOW_LONG[dt.getDay()]}, ${dt.getDate()} ${MESES[dt.getMonth()]}`;
+    horaLabel.textContent = `Hora · ${diaSemanaLongo(dt.getDay())}, ${dt.getDate()} ${mesAbrev(dt.getMonth())}`;
     const chip = (h) => {
       const isTaken = taken.has(h);
       return `<button type="button" class="bk-time ${isTaken?'taken':''}" data-hora="${h}" ${isTaken?'disabled':''}>${h}</button>`;
@@ -2595,7 +2759,7 @@
     wrap.innerHTML = `
       <div class="bk-cal-head">
         <button type="button" class="bk-cal-nav" id="bk-cal-prev" ${prevDisabled?'disabled':''}>‹</button>
-        <div class="bk-cal-title">${BK_MONTHS[month]} ${year}</div>
+        <div class="bk-cal-title">${mesNome(month)} ${year}</div>
         <button type="button" class="bk-cal-nav" id="bk-cal-next" ${nextDisabled?'disabled':''}>›</button>
       </div>
       <div class="bk-cal-grid">${cells}</div>`;
@@ -2657,7 +2821,7 @@
         aviso = 'O seu pedido de novas datas foi enviado. A equipa Lyvoo irá disponibilizar nova margem de datas em breve.';
       } else if (convite && convite.tipo === tipo && convite.estado === 'agendado' && convite.escolha?.data) {
         const ed = new Date(convite.escolha.data + 'T00:00:00');
-        aviso = `Já tem esta consulta agendada para ${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}${convite.escolha.hora ? ' às ' + convite.escolha.hora : ''}.`;
+        aviso = `Já tem esta consulta agendada para ${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}${convite.escolha.hora ? ' às ' + convite.escolha.hora : ''}.`;
       }
       document.getElementById('bk-days').innerHTML = `<div class="bk-empty">${aviso}</div>`;
       document.getElementById('bk-times').innerHTML = '';
@@ -2745,12 +2909,14 @@
   // ── Modal: Eliminar conta (RGPD — pedido de apagamento) ──────────────
   function mostrarPedidoEliminacaoFeito(ts) {
     const email = auth.currentUser?.email || '';
-    const quando = ts ? new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long', year:'numeric' }) : '';
+    const quando = ts ? new Date(ts).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long', year:'numeric' }) : '';
     document.getElementById('del-form').style.display = 'none';
     const succ = document.getElementById('del-success');
     succ.style.display = 'block';
-    document.getElementById('del-success-text').innerHTML =
-      `✓ Pedido de eliminação registado${quando ? ' a ' + quando : ''}. A equipa Lyvoo vai processar o apagamento dos seus dados e confirmará por email${email ? ' (' + escapeHtml(email) + ')' : ''}. Para cancelar o pedido, contacte <a href="mailto:hello@lyvoo.pt" style="color:var(--cyan)">hello@lyvoo.pt</a>.`;
+    document.getElementById('del-success-text').innerHTML = t('conta.delete.success', {
+      quando: quando ? t('conta.delete.success-em', { data: quando }) : '',
+      email: email ? ' (' + escapeHtml(email) + ')' : ''
+    });
   }
 
   window.abrirEliminarConta = function() {
@@ -2759,7 +2925,7 @@
     document.getElementById('del-msg').className = 'bk-msg';
     const btn = document.getElementById('del-confirm-btn');
     btn.disabled = false;
-    btn.textContent = 'Pedir eliminação da conta';
+    btn.textContent = t('conta.delete.modal-confirm-btn');
     if (pe?.estado === 'pendente') {
       const ts = pe.em?.toDate ? pe.em.toDate().getTime() : (pe.em ? new Date(pe.em).getTime() : null);
       mostrarPedidoEliminacaoFeito(ts);
@@ -2781,7 +2947,7 @@
     const btn = document.getElementById('del-confirm-btn');
     const msg = document.getElementById('del-msg');
     btn.disabled = true;
-    btn.textContent = 'A registar…';
+    btn.textContent = t('conta.delete.registering');
     try {
       await auth.currentUser.getIdToken(true);
       await updateDoc(doc(db, 'users', auth.currentUser.uid), {
@@ -2794,9 +2960,9 @@
     } catch (e) {
       console.error('Erro ao registar pedido de eliminação:', e);
       msg.className = 'bk-msg err';
-      msg.textContent = 'Não foi possível registar o pedido. Tente novamente ou contacte hello@lyvoo.pt.';
+      msg.textContent = t('conta.delete.register-error');
       btn.disabled = false;
-      btn.textContent = 'Pedir eliminação da conta';
+      btn.textContent = t('conta.delete.modal-confirm-btn');
     }
   });
   // Reflete na secção Conta se já existe um pedido pendente
@@ -2805,11 +2971,11 @@
     const desc = document.getElementById('del-acc-desc');
     const btn = document.getElementById('del-acc-btn');
     if (pe?.estado === 'pendente') {
-      if (desc) desc.textContent = 'Pedido de eliminação registado — a aguardar processamento pela equipa Lyvoo.';
-      if (btn) btn.textContent = 'Ver pedido';
+      if (desc) desc.textContent = t('conta.delete.pending-desc');
+      if (btn) btn.textContent = t('conta.delete.ver-pedido-btn');
     } else {
-      if (desc) desc.textContent = 'Apagar permanentemente todos os seus dados';
-      if (btn) btn.textContent = 'Eliminar';
+      if (desc) desc.textContent = t('conta.delete.desc');
+      if (btn) btn.textContent = t('conta.delete.btn');
     }
   }
   window._aplicarEstadoEliminacao = aplicarEstadoEliminacao;
@@ -2818,29 +2984,29 @@
     const c = (window._consultasList || [])[idx];
     if (!c) return;
     const d = c.data ? new Date(c.data + 'T00:00:00') : null;
-    document.getElementById('cd-title').textContent = c.titulo || 'Consulta';
+    document.getElementById('cd-title').textContent = c.titulo || t('consultas.detail.fallback-title');
     document.getElementById('cd-msg').textContent = '';
     document.getElementById('cd-msg').className = 'bk-msg';
 
     let rows = '';
-    if (d) rows += `<div class="cd-row"><span class="cd-label">Data</span><span class="cd-value">${d.getDate()} ${MESES[d.getMonth()]} ${d.getFullYear()}</span></div>`;
-    if (c.hora) rows += `<div class="cd-row"><span class="cd-label">Hora</span><span class="cd-value">${c.hora}</span></div>`;
-    rows += `<div class="cd-row"><span class="cd-label">Com</span><span class="cd-value">${c.medico || 'Nutricionista'}</span></div>`;
-    rows += `<div class="cd-row"><span class="cd-label">Estado</span><span class="cd-value">${c.estado === 'confirmada' ? 'Confirmada' : 'Agendada'}</span></div>`;
+    if (d) rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.data')}</span><span class="cd-value">${d.getDate()} ${mesAbrev(d.getMonth())} ${d.getFullYear()}</span></div>`;
+    if (c.hora) rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.hora')}</span><span class="cd-value">${c.hora}</span></div>`;
+    rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.com')}</span><span class="cd-value">${c.medico || t('consultas.detail.nutricionista-fallback')}</span></div>`;
+    rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.estado')}</span><span class="cd-value">${c.estado === 'confirmada' ? t('consultas.tag.confirmada') : t('consultas.tag.agendada')}</span></div>`;
 
     let extra = '';
     if (c.link && podeEntrar(c)) {
-      extra += `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="cd-enter-btn">Entrar na consulta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
+      extra += `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="cd-enter-btn">${t('consultas.detail.entrar')} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
     } else if (c.link) {
-      extra += `<div class="cd-note">O botão "Entrar na consulta" fica disponível 5 minutos antes da hora marcada.</div>`;
+      extra += `<div class="cd-note">${t('consultas.detail.hint-5min')}</div>`;
     } else {
-      extra += `<div class="cd-note">O link da videochamada será disponibilizado aqui antes da consulta.</div>`;
+      extra += `<div class="cd-note">${t('consultas.detail.hint-link-pending')}</div>`;
     }
 
     if (c.source === 'agendamento' && c.id) {
-      extra += `<button class="cd-cancel-btn" id="cd-cancel-btn">Cancelar consulta</button>`;
+      extra += `<button class="cd-cancel-btn" id="cd-cancel-btn">${t('consultas.detail.cancelar')}</button>`;
     } else {
-      extra += `<div class="cd-note">Para alterar ou cancelar esta consulta, contacte hello@lyvoo.pt.</div>`;
+      extra += `<div class="cd-note">${t('consultas.detail.contact-hint')}</div>`;
     }
 
     document.getElementById('cd-body').innerHTML = rows + extra;
@@ -2871,12 +3037,12 @@
             window._convite.slots = [];
           }
           await updateDoc(doc(db, 'users', _currentUser.uid), userUpdate);
-          msg.textContent = '✓ Consulta cancelada.';
+          msg.textContent = t('consultas.detail.cancelled-ok');
           msg.className = 'bk-msg ok';
           setTimeout(() => { fecharDetalheConsulta(); carregarDados(_currentUser); }, 1200);
         } catch (e) {
           console.error(e);
-          msg.textContent = 'Erro ao cancelar. Tente novamente.';
+          msg.textContent = t('consultas.detail.cancelled-err');
           msg.className = 'bk-msg err';
           btnSim.disabled = false;
         }
@@ -2886,10 +3052,10 @@
         const wrap = document.createElement('div');
         wrap.style.marginTop = '10px';
         wrap.innerHTML = `
-          <div class="cd-note" style="margin-top:0;margin-bottom:8px;">Tem a certeza que quer cancelar esta consulta? A equipa Lyvoo enviar-lhe-á novas datas.</div>
+          <div class="cd-note" style="margin-top:0;margin-bottom:8px;">${t('consultas.detail.confirm-cancel')}</div>
           <div style="display:flex;gap:8px;">
-            <button class="cd-cancel-btn" id="cd-cancel-yes" style="margin-top:0;">Sim, cancelar</button>
-            <button class="cd-cancel-btn" id="cd-cancel-no" style="margin-top:0;background:rgba(255,255,255,0.06);border-color:var(--line);color:var(--txt);">Manter</button>
+            <button class="cd-cancel-btn" id="cd-cancel-yes" style="margin-top:0;">${t('consultas.detail.confirm-yes')}</button>
+            <button class="cd-cancel-btn" id="cd-cancel-no" style="margin-top:0;background:rgba(255,255,255,0.06);border-color:var(--line);color:var(--txt);">${t('consultas.detail.confirm-no')}</button>
           </div>`;
         cancelBtn.replaceWith(wrap);
         document.getElementById('cd-cancel-no').onclick = () => abrirDetalheConsulta(idx);
@@ -4548,14 +4714,14 @@
         </div>
         <div class="supp-right">
           ${s.dose ? `<span class="supp-dose" style="background:rgba(${p.rgba},0.12);color:${p.color};border:1px solid rgba(${p.rgba},0.25)">${s.dose}${s.momento?' · '+s.momento:''}</span>` : ''}
-          <span class="supp-badge" style="background:rgba(74,222,128,0.10);color:var(--green);border:1px solid rgba(74,222,128,0.2)">● Activo</span>
+          <span class="supp-badge" style="background:rgba(74,222,128,0.10);color:var(--green);border:1px solid rgba(74,222,128,0.2)">${t('sec.perfil.active-badge')}</span>
         </div>
       </div>`;
     }).join('');
   }
 
   // ── Render: Consultas ─────────────────────────────────────────────────
-  const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  function mesAbrev(i) { return t('mes.abrev.' + i); }
   function normLink(link) {
     return /^https?:\/\//i.test(link) ? link : `https://${link}`;
   }
@@ -4586,10 +4752,10 @@
       const d = c.data ? new Date(c.data + 'T00:00:00') : null;
       const isPast = (d && d < today) || c.estado === 'realizada';
       const day = d ? d.getDate() : '-';
-      const mon = d ? MESES[d.getMonth()] : '-';
-      const tagLbl = isPast ? 'Realizada' : (c.estado==='confirmada' ? 'Confirmada' : 'Agendada');
+      const mon = d ? mesAbrev(d.getMonth()) : '-';
+      const tagLbl = isPast ? t('consultas.tag.realizada') : (c.estado==='confirmada' ? t('consultas.tag.confirmada') : t('consultas.tag.agendada'));
       const metaLine = [
-        c.medico || 'Videochamada',
+        c.medico || t('consultas.medico-fallback'),
         c.notas || ''
       ].filter(Boolean).join(' · ');
       const rightBlock = isPast
@@ -4597,10 +4763,10 @@
         : `<div class="consult-right">
             ${c.hora ? `<div class="consult-hour">${c.hora}</div>` : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
             ${c.link && podeEntrar(c)
-              ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="consult-enter" onclick="event.stopPropagation()">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
+              ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="consult-enter" onclick="event.stopPropagation()">${t('consultas.entrar')} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
               : c.link
-                ? `<span class="consult-enter" style="opacity:0.4;cursor:default;pointer-events:none">Entrar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
-                   <div class="consult-enter-hint" style="font-size:11px;color:var(--text-muted,#888);margin-top:4px;text-align:right">Disponível 5 min antes da consulta</div>`
+                ? `<span class="consult-enter" style="opacity:0.4;cursor:default;pointer-events:none">${t('consultas.entrar')} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
+                   <div class="consult-enter-hint" style="font-size:11px;color:var(--text-muted,#888);margin-top:4px;text-align:right">${t('consultas.disponivel-hint')}</div>`
                 : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
           </div>`;
       const clickAttr = isPast ? '' : ` onclick="abrirDetalheConsulta(${idx})" style="cursor:pointer"`;
@@ -5080,7 +5246,7 @@
         if (banner) {
           const ca = d.consultaCanceladaAdmin;
           const ed = ca.data ? new Date(ca.data + 'T00:00:00') : null;
-          const dataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '';
+          const dataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '';
           document.getElementById('cancelada-banner-sub').textContent =
             `A consulta${dataStr ? ' de ' + dataStr : ''}${ca.hora ? ' às ' + ca.hora : ''} foi cancelada.${ca.motivo ? ' Motivo: ' + ca.motivo : ''} A equipa irá enviar novas datas em breve.`;
           document.getElementById('cancelada-banner-ok-btn').onclick = async (e) => {
@@ -5100,7 +5266,7 @@
         if (banner) {
           const esc = window._convite.escolha;
           const ed = esc.data ? new Date(esc.data + 'T00:00:00') : null;
-          const dataStr = ed ? `${ed.getDate()} ${MESES[ed.getMonth()]} ${ed.getFullYear()}` : '-';
+          const dataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '-';
           document.getElementById('reagendar-banner-sub').textContent =
             `Nova proposta: ${dataStr}${esc.hora ? ' às ' + esc.hora : ''}. Pode aceitar ou sugerir outra data.`;
           banner.style.display = 'flex';
@@ -5263,34 +5429,27 @@
   // ── Lyvoo Store ────────────────────────────────────────────────────────
   const STRIPE_LINK = 'https://buy.stripe.com/3cI5kCdOE95e2j57It7N600';
 
+  // slug aponta para as chaves store.mod.<slug>.nome/.desc no dicionário i18n
   const STORE_MODULOS = [
-    { nome: 'Teste Genético',                     desc: 'Avalie a predisposição a doenças hereditárias e oriente medidas preventivas ou tratamentos.' },
-    { nome: 'Microbioma',                          desc: 'Análise completa da flora intestinal: impacto na saúde metabólica, imunidade e bem-estar.' },
-    { nome: 'Vitaminas',                           desc: 'Vitamina D, B12 e Folato. Avalie défices nutricionais que afetam energia e imunidade.' },
-    { nome: 'Teste de Intolerâncias Alimentares',  desc: 'Resposta imunitária (IgG) a 59 alimentos, organizados por grupo alimentar.' },
-    { nome: 'Hormonal Masculino',                  desc: 'Testosterona total e livre, SHBG, PSA, FSH e LH. Avaliação hormonal masculina completa.' },
-    { nome: 'Hormonal Feminino',                   desc: 'Estradiol, Progesterona, Prolactina, FSH, LH e SHBG. Ciclo, equilíbrio e menopausa.' },
-    { nome: 'Fertilidade',                         desc: 'AMH, FSH, LH e Estradiol. Avalie a reserva ovárica e o equilíbrio hormonal.' },
-    { nome: 'Tiroide Completo',                    desc: 'FT4 e T3, complementando o TSH do painel base para uma avaliação tiroideia completa.' },
-    { nome: 'Stresse',                              desc: 'Cortisol matinal. Avalie o impacto do stresse crónico no sono, imunidade e metabolismo.' },
-    { nome: 'Cardio Avançado',                     desc: 'Lp(a) e NT-proBNP. Aprofunde a avaliação de risco cardiovascular e função cardíaca.' },
-    { nome: 'Teste DST/IST Completo',              desc: 'Painel alargado de infeções sexualmente transmissíveis com interpretação clínica.' },
-    { nome: 'Hepatite B',                          desc: 'AgHBs. Rastreio de infeção pelo vírus da Hepatite B com interpretação clínica.' },
+    'genetica', 'microbioma', 'vitaminas', 'intolerancias', 'hormonal-masculino',
+    'hormonal-feminino', 'fertilidade', 'tiroide-completo', 'stress', 'cardio-avancado',
+    'dst-ist', 'hepatite-b',
   ];
 
-  (function renderStoreModulos() {
+  function renderStoreModulos() {
     const grid = document.getElementById('store-mods-grid');
-    grid.innerHTML = STORE_MODULOS.map(m => `
+    grid.innerHTML = STORE_MODULOS.map(slug => `
       <div class="store-mod-card store-locked">
-        <div class="store-mod-name">${m.nome}</div>
-        <div class="store-mod-desc">${m.desc}</div>
+        <div class="store-mod-name">${t('store.mod.' + slug + '.nome')}</div>
+        <div class="store-mod-desc">${t('store.mod.' + slug + '.desc')}</div>
         <span class="store-mod-lock">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Requer Plano Base ativo
+          ${t('store.mod.lock')}
         </span>
-        <button class="store-mod-cta" onclick="navSection('chat')">Adicionar ao plano</button>
+        <button class="store-mod-cta" onclick="navSection('chat')">${t('store.mod.cta')}</button>
       </div>`).join('');
-  })();
+  }
+  renderStoreModulos();
 
   function atualizarStoreUI() {
     // Plano considerado ativo quando o estado avança para 2+ (kit a caminho) e a validade não expirou
@@ -5300,14 +5459,14 @@
     const btn = document.getElementById('store-base-btn');
     if (expirado) {
       btn.disabled = false;
-      btn.textContent = 'Renovar plano base';
+      btn.textContent = t('store.btn.renovar');
     } else if (ativo) {
       btn.disabled = true;
-      btn.textContent = '✓ Plano Base ativo';
-      document.getElementById('store-mods-sub').textContent = 'Adicione módulos especializados ao seu plano através do chat com a equipa.';
+      btn.textContent = t('store.btn.ativo');
+      document.getElementById('store-mods-sub').textContent = t('sec.store.mods-sub-active');
     } else {
       btn.disabled = false;
-      btn.textContent = 'Adquirir plano base';
+      btn.textContent = t('sec.store.buy-btn');
     }
     document.querySelectorAll('.store-mod-card').forEach(c => c.classList.toggle('store-locked', !ativo));
   }
@@ -5538,7 +5697,7 @@
 
 <div class="bk-overlay" id="bk-overlay">
   <div class="bk-modal">
-    <button class="bk-close" id="bk-close" aria-label="Fechar">
+    <button class="bk-close" id="bk-close" aria-label="Fechar" data-i18n-title="a11y.close">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
     </button>
     <div class="bk-title" id="bk-title">Agendar consulta de nutrição</div>
@@ -5557,10 +5716,10 @@
 
 <div class="bk-overlay" id="cd-overlay">
   <div class="bk-modal">
-    <button class="bk-close" id="cd-close" aria-label="Fechar">
+    <button class="bk-close" id="cd-close" aria-label="Fechar" data-i18n-title="a11y.close">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
     </button>
-    <div class="bk-title" id="cd-title">Consulta</div>
+    <div class="bk-title" id="cd-title" data-i18n="consultas.detail.fallback-title">Consulta</div>
     <div id="cd-body"></div>
     <div class="bk-msg" id="cd-msg"></div>
   </div>
@@ -5569,18 +5728,18 @@
 <!-- ── Modal: Eliminar conta (RGPD) ── -->
 <div class="bk-overlay" id="del-overlay">
   <div class="bk-modal">
-    <button class="bk-close" id="del-close" aria-label="Fechar">
+    <button class="bk-close" id="del-close" aria-label="Fechar" data-i18n-title="a11y.close">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
     </button>
-    <div class="bk-title">Eliminar conta</div>
+    <div class="bk-title" data-i18n="conta.delete.modal-title">Eliminar conta</div>
     <div id="del-form">
-      <div class="bk-sub" style="margin-bottom:14px;">
+      <div class="bk-sub" style="margin-bottom:14px;" data-i18n="conta.delete.modal-body">
         Tem o direito ao apagamento dos seus dados (RGPD, art.&nbsp;17.º). Ao confirmar, a equipa Lyvoo
         apaga permanentemente a sua conta e todos os dados associados — perfil, biomarcadores, plano
         alimentar, suplementação, consultas e histórico — no prazo máximo de 30 dias.
       </div>
-      <div class="cd-note" style="margin-bottom:18px;">Esta ação é irreversível. Se tiver um plano ativo, será contactado(a) sobre eventuais implicações antes da eliminação.</div>
-      <button class="cd-cancel-btn" id="del-confirm-btn" style="margin-top:0;">Pedir eliminação da conta</button>
+      <div class="cd-note" style="margin-bottom:18px;" data-i18n="conta.delete.modal-irreversible">Esta ação é irreversível. Se tiver um plano ativo, será contactado(a) sobre eventuais implicações antes da eliminação.</div>
+      <button class="cd-cancel-btn" id="del-confirm-btn" style="margin-top:0;" data-i18n="conta.delete.modal-confirm-btn">Pedir eliminação da conta</button>
       <div class="bk-msg" id="del-msg"></div>
     </div>
     <div id="del-success" style="display:none;">
