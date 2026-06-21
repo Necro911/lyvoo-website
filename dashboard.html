@@ -356,23 +356,8 @@
     .meal-rail-node svg { width:20px; height:20px; stroke-width:1.8; }
     .meal-thumb { width:58px; height:58px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid; position:relative; z-index:1; overflow:hidden; align-self:center; }
     .meal-thumb svg { width:24px; height:24px; opacity:0.5; }
-    /* Coluna lateral: hora + botão alternativa, empilhados dentro do cartão */
+    /* Coluna lateral: apenas a hora da refeição */
     .meal-side { display:flex; flex-direction:column; align-items:center; gap:9px; flex-shrink:0; position:relative; z-index:1; }
-    .meal-alt-btn {
-      flex-shrink:0; width:64px; height:64px; border-radius:16px;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
-      border:1px solid rgba(61,217,232,0.22);
-      background:rgba(61,217,232,0.06); color:var(--cyan);
-      font-size:9px; font-weight:700; font-family:'Inter',sans-serif; letter-spacing:0.02em;
-      cursor:pointer; transition:filter .16s, transform .16s;
-    }
-    .meal-alt-btn:hover { transform:translateY(-1px); filter:brightness(1.18); }
-    .meal-alt-btn svg { width:17px; height:17px; transition:transform .45s ease; }
-    .meal-alt-btn:hover svg { transform:rotate(-120deg); }
-    @media (max-width:560px) {
-      .meal-alt-btn { width:54px; height:54px; font-size:8px; border-radius:14px; }
-      .meal-alt-btn svg { width:15px; height:15px; }
-    }
     @keyframes meal-swap-out { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(-22px); } }
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
     .meal-swapping-out { animation:meal-swap-out .19s ease-out forwards; pointer-events:none; }
@@ -421,17 +406,15 @@
       .meal-thumb svg { width:14px; height:14px; }
       /* Sem rail timeline em mobile, o min-height:140px (pensado para o
          desktop) deixava os cartões com muito espaço vazio. Encolhe ao
-         conteúdo, empilha em 2 linhas: [ícone ... hora/alternativa] e depois
+         conteúdo, empilha em 2 linhas: [ícone ... hora] e depois
          [nome + descrição a largura toda]. */
       .meal-card { gap:8px; padding:16px; min-height:0; align-items:flex-start; flex-wrap:wrap; }
       .meal-name { font-size:14px; }
       .meal-desc { font-size:13.5px; }
       .meal-time { font-size:15px; }
-      .meal-side {
-        order:2; margin-left:auto;
-        flex-direction:column; align-items:flex-end; gap:6px;
-      }
+      .meal-side { order:2; margin-left:auto; }
       .meal-body { order:3; flex:1 1 100%; width:100%; }
+      .meal-actions { margin-top:11px; }
     }
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -4026,8 +4009,9 @@
         const notesHtml = (activeNota && _mealNotesOpen[i]) ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span><b>Observações:</b> ${activeNota}</span></div>` : '';
 
         const swapDis = ops.length < 2;
-        const swapAccent = m.color, swapRgba = m.rgba;
-        const altBtn = !swapDis ? `<button class="meal-alt-btn" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição" style="border-color:rgba(${swapRgba},0.32);background:rgba(${swapRgba},0.07);color:${swapAccent}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg><span>Alternativa</span></button>` : '';
+        const altBtn = !swapDis ? `<button class="meal-act" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>Alternativa</button>` : '';
+        const obsBtn = activeNota ? `<button class="meal-act" onclick="mealNotesToggle(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg>${_mealNotesOpen[i]?'Ocultar observações':'Observações'}</button>` : '';
+        const actionsHtml = (altBtn || obsBtn) ? `<div class="meal-actions">${obsBtn}${altBtn}</div>` : '';
         return `<div class="meal-row">
           <div class="meal-rail"><div class="meal-rail-node" style="border-color:rgba(${m.rgba},0.5);color:${m.color};box-shadow:0 0 0 4px rgba(${m.rgba},0.07)">${m.icon}</div></div>
           <div class="meal-card" style="--meal-accent:${m.color};background:linear-gradient(105deg,rgba(${m.rgba},0.12) 0%,rgba(139,92,246,0.07) 55%,var(--panel) 88%);border-color:rgba(${m.rgba},0.20)">
@@ -4038,11 +4022,10 @@
               </div>
               ${opsHtml}
               ${(ratHtml||tagsHtml||macrosHtml||notesHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${notesHtml}</div>` : ''}
-              ${activeNota ? `<div class="meal-actions"><button class="meal-act" onclick="mealNotesToggle(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg>${_mealNotesOpen[i]?'Ocultar observações':'Observações'}</button></div>` : ''}
+              ${actionsHtml}
             </div>
             <div class="meal-side">
               ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
-              ${altBtn}
             </div>
           </div>
         </div>`;
