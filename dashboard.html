@@ -1857,13 +1857,121 @@
   // traduzido — fica na língua escrita pelo nutricionista.
   // Idioma guardado no perfil Firestore (campo `lang`); resolução inicial
   // local: localStorage → navigator.language → 'pt'.
+  //
+  // Convenção de chaves: 'secção.elemento' (ex.: 'nav.painel',
+  // 'biox.estado.otimo', 'meal.nome.almoco'). Usa sempre minúsculas,
+  // sem acentos, separadas por ponto — facilita grep e evita colisões
+  // entre secções diferentes.
   // ══════════════════════════════════════════════════════════════════════
   const I18N = {
     pt: {
       'greeting.subtitle': 'Acompanhe a sua saúde. Melhore o seu futuro.',
+
+      // ── Biomarcadores: sistemas/categorias ──
+      'bio.system.metabolico': 'Metabolismo',
+      'bio.system.cardiovascular': 'Cardiovascular',
+      'bio.system.hepatico': 'Hepático',
+      'bio.system.renal': 'Renal',
+      'bio.system.tiroide': 'Tiróide',
+      'bio.system.hormonal': 'Hormonal',
+      'bio.system.hematologia': 'Hematologia',
+      'bio.system.nutricional': 'Nutricional',
+      'bio.system.outros': 'Outros',
+
+      // ── Biomarcadores: badges de estado e descrição ──
+      'bio.estado.otimo': 'Ótimo',
+      'bio.estado.atencao': 'Atenção',
+      'bio.estado.critico': 'Prioridade',
+      'bio.estado.': '—',
+      'bio.descricao.otimo': 'Dentro do intervalo ótimo',
+      'bio.descricao.atencao': 'Ligeiramente fora do ideal',
+      'bio.descricao.critico': 'Fora do intervalo recomendado',
+      'bio.descricao.': 'Sem classificação',
+
+      // ── Biomarcadores: barra de filtros, alternador de vista, tabela ──
+      'bio.filtro.todos': 'Todos',
+      'bio.vista.detalhado': 'Detalhado',
+      'bio.vista.simplificado': 'Simplificado',
+      'bio.tabela.parametro': 'Parâmetro',
+      'bio.tabela.valor': 'Valor',
+      'bio.tabela.referencia': 'Referência',
+      'bio.tabela.intervalo': 'Intervalo',
+      'bio.tabela.estado': 'Estado',
+
+      // ── Plano alimentar: nomes de refeição (vocabulário fixo do admin) ──
+      'meal.nome.Pequeno-almoço': 'Pequeno-almoço',
+      'meal.nome.Meio da manhã': 'Meio da manhã',
+      'meal.nome.Almoço': 'Almoço',
+      'meal.nome.Lanche': 'Lanche',
+      'meal.nome.Pré-treino': 'Pré-treino',
+      'meal.nome.Pós-treino': 'Pós-treino',
+      'meal.nome.Jantar': 'Jantar',
+      'meal.nome.Ceia': 'Ceia',
+      'meal.refeicao.fallback': 'Refeição',
+      'meal.alternativa': 'Alternativa',
+      'meal.alternativa.title': 'Ver alternativa a esta refeição',
+
+      // ── Estado da subscrição (badge no topbar) ──
+      'estado.1': 'Sem plano ativo',
+      'estado.2': 'Kit a caminho',
+      'estado.3': 'Laboratório a processar',
+      'estado.4': 'Resultados disponíveis',
+      'estado.5': 'Reavaliação · Kit a caminho',
+      'estado.6': 'Reavaliação · Laboratório a processar',
+      'estado.7': 'Reavaliação · Resultados disponíveis',
+      'estado.fallback': 'Activo',
     },
     en: {
       'greeting.subtitle': 'Track your health. Improve your future.',
+
+      'bio.system.metabolico': 'Metabolism',
+      'bio.system.cardiovascular': 'Cardiovascular',
+      'bio.system.hepatico': 'Liver',
+      'bio.system.renal': 'Kidney',
+      'bio.system.tiroide': 'Thyroid',
+      'bio.system.hormonal': 'Hormonal',
+      'bio.system.hematologia': 'Haematology',
+      'bio.system.nutricional': 'Nutritional',
+      'bio.system.outros': 'Other',
+
+      'bio.estado.otimo': 'Optimal',
+      'bio.estado.atencao': 'Attention',
+      'bio.estado.critico': 'Priority',
+      'bio.estado.': '—',
+      'bio.descricao.otimo': 'Within the optimal range',
+      'bio.descricao.atencao': 'Slightly outside the ideal range',
+      'bio.descricao.critico': 'Outside the recommended range',
+      'bio.descricao.': 'Not classified',
+
+      'bio.filtro.todos': 'All',
+      'bio.vista.detalhado': 'Detailed',
+      'bio.vista.simplificado': 'Simplified',
+      'bio.tabela.parametro': 'Parameter',
+      'bio.tabela.valor': 'Value',
+      'bio.tabela.referencia': 'Reference',
+      'bio.tabela.intervalo': 'Range',
+      'bio.tabela.estado': 'Status',
+
+      'meal.nome.Pequeno-almoço': 'Breakfast',
+      'meal.nome.Meio da manhã': 'Mid-morning',
+      'meal.nome.Almoço': 'Lunch',
+      'meal.nome.Lanche': 'Snack',
+      'meal.nome.Pré-treino': 'Pre-workout',
+      'meal.nome.Pós-treino': 'Post-workout',
+      'meal.nome.Jantar': 'Dinner',
+      'meal.nome.Ceia': 'Late snack',
+      'meal.refeicao.fallback': 'Meal',
+      'meal.alternativa': 'Alternative',
+      'meal.alternativa.title': 'See an alternative for this meal',
+
+      'estado.1': 'No active plan',
+      'estado.2': 'Kit on its way',
+      'estado.3': 'Lab processing',
+      'estado.4': 'Results available',
+      'estado.5': 'Reassessment · Kit on its way',
+      'estado.6': 'Reassessment · Lab processing',
+      'estado.7': 'Reassessment · Results available',
+      'estado.fallback': 'Active',
     },
   };
   let _lang = 'pt';
@@ -3403,6 +3511,9 @@
     { key:'nutricional',    label:'Nutricional' },
     { key:'outros',         label:'Outros' },
   ];
+  // label acima fica em PT (usada tal-qual no PDF, Fase 5 ainda não traduzida);
+  // a UI ao vivo usa esta função, que traduz pela key via t().
+  function bioSysLabel(key) { return t('bio.system.' + key); }
   const BIO_SYSTEM_MAP = {
     'HbA1c':'metabolico',
     'Colesterol total':'cardiovascular', 'LDL':'cardiovascular', 'HDL':'cardiovascular',
@@ -3571,19 +3682,16 @@
     critico: { c:'var(--red)',   rgb:'248,113,113' },
     '':      { c:'var(--txt-2)', rgb:'157,170,176' },
   };
-  const BIOX_LABEL = { otimo:'Ótimo', atencao:'Atenção', critico:'Prioridade', '':'—' };
   const BIOX_CLS   = { otimo:'good', atencao:'warn', critico:'crit', '':'neutral' };
   const BIOX_SEV   = { critico:0, atencao:1, otimo:2, '':3 };
   const _bioCap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
-  const BIOX_ESTADO = {
-    otimo:   'Dentro do intervalo ótimo',
-    atencao: 'Ligeiramente fora do ideal',
-    critico: 'Fora do intervalo recomendado',
-    '':      'Sem classificação',
-  };
+  // Badge curto ("Ótimo"/"Atenção"/"Prioridade") e descrição longa do estado
+  // do biomarcador — traduzidos via t(), chave por tag clínica.
+  function bioxLabel(tag) { return t('bio.estado.' + (tag || '')); }
+  function bioxEstado(tag) { return t('bio.descricao.' + (tag || '')); }
   function bioInterp(r) {
-    return `${r.nome} - ${BIOX_ESTADO[r.tag] || BIOX_ESTADO['']}`;
+    return `${r.nome} - ${bioxEstado(r.tag)}`;
   }
   // Posição factual do valor face ao intervalo ótimo (acima / abaixo / dentro)
   function bioDir(r) {
@@ -3708,7 +3816,7 @@
     _bioLastResultados = resultados;
     if (resultados.dataAnalise) sub.textContent = 'Resultados da sua análise · ' + resultados.dataAnalise;
     const bio = resultados.biomarcadores;
-    const catLabel = Object.fromEntries(BIO_SYSTEMS.map(s => [s.key, s.label]));
+    const catLabel = Object.fromEntries(BIO_SYSTEMS.map(s => [s.key, bioSysLabel(s.key)]));
 
     // Achatar todos os módulos, eliminar duplicados, anexar a componente biológica
     const rows = [];
@@ -3726,18 +3834,18 @@
 
     // Chips de filtro — Todos + categorias presentes (na ordem canónica)
     const presentes = BIO_SYSTEMS.filter(s => rows.some(r => r._cat === s.key));
-    let chips = `<button class="biox-chip active" onclick="bioxFilter('todos', this)">Todos <span class="biox-chip-n">${rows.length}</span></button>`;
+    let chips = `<button class="biox-chip active" onclick="bioxFilter('todos', this)">${t('bio.filtro.todos')} <span class="biox-chip-n">${rows.length}</span></button>`;
     presentes.forEach(s => {
       const n = rows.filter(r => r._cat === s.key).length;
-      chips += `<button class="biox-chip" onclick="bioxFilter('${s.key}', this)">${s.label} <span class="biox-chip-n">${n}</span></button>`;
+      chips += `<button class="biox-chip" onclick="bioxFilter('${s.key}', this)">${bioSysLabel(s.key)} <span class="biox-chip-n">${n}</span></button>`;
     });
 
     // Alternador de vista — detalhado (cartões) vs. simplificado (lista)
     const _icoCards = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/></svg>';
     const _icoList = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>';
     const viewToggle = `<div class="biox-view">
-      <button class="biox-view-btn ${_bioView === 'cards' ? 'active' : ''}" onclick="bioxView('cards')">${_icoCards}Detalhado</button>
-      <button class="biox-view-btn ${_bioView === 'lista' ? 'active' : ''}" onclick="bioxView('lista')">${_icoList}Simplificado</button>
+      <button class="biox-view-btn ${_bioView === 'cards' ? 'active' : ''}" onclick="bioxView('cards')">${_icoCards}${t('bio.vista.detalhado')}</button>
+      <button class="biox-view-btn ${_bioView === 'lista' ? 'active' : ''}" onclick="bioxView('lista')">${_icoList}${t('bio.vista.simplificado')}</button>
     </div>`;
     const topbar = `<div class="biox-topbar"><div class="biox-filters">${chips}</div>${viewToggle}</div>`;
 
@@ -3746,11 +3854,11 @@
       const grupos = {};
       rows.forEach(r => (grupos[r._cat] = grupos[r._cat] || []).push(r));
       let lista = '';
-      BIO_SYSTEMS.forEach(({ key: cat, label }) => {
+      BIO_SYSTEMS.forEach(({ key: cat }) => {
         const g = grupos[cat];
         if (!g || !g.length) return;
-        lista += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${label}</div><div class="bio-table">`;
-        lista += `<div class="bio-thead"><span>Parâmetro</span><span>Valor</span><span>Referência</span><span>Intervalo</span><span>Estado</span><span style="text-align:right">Δ</span></div>`;
+        lista += `<div class="bio-section" data-cat="${cat}"><div class="bio-sec-title">${bioSysLabel(cat)}</div><div class="bio-table">`;
+        lista += `<div class="bio-thead"><span>${t('bio.tabela.parametro')}</span><span>${t('bio.tabela.valor')}</span><span>${t('bio.tabela.referencia')}</span><span>${t('bio.tabela.intervalo')}</span><span>${t('bio.tabela.estado')}</span><span style="text-align:right">Δ</span></div>`;
         g.forEach(r => {
           const tagCls = r.tag === 'otimo' ? 'good' : r.tag === 'atencao' ? 'warn' : 'crit';
           const rowCls = r.tag === 'atencao' ? 'row-warn' : r.tag === 'critico' ? 'row-crit' : '';
@@ -3764,7 +3872,7 @@
             <span class="bio-val">${r.valor} <small>${r.unidade || ''}</small></span>
             <span class="bio-range">${r.referencia || ''}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${r.refOtima}</small>` : ''}</span>
             ${sysRangeBar(r, tagColor(r.tag))}
-            <span class="bio-tag ${tagCls}">${r.tag ? BIOX_LABEL[r.tag] : '-'}</span>
+            <span class="bio-tag ${tagCls}">${r.tag ? bioxLabel(r.tag) : '-'}</span>
             ${delta}
           </div>`;
         });
@@ -3790,7 +3898,7 @@
           <span class="biox-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>
           <span class="biox-mid">
             <span class="biox-interp">${bioInterp(r)}</span>
-            <span class="biox-meta">${catLabel[r._cat] || 'Outros'}</span>
+            <span class="biox-meta">${catLabel[r._cat] || bioSysLabel('outros')}</span>
           </span>
           <span class="biox-side">
             ${spark}
@@ -3798,7 +3906,7 @@
               <span class="biox-val">${r.valor}<small>${r.unidade || ''}</small></span>
               ${bioDelta(r)}
             </span>
-            <span class="biox-badge ${BIOX_CLS[r.tag]}">${BIOX_LABEL[r.tag]}</span>
+            <span class="biox-badge ${BIOX_CLS[r.tag]}">${bioxLabel(r.tag)}</span>
             <span class="biox-chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
           </span>
         </button>
@@ -4007,6 +4115,13 @@
       descEl.addEventListener('animationend', doSwap, { once: true });
     } else { doSwap(); }
   };
+  // Nome de refeição: traduz só se vier do vocabulário fixo do admin
+  // (dropdown — chave existe em I18N.pt); nomes livres ficam como escritos.
+  function mealNameLabel(nome) {
+    if (!nome) return t('meal.refeicao.fallback');
+    const key = 'meal.nome.' + nome;
+    return I18N.pt[key] ? t(key) : nome;
+  }
   function renderPlano(pa) {
     const container = document.getElementById('plano-content');
     const temConteudo = pa && (pa.objectivo || pa.kcal || (pa.refeicoes && pa.refeicoes.length) || (pa.priorizar && pa.priorizar.length) || (pa.reduzir && pa.reduzir.length) || pa.obs);
@@ -4084,7 +4199,7 @@
         const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
 
         const swapDis = ops.length < 2;
-        const altBtn = !swapDis ? `<button class="meal-act" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>Alternativa</button>` : '';
+        const altBtn = !swapDis ? `<button class="meal-act" onclick="mealSwap(${i})" title="${t('meal.alternativa.title')}" aria-label="${t('meal.alternativa.title')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>${t('meal.alternativa')}</button>` : '';
         const actionsHtml = altBtn ? `<div class="meal-actions">${altBtn}</div>` : '';
         return `<div class="meal-row">
           <div class="meal-rail"><div class="meal-rail-node" style="border-color:rgba(${m.rgba},0.5);color:${m.color};box-shadow:0 0 0 4px rgba(${m.rgba},0.07)">${m.icon}</div></div>
@@ -4092,7 +4207,7 @@
             <div class="meal-thumb" style="background:radial-gradient(circle at 34% 28%, rgba(${m.rgba},0.34), rgba(${m.rgba},0.10) 62%, var(--panel-2));border-color:rgba(${m.rgba},0.28);color:${m.color}">${m.icon}</div>
             <div class="meal-body">
               <div class="meal-name-row">
-                <span class="meal-name">${r.nome||'Refeição'}</span>
+                <span class="meal-name">${mealNameLabel(r.nome)}</span>
               </div>
               ${opsHtml}
               ${(ratHtml||tagsHtml||macrosHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}</div>` : ''}
@@ -4491,15 +4606,10 @@
     }
   }
 
-  const ESTADO_LABELS = {
-    1: 'Sem plano ativo',
-    2: 'Kit a caminho',
-    3: 'Laboratório a processar',
-    4: 'Resultados disponíveis',
-    5: 'Reavaliação · Kit a caminho',
-    6: 'Reavaliação · Laboratório a processar',
-    7: 'Reavaliação · Resultados disponíveis'
-  };
+  function estadoLabel(estadoNum) {
+    const key = 'estado.' + estadoNum;
+    return I18N.pt[key] ? t(key) : t('estado.fallback');
+  }
 
   async function carregarDados(user) {
     // Guard contra execuções concorrentes (ex: visibilitychange + reload manual
@@ -4699,7 +4809,7 @@
     const badge = document.getElementById('estadoBadge');
     const labelEl = document.getElementById('estadoLabel');
     if (badge && labelEl) {
-      labelEl.textContent = ESTADO_LABELS[estadoNum] || 'Activo';
+      labelEl.textContent = estadoLabel(estadoNum);
       badge.style.display = 'inline-flex';
     }
 
