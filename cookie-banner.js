@@ -12,6 +12,60 @@
 
   const KEY = 'lyvoo_cookies';
 
+  // Idioma: reaproveita a mesma preferência da dashboard (localStorage
+  // lyvoo_lang) — este script corre em todas as páginas do site, por isso
+  // tem o seu próprio mini-dicionário em vez de depender de globals da
+  // dashboard, que pode não estar carregada na página atual.
+  const LANG = (function () {
+    try { return localStorage.getItem('lyvoo_lang') === 'en' ? 'en' : 'pt'; } catch (e) { return 'pt'; }
+  })();
+  const STR = {
+    pt: {
+      ariaConsent: 'Consentimento de cookies',
+      title: 'Este site utiliza cookies',
+      desc: 'Cookies essenciais para o funcionamento e, com o seu consentimento, cookies analíticos.',
+      saberMais: 'Saber mais',
+      apenasEssenciais: 'Apenas essenciais',
+      aceitarTodos: 'Aceitar todos',
+      personalizar: 'Personalizar definições',
+      ariaDefinicoes: 'Definições de cookies',
+      defTitle: 'Definições de cookies',
+      defSub: 'Escolha quais os cookies que aceita. Pode alterar esta preferência a qualquer momento.',
+      ariaFechar: 'Fechar',
+      essenciaisNome: 'Cookies essenciais',
+      essenciaisDesc: 'Necessários para o funcionamento da plataforma. Autenticação, segurança da sessão e preferências básicas. Não podem ser desativados.',
+      sempreAtivos: 'Sempre ativos',
+      analiticosNome: 'Cookies analíticos',
+      analiticosDesc: 'Permitem-nos compreender como os visitantes interagem com o site (páginas visitadas, duração da sessão). Utilizamos o Google Analytics. Os dados são anónimos e agregados.',
+      recusarTodos: 'Recusar todos',
+      guardarPreferencias: 'Guardar preferências',
+      gerirCookies: 'Gerir cookies',
+      ariaGerirCookies: 'Gerir preferências de cookies',
+    },
+    en: {
+      ariaConsent: 'Cookie consent',
+      title: 'This site uses cookies',
+      desc: 'Essential cookies for the site to function and, with your consent, analytics cookies.',
+      saberMais: 'Learn more',
+      apenasEssenciais: 'Essential only',
+      aceitarTodos: 'Accept all',
+      personalizar: 'Customise settings',
+      ariaDefinicoes: 'Cookie settings',
+      defTitle: 'Cookie settings',
+      defSub: 'Choose which cookies you accept. You can change this preference at any time.',
+      ariaFechar: 'Close',
+      essenciaisNome: 'Essential cookies',
+      essenciaisDesc: 'Required for the platform to work. Authentication, session security and basic preferences. Cannot be disabled.',
+      sempreAtivos: 'Always active',
+      analiticosNome: 'Analytics cookies',
+      analiticosDesc: 'Let us understand how visitors interact with the site (pages visited, session duration). We use Google Analytics. Data is anonymous and aggregated.',
+      recusarTodos: 'Reject all',
+      guardarPreferencias: 'Save preferences',
+      gerirCookies: 'Manage cookies',
+      ariaGerirCookies: 'Manage cookie preferences',
+    },
+  }[LANG];
+
   /* ─────────── CSS ─────────── */
   const style = document.createElement('style');
   style.textContent = `
@@ -169,7 +223,7 @@
     const el = document.createElement('div');
     el.id = 'lc-banner';
     el.setAttribute('role', 'dialog');
-    el.setAttribute('aria-label', 'Consentimento de cookies');
+    el.setAttribute('aria-label', STR.ariaConsent);
     el.innerHTML = `
       <div id="lc-banner-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -178,14 +232,14 @@
         </svg>
       </div>
       <div id="lc-banner-text">
-        <strong>Este site utiliza cookies</strong>
-        Cookies essenciais para o funcionamento e, com o seu consentimento, cookies analíticos.
-        <a href="https://lyvoo.pt/privacidade.html#cookies">Saber mais</a>
+        <strong>${STR.title}</strong>
+        ${STR.desc}
+        <a href="${LANG === 'en' ? 'https://lyvoo.pt/en/privacy.html#cookies' : 'https://lyvoo.pt/privacidade.html#cookies'}">${STR.saberMais}</a>
       </div>
       <div id="lc-banner-actions">
-        <button class="lc-btn" id="lc-btn-essential">Apenas essenciais</button>
-        <button class="lc-btn" id="lc-btn-all">Aceitar todos</button>
-        <button id="lc-btn-settings">Personalizar definições</button>
+        <button class="lc-btn" id="lc-btn-essential">${STR.apenasEssenciais}</button>
+        <button class="lc-btn" id="lc-btn-all">${STR.aceitarTodos}</button>
+        <button id="lc-btn-settings">${STR.personalizar}</button>
       </div>`;
     document.body.appendChild(el);
     requestAnimationFrame(() => setTimeout(() => el.classList.add('show'), 100));
@@ -214,13 +268,13 @@
     const overlay = document.createElement('div');
     overlay.id = 'lc-modal-overlay';
     overlay.innerHTML = `
-      <div id="lc-modal" role="dialog" aria-modal="true" aria-label="Definições de cookies">
+      <div id="lc-modal" role="dialog" aria-modal="true" aria-label="${STR.ariaDefinicoes}">
         <div id="lc-modal-header">
           <div>
-            <div id="lc-modal-title">Definições de cookies</div>
-            <div id="lc-modal-sub">Escolha quais os cookies que aceita. Pode alterar esta preferência a qualquer momento.</div>
+            <div id="lc-modal-title">${STR.defTitle}</div>
+            <div id="lc-modal-sub">${STR.defSub}</div>
           </div>
-          <button id="lc-modal-close" aria-label="Fechar">
+          <button id="lc-modal-close" aria-label="${STR.ariaFechar}">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -228,18 +282,18 @@
         <div class="lc-category">
           <div class="lc-cat-header">
             <div>
-              <div class="lc-cat-name">Cookies essenciais</div>
-              <div class="lc-cat-desc">Necessários para o funcionamento da plataforma. Autenticação, segurança da sessão e preferências básicas. Não podem ser desativados.</div>
+              <div class="lc-cat-name">${STR.essenciaisNome}</div>
+              <div class="lc-cat-desc">${STR.essenciaisDesc}</div>
             </div>
-            <span class="lc-always-on">Sempre ativos</span>
+            <span class="lc-always-on">${STR.sempreAtivos}</span>
           </div>
         </div>
 
         <div class="lc-category">
           <div class="lc-cat-header">
             <div>
-              <div class="lc-cat-name">Cookies analíticos</div>
-              <div class="lc-cat-desc">Permitem-nos compreender como os visitantes interagem com o site (páginas visitadas, duração da sessão). Utilizamos o Google Analytics. Os dados são anónimos e agregados.</div>
+              <div class="lc-cat-name">${STR.analiticosNome}</div>
+              <div class="lc-cat-desc">${STR.analiticosDesc}</div>
             </div>
             <label class="lc-toggle">
               <input type="checkbox" id="lc-toggle-analytics" ${analiticosOn ? 'checked' : ''}>
@@ -249,8 +303,8 @@
         </div>
 
         <div id="lc-modal-footer">
-          <button class="lc-modal-btn" id="lc-modal-reject">Recusar todos</button>
-          <button class="lc-modal-btn" id="lc-modal-save">Guardar preferências</button>
+          <button class="lc-modal-btn" id="lc-modal-reject">${STR.recusarTodos}</button>
+          <button class="lc-modal-btn" id="lc-modal-save">${STR.guardarPreferencias}</button>
         </div>
       </div>`;
 
@@ -299,8 +353,8 @@
     if (!alvo) return;
     const btn = document.createElement('button');
     btn.className = 'lc-manage-btn';
-    btn.textContent = 'Gerir cookies';
-    btn.setAttribute('aria-label', 'Gerir preferências de cookies');
+    btn.textContent = STR.gerirCookies;
+    btn.setAttribute('aria-label', STR.ariaGerirCookies);
     btn.addEventListener('click', abrirModal);
     if (alvo.classList.contains('footer-bottom-links') || alvo.classList.contains('footer-bottom')) {
       alvo.appendChild(btn);

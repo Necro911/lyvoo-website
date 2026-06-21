@@ -2154,6 +2154,21 @@
       'bk.agendada-sucesso': '✓ Consulta agendada com sucesso!',
       'bk.erro-agendar': 'Não foi possível agendar. Tente novamente.',
 
+      // ── Biomarcadores: cartão de detalhe (vista "Detalhado") ──
+      'bio.detail.resultado-atual': 'Resultado atual',
+      'bio.detail.intervalo-otimo': 'Intervalo ótimo',
+      'bio.detail.referencia': 'Referência',
+      'bio.detail.evolucao': 'Evolução das últimas análises',
+      'bio.detail.intervalo-referencia': 'Intervalo de referência',
+      'bio.detail.zona-otima': 'Zona ótima Lyvoo',
+      'bio.detail.ladder.otimo': 'Ótimo',
+      'bio.detail.ladder.vigiar': 'Vigiar',
+      'bio.detail.ladder.acao': 'Ação',
+      'bio.detail.dir.acima': 'acima do intervalo ótimo',
+      'bio.detail.dir.abaixo': 'abaixo do intervalo ótimo',
+      'bio.detail.dir.dentro': 'dentro do intervalo ótimo',
+      'bio.detail.note': 'O seu valor encontra-se <b style="color:var(--txt-2)">{dir}</b>. Acompanhe a evolução nas próximas análises com a equipa Lyvoo.',
+
       // ── Nomes de meses/dias (cobre consultas, banners de reagendamento,
       // convites, calendário de marcação) ──
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Fev', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Abr',
@@ -2511,6 +2526,20 @@
       'bk.sugestao-enviada': '✓ Suggestion sent to your Lyvoo team!',
       'bk.agendada-sucesso': '✓ Appointment scheduled successfully!',
       'bk.erro-agendar': 'We could not schedule the appointment. Please try again.',
+
+      'bio.detail.resultado-atual': 'Current result',
+      'bio.detail.intervalo-otimo': 'Optimal range',
+      'bio.detail.referencia': 'Reference',
+      'bio.detail.evolucao': 'Evolution across recent analyses',
+      'bio.detail.intervalo-referencia': 'Reference range',
+      'bio.detail.zona-otima': 'Lyvoo optimal zone',
+      'bio.detail.ladder.otimo': 'Optimal',
+      'bio.detail.ladder.vigiar': 'Watch',
+      'bio.detail.ladder.acao': 'Action',
+      'bio.detail.dir.acima': 'above the optimal range',
+      'bio.detail.dir.abaixo': 'below the optimal range',
+      'bio.detail.dir.dentro': 'within the optimal range',
+      'bio.detail.note': 'Your value is <b style="color:var(--txt-2)">{dir}</b>. Track its evolution in upcoming analyses with the Lyvoo team.',
 
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Feb', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Apr',
       'mes.abrev.4': 'May', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Aug',
@@ -4320,9 +4349,9 @@
     const val = parseFloat(String(r.valor).replace(',', '.'));
     const ot = parseRefRange(r.refOtima) || parseRefRange(r.referencia);
     if (isNaN(val) || !ot) return '';
-    if (ot.max != null && val > ot.max) return 'acima do intervalo ótimo';
-    if (ot.min != null && val < ot.min) return 'abaixo do intervalo ótimo';
-    return 'dentro do intervalo ótimo';
+    if (ot.max != null && val > ot.max) return t('bio.detail.dir.acima');
+    if (ot.min != null && val < ot.min) return t('bio.detail.dir.abaixo');
+    return t('bio.detail.dir.dentro');
   }
   // Série histórica de um marcador (cronológica) a partir do histórico de análises
   function bioSeries(nome) {
@@ -4389,7 +4418,7 @@
     const span = base.max - base.min, lo = base.min - span * 0.35, hi = base.max + span * 0.35;
     const pct = x => Math.max(2, Math.min(98, ((x - lo) / (hi - lo)) * 100));
     return `<div class="biox-bar-wrap">
-      <div class="biox-bar-head"><span>Intervalo de referência</span>${ot ? '<span style="color:var(--green)">Zona ótima Lyvoo</span>' : ''}</div>
+      <div class="biox-bar-head"><span>${t('bio.detail.intervalo-referencia')}</span>${ot ? `<span style="color:var(--green)">${t('bio.detail.zona-otima')}</span>` : ''}</div>
       <div class="biox-bar">
         ${rf ? `<span class="biox-bar-zone ref" style="left:${pct(rf.min)}%;right:${(100 - pct(rf.max)).toFixed(1)}%"></span>` : ''}
         ${ot ? `<span class="biox-bar-zone ot" style="left:${pct(ot.min)}%;right:${(100 - pct(ot.max)).toFixed(1)}%"></span>` : ''}
@@ -4400,9 +4429,9 @@
   // Escada clínica: tiers reais autorizados pelo admin (ótimo / vigiar / ação)
   function bioLadder(r) {
     const rows = [
-      { k: 'Ótimo',  cls: 'otimo',   v: r.refOtima, c: 'var(--green)' },
-      { k: 'Vigiar', cls: 'atencao', v: r.refRisco, c: 'var(--amber)' },
-      { k: 'Ação',   cls: 'critico', v: r.refAcao,  c: 'var(--red)' },
+      { k: t('bio.detail.ladder.otimo'),  cls: 'otimo',   v: r.refOtima, c: 'var(--green)' },
+      { k: t('bio.detail.ladder.vigiar'), cls: 'atencao', v: r.refRisco, c: 'var(--amber)' },
+      { k: t('bio.detail.ladder.acao'),   cls: 'critico', v: r.refAcao,  c: 'var(--red)' },
     ].filter(x => x.v);
     if (!rows.length) return '';
     return `<div class="biox-ladder">${rows.map(x =>
@@ -4534,14 +4563,14 @@
         </button>
         <div class="biox-detail"><div class="biox-detail-inner"><div class="biox-detail-pad">
           <div class="biox-stats">
-            <div class="biox-stat"><div class="biox-stat-l">Resultado atual</div><div class="biox-stat-v">${r.valor} ${r.unidade || ''}</div></div>
-            <div class="biox-stat"><div class="biox-stat-l">Intervalo ótimo</div><div class="biox-stat-v opt">${r.refOtima || '—'}</div></div>
-            <div class="biox-stat"><div class="biox-stat-l">Referência</div><div class="biox-stat-v">${r.referencia || '—'}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.resultado-atual')}</div><div class="biox-stat-v">${r.valor} ${r.unidade || ''}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.intervalo-otimo')}</div><div class="biox-stat-v opt">${r.refOtima || '—'}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.referencia')}</div><div class="biox-stat-v">${r.referencia || '—'}</div></div>
           </div>
           ${bar}
           ${ladder}
-          ${trend ? `<div class="biox-bar-head" style="margin:20px 0 0">Evolução das últimas análises</div>${trend}` : ''}
-          ${dirNote ? `<div class="biox-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>O seu valor encontra-se <b style="color:var(--txt-2)">${dirNote}</b>. Acompanhe a evolução nas próximas análises com a equipa Lyvoo.</span></div>` : ''}
+          ${trend ? `<div class="biox-bar-head" style="margin:20px 0 0">${t('bio.detail.evolucao')}</div>${trend}` : ''}
+          ${dirNote ? `<div class="biox-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>${t('bio.detail.note', { dir: dirNote })}</span></div>` : ''}
         </div></div></div>
       </div>`;
     }).join('');
