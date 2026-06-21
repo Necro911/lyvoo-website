@@ -2194,6 +2194,21 @@
       'plano.macro.hc': 'HC',
       'plano.macro.g': 'G',
 
+      // ── PDFs (plano alimentar + biomarcadores) ──
+      'pdf.gerando': 'A gerar…',
+      'pdf.erro-generico': 'Erro ao gerar o PDF. Tente novamente.',
+      'pdf.footer.tagline': 'Saúde personalizada . Prevenção inteligente. Impacto real.',
+      'pdf.plano.titulo': 'PLANO ALIMENTAR PERSONALIZADO',
+      'pdf.plano.resumo-nutricional': 'Resumo nutricional',
+      'pdf.plano.refeicoes': 'Plano de refeições',
+      'pdf.plano.ou': 'OU',
+      'pdf.plano.observacoes': 'OBSERVAÇÕES',
+      'pdf.bio.sem-dados': 'Sem biomarcadores para exportar.',
+      'pdf.bio.titulo': 'ANÁLISE DE BIOMARCADORES',
+      'pdf.bio.resultados-de': 'Resultados da análise de {data}',
+      'bio.tabela.otimo': 'Ótimo',
+      'pdf.bio.nota': 'Documento informativo. Os intervalos ótimos refletem as metas de prevenção Lyvoo. Interprete sempre os resultados com o acompanhamento da equipa clínica.',
+
       // ── Nomes de meses/dias (cobre consultas, banners de reagendamento,
       // convites, calendário de marcação) ──
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Fev', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Abr',
@@ -2590,6 +2605,20 @@
       'plano.macro.hc': 'C',
       'plano.macro.g': 'F',
 
+      'pdf.gerando': 'Generating…',
+      'pdf.erro-generico': 'Error generating the PDF. Please try again.',
+      'pdf.footer.tagline': 'Personalised health . Smart prevention. Real impact.',
+      'pdf.plano.titulo': 'PERSONALISED MEAL PLAN',
+      'pdf.plano.resumo-nutricional': 'Nutritional summary',
+      'pdf.plano.refeicoes': 'Meal plan',
+      'pdf.plano.ou': 'OR',
+      'pdf.plano.observacoes': 'NOTES',
+      'pdf.bio.sem-dados': 'No biomarkers to export.',
+      'pdf.bio.titulo': 'BIOMARKER ANALYSIS',
+      'pdf.bio.resultados-de': 'Results from the analysis of {data}',
+      'bio.tabela.otimo': 'Optimal',
+      'pdf.bio.nota': 'Informational document. Optimal ranges reflect Lyvoo prevention targets. Always interpret results with guidance from the clinical team.',
+
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Feb', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Apr',
       'mes.abrev.4': 'May', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Aug',
       'mes.abrev.8': 'Sep', 'mes.abrev.9': 'Oct', 'mes.abrev.10': 'Nov', 'mes.abrev.11': 'Dec',
@@ -2867,7 +2896,7 @@
       const notifTs = d.notificadoEm.toDate ? d.notificadoEm.toDate().getTime() : new Date(d.notificadoEm).getTime();
       const vistoTs = _vistoNotifTs;
       const isNew   = notifTs > vistoTs;
-      const dataStr = new Date(notifTs).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const dataStr = new Date(notifTs).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long' });
       const titulo  = d.estado >= 4 ? 'Resultados disponíveis' : 'O seu painel foi atualizado';
       const sub     = d.estado >= 4
         ? 'O seu relatório médico, biomarcadores e plano estão prontos.'
@@ -2881,7 +2910,7 @@
       const ts = cf.confirmadoEm.toDate ? cf.confirmadoEm.toDate().getTime() : new Date(cf.confirmadoEm).getTime();
       const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
-      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const dataStr = new Date(ts).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long' });
       const ed = cf.data ? new Date(cf.data + 'T00:00:00') : null;
       const novaDataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '-';
       _bellNotifs.push({
@@ -2896,7 +2925,7 @@
       const ts = d.consultaAlterada.alteradoEm.toDate ? d.consultaAlterada.alteradoEm.toDate().getTime() : new Date(d.consultaAlterada.alteradoEm).getTime();
       const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
-      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const dataStr = new Date(ts).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long' });
       const ed = d.consultaAlterada.data ? new Date(d.consultaAlterada.data + 'T00:00:00') : null;
       const novaDataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '-';
       _bellNotifs.push({
@@ -2912,7 +2941,7 @@
       const ts = cv.criadoEm.toDate ? cv.criadoEm.toDate().getTime() : new Date(cv.criadoEm).getTime();
       const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
-      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const dataStr = new Date(ts).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long' });
       _bellNotifs.push({
         titulo: cv.tipo === 'reavaliacao' ? 'Agende a sua reavaliação' : 'Agende a sua consulta de nutrição',
         sub: 'A equipa Lyvoo disponibilizou datas para a sua consulta. Escolha o horário que melhor lhe convém.',
@@ -2926,7 +2955,7 @@
       const ts = ca.em.toDate ? ca.em.toDate().getTime() : new Date(ca.em).getTime();
       const vistoTs = _vistoNotifTs;
       const isNew   = ts > vistoTs;
-      const dataStr = new Date(ts).toLocaleDateString('pt-PT', { day:'numeric', month:'long' });
+      const dataStr = new Date(ts).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long' });
       const ed = ca.data ? new Date(ca.data + 'T00:00:00') : null;
       const escHtml = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
       _bellNotifs.push({
@@ -3492,7 +3521,7 @@
 
     const btn = document.getElementById('plano-pdf-btn');
     const origHTML = btn?.innerHTML;
-    if (btn) { btn.disabled = true; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> A gerar…'; }
+    if (btn) { btn.disabled = true; btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ${t('pdf.gerando')}`; }
 
     try {
       // Lazy-load jsPDF
@@ -3608,11 +3637,11 @@
 
       // ── Título + nome + data ──────────────────────────────────────
       const nomeCliente = window._planoNome || '';
-      const hoje = new Date().toLocaleDateString('pt-PT',{ day:'numeric', month:'long', year:'numeric' });
+      const hoje = new Date().toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT',{ day:'numeric', month:'long', year:'numeric' });
 
       doc.setFont('helvetica','bold'); doc.setFontSize(8);
       doc.setTextColor(...TEAL);
-      doc.text('PLANO ALIMENTAR PERSONALIZADO', ml, y);
+      doc.text(t('pdf.plano.titulo'), ml, y);
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
       doc.setTextColor(...TEXT3);
       doc.text(hoje, W - mr, y, { align:'right' });
@@ -3688,7 +3717,7 @@
         // Título da secção + pílula de kcal
         doc.setFillColor(...TEAL); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
         doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...TEXT);
-        doc.text('Resumo nutricional', ml + 6, y);
+        doc.text(t('pdf.plano.resumo-nutricional'), ml + 6, y);
         if (pa.kcal) {
           const kt = String(pa.kcal);
           doc.setFont('helvetica','bold'); doc.setFontSize(8.5);
@@ -3707,9 +3736,9 @@
         if (hasPct) {
           const sum = pPct + gPct + hPct;
           const segs = [
-            { p: pPct, c: [74,222,128],  d: [22,163,74],   l: 'Proteína' },
-            { p: gPct, c: [167,139,250], d: [109,40,217],  l: 'Gordura' },
-            { p: hPct, c: [61,217,232],  d: [13,122,135],  l: 'Hidratos' },
+            { p: pPct, c: [74,222,128],  d: [22,163,74],   l: t('plano.legend.proteina') },
+            { p: gPct, c: [167,139,250], d: [109,40,217],  l: t('plano.legend.gordura') },
+            { p: hPct, c: [61,217,232],  d: [13,122,135],  l: t('plano.legend.hidratos') },
           ];
           const barX = ml + 9, barW = cw - 18, barY = iy, barH = 5.5;
           // trilho
@@ -3739,10 +3768,10 @@
 
         // Tiles: HCs / Proteína / Lípidos / Água
         const tiles = [
-          { l: 'HCs',      v: hcG ? hcG + ' g' : '—',         c: [180,100,5]  },
-          { l: 'Proteína', v: prG ? prG + ' g' : '—',         c: [22,163,74]  },
-          { l: 'Lípidos',  v: goG ? goG + ' g' : '—',         c: [220,38,38]  },
-          { l: 'Água',     v: aguaTxt ? aguaTxt + ' L' : '—', c: [13,122,135] },
+          { l: t('plano.metrics.hcs'),      v: hcG ? hcG + ' g' : '—',         c: [180,100,5]  },
+          { l: t('plano.metrics.proteina'), v: prG ? prG + ' g' : '—',         c: [22,163,74]  },
+          { l: t('plano.metrics.lipidos'),  v: goG ? goG + ' g' : '—',         c: [220,38,38]  },
+          { l: t('plano.metrics.agua'),     v: aguaTxt ? aguaTxt + ' L' : '—', c: [13,122,135] },
         ];
         const gap = 4, tw = (cw - 18 - 3 * gap) / 4, th = 24, tx0 = ml + 9;
         tiles.forEach((t, i) => {
@@ -3764,7 +3793,7 @@
         newPageIfNeeded(16);
         doc.setFillColor(...TEAL); doc.roundedRect(ml, y - 3.2, 3.2, 3.2, 1, 1, 'F');
         doc.setFont('helvetica','bold'); doc.setFontSize(11);
-        doc.setTextColor(...TEXT); doc.text('Plano de refeições', ml + 6, y);
+        doc.setTextColor(...TEXT); doc.text(t('pdf.plano.refeicoes'), ml + 6, y);
         y += 8;
 
         for (const r of pa.refeicoes) {
@@ -3788,7 +3817,7 @@
 
           // Nome da refeição
           doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...mc);
-          doc.text(r.nome, ml + 9, y + 9.5);
+          doc.text(mealNameLabel(r.nome), ml + 9, y + 9.5);
 
           // Hora — pílula no canto superior direito
           if (r.hora) {
@@ -3804,9 +3833,10 @@
           ops.forEach((op, i) => {
             if (i > 0) {
               doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
-              const ow = doc.getTextWidth('OU') + 5;
+              const ouTxt = t('pdf.plano.ou');
+              const ow = doc.getTextWidth(ouTxt) + 5;
               doc.setFillColor(...LINE); doc.roundedRect(ml + 9, oy - 3.1, ow, 4.6, 2.3, 2.3, 'F');
-              doc.setTextColor(...TEXT2); doc.text('OU', ml + 9 + 2.5, oy);
+              doc.setTextColor(...TEXT2); doc.text(ouTxt, ml + 9 + 2.5, oy);
               oy += 6;
             }
             doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
@@ -3828,7 +3858,7 @@
         softCard(ml, y, cw, obsH, 3.5);
         doc.setFillColor(...TEXT2); doc.roundedRect(ml, y, 3, obsH, 1.5, 1.5, 'F');
         doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...TEXT2);
-        doc.text('OBSERVAÇÕES', ml + 9, y + 8);
+        doc.text(t('pdf.plano.observacoes'), ml + 9, y + 8);
         doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
         doc.text(obsL, ml + 9, y + 14.5);
       }
@@ -3840,7 +3870,7 @@
         doc.setFillColor(...TEAL);
         doc.rect(0, H - 16, W, 0.6, 'F');
         doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...TEAL_D);
-        doc.text('Saúde personalizada . Prevenção inteligente. Impacto real.', W / 2, H - 9, { align:'center' });
+        doc.text(t('pdf.footer.tagline'), W / 2, H - 9, { align:'center' });
         doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
         doc.text(`${p} / ${total}`, W - mr, H - 9, { align:'right' });
       }
@@ -3851,7 +3881,7 @@
 
     } catch(e) {
       console.error('PDF error:', e);
-      mostrarToast('Erro ao gerar o PDF. Tente novamente.', 'erro');
+      mostrarToast(t('pdf.erro-generico'), 'erro');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
     }
@@ -3899,12 +3929,12 @@
   // Exporta os biomarcadores em PDF — sempre a versão simplificada (lista por sistema)
   window.downloadBiomarcadoresPDF = async function() {
     const resultados = _bioLastResultados;
-    if (!resultados || !resultados.biomarcadores) { mostrarToast('Sem biomarcadores para exportar.', 'erro'); return; }
+    if (!resultados || !resultados.biomarcadores) { mostrarToast(t('pdf.bio.sem-dados'), 'erro'); return; }
     normalizeResultados(resultados);
 
     const btn = document.getElementById('bio-pdf-btn');
     const origHTML = btn?.innerHTML;
-    if (btn) { btn.disabled = true; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> A gerar…'; }
+    if (btn) { btn.disabled = true; btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> ${t('pdf.gerando')}`; }
 
     try {
       if (!window.jspdf) {
@@ -3924,9 +3954,9 @@
       const LINE = [218,226,236];
       const GREEN = [22,163,74], AMBER = [180,100,5], RED = [220,38,38];
       const STATUS = {
-        otimo:   { lbl:'Ótimo',      c:GREEN },
-        atencao: { lbl:'Atenção',    c:AMBER },
-        critico: { lbl:'Prioridade', c:RED },
+        otimo:   { lbl:bioxLabel('otimo'),   c:GREEN },
+        atencao: { lbl:bioxLabel('atencao'), c:AMBER },
+        critico: { lbl:bioxLabel('critico'), c:RED },
       };
 
       // Colunas (x de início)
@@ -3936,14 +3966,14 @@
 
       // Título + nome + data
       const nomeCliente = window._planoNome || '';
-      const hoje = new Date().toLocaleDateString('pt-PT', { day:'numeric', month:'long', year:'numeric' });
+      const hoje = new Date().toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long', year:'numeric' });
       doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...TEAL);
-      doc.text('ANÁLISE DE BIOMARCADORES', ml, y);
+      doc.text(t('pdf.bio.titulo'), ml, y);
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT3);
       doc.text(hoje, W - mr, y, { align:'right' });
       y += 8;
       if (nomeCliente) { doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...TEXT); doc.text(nomeCliente, ml, y); y += 4; }
-      if (resultados.dataAnalise) { y += 5; doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2); doc.text('Resultados da análise de ' + resultados.dataAnalise, ml, y); }
+      if (resultados.dataAnalise) { y += 5; doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...TEXT2); doc.text(t('pdf.bio.resultados-de', { data: resultados.dataAnalise }), ml, y); }
       y += 6;
       doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y); y += 9;
 
@@ -3953,11 +3983,11 @@
       }
       function headerRow() {
         doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...TEXT3);
-        doc.text('PARÂMETRO', cParam, y);
-        doc.text('VALOR', cVal, y);
-        doc.text('REFERÊNCIA', cRef, y);
-        doc.text('ÓTIMO', cOt, y);
-        doc.text('ESTADO', cEst, y);
+        doc.text(t('bio.tabela.parametro').toUpperCase(), cParam, y);
+        doc.text(t('bio.tabela.valor').toUpperCase(), cVal, y);
+        doc.text(t('bio.tabela.referencia').toUpperCase(), cRef, y);
+        doc.text(t('bio.tabela.otimo').toUpperCase(), cOt, y);
+        doc.text(t('bio.tabela.estado').toUpperCase(), cEst, y);
         doc.text('Δ', cDelta, y, { align:'right' });
         y += 2.5;
         doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(ml, y, W - mr, y);
@@ -3974,13 +4004,13 @@
         (grupos[cat] = grupos[cat] || []).push(r);
       }));
 
-      BIO_SYSTEMS.forEach(({ key: cat, label }) => {
+      BIO_SYSTEMS.forEach(({ key: cat }) => {
         const g = grupos[cat];
         if (!g || !g.length) return;
         newPageIfNeeded(20);
         // Título do sistema
         doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(...TEAL_D);
-        doc.text(label.toUpperCase(), ml, y); y += 5;
+        doc.text(bioSysLabel(cat).toUpperCase(), ml, y); y += 5;
         headerRow();
 
         g.forEach(r => {
@@ -4018,7 +4048,7 @@
       // Nota de rodapé informativa
       newPageIfNeeded(16);
       doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
-      doc.text(doc.splitTextToSize('Documento informativo. Os intervalos ótimos refletem as metas de prevenção Lyvoo. Interprete sempre os resultados com o acompanhamento da equipa clínica.', cw), ml, y);
+      doc.text(doc.splitTextToSize(t('pdf.bio.nota'), cw), ml, y);
 
       // Rodapé com paginação
       const total = doc.getNumberOfPages();
@@ -4027,7 +4057,7 @@
         doc.setDrawColor(...LINE); doc.setLineWidth(0.4); doc.setFillColor(...TEAL);
         doc.rect(0, H - 16, W, 0.6, 'F');
         doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...TEAL_D);
-        doc.text('Saúde personalizada . Prevenção inteligente. Impacto real.', W / 2, H - 9, { align:'center' });
+        doc.text(t('pdf.footer.tagline'), W / 2, H - 9, { align:'center' });
         doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...TEXT3);
         doc.text(`${p} / ${total}`, W - mr, H - 9, { align:'right' });
       }
@@ -4037,7 +4067,7 @@
 
     } catch(e) {
       console.error('PDF error:', e);
-      mostrarToast('Erro ao gerar o PDF. Tente novamente.', 'erro');
+      mostrarToast(t('pdf.erro-generico'), 'erro');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
     }
@@ -5229,7 +5259,7 @@
     if (dataRel) {
       let fmt = dataRel;
       try {
-        fmt = new Date(dataRel + 'T00:00:00').toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
+        fmt = new Date(dataRel + 'T00:00:00').toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
       } catch (e) {}
       const d = document.getElementById('rel-data');
       if (d) d.textContent = 'Análise de ' + fmt;
