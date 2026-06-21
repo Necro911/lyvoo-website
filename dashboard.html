@@ -4017,7 +4017,7 @@
           newPageIfNeeded(9);
           const st = STATUS[r.tag] || { lbl:'—', c:TEXT3 };
           doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
-          doc.text(doc.splitTextToSize(String(r.nome || ''), cVal - cParam - 3)[0], cParam, y);
+          doc.text(doc.splitTextToSize(String(bioNomeLabel(r.nome) || ''), cVal - cParam - 3)[0], cParam, y);
           doc.text(`${r.valor}${r.unidade ? ' ' + r.unidade : ''}`, cVal, y);
           doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT2);
           doc.text(doc.splitTextToSize(String(r.referencia || '—'), cOt - cRef - 3)[0], cRef, y);
@@ -4259,6 +4259,35 @@
     'PSA':'hormonal', 'FSH':'hormonal', 'LH':'hormonal', 'Estradiol':'hormonal',
     'Progesterona':'hormonal', 'Prolactina':'hormonal', 'AMH':'hormonal', 'Cortisol':'hormonal',
   };
+  // Nomes de biomarcadores: vocabulário fixo do painel base + módulos (ver
+  // BIO_CATS em admin.html — o admin escolhe de uma lista fechada, não digita
+  // livremente). Por isso, à semelhança de mealNameLabel(), traduz-se por
+  // nome exato; o que não constar do mapa (ex.: nome inserido fora do
+  // catálogo) passa tal-qual. Termos já universais (LDL, HDL, TSH, ApoB...)
+  // não têm entrada — ficam iguais nos dois idiomas.
+  const BIO_NOME_EN = {
+    'Colesterol total': 'Total Cholesterol',
+    'Triglicéridos': 'Triglycerides',
+    'Fosfatase Alcalina': 'Alkaline Phosphatase',
+    'Albumina': 'Albumin',
+    'Proteína Total': 'Total Protein',
+    'Creatinina': 'Creatinine',
+    'Ureia': 'Urea',
+    'Cálcio': 'Calcium',
+    'Magnésio': 'Magnesium',
+    'Ferritina': 'Ferritin',
+    'Vitamina D': 'Vitamin D',
+    'Vitamina B12': 'Vitamin B12',
+    'Folato': 'Folate',
+    'Testosterona Total': 'Total Testosterone',
+    'Testosterona Livre': 'Free Testosterone',
+    'Progesterona': 'Progesterone',
+    'Prolactina': 'Prolactin',
+  };
+  function bioNomeLabel(nome) {
+    if (_lang !== 'en' || !nome) return nome;
+    return BIO_NOME_EN[nome] || nome;
+  }
   // ── Render: Seletor de análise histórica ─────────────────────────────
   function renderHistoricoSelector(historico) {
     const sub = document.getElementById('bio-sub');
@@ -4421,7 +4450,7 @@
   function bioxLabel(tag) { return t('bio.estado.' + (tag || '')); }
   function bioxEstado(tag) { return t('bio.descricao.' + (tag || '')); }
   function bioInterp(r) {
-    return `${r.nome} - ${bioxEstado(r.tag)}`;
+    return `${bioNomeLabel(r.nome)} - ${bioxEstado(r.tag)}`;
   }
   // Posição factual do valor face ao intervalo ótimo (acima / abaixo / dentro)
   function bioDir(r) {
@@ -4598,7 +4627,7 @@
                 : `<span class="bio-delta up">${r.delta}</span>`)
             : '<span class="bio-delta" style="color:var(--txt-3)">-</span>';
           lista += `<div class="bio-row ${rowCls}">
-            <span class="bio-name">${r.nome}</span>
+            <span class="bio-name">${bioNomeLabel(r.nome)}</span>
             <span class="bio-val">${r.valor} <small>${r.unidade || ''}</small></span>
             <span class="bio-range">${r.referencia || ''}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${r.refOtima}</small>` : ''}</span>
             ${sysRangeBar(r, tagColor(r.tag))}
@@ -4763,7 +4792,7 @@
         ${c.rows.map(r => {
           const rc = tagColor(r.tag);
           return `<div class="sys-detail-row">
-            <span class="sys-detail-name">${r.nome}</span>
+            <span class="sys-detail-name">${bioNomeLabel(r.nome)}</span>
             <span class="sys-detail-val" style="border-left:2px solid ${rc};padding-left:8px;">${r.valor} <small>${r.unidade||''}</small></span>
             <span style="display:flex;flex-direction:column;gap:4px;align-items:stretch;">
               ${sysRangeBar(r, rc)}
@@ -5160,7 +5189,7 @@
       const tagLbl = r.tag==='otimo'?t('painel.bio.tag.otimo'):r.tag==='atencao'?t('painel.bio.tag.atencao'):t('painel.bio.tag.critico');
       const deltaDir = r.delta && (r.delta.startsWith('-')||r.delta.startsWith('↓')) ? 'down' : 'up';
       return `<div class="bio-card">
-        <div class="bio-top"><span class="bio-name">${r.nome}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span></div>
+        <div class="bio-top"><span class="bio-name">${bioNomeLabel(r.nome)}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span></div>
         <div class="bio-val">${r.valor} <small>${r.unidade||''}</small></div>
         ${r.delta?`<div class="bio-trend ${deltaDir}">${r.delta}</div>`:'<div class="bio-trend">-</div>'}
       </div>`;
