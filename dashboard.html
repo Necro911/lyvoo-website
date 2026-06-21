@@ -251,6 +251,7 @@
       stroke-dasharray:var(--sk-len); stroke-dashoffset:var(--sk-len); animation:skDraw 1s ease forwards; }
     .biox-spark .sk-dot { fill:var(--biox-accent); filter:drop-shadow(0 0 4px rgba(var(--biox-accent-rgb),0.8)); }
     @keyframes skDraw { to { stroke-dashoffset:0; } }
+    .biox-spark .sk-line-empty { stroke:var(--txt-3); stroke-width:1.5; stroke-dasharray:3 4; stroke-linecap:round; opacity:0.5; }
     .biox-valblock { text-align:right; min-width:62px; }
     .biox-val { font-size:21px; font-weight:800; color:var(--txt); letter-spacing:-0.03em; font-variant-numeric:tabular-nums; line-height:1; }
     .biox-val small { font-size:11px; font-weight:500; color:var(--txt-3); margin-left:1px; }
@@ -3531,6 +3532,11 @@
     }
     return pts;
   }
+  function bioSparkEmpty() {
+    const w = 74, h = 34;
+    const y = (h / 2).toFixed(1);
+    return `<div class="biox-spark biox-spark--empty"><svg viewBox="0 0 ${w} ${h}"><path class="sk-line-empty" d="M4 ${y} L${w - 4} ${y}"/></svg></div>`;
+  }
   function bioSpark(series) {
     if (series.length < 2) return '';
     const w = 74, h = 34, pad = 4;
@@ -3696,7 +3702,7 @@
       const acc = BIOX_ACCENT[r.tag] || BIOX_ACCENT[''];
       const icon = BIO_SYS_ICON[r._cat] || BIO_SYS_ICON.outros;
       const series = bioSeries(r.nome);
-      const spark = bioSpark(series) || '<div class="biox-spark"></div>';
+      const spark = bioSpark(series) || bioSparkEmpty();
       const dirNote = bioDir(r);
       const trend = bioTrendChart(series, r.unidade);
       const ladder = bioLadder(r);
