@@ -2082,32 +2082,38 @@
     return d.toLocaleDateString('pt-PT', { weekday:'long', day:'numeric', month:'long' });
   };
 
-  function renderConviteCal() {
-    const wrap = document.getElementById('convite-cal');
-    if (!_calView) { const n = new Date(); _calView = new Date(n.getFullYear(), n.getMonth(), 1); }
-    const year = _calView.getFullYear(), month = _calView.getMonth();
-    const today = new Date(); today.setHours(0,0,0,0);
+  // Constrói a grelha de dias de um mês. Partilhada pelo calendário do
+  // convite (que desativa dias passados) e pelo calendário das consultas
+  // registadas manualmente (que permite dias passados, p.ex. ad-hoc).
+  function buildCalCells(year, month, selSet, todayIso, opts = {}) {
     const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
     const dowHead = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
     const firstDow = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month+1, 0).getDate();
-    const selSet = new Set(_conviteSlots.map(s => s.data));
     let cells = dowHead.map(d => `<div class="cal-dow">${d}</div>`).join('');
     for (let i = 0; i < firstDow; i++) cells += `<div class="cal-day cal-day--empty"></div>`;
     for (let d = 1; d <= daysInMonth; d++) {
-      const dt = new Date(year, month, d);
-      const iso = isoLocal(dt);
-      const past = dt < today;
+      const iso = isoLocal(new Date(year, month, d));
+      const past = opts.disablePast && iso < todayIso;
       const cls = ['cal-day'];
       if (past) cls.push('cal-day--past');
       if (selSet.has(iso)) cls.push('cal-day--sel');
-      if (dt.getTime() === today.getTime()) cls.push('cal-day--today');
+      if (iso === todayIso) cls.push('cal-day--today');
       cells += `<div class="${cls.join(' ')}" ${past ? '' : `data-iso="${iso}"`}>${d}</div>`;
     }
+    return { cells, label: `${monthNames[month]} ${year}` };
+  }
+
+  function renderConviteCal() {
+    const wrap = document.getElementById('convite-cal');
+    if (!_calView) { const n = new Date(); _calView = new Date(n.getFullYear(), n.getMonth(), 1); }
+    const year = _calView.getFullYear(), month = _calView.getMonth();
+    const selSet = new Set(_conviteSlots.map(s => s.data));
+    const { cells, label } = buildCalCells(year, month, selSet, isoLocal(new Date()), { disablePast: true });
     wrap.innerHTML = `
       <div class="cal-head">
         <button type="button" class="cal-nav" id="cal-prev">‹</button>
-        <div class="cal-title">${monthNames[month]} ${year}</div>
+        <div class="cal-title">${label}</div>
         <button type="button" class="cal-nav" id="cal-next">›</button>
       </div>
       <div class="cal-grid">${cells}</div>`;
@@ -2648,11 +2654,36 @@
     list.forEach(c => addConsultCard(c));
   }
 
+  function renderManualConsultCal(div) {
+    const card = div._card;
+    const wrap = div.querySelector('.consult-cal');
+    const year = card.view.getFullYear(), month = card.view.getMonth();
+    const selSet = new Set(card.data ? [card.data] : []);
+    const { cells, label } = buildCalCells(year, month, selSet, isoLocal(new Date()));
+    wrap.innerHTML = `
+      <div class="cal-head">
+        <button type="button" class="cal-nav consult-cal-prev">‹</button>
+        <div class="cal-title">${label}</div>
+        <button type="button" class="cal-nav consult-cal-next">›</button>
+      </div>
+      <div class="cal-grid">${cells}</div>`;
+    wrap.querySelector('.consult-cal-prev').onclick = () => { card.view = new Date(year, month-1, 1); renderManualConsultCal(div); };
+    wrap.querySelector('.consult-cal-next').onclick = () => { card.view = new Date(year, month+1, 1); renderManualConsultCal(div); };
+    wrap.querySelectorAll('.cal-day[data-iso]').forEach(el => {
+      el.onclick = () => {
+        card.data = (card.data === el.dataset.iso) ? '' : el.dataset.iso;
+        renderManualConsultCal(div);
+      };
+    });
+  }
+
   function addConsultCard(c) {
     c = c || {};
     const container = document.getElementById('consult-list');
     const div = document.createElement('div');
     div.className = 'card-editor';
+    const refView = c.data ? new Date(c.data + 'T00:00:00') : new Date();
+    div._card = { data: c.data || '', view: new Date(refView.getFullYear(), refView.getMonth(), 1) };
     div.innerHTML = `
       <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
       <div class="form-row">
@@ -2667,11 +2698,15 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-field"><label class="form-label">Data</label><input class="form-input" type="date" name="c-data" value="${c.data||''}" /></div>
+        <div class="form-field" style="flex:1;">
+          <label class="form-label">Data</label>
+          <div class="cal-wrap consult-cal"></div>
+        </div>
         <div class="form-field"><label class="form-label">Profissional</label><input class="form-input" type="text" name="c-medico" value="${c.medico||''}" placeholder="Ex: Dra. Lúcia Abreu" /></div>
       </div>
       <div class="form-field"><label class="form-label">Notas (visíveis para o cliente)</label><input class="form-input" type="text" name="c-notas" value="${c.notas||''}" placeholder="Ex: Trazer lista de alimentos..." /></div>`;
     container.appendChild(div);
+    renderManualConsultCal(div);
   }
 
   window.addConsult = function() { addConsultCard({}); };
@@ -2680,7 +2715,7 @@
     return [...document.getElementById('consult-list').querySelectorAll('.card-editor')].map(card => ({
       titulo: card.querySelector('[name=c-titulo]').value.trim(),
       tipo:   card.querySelector('[name=c-tipo]').value,
-      data:   card.querySelector('[name=c-data]').value,
+      data:   card._card?.data || '',
       medico: card.querySelector('[name=c-medico]').value.trim(),
       notas:  card.querySelector('[name=c-notas]').value.trim(),
     })).filter(c => c.titulo);
