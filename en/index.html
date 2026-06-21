@@ -542,7 +542,7 @@
     .ba-detail-food-label{color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;font-size:10px;font-weight:700}
     .ba-detail-food-list{color:rgba(255,255,255,0.55)}
     @media(max-width:960px){.step-atlas-top{grid-template-columns:1fr;gap:28px}.ba-grid{grid-template-columns:repeat(3,1fr)}.ba-detail{display:none}.ba-detail-hint{display:none}.ba-filters{display:flex;flex-wrap:wrap;justify-content:center}}
-    @media(max-width:600px){.ba-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.ba-grid{grid-template-columns:repeat(2,1fr)}.ba-topbar{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 16px 12px}.ba-filters{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%}.ba-filter{display:flex;justify-content:center;font-size:10px;padding:6px 8px}.ba-filter[data-mobile-primary]{font-size:12px;padding:9px 0}.ba-filter-wide{grid-column:1 / -1;white-space:normal}}
     /* Lighter gray text in dark sections on mobile for readability */
     @media(max-width:760px){.layer-dark .step-text p,.layer-dark .step-detail-item,.layer-dark .step-atlas-right p,.layer-dark .step-atlas-right .step-detail-item,.layer-dark .process-intro p,.layer-dark .modules-header p,.step-atlas-right p,.step-atlas-right .step-detail-item,.glp-intro-row > p,.glp-left > p,.app-feature-text p,.ba-detail-desc{color:rgba(255,255,255,0.62)}}
     .mob-menu a:hover{background:var(--surface)}
@@ -883,8 +883,8 @@
           <div class="ba-topbar">
             <span class="ba-headline">Lyvoo Biomarker Panel</span>
             <div class="ba-filters">
-              <button class="ba-filter active" data-cat="todos">All</button>
-              <button class="ba-filter" data-cat="base">Base panel</button>
+              <button class="ba-filter active" data-cat="todos" data-mobile-primary>All</button>
+              <button class="ba-filter" data-cat="base" data-mobile-primary>Base panel</button>
               <button class="ba-filter" data-cat="vitaminas">Vitamins</button>
               <button class="ba-filter" data-cat="cardio-avancado">Advanced Cardio</button>
               <button class="ba-filter" data-cat="hormonal-masculino">Male Hormonal</button>
@@ -893,8 +893,8 @@
               <button class="ba-filter" data-cat="tiroide-completo">Extended Thyroid</button>
               <button class="ba-filter" data-cat="stress">Stress</button>
               <button class="ba-filter" data-cat="hepatite-b">Hepatitis B</button>
-              <button class="ba-filter" data-cat="dst-ist">Full STI Test</button>
-              <button class="ba-filter" data-cat="intolerancias">Food Intolerances</button>
+              <button class="ba-filter ba-filter-wide" data-cat="dst-ist">Full STI Test</button>
+              <button class="ba-filter ba-filter-wide" data-cat="intolerancias">Food Intolerances</button>
             </div>
           </div>
           <div class="ba-body">
