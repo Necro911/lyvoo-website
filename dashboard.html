@@ -379,9 +379,6 @@
     .meal-macros { display:flex; gap:7px; flex-wrap:wrap; }
     .meal-macro { font-size:11px; font-weight:600; color:var(--txt-2); background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:8px; padding:3px 10px; font-variant-numeric:tabular-nums; }
     .meal-macro b { color:var(--txt); font-weight:800; }
-    .meal-suggest { display:flex; gap:9px; align-items:flex-start; background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.22); border-radius:11px; padding:10px 13px; font-size:12.5px; color:var(--txt-2); line-height:1.55; }
-    .meal-suggest svg { width:15px; height:15px; flex-shrink:0; color:var(--violet); margin-top:1px; }
-    .meal-suggest b { color:var(--txt); font-weight:700; }
     .meal-actions { display:flex; gap:8px; margin-top:13px; flex-wrap:wrap; }
     .meal-act { font-size:11.5px; font-weight:700; color:var(--txt-2); background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:9px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:color .16s, border-color .16s, background .16s; font-family:'Inter',sans-serif; }
     .meal-act:hover { color:var(--txt); border-color:var(--line-2); background:rgba(255,255,255,0.06); }
@@ -3990,9 +3987,8 @@
         const off = _mealSwapIdx[i] || 0;
         const activeOp = ops.length ? ops[off % ops.length] : null;
         const opsHtml = activeOp ? `<div class="meal-desc" data-meal="${i}">${activeOp}</div>` : '';
-        const activeNota = (r.notas && r.notas[off % ops.length]) ? r.notas[off % ops.length].trim() : '';
 
-        // Insights clínicos, macros (só se reais), rationale e observações de preparo
+        // Insights clínicos, macros (só se reais) e rationale
         const insights = deriveMealInsights(r, planFocus);
         const tagsHtml = insights.length ? `<div class="meal-tags">${insights.map(t => `<span class="meal-tag" style="color:rgb(${t.rgba});background:rgba(${t.rgba},0.1);border-color:rgba(${t.rgba},0.28)">${t.label}</span>`).join('')}</div>` : '';
         const macrosHtml = (r.macros && (r.macros.p!=null||r.macros.c!=null||r.macros.f!=null)) ? `<div class="meal-macros">
@@ -4001,7 +3997,6 @@
           ${r.macros.f!=null?`<span class="meal-macro">G <b>${r.macros.f}g</b></span>`:''}
         </div>` : '';
         const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
-        const notesHtml = activeNota ? `<div class="meal-suggest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span><b>Observações:</b> ${activeNota}</span></div>` : '';
 
         const swapDis = ops.length < 2;
         const altBtn = !swapDis ? `<button class="meal-act" onclick="mealSwap(${i})" title="Ver alternativa a esta refeição" aria-label="Ver alternativa a esta refeição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>Alternativa</button>` : '';
@@ -4015,7 +4010,7 @@
                 <span class="meal-name">${r.nome||'Refeição'}</span>
               </div>
               ${opsHtml}
-              ${(ratHtml||tagsHtml||macrosHtml||notesHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}${notesHtml}</div>` : ''}
+              ${(ratHtml||tagsHtml||macrosHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}</div>` : ''}
               ${actionsHtml}
             </div>
             <div class="meal-side">
