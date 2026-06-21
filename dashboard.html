@@ -1302,6 +1302,33 @@
     <!-- ══ VISTA RESULTADOS (estado >= 4) ══ -->
     <div id="view-resultados" style="display:none">
 
+    <!-- Banner confirmação de devolução do kit (estados 2 e 5) -->
+    <div id="kit-confirm-banner" style="display:none; margin:0 32px 20px;">
+      <div style="background:linear-gradient(135deg,rgba(61,217,232,0.10),rgba(139,92,246,0.05)); border:1px solid rgba(61,217,232,0.28); border-radius:16px; padding:22px 26px;">
+        <div style="display:flex; align-items:flex-start; gap:18px; flex-wrap:wrap;">
+          <div style="width:48px;height:48px;border-radius:14px;background:rgba(61,217,232,0.12);border:1px solid rgba(61,217,232,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--cyan);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+          </div>
+          <div style="flex:1; min-width:240px;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px;" data-i18n="kit.confirm.label">Confirmação de recolha</div>
+            <!-- Estado: por confirmar -->
+            <div id="kit-confirm-form">
+              <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:14px;">
+                <input type="checkbox" id="kit-confirm-check" style="margin-top:2px;width:17px;height:17px;flex-shrink:0;accent-color:var(--cyan);cursor:pointer;" />
+                <span style="font-size:13.5px;color:var(--txt);line-height:1.5;" data-i18n="kit.confirm.check">Confirmo que efetuei a minha colheita e já devolvi a amostra ao estafeta</span>
+              </label>
+              <button id="kit-confirm-btn" disabled style="background:var(--cyan);color:#04181B;font-size:13.5px;font-weight:700;padding:10px 22px;border:none;border-radius:10px;cursor:pointer;transition:opacity 0.2s;opacity:0.45;" data-i18n="kit.confirm.btn">Confirmar</button>
+            </div>
+            <!-- Estado: já confirmado -->
+            <div id="kit-confirm-done" style="display:none;">
+              <div style="font-size:14.5px;font-weight:700;color:var(--cyan);" data-i18n="kit.confirm.obrigado">Obrigado. O seu processo será atualizado dentro de horas.</div>
+            </div>
+            <div id="kit-confirm-msg" style="font-size:12.5px;color:var(--txt-3);margin-top:8px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Banner reavaliação (estado 5) -->
     <div id="reeval-banner" style="display:none; margin:0 32px 24px;">
 
@@ -1313,36 +1340,18 @@
           </div>
           <div style="flex:1; min-width:220px;">
             <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;" data-i18n="banner.reeval.label">Reavaliação dos 6 meses</div>
-            <div style="font-size:20px;font-weight:800;color:var(--txt);letter-spacing:-0.03em;margin-bottom:8px;" data-i18n="banner.reeval.titulo">A sua reavaliação está a ser preparada.</div>
-            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;margin-bottom:14px;" data-i18n="banner.reeval.desc">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
-            <a href="#" id="reeval-agendar-btn" onclick="abrirAgendamento('reavaliacao');return false;" style="display:none;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-              <span data-i18n="banner.reeval.agendar-btn">Agendar reavaliação</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-            </a>
+            <div style="font-size:20px;font-weight:800;color:var(--txt);letter-spacing:-0.03em;margin-bottom:8px;" id="reeval-titulo" data-i18n="banner.reeval.titulo">A sua reavaliação está a ser preparada.</div>
+            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;" id="reeval-desc" data-i18n="banner.reeval.desc">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
           </div>
           <div style="flex-shrink:0;text-align:right;">
             <div style="font-size:11px;color:var(--txt-3);margin-bottom:4px;" data-i18n="banner.reeval.progresso-label">Progresso do programa</div>
-            <div style="font-size:32px;font-weight:900;color:var(--violet);letter-spacing:-0.05em;line-height:1;">90<span style="font-size:16px;color:var(--txt-3);font-weight:600">%</span></div>
+            <div style="font-size:32px;font-weight:900;color:var(--violet);letter-spacing:-0.05em;line-height:1;"><span id="reeval-pct">90</span><span style="font-size:16px;color:var(--txt-3);font-weight:600">%</span></div>
           </div>
         </div>
 
         <!-- Mini timeline reavaliação -->
         <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.07);display:flex;gap:0;align-items:stretch;" id="reeval-timeline">
           <!-- steps injetados via JS -->
-        </div>
-      </div>
-
-      <!-- Teaser comparação -->
-      <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:20px;">
-        <div style="flex:1;">
-          <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--txt-3);margin-bottom:6px;" data-i18n="banner.reeval.recebe-label">O que vai receber</div>
-          <div style="font-size:14.5px;font-weight:700;color:var(--txt);margin-bottom:4px;" data-i18n="banner.reeval.recebe-titulo">Relatório comparativo · Baseline vs. 6 meses</div>
-          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;" data-i18n="banner.reeval.recebe-desc">Cada biomarcador comparado com o resultado inicial. Vai ver, em números, o impacto do programa na sua saúde.</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;padding:0 8px;">
-          <div style="font-size:10px;color:var(--txt-3);font-weight:600;" data-i18n="banner.reeval.antes">ANTES</div>
-          <div style="width:2px;height:40px;background:linear-gradient(to bottom, var(--txt-3), var(--violet));border-radius:999px;"></div>
-          <div style="font-size:10px;color:var(--violet);font-weight:700;" data-i18n="banner.reeval.depois">DEPOIS</div>
         </div>
       </div>
 
@@ -1459,6 +1468,7 @@
             <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title" data-i18n="painel.prog.check.reavaliacao">Reavaliação</div><div class="check-state" data-i18n="painel.prog.estado.em-breve">Em breve</div></div></div>
           </div>
         </div>
+        <div id="prog-reaval-note" style="display:none;margin-top:4px;padding:12px 14px;background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.2);border-radius:10px;font-size:12.5px;color:var(--txt-2);line-height:1.55;"></div>
         <a href="#" class="btn-ghost" onclick="navSection('plano-alimentar');return false;" data-i18n="painel.prog.ver-plano">Ver plano completo</a>
       </div>
 
@@ -1920,11 +1930,11 @@
       // ── Estado da subscrição (badge no topbar) ──
       'estado.1': 'Sem plano ativo',
       'estado.2': 'Kit a caminho',
-      'estado.3': 'Laboratório a processar',
+      'estado.3': 'Análise laboratorial e Consulta de Nutrição',
       'estado.4': 'Resultados disponíveis',
       'estado.5': 'Reavaliação · Kit a caminho',
-      'estado.6': 'Reavaliação · Laboratório a processar',
-      'estado.7': 'Reavaliação · Resultados disponíveis',
+      'estado.6': 'Reavaliação · Em análise laboratorial',
+      'estado.7': 'Relatório comparativo e nova consulta de Nutrição',
       'estado.fallback': 'Activo',
 
       // ── Navegação (sidebar + título de secção; partilham o mesmo texto) ──
@@ -2041,7 +2051,7 @@
       'painel.prog.passo.reavaliacao-iniciada': 'Reavaliação iniciada',
       'painel.prog.passo.plano-adquirido': 'Plano adquirido',
       'painel.prog.passo.kit': 'Kit de colheita em casa',
-      'painel.prog.passo.lab': 'Análise laboratorial',
+      'painel.prog.passo.lab': 'Análise laboratorial e Consulta de Nutrição',
       'painel.prog.passo.novos-resultados': 'Novos resultados e plano',
       'painel.prog.passo.resultados': 'Resultados e plano',
       'painel.prog.estado.concluido': 'Concluído',
@@ -2057,6 +2067,14 @@
       'painel.prog.check.consultas': 'Consultas iniciais',
       'painel.prog.check.plano': 'Plano personalizado',
       'painel.prog.check.reavaliacao': 'Reavaliação',
+      'painel.prog.reaval-note': 'A sua reavaliação será feita daqui a {n} meses, com envio de um novo kit e agendamento de nova consulta.',
+      'painel.prog.reaval-note-1': 'A sua reavaliação será feita daqui a 1 mês, com envio de um novo kit e agendamento de nova consulta.',
+      'painel.prog.reaval-note-breve': 'A sua reavaliação será feita em breve, com envio de um novo kit e agendamento de nova consulta.',
+      'kit.confirm.label': 'Confirmação de recolha',
+      'kit.confirm.check': 'Confirmo que efetuei a minha colheita e já devolvi a amostra ao estafeta',
+      'kit.confirm.btn': 'Confirmar',
+      'kit.confirm.obrigado': 'Obrigado. O seu processo será atualizado dentro de horas.',
+      'kit.confirm.erro': 'Não foi possível registar a confirmação. Tente novamente.',
       'greeting.progresso-6-meses': 'progresso 6 meses',
       'painel.score.titulo': 'Score de saúde',
       'painel.score.aguarda-analise': 'Aguarda análise',
@@ -2088,17 +2106,13 @@
       // ── Banners (estado da subscrição/consultas) ──
       'banner.reeval.label': 'Reavaliação dos 6 meses',
       'banner.reeval.titulo': 'A sua reavaliação está a ser preparada.',
+      'banner.reeval.titulo-pronta': 'A sua reavaliação está concluída.',
       'banner.reeval.desc': 'Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.',
-      'banner.reeval.agendar-btn': 'Agendar reavaliação',
+      'banner.reeval.desc-pronta': 'Comparámos os novos resultados com o seu baseline. Veja o relatório comparativo e a evolução real da sua saúde abaixo.',
       'banner.reeval.progresso-label': 'Progresso do programa',
-      'banner.reeval.recebe-label': 'O que vai receber',
-      'banner.reeval.recebe-titulo': 'Relatório comparativo · Baseline vs. 6 meses',
-      'banner.reeval.recebe-desc': 'Cada biomarcador comparado com o resultado inicial. Vai ver, em números, o impacto do programa na sua saúde.',
-      'banner.reeval.antes': 'ANTES',
-      'banner.reeval.depois': 'DEPOIS',
       'banner.reeval.timeline.kit': 'Kit a caminho / recolha',
-      'banner.reeval.timeline.lab': 'Laboratório',
-      'banner.reeval.timeline.relatorio': 'Relatório comparativo',
+      'banner.reeval.timeline.lab': 'Em análise laboratorial',
+      'banner.reeval.timeline.relatorio': 'Relatório comparativo e nova consulta de Nutrição',
       'banner.results.titulo': 'Os seus resultados estão prontos!',
       'banner.results.desc': 'O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.',
       'banner.convite.label': 'Próximo passo',
@@ -2348,11 +2362,11 @@
 
       'estado.1': 'No active plan',
       'estado.2': 'Kit on its way',
-      'estado.3': 'Lab processing',
+      'estado.3': 'Lab analysis & Nutrition consultation',
       'estado.4': 'Results available',
       'estado.5': 'Reassessment · Kit on its way',
-      'estado.6': 'Reassessment · Lab processing',
-      'estado.7': 'Reassessment · Results available',
+      'estado.6': 'Reassessment · In lab analysis',
+      'estado.7': 'Comparative report & new Nutrition consultation',
       'estado.fallback': 'Active',
 
       'nav.painel': 'Dashboard',
@@ -2462,7 +2476,7 @@
       'painel.prog.passo.reavaliacao-iniciada': 'Reassessment started',
       'painel.prog.passo.plano-adquirido': 'Plan purchased',
       'painel.prog.passo.kit': 'Home collection kit',
-      'painel.prog.passo.lab': 'Lab analysis',
+      'painel.prog.passo.lab': 'Lab analysis & Nutrition consultation',
       'painel.prog.passo.novos-resultados': 'New results and plan',
       'painel.prog.passo.resultados': 'Results and plan',
       'painel.prog.estado.concluido': 'Completed',
@@ -2478,6 +2492,14 @@
       'painel.prog.check.consultas': 'Initial appointments',
       'painel.prog.check.plano': 'Personalised plan',
       'painel.prog.check.reavaliacao': 'Reassessment',
+      'painel.prog.reaval-note': 'Your reassessment will take place in {n} months, with a new kit sent out and a new consultation scheduled.',
+      'painel.prog.reaval-note-1': 'Your reassessment will take place in 1 month, with a new kit sent out and a new consultation scheduled.',
+      'painel.prog.reaval-note-breve': 'Your reassessment will take place soon, with a new kit sent out and a new consultation scheduled.',
+      'kit.confirm.label': 'Collection confirmation',
+      'kit.confirm.check': 'I confirm that I have completed my collection and already returned the sample to the courier',
+      'kit.confirm.btn': 'Confirm',
+      'kit.confirm.obrigado': 'Thank you. Your process will be updated within hours.',
+      'kit.confirm.erro': 'We could not register your confirmation. Please try again.',
       'greeting.progresso-6-meses': '6-month progress',
       'painel.score.titulo': 'Health score',
       'painel.score.aguarda-analise': 'Awaiting analysis',
@@ -2508,17 +2530,13 @@
 
       'banner.reeval.label': '6-month reassessment',
       'banner.reeval.titulo': 'Your reassessment is being prepared.',
+      'banner.reeval.titulo-pronta': 'Your reassessment is complete.',
       'banner.reeval.desc': '6 months have passed since the start of your programme. We will compare the new results with your baseline and measure the real impact on your health.',
-      'banner.reeval.agendar-btn': 'Schedule reassessment',
+      'banner.reeval.desc-pronta': 'We have compared the new results with your baseline. See the comparative report and the real evolution of your health below.',
       'banner.reeval.progresso-label': 'Programme progress',
-      'banner.reeval.recebe-label': 'What you will get',
-      'banner.reeval.recebe-titulo': 'Comparative report · Baseline vs. 6 months',
-      'banner.reeval.recebe-desc': 'Every biomarker compared with your initial result. See, in numbers, the impact of the programme on your health.',
-      'banner.reeval.antes': 'BEFORE',
-      'banner.reeval.depois': 'AFTER',
       'banner.reeval.timeline.kit': 'Kit on its way / collection',
-      'banner.reeval.timeline.lab': 'Laboratory',
-      'banner.reeval.timeline.relatorio': 'Comparative report',
+      'banner.reeval.timeline.lab': 'In lab analysis',
+      'banner.reeval.timeline.relatorio': 'Comparative report & new Nutrition consultation',
       'banner.results.titulo': 'Your results are ready!',
       'banner.results.desc': 'The medical report, biomarkers and nutrition plan are available. Explore your results below.',
       'banner.convite.label': 'Next step',
@@ -5396,7 +5414,7 @@
     // Limpar vistas antes de re-renderizar
     const viewResEl = document.getElementById('view-resultados');
     if (viewResEl) viewResEl.style.display = 'none';
-    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner','reagendar-banner','cancelada-banner'].forEach(id => {
+    ['reeval-banner','results-banner','nutri-cta','novidades-banner','convite-banner','reagendar-banner','cancelada-banner','kit-confirm-banner'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
@@ -5722,6 +5740,81 @@
         return `<div class="check-item"><div class="check-mark ${cls}">${p.done ? doneSvg : ''}</div><div class="check-body"><div class="check-title">${p.titulo}</div><div class="check-state"${p.ativo ? ' style="color:var(--cyan)"' : ''}>${state}</div></div></div>`;
       }).join('');
 
+      // ── Confirmação de devolução do kit (estados 2 e 5) ──
+      // Keyed por ciclo: ao entrar numa reavaliação (novo ciclo) a checkbox
+      // reaparece automaticamente porque kitDevolvido.ciclo deixa de coincidir
+      // com d.cicloAtual.
+      const kitBanner = document.getElementById('kit-confirm-banner');
+      if (kitBanner) {
+        if (estadoNum === 2 || estadoNum === 5) {
+          const cicloAtual = d.cicloAtual || 1;
+          const jaConfirmado = d.kitDevolvido && d.kitDevolvido.ciclo === cicloAtual;
+          const form  = document.getElementById('kit-confirm-form');
+          const done  = document.getElementById('kit-confirm-done');
+          const msg   = document.getElementById('kit-confirm-msg');
+          const check = document.getElementById('kit-confirm-check');
+          const btn   = document.getElementById('kit-confirm-btn');
+          if (msg) msg.textContent = '';
+          if (jaConfirmado) {
+            if (form) form.style.display = 'none';
+            if (done) done.style.display = 'block';
+          } else {
+            if (form) form.style.display = 'block';
+            if (done) done.style.display = 'none';
+            if (check && btn) {
+              check.checked = false;
+              const setBtn = (on) => { btn.disabled = !on; btn.style.opacity = on ? '1' : '0.45'; btn.style.cursor = on ? 'pointer' : 'not-allowed'; };
+              setBtn(false);
+              check.onchange = () => setBtn(check.checked);
+              btn.onclick = async () => {
+                if (!check.checked) return;
+                setBtn(false);
+                try {
+                  await auth.currentUser?.getIdToken(true);
+                  await updateDoc(doc(db, 'users', user.uid), {
+                    kitDevolvido: { confirmadoEm: serverTimestamp(), ciclo: cicloAtual, estado: estadoNum, visto: false }
+                  });
+                  if (form) form.style.display = 'none';
+                  if (done) done.style.display = 'block';
+                } catch (err) {
+                  console.error('Erro ao confirmar devolução do kit:', err);
+                  if (msg) { msg.style.color = 'var(--red)'; msg.textContent = t('kit.confirm.erro'); }
+                  setBtn(true);
+                }
+              };
+            }
+          }
+          kitBanner.style.display = 'block';
+        } else {
+          kitBanner.style.display = 'none';
+        }
+      }
+
+      // ── Nota de contagem para a reavaliação (estado 4) ──
+      // X = meses até à reavaliação, a contar de quando os resultados ficaram
+      // prontos (notificadoEm) + 6 meses. Fallback para criadoEm, e texto
+      // genérico se não houver âncora ou o prazo já tiver passado.
+      const reavalNote = document.getElementById('prog-reaval-note');
+      if (reavalNote) {
+        if (estadoNum === 4) {
+          const anchor = d.notificadoEm ? tsToMs(d.notificadoEm) : (d.criadoEm ? tsToMs(d.criadoEm) : 0);
+          let txt = t('painel.prog.reaval-note-breve');
+          if (anchor) {
+            const reavalDate = new Date(anchor);
+            reavalDate.setMonth(reavalDate.getMonth() + 6);
+            const now = new Date();
+            let months = (reavalDate.getFullYear() - now.getFullYear()) * 12 + (reavalDate.getMonth() - now.getMonth());
+            if (reavalDate.getDate() < now.getDate()) months -= 1; // mês ainda não completo
+            if (months >= 2) txt = t('painel.prog.reaval-note', { n: months });
+            else if (months === 1) txt = t('painel.prog.reaval-note-1');
+          }
+          reavalNote.textContent = txt;
+          reavalNote.style.display = 'block';
+        } else {
+          reavalNote.style.display = 'none';
+        }
+      }
+
       // ── Banner "resultados prontos" (estados 4 e 7) ──
       if (subFase === 'resultados') {
         const banner = document.getElementById('results-banner');
@@ -5758,30 +5851,29 @@
         });
       }
 
-      // ── Reavaliação em curso (estados 5 e 6): banner + mini-timeline ──
-      if (reaval && subFase !== 'resultados') {
+      // ── Reavaliação (estados 5, 6 e 7): banner + mini-timeline ──
+      // No estado 7 (resultados da reavaliação já prontos) o card mantém-se
+      // visível mas com texto coerente — "concluída" em vez de "a ser preparada".
+      if (reaval) {
         const reevalBanner = document.getElementById('reeval-banner');
         if (reevalBanner) reevalBanner.style.display = 'block';
 
-        const reevalBtn = document.getElementById('reeval-agendar-btn');
-        if (reevalBtn) {
-          const today = new Date(); today.setHours(0,0,0,0);
-          const temReavaliacaoAgendada = (consultasFinal||[]).some(c => {
-            if (!c.data) return false;
-            const dt = new Date(c.data + 'T00:00:00');
-            return dt >= today && (c.titulo||'').toLowerCase().includes('reavalia');
-          });
-          reevalBtn.style.display = temReavaliacaoAgendada ? 'none' : 'inline-flex';
-        }
+        const concluida = subFase === 'resultados'; // estado 7
+        const tituloEl = document.getElementById('reeval-titulo');
+        if (tituloEl) tituloEl.textContent = concluida ? t('banner.reeval.titulo-pronta') : t('banner.reeval.titulo');
+        const descEl = document.getElementById('reeval-desc');
+        if (descEl) descEl.textContent = concluida ? t('banner.reeval.desc-pronta') : t('banner.reeval.desc');
+        const pctEl = document.getElementById('reeval-pct');
+        if (pctEl) pctEl.textContent = estadoNum === 7 ? '100' : estadoNum === 6 ? '80' : '60';
 
         const reevalTimeline = document.getElementById('reeval-timeline');
         if (reevalTimeline) {
-          // subEstado: 0 = kit a caminho/recolha (estado 5), 1 = laboratório (estado 6)
-          const subEstado = estadoNum === 6 ? 1 : 0;
+          // subEstado: 0 = kit/recolha (estado 5), 1 = laboratório (estado 6), 2 = concluído (estado 7)
+          const subEstado = estadoNum === 7 ? 2 : estadoNum === 6 ? 1 : 0;
           const steps = [
-            { label: t('banner.reeval.timeline.kit'),      done: subEstado >= 1, active: subEstado === 0 },
-            { label: t('banner.reeval.timeline.lab'),      done: false,          active: subEstado === 1 },
-            { label: t('banner.reeval.timeline.relatorio'), done: false,          active: false },
+            { label: t('banner.reeval.timeline.kit'),       done: subEstado >= 1, active: subEstado === 0 },
+            { label: t('banner.reeval.timeline.lab'),       done: subEstado >= 2, active: subEstado === 1 },
+            { label: t('banner.reeval.timeline.relatorio'), done: subEstado >= 2, active: false },
           ];
           reevalTimeline.innerHTML = steps.map((s, i) => `
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;">

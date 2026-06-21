@@ -496,11 +496,11 @@
           <div class="estado-cards" id="estado-cards">
             <div class="estado-card selected" data-e="1" onclick="selectEstado(1)"><div class="estado-card-num">1</div><div class="estado-card-lbl">Sem plano</div></div>
             <div class="estado-card" data-e="2" onclick="selectEstado(2)"><div class="estado-card-num">2</div><div class="estado-card-lbl">Kit a caminho</div></div>
-            <div class="estado-card" data-e="3" onclick="selectEstado(3)"><div class="estado-card-num">3</div><div class="estado-card-lbl">Lab. a processar</div></div>
+            <div class="estado-card" data-e="3" onclick="selectEstado(3)"><div class="estado-card-num">3</div><div class="estado-card-lbl">Lab. + Consulta</div></div>
             <div class="estado-card" data-e="4" onclick="selectEstado(4)"><div class="estado-card-num">4</div><div class="estado-card-lbl">Resultados prontos</div></div>
             <div class="estado-card" data-e="5" onclick="selectEstado(5)"><div class="estado-card-num">5</div><div class="estado-card-lbl">Reav. · Kit</div></div>
             <div class="estado-card" data-e="6" onclick="selectEstado(6)"><div class="estado-card-num">6</div><div class="estado-card-lbl">Reav. · Lab.</div></div>
-            <div class="estado-card" data-e="7" onclick="selectEstado(7)"><div class="estado-card-num">7</div><div class="estado-card-lbl">Reav. · Resultados</div></div>
+            <div class="estado-card" data-e="7" onclick="selectEstado(7)"><div class="estado-card-num">7</div><div class="estado-card-lbl">Reav. · Relatório + Consulta</div></div>
           </div>
         </div>
         <div class="form-section">
@@ -886,7 +886,7 @@
 
   const _fnEliminarRGPD = httpsCallable(getFunctions(auth.app, 'europe-west1'), 'eliminarUtilizadorRGPD');
 
-  const ESTADO_LABELS = { 1:'Sem plano ativo', 2:'Kit a caminho', 3:'Laboratório a processar', 4:'Resultados disponíveis', 5:'Reavaliação · Kit a caminho', 6:'Reavaliação · Laboratório a processar', 7:'Reavaliação · Resultados disponíveis' };
+  const ESTADO_LABELS = { 1:'Sem plano ativo', 2:'Kit a caminho', 3:'Análise laboratorial e Consulta de Nutrição', 4:'Resultados disponíveis', 5:'Reavaliação · Kit a caminho', 6:'Reavaliação · Em análise laboratorial', 7:'Relatório comparativo e nova consulta de Nutrição' };
 
   // ── Biomarcadores: categorias pré-definidas ─────────────────────────
   // Espelha a tabela de biomarcadores do index.html (Atlas), exceto os módulos
@@ -1105,12 +1105,14 @@
   // ao entrar manualmente em cada cliente.
   let _inboxRespostas = [];
   let _inboxCanceladas = [];
+  let _inboxKits = [];
   let _inboxRespUnsub = null;
   let _inboxCancUnsub = null;
+  let _inboxKitUnsub = null;
   const _inboxNomeCache = {};
 
   function initInboxListeners() {
-    if (_inboxRespUnsub && _inboxCancUnsub) return;
+    if (_inboxRespUnsub && _inboxCancUnsub && _inboxKitUnsub) return;
     _inboxRespUnsub = onSnapshot(query(collection(db,'users'), where('respostaCliente.visto','==',false)), (snap) => {
       _inboxRespostas = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
       updateInboxBadge();
@@ -1121,6 +1123,11 @@
       updateInboxBadge();
       if (document.getElementById('inbox-overlay').classList.contains('show')) renderInbox();
     }, (err) => console.error('Listener de cancelamentos de clientes falhou:', err));
+    _inboxKitUnsub = onSnapshot(query(collection(db,'users'), where('kitDevolvido.visto','==',false)), (snap) => {
+      _inboxKits = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+      updateInboxBadge();
+      if (document.getElementById('inbox-overlay').classList.contains('show')) renderInbox();
+    }, (err) => console.error('Listener de confirmações de kit falhou:', err));
   }
 
   function countUnreadChats() {
@@ -1128,7 +1135,7 @@
   }
 
   function updateInboxBadge() {
-    const total = _inboxRespostas.length + _inboxCanceladas.length + countUnreadChats();
+    const total = _inboxRespostas.length + _inboxCanceladas.length + _inboxKits.length + countUnreadChats();
     const badge = document.getElementById('inbox-badge');
     if (!badge) return;
     badge.textContent = total > 99 ? '99+' : String(total);
@@ -1184,6 +1191,19 @@
         texto: `cancelou a consulta${cc.data ? ` de ${fmtDate(cc.data)}${cc.hora ? ' às ' + cc.hora : ''}` : ''} — aguarda nova proposta`,
         tab: 'consultas',
         marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'consultaCancelada.visto': true }),
+      });
+    }
+    for (const u of _inboxKits) {
+      const kd = u.kitDevolvido;
+      const ciclo = kd.estado === 5 ? ' (reavaliação)' : '';
+      items.push({
+        ts: tsMillis(kd.confirmadoEm),
+        uid: u.uid,
+        icon: '📦',
+        color: 'var(--cyan)',
+        texto: `confirmou a devolução do kit${ciclo} — pronto para avançar de estado`,
+        tab: 'geral',
+        marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'kitDevolvido.visto': true }),
       });
     }
     for (const uid of Object.keys(_chatMeta)) {
@@ -2689,6 +2709,12 @@
       concelho:       document.getElementById('g-concelho').value,
       codigoPostal:   document.getElementById('g-cp').value.trim(),
     };
+    // Se o cliente já tinha confirmado a devolução do kit e o admin avança para
+    // lá da fase de kit (estado != 2 e != 5), dar a confirmação por tratada para
+    // sair da Caixa de entrada — mesmo que o admin não tenha aberto o item.
+    if (u?.kitDevolvido && u.kitDevolvido.visto === false && selectedEstado !== 2 && selectedEstado !== 5) {
+      data['kitDevolvido.visto'] = true;
+    }
     await saveDoc(data, 'msg-geral');
     refreshStats(); // estado pode ter mudado → atualizar contadores
 
@@ -3061,6 +3087,9 @@
         consultaCancelada: null,
         consultaCanceladaAdmin: null,
         agendamentoConvite: null,
+        // limpar confirmação de kit do ciclo anterior — o novo kit (estado 5)
+        // exige nova confirmação do cliente
+        kitDevolvido: null,
       });
 
       // 3. Atualizar cache local
