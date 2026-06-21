@@ -2331,15 +2331,13 @@
         return;
       }
       document.getElementById('convite-tipo').value = convite.tipo || 'nutricao';
-      _conviteSlots = (convite.slots || []).map(s => ({ data: s.data, horas: [...(s.horas||[])] }));
-      // Posiciona o calendário no mês do primeiro dia já selecionado.
-      if (_conviteSlots.length) {
-        const first = [..._conviteSlots].sort((a,b) => a.data.localeCompare(b.data))[0].data;
-        const fd = new Date(first + 'T00:00:00');
-        _calView = new Date(fd.getFullYear(), fd.getMonth(), 1);
-      }
-      renderConviteCal();
-      renderConviteSlotsList();
+      // NÃO repor no calendário os dias/horas já enviados. Assim que o convite é
+      // enviado o calendário colapsa (ver convite-send-btn) e deve manter-se
+      // colapsado mesmo ao reabrir o cliente — sobretudo depois de o cliente
+      // confirmar uma data, altura em que voltar a pintar a margem inteira é
+      // confuso. O calendário é só um compositor para propor uma NOVA margem de
+      // datas; o estado do convite é comunicado pelo texto de status abaixo.
+      // (_conviteSlots/_calView já foram repostos a vazio no topo de loadConvite.)
       const tipoLbl = convite.tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de nutrição (inicial)';
       const carregarLink = async (esc) => {
         if (!esc?.data) return;
