@@ -1192,12 +1192,12 @@
 <body>
   <div id="page-loading-mask" style="position:fixed;inset:0;z-index:99999;background:#060A0C;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--txt-3);transition:opacity 0.3s ease;">
     <div style="width:34px;height:34px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--cyan);border-radius:50%;animation:dash-spin 0.8s linear infinite;"></div>
-    <div style="font-size:13px;">A carregar o seu painel…</div>
+    <div style="font-size:13px;" data-i18n="mask.loading">A carregar o seu painel…</div>
   </div>
   <div id="load-error-mask" style="position:fixed;inset:0;z-index:100000;background:#060A0C;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;">
     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <div style="font-size:15px;color:var(--txt-2);max-width:340px;line-height:1.6;">Não foi possível carregar o seu painel. Verifique a ligação à internet e tente novamente.</div>
-    <button onclick="location.reload()" style="background:var(--cyan);color:#04141A;border:none;font-family:inherit;font-size:14px;font-weight:700;padding:12px 24px;border-radius:10px;cursor:pointer;">Tentar novamente</button>
+    <div style="font-size:15px;color:var(--txt-2);max-width:340px;line-height:1.6;" data-i18n="mask.error">Não foi possível carregar o seu painel. Verifique a ligação à internet e tente novamente.</div>
+    <button onclick="location.reload()" style="background:var(--cyan);color:#04141A;border:none;font-family:inherit;font-size:14px;font-weight:700;padding:12px 24px;border-radius:10px;cursor:pointer;" data-i18n="mask.retry">Tentar novamente</button>
   </div>
   <style>@keyframes dash-spin { to { transform: rotate(360deg); } }</style>
 
@@ -1210,48 +1210,48 @@
     <nav class="sb-nav">
       <a href="#" class="sb-link active" id="sb-painel" onclick="navSection('painel')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-        Painel
+        <span data-i18n="nav.painel">Painel</span>
       </a>
       <a href="#" class="sb-link" id="sb-plano-alimentar" onclick="navSection('plano-alimentar')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
-        Plano alimentar
+        <span data-i18n="nav.plano-alimentar">Plano alimentar</span>
       </a>
       <a href="#" class="sb-link" id="sb-suplementacao" onclick="navSection('suplementacao')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
-        Suplementação
+        <span data-i18n="nav.suplementacao">Suplementação</span>
       </a>
       <a href="#" class="sb-link" id="sb-relatorio" onclick="navSection('relatorio')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        Relatório médico
+        <span data-i18n="nav.relatorio">Relatório médico</span>
       </a>
       <a href="#" class="sb-link" id="sb-biomarcadores" onclick="navSection('biomarcadores')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
-        Biomarcadores
+        <span data-i18n="nav.biomarcadores">Biomarcadores</span>
       </a>
       <a href="#" class="sb-link" id="sb-consultas" onclick="navSection('consultas')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Consultas
+        <span data-i18n="nav.consultas">Consultas</span>
       </a>
       <a href="#" class="sb-link" id="sb-chat" onclick="navSection('chat')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Chat
+        <span data-i18n="nav.chat">Chat</span>
         <span id="chat-badge-dot" style="display:none;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:auto;"></span>
       </a>
 
-      <div class="sb-section">Loja</div>
+      <div class="sb-section" data-i18n="nav.section.loja">Loja</div>
       <a href="#" class="sb-link" id="sb-store" onclick="navSection('store')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Lyvoo Store
+        <span data-i18n="nav.store">Lyvoo Store</span>
       </a>
 
-      <div class="sb-section">Dados pessoais</div>
+      <div class="sb-section" data-i18n="nav.section.dados-pessoais">Dados pessoais</div>
       <a href="#" class="sb-link" id="sb-perfil" onclick="navSection('perfil')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Perfil
+        <span data-i18n="nav.perfil">Perfil</span>
       </a>
       <a href="#" class="sb-link" id="sb-conta" onclick="navSection('conta')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Conta e segurança
+        <span data-i18n="nav.conta">Conta e segurança</span>
       </a>
     </nav>
 
@@ -1277,11 +1277,11 @@
           <span class="dot" id="bell-dot" style="display:none"></span>
           <div class="bell-popover" id="bell-popover">
             <div class="bell-pop-head">
-              <span class="bell-pop-title">Notificações</span>
-              <button class="bell-pop-mark" onclick="marcarNotificacoesVistas(event)">Marcar como visto</button>
+              <span class="bell-pop-title" data-i18n="bell.title">Notificações</span>
+              <button class="bell-pop-mark" onclick="marcarNotificacoesVistas(event)" data-i18n="bell.mark-read">Marcar como visto</button>
             </div>
             <div id="bell-notif-list">
-              <div class="bell-empty">Sem notificações novas</div>
+              <div class="bell-empty" data-i18n="bell.empty">Sem notificações novas</div>
             </div>
           </div>
         </div>
@@ -1292,7 +1292,7 @@
             <div class="user-plan" id="navPlan">-</div>
             <div class="estado-badge" id="estadoBadge" style="margin-top:6px;display:none;"><span class="pulse"></span><span id="estadoLabel">-</span></div>
           </div>
-          <button class="user-chevron" id="btnLogout" title="Sair" style="background:none;border:none;cursor:pointer;">
+          <button class="user-chevron" id="btnLogout" title="Sair" data-i18n-title="topbar.logout-title" style="background:none;border:none;cursor:pointer;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           </button>
         </div>
@@ -1557,43 +1557,43 @@
     <div id="sec-biomarcadores" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div>
-          <h2 class="sec-title">Biomarcadores</h2>
-          <p class="sec-sub" id="bio-sub">Resultados da sua análise</p>
+          <h2 class="sec-title" data-i18n="nav.biomarcadores">Biomarcadores</h2>
+          <p class="sec-sub" id="bio-sub" data-i18n="sec.biomarcadores.sub">Resultados da sua análise</p>
         </div>
         <div class="sec-actions">
           <button class="plano-dl-btn" id="bio-pdf-btn" onclick="downloadBiomarcadoresPDF()" style="display:none">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download PDF
           </button>
-          <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span>Ótimo <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span>Atenção <span class="sec-dot" style="background:var(--red);margin-left:12px"></span>Prioridade</div>
+          <div class="sec-legend"><span class="sec-dot" style="background:var(--green)"></span><span data-i18n="bio.estado.otimo">Ótimo</span> <span class="sec-dot" style="background:var(--amber);margin-left:12px"></span><span data-i18n="bio.estado.atencao">Atenção</span> <span class="sec-dot" style="background:var(--red);margin-left:12px"></span><span data-i18n="bio.estado.critico">Prioridade</span></div>
         </div>
       </div>
       <div id="bio-content">
-        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Os seus resultados ainda não estão disponíveis. Em breve!</div>
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px" data-i18n="sec.biomarcadores.empty">Os seus resultados ainda não estão disponíveis. Em breve!</div>
       </div>
     </div>
 
     <!-- PLANO ALIMENTAR -->
     <div id="sec-plano-alimentar" class="sec-wrap" style="display:none">
       <div class="sec-header" style="margin-left:58px">
-        <div><h2 class="sec-title">Plano alimentar</h2><p class="sec-sub" id="plano-sub">Personalizado com base nos seus biomarcadores</p></div>
+        <div><h2 class="sec-title" data-i18n="nav.plano-alimentar">Plano alimentar</h2><p class="sec-sub" id="plano-sub" data-i18n="sec.plano.sub">Personalizado com base nos seus biomarcadores</p></div>
         <button class="plano-dl-btn" id="plano-pdf-btn" onclick="downloadPlanoPDF()" style="display:none">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download PDF
         </button>
       </div>
       <div id="plano-content">
-        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">O seu plano alimentar ainda não está disponível. Em breve!</div>
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px" data-i18n="sec.plano.empty">O seu plano alimentar ainda não está disponível. Em breve!</div>
       </div>
     </div>
 
     <!-- SUPLEMENTAÇÃO -->
     <div id="sec-suplementacao" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Suplementação</h2><p class="sec-sub" id="supp-sub">Prescrita com base nos seus resultados</p></div>
+        <div><h2 class="sec-title" data-i18n="nav.suplementacao">Suplementação</h2><p class="sec-sub" id="supp-sub" data-i18n="sec.supp.sub">Prescrita com base nos seus resultados</p></div>
       </div>
       <div class="supp-grid" id="supp-content">
-        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">O seu plano de suplementação ainda não está disponível. Em breve!</div>
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px" data-i18n="sec.supp.empty">O seu plano de suplementação ainda não está disponível. Em breve!</div>
       </div>
     </div>
 
@@ -1601,10 +1601,10 @@
     <div id="sec-relatorio" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div>
-          <h2 class="sec-title">Relatório médico</h2>
-          <p class="sec-sub" id="rel-sub">Análise integrada dos seus resultados</p>
+          <h2 class="sec-title" data-i18n="nav.relatorio">Relatório médico</h2>
+          <p class="sec-sub" id="rel-sub" data-i18n="sec.relatorio.sub">Análise integrada dos seus resultados</p>
         </div>
-        <a id="rel-open-btn" href="#" target="_blank" rel="noopener" class="sec-btn" style="display:none;">
+        <a id="rel-open-btn" href="#" target="_blank" rel="noopener" class="sec-btn" style="display:none;" data-i18n="sec.relatorio.open-btn">
           Abrir relatório PDF ↗
         </a>
       </div>
@@ -1624,7 +1624,7 @@
         </div>
         <div class="rel-hero-info">
           <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px;">
-            <span style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);">Score global de saúde</span>
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);" data-i18n="sec.relatorio.score-label">Score global de saúde</span>
             <span id="rel-data" style="font-size:12px;color:var(--txt-3);"></span>
           </div>
           <div id="rel-classificacao" style="font-size:26px;font-weight:800;color:var(--green);letter-spacing:-0.03em;margin-bottom:8px;">-</div>
@@ -1635,10 +1635,10 @@
 
       <!-- Sistemas do corpo -->
       <div id="body-map-wrap" class="body-map-wrap" style="display:none;">
-        <div class="body-map-title">Os seus sistemas</div>
+        <div class="body-map-title" data-i18n="sec.relatorio.sistemas-title">Os seus sistemas</div>
         <div class="sys-grid" id="body-map-list"></div>
         <div class="sys-detail" id="body-map-detail">
-          <div style="font-size:13px;color:var(--txt-3);">Selecione um sistema para ver os detalhes.</div>
+          <div style="font-size:13px;color:var(--txt-3);" data-i18n="sec.relatorio.select-hint">Selecione um sistema para ver os detalhes.</div>
         </div>
       </div>
 
@@ -1646,13 +1646,13 @@
       <div id="rel-notas-wrap" style="display:none;background:linear-gradient(135deg,rgba(139,92,246,0.06),transparent 60%),var(--panel);border:1px solid var(--line);border-left:3px solid var(--violet);border-radius:16px;padding:24px;margin-bottom:24px;animation:relFadeUp 0.5s 0.2s ease both;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);">Notas clínicas da equipa Lyvoo</span>
+          <span style="font-size:10.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-3);" data-i18n="sec.relatorio.notas-title">Notas clínicas da equipa Lyvoo</span>
         </div>
         <p id="rel-notas" style="font-size:14px;color:var(--txt-2);line-height:1.8;white-space:pre-line;"></p>
       </div>
 
       <!-- Estado: sem relatório -->
-      <div id="rel-empty" style="padding:48px 0;text-align:center;color:var(--txt-3);font-size:14px;">
+      <div id="rel-empty" style="padding:48px 0;text-align:center;color:var(--txt-3);font-size:14px;" data-i18n="sec.relatorio.empty">
         O seu relatório ainda não está disponível. Será notificado quando estiver pronto.
       </div>
     </div>
@@ -1660,26 +1660,26 @@
     <!-- CONSULTAS -->
     <div id="sec-consultas" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Consultas</h2><p class="sec-sub">Próximas e passadas</p></div>
-        <a href="#" id="consultas-agendar-btn" class="sec-btn" onclick="abrirAgendamento('nutricao');return false;">+ Agendar</a>
+        <div><h2 class="sec-title" data-i18n="nav.consultas">Consultas</h2><p class="sec-sub" data-i18n="sec.consultas.sub">Próximas e passadas</p></div>
+        <a href="#" id="consultas-agendar-btn" class="sec-btn" onclick="abrirAgendamento('nutricao');return false;" data-i18n="sec.consultas.agendar">+ Agendar</a>
       </div>
       <div class="consult-list" id="consult-content">
-        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;">Agende a sua consulta →</a></div>
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px"><span data-i18n="sec.consultas.empty">Sem consultas agendadas.</span> <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;" data-i18n="sec.consultas.empty-cta">Agende a sua consulta →</a></div>
       </div>
     </div>
 
     <!-- CHAT -->
     <div id="sec-chat" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Chat</h2><p class="sec-sub">Converse diretamente com a equipa Lyvoo</p></div>
+        <div><h2 class="sec-title" data-i18n="nav.chat">Chat</h2><p class="sec-sub" data-i18n="sec.chat.sub">Converse diretamente com a equipa Lyvoo</p></div>
       </div>
       <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;height:60vh;min-height:420px;">
         <div id="chat-messages" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px;">
-          <div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;">A carregar mensagens…</div>
+          <div style="text-align:center;color:var(--txt-3);font-size:13px;padding:24px 0;" data-i18n="sec.chat.loading">A carregar mensagens…</div>
         </div>
         <form id="chat-form" style="display:flex;gap:10px;padding:14px;border-top:1px solid var(--line);">
-          <input type="text" id="chat-input" autocomplete="off" placeholder="Escreva uma mensagem..." style="flex:1;background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;padding:11px 14px;color:var(--txt);font-size:13.5px;" />
-          <button type="submit" class="sec-btn" id="chat-send-btn">Enviar</button>
+          <input type="text" id="chat-input" autocomplete="off" placeholder="Escreva uma mensagem..." data-i18n-ph="sec.chat.placeholder" style="flex:1;background:var(--panel-2);border:1px solid var(--line-2);border-radius:10px;padding:11px 14px;color:var(--txt);font-size:13.5px;" />
+          <button type="submit" class="sec-btn" id="chat-send-btn" data-i18n="sec.chat.send">Enviar</button>
         </form>
       </div>
     </div>
@@ -1688,44 +1688,44 @@
     <!-- LYVOO STORE -->
     <div id="sec-store" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Lyvoo Store</h2><p class="sec-sub">Adquira o plano base e adicione módulos especializados</p></div>
+        <div><h2 class="sec-title" data-i18n="nav.store">Lyvoo Store</h2><p class="sec-sub" data-i18n="sec.store.sub">Adquira o plano base e adicione módulos especializados</p></div>
       </div>
 
       <div class="store-warn" id="store-warn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>Precisa de completar alguns dados na área "Perfil" antes de conseguir avançar.</span>
-        <button class="store-warn-btn" onclick="navSection('perfil')">Ir para o Perfil →</button>
+        <span data-i18n="sec.store.warn-perfil">Precisa de completar alguns dados na área "Perfil" antes de conseguir avançar.</span>
+        <button class="store-warn-btn" onclick="navSection('perfil')" data-i18n="sec.store.warn-perfil-btn">Ir para o Perfil →</button>
       </div>
 
       <div class="store-warn" id="store-expirado-banner" style="display:none">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>O seu plano anual expirou. Renove o plano base para voltar a ter acesso ao painel, plano alimentar, suplementação, relatórios, biomarcadores e consultas.</span>
+        <span data-i18n="sec.store.warn-expirado">O seu plano anual expirou. Renove o plano base para voltar a ter acesso ao painel, plano alimentar, suplementação, relatórios, biomarcadores e consultas.</span>
       </div>
 
       <div class="store-base-card">
-        <span class="store-base-tag">Programa anual</span>
-        <div class="store-base-title">Plano Base Lyvoo</div>
-        <div class="store-base-price">€365 <span>/ano · ≈ €1 por dia</span></div>
-        <div class="store-base-sub">Pagamento único anual · Sem renovação automática · Transparência total</div>
+        <span class="store-base-tag" data-i18n="sec.store.base-tag">Programa anual</span>
+        <div class="store-base-title" data-i18n="sec.store.base-title">Plano Base Lyvoo</div>
+        <div class="store-base-price">€365 <span data-i18n="sec.store.base-price-sub">/ano · ≈ €1 por dia</span></div>
+        <div class="store-base-sub" data-i18n="sec.store.base-sub">Pagamento único anual · Sem renovação automática · Transparência total</div>
         <ul class="store-base-feats">
-          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>20 biomarcadores essenciais analisados</li>
-          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Kit de colheita enviado para casa em 48h</li>
-          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Relatório integrado médico e nutricional</li>
-          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Plano alimentar personalizado</li>
-          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Reavaliação a cada 6 meses · 2 painéis completos por ano</li>
-          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Dashboard Lyvoo com acompanhamento contínuo</li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="sec.store.feat1">20 biomarcadores essenciais analisados</span></li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="sec.store.feat2">Kit de colheita enviado para casa em 48h</span></li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="sec.store.feat3">Relatório integrado médico e nutricional</span></li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="sec.store.feat4">Plano alimentar personalizado</span></li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="sec.store.feat5">Reavaliação a cada 6 meses · 2 painéis completos por ano</span></li>
+          <li><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="sec.store.feat6">Dashboard Lyvoo com acompanhamento contínuo</span></li>
         </ul>
-        <button class="store-buy-btn" id="store-base-btn" onclick="comprarPlanoBase()">Adquirir plano base</button>
+        <button class="store-buy-btn" id="store-base-btn" onclick="comprarPlanoBase()" data-i18n="sec.store.buy-btn">Adquirir plano base</button>
       </div>
 
-      <div class="store-mods-label">Módulos adicionais</div>
-      <p class="store-mods-sub" id="store-mods-sub">Os módulos são complementos exclusivos para quem tem o Plano Base ativo.</p>
+      <div class="store-mods-label" data-i18n="sec.store.mods-label">Módulos adicionais</div>
+      <p class="store-mods-sub" id="store-mods-sub" data-i18n="sec.store.mods-sub">Os módulos são complementos exclusivos para quem tem o Plano Base ativo.</p>
       <div class="store-mods-grid" id="store-mods-grid"></div>
     </div>
 
     <div id="sec-perfil" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Perfil</h2><p class="sec-sub">Os seus dados pessoais</p></div>
+        <div><h2 class="sec-title" data-i18n="nav.perfil">Perfil</h2><p class="sec-sub" data-i18n="sec.perfil.sub">Os seus dados pessoais</p></div>
       </div>
       <div class="profile-card">
         <div class="profile-avatar" id="profileAvatar">?</div>
@@ -1734,46 +1734,46 @@
           <div class="profile-email" id="profileEmail">-</div>
           <div class="profile-badges">
             <span class="profile-plan-badge" id="profilePlanBadge">Programa Lyvoo</span>
-            <span class="profile-active-badge">● Activo</span>
+            <span class="profile-active-badge" data-i18n="sec.perfil.active-badge">● Activo</span>
           </div>
         </div>
       </div>
       <div class="profile-form">
-        <div class="pf-section-label">Dados pessoais</div>
+        <div class="pf-section-label" data-i18n="pf.section.dados">Dados pessoais</div>
         <div class="pf-row">
-          <div class="pf-field"><label>Nome</label><input type="text" id="pf-first" placeholder="Nome"/></div>
-          <div class="pf-field"><label>Apelido</label><input type="text" id="pf-last" placeholder="Apelido"/></div>
+          <div class="pf-field"><label data-i18n="pf.nome">Nome</label><input type="text" id="pf-first" placeholder="Nome" data-i18n-ph="pf.nome"/></div>
+          <div class="pf-field"><label data-i18n="pf.apelido">Apelido</label><input type="text" id="pf-last" placeholder="Apelido" data-i18n-ph="pf.apelido"/></div>
         </div>
-        <div class="pf-field"><label>Email</label><input type="email" id="pf-email" placeholder="Email" disabled/></div>
+        <div class="pf-field"><label data-i18n="pf.email">Email</label><input type="email" id="pf-email" placeholder="Email" data-i18n-ph="pf.email" disabled/></div>
         <div class="pf-row">
-          <div class="pf-field"><label>Telemóvel<span class="req">*</span></label><input type="tel" id="pf-phone" placeholder="+351 9xx xxx xxx"/></div>
-          <div class="pf-field"><label>Data de nascimento<span class="req">*</span></label><input type="date" id="pf-dob"/></div>
+          <div class="pf-field"><label><span data-i18n="pf.telemovel">Telemóvel</span><span class="req">*</span></label><input type="tel" id="pf-phone" placeholder="+351 9xx xxx xxx"/></div>
+          <div class="pf-field"><label><span data-i18n="pf.dob">Data de nascimento</span><span class="req">*</span></label><input type="date" id="pf-dob"/></div>
         </div>
         <div class="pf-row">
-          <div class="pf-field"><label>Idade</label><input type="text" id="pf-idade" placeholder="-" disabled/></div>
-          <div class="pf-field"><label>Género<span class="req">*</span></label>
+          <div class="pf-field"><label data-i18n="pf.idade">Idade</label><input type="text" id="pf-idade" placeholder="-" disabled/></div>
+          <div class="pf-field"><label><span data-i18n="pf.genero">Género</span><span class="req">*</span></label>
             <select id="pf-genero">
-              <option value="">Selecionar...</option>
-              <option value="feminino">Feminino</option>
-              <option value="masculino">Masculino</option>
+              <option value="" data-i18n="pf.genero.select">Selecionar...</option>
+              <option value="feminino" data-i18n="pf.genero.feminino">Feminino</option>
+              <option value="masculino" data-i18n="pf.genero.masculino">Masculino</option>
             </select>
-            <p class="pf-hint">Necessário para apresentar os valores de referência corretos.</p>
+            <p class="pf-hint" data-i18n="pf.genero.hint">Necessário para apresentar os valores de referência corretos.</p>
           </div>
         </div>
 
-        <div class="pf-section-label" style="margin-top:6px;">Morada para envio do kit</div>
-        <div class="pf-field"><label>Morada<span class="req">*</span></label><input type="text" id="pf-morada" placeholder="Rua, número, andar"/></div>
+        <div class="pf-section-label" style="margin-top:6px;" data-i18n="pf.section.morada">Morada para envio do kit</div>
+        <div class="pf-field"><label><span data-i18n="pf.morada">Morada</span><span class="req">*</span></label><input type="text" id="pf-morada" placeholder="Rua, número, andar" data-i18n-ph="pf.morada.ph"/></div>
         <div class="pf-row">
-          <div class="pf-field"><label>Distrito<span class="req">*</span></label>
-            <select id="pf-distrito"><option value="">Selecionar...</option></select>
+          <div class="pf-field"><label><span data-i18n="pf.distrito">Distrito</span><span class="req">*</span></label>
+            <select id="pf-distrito"><option value="" data-i18n="pf.genero.select">Selecionar...</option></select>
           </div>
-          <div class="pf-field"><label>Concelho<span class="req">*</span></label>
-            <select id="pf-concelho" disabled><option value="">Selecionar distrito primeiro</option></select>
+          <div class="pf-field"><label><span data-i18n="pf.concelho">Concelho</span><span class="req">*</span></label>
+            <select id="pf-concelho" disabled><option value="" data-i18n="pf.concelho.select-distrito">Selecionar distrito primeiro</option></select>
           </div>
         </div>
-        <div class="pf-field" style="max-width:200px"><label>Código postal<span class="req">*</span></label><input type="text" id="pf-cp" placeholder="0000-000" maxlength="8"/></div>
+        <div class="pf-field" style="max-width:200px"><label><span data-i18n="pf.cp">Código postal</span><span class="req">*</span></label><input type="text" id="pf-cp" placeholder="0000-000" maxlength="8"/></div>
 
-        <button class="pf-save" id="pf-save-btn">Guardar alterações</button>
+        <button class="pf-save" id="pf-save-btn" data-i18n="pf.save">Guardar alterações</button>
         <p class="pf-msg" id="pf-msg"></p>
       </div>
     </div>
@@ -1781,24 +1781,24 @@
     <!-- CONTA -->
     <div id="sec-conta" class="sec-wrap" style="display:none">
       <div class="sec-header">
-        <div><h2 class="sec-title">Conta e segurança</h2><p class="sec-sub">Gerir acesso e dados</p></div>
+        <div><h2 class="sec-title" data-i18n="nav.conta">Conta e segurança</h2><p class="sec-sub" data-i18n="sec.conta.sub">Gerir acesso e dados</p></div>
       </div>
       <div class="account-section">
         <div class="account-item">
-          <div><div class="account-item-title">Palavra-passe</div><div class="account-item-desc" id="pw-desc">Enviaremos um email com um link para definir uma nova palavra-passe</div></div>
-          <button class="sec-btn" id="pw-reset-btn" onclick="enviarResetPassword()">Alterar</button>
+          <div><div class="account-item-title" data-i18n="conta.password.title">Palavra-passe</div><div class="account-item-desc" id="pw-desc" data-i18n="conta.password.desc">Enviaremos um email com um link para definir uma nova palavra-passe</div></div>
+          <button class="sec-btn" id="pw-reset-btn" onclick="enviarResetPassword()" data-i18n="conta.password.btn">Alterar</button>
         </div>
         <div class="account-item">
-          <div><div class="account-item-title">Política de Privacidade</div><div class="account-item-desc">Como tratamos os seus dados de saúde</div></div>
-          <a href="privacidade.html" class="sec-btn">Ver</a>
+          <div><div class="account-item-title" data-i18n="conta.privacy.title">Política de Privacidade</div><div class="account-item-desc" data-i18n="conta.privacy.desc">Como tratamos os seus dados de saúde</div></div>
+          <a href="privacidade.html" class="sec-btn" data-i18n="conta.ver">Ver</a>
         </div>
         <div class="account-item">
-          <div><div class="account-item-title">Termos de Serviço</div><div class="account-item-desc">Condições do programa Lyvoo</div></div>
-          <a href="termos.html" class="sec-btn">Ver</a>
+          <div><div class="account-item-title" data-i18n="conta.terms.title">Termos de Serviço</div><div class="account-item-desc" data-i18n="conta.terms.desc">Condições do programa Lyvoo</div></div>
+          <a href="termos.html" class="sec-btn" data-i18n="conta.ver">Ver</a>
         </div>
         <div class="account-item danger">
-          <div><div class="account-item-title">Eliminar conta</div><div class="account-item-desc" id="del-acc-desc">Apagar permanentemente todos os seus dados</div></div>
-          <button class="sec-btn danger-btn" id="del-acc-btn" onclick="abrirEliminarConta()">Eliminar</button>
+          <div><div class="account-item-title" data-i18n="conta.delete.title">Eliminar conta</div><div class="account-item-desc" id="del-acc-desc" data-i18n="conta.delete.desc">Apagar permanentemente todos os seus dados</div></div>
+          <button class="sec-btn danger-btn" id="del-acc-btn" onclick="abrirEliminarConta()" data-i18n="conta.delete.btn">Eliminar</button>
         </div>
       </div>
     </div>
@@ -1811,27 +1811,27 @@
   <div class="mob-nav-inner">
     <button class="mob-nav-btn active" id="mn-painel" onclick="navSection('painel')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-      <span>Painel</span>
+      <span data-i18n="nav.painel">Painel</span>
     </button>
     <button class="mob-nav-btn" id="mn-plano-alimentar" onclick="navSection('plano-alimentar')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
-      <span>Plano</span>
+      <span data-i18n="navm.plano">Plano</span>
     </button>
     <button class="mob-nav-btn" id="mn-biomarcadores" onclick="navSection('biomarcadores')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
-      <span>Análises</span>
+      <span data-i18n="navm.analises">Análises</span>
     </button>
     <button class="mob-nav-btn" id="mn-consultas" onclick="navSection('consultas')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span>Consultas</span>
+      <span data-i18n="nav.consultas">Consultas</span>
     </button>
     <button class="mob-nav-btn" id="mn-store" onclick="navSection('store')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      <span>Store</span>
+      <span data-i18n="navm.store">Store</span>
     </button>
     <button class="mob-nav-btn" id="mn-perfil" onclick="navSection('perfil')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Perfil</span>
+      <span data-i18n="nav.perfil">Perfil</span>
     </button>
   </div>
 </div>
@@ -1920,6 +1920,111 @@
       'estado.6': 'Reavaliação · Laboratório a processar',
       'estado.7': 'Reavaliação · Resultados disponíveis',
       'estado.fallback': 'Activo',
+
+      // ── Navegação (sidebar + título de secção; partilham o mesmo texto) ──
+      'nav.painel': 'Painel',
+      'nav.plano-alimentar': 'Plano alimentar',
+      'nav.suplementacao': 'Suplementação',
+      'nav.relatorio': 'Relatório médico',
+      'nav.biomarcadores': 'Biomarcadores',
+      'nav.consultas': 'Consultas',
+      'nav.chat': 'Chat',
+      'nav.store': 'Lyvoo Store',
+      'nav.perfil': 'Perfil',
+      'nav.conta': 'Conta e segurança',
+      'nav.section.loja': 'Loja',
+      'nav.section.dados-pessoais': 'Dados pessoais',
+      // Bottom nav mobile — versões curtas (diferem do texto completo)
+      'navm.plano': 'Plano',
+      'navm.analises': 'Análises',
+      'navm.store': 'Store',
+
+      // ── Cabeçalhos e estados vazios por secção ──
+      'sec.biomarcadores.sub': 'Resultados da sua análise',
+      'sec.biomarcadores.empty': 'Os seus resultados ainda não estão disponíveis. Em breve!',
+      'sec.plano.sub': 'Personalizado com base nos seus biomarcadores',
+      'sec.plano.empty': 'O seu plano alimentar ainda não está disponível. Em breve!',
+      'sec.supp.sub': 'Prescrita com base nos seus resultados',
+      'sec.supp.empty': 'O seu plano de suplementação ainda não está disponível. Em breve!',
+      'sec.relatorio.sub': 'Análise integrada dos seus resultados',
+      'sec.relatorio.open-btn': 'Abrir relatório PDF ↗',
+      'sec.relatorio.score-label': 'Score global de saúde',
+      'sec.relatorio.sistemas-title': 'Os seus sistemas',
+      'sec.relatorio.select-hint': 'Selecione um sistema para ver os detalhes.',
+      'sec.relatorio.notas-title': 'Notas clínicas da equipa Lyvoo',
+      'sec.relatorio.empty': 'O seu relatório ainda não está disponível. Será notificado quando estiver pronto.',
+      'sec.consultas.sub': 'Próximas e passadas',
+      'sec.consultas.agendar': '+ Agendar',
+      'sec.consultas.empty': 'Sem consultas agendadas.',
+      'sec.consultas.empty-cta': 'Agende a sua consulta →',
+      'sec.chat.sub': 'Converse diretamente com a equipa Lyvoo',
+      'sec.chat.loading': 'A carregar mensagens…',
+      'sec.chat.placeholder': 'Escreva uma mensagem...',
+      'sec.chat.send': 'Enviar',
+      'sec.store.sub': 'Adquira o plano base e adicione módulos especializados',
+      'sec.store.warn-perfil': 'Precisa de completar alguns dados na área "Perfil" antes de conseguir avançar.',
+      'sec.store.warn-perfil-btn': 'Ir para o Perfil →',
+      'sec.store.warn-expirado': 'O seu plano anual expirou. Renove o plano base para voltar a ter acesso ao painel, plano alimentar, suplementação, relatórios, biomarcadores e consultas.',
+      'sec.store.base-tag': 'Programa anual',
+      'sec.store.base-title': 'Plano Base Lyvoo',
+      'sec.store.base-price-sub': '/ano · ≈ €1 por dia',
+      'sec.store.base-sub': 'Pagamento único anual · Sem renovação automática · Transparência total',
+      'sec.store.feat1': '20 biomarcadores essenciais analisados',
+      'sec.store.feat2': 'Kit de colheita enviado para casa em 48h',
+      'sec.store.feat3': 'Relatório integrado médico e nutricional',
+      'sec.store.feat4': 'Plano alimentar personalizado',
+      'sec.store.feat5': 'Reavaliação a cada 6 meses · 2 painéis completos por ano',
+      'sec.store.feat6': 'Dashboard Lyvoo com acompanhamento contínuo',
+      'sec.store.buy-btn': 'Adquirir plano base',
+      'sec.store.mods-label': 'Módulos adicionais',
+      'sec.store.mods-sub': 'Os módulos são complementos exclusivos para quem tem o Plano Base ativo.',
+      'sec.perfil.sub': 'Os seus dados pessoais',
+      'sec.perfil.active-badge': '● Activo',
+      'sec.conta.sub': 'Gerir acesso e dados',
+
+      // ── Formulário de perfil ──
+      'pf.section.dados': 'Dados pessoais',
+      'pf.nome': 'Nome',
+      'pf.apelido': 'Apelido',
+      'pf.email': 'Email',
+      'pf.telemovel': 'Telemóvel',
+      'pf.dob': 'Data de nascimento',
+      'pf.idade': 'Idade',
+      'pf.genero': 'Género',
+      'pf.genero.select': 'Selecionar...',
+      'pf.genero.feminino': 'Feminino',
+      'pf.genero.masculino': 'Masculino',
+      'pf.genero.hint': 'Necessário para apresentar os valores de referência corretos.',
+      'pf.section.morada': 'Morada para envio do kit',
+      'pf.morada': 'Morada',
+      'pf.morada.ph': 'Rua, número, andar',
+      'pf.distrito': 'Distrito',
+      'pf.concelho': 'Concelho',
+      'pf.concelho.select-distrito': 'Selecionar distrito primeiro',
+      'pf.cp': 'Código postal',
+      'pf.save': 'Guardar alterações',
+
+      // ── Conta e segurança ──
+      'conta.password.title': 'Palavra-passe',
+      'conta.password.desc': 'Enviaremos um email com um link para definir uma nova palavra-passe',
+      'conta.password.btn': 'Alterar',
+      'conta.privacy.title': 'Política de Privacidade',
+      'conta.privacy.desc': 'Como tratamos os seus dados de saúde',
+      'conta.terms.title': 'Termos de Serviço',
+      'conta.terms.desc': 'Condições do programa Lyvoo',
+      'conta.ver': 'Ver',
+      'conta.delete.title': 'Eliminar conta',
+      'conta.delete.desc': 'Apagar permanentemente todos os seus dados',
+      'conta.delete.btn': 'Eliminar',
+
+      // ── Máscaras de carregamento/erro + sino de notificações ──
+      'mask.loading': 'A carregar o seu painel…',
+      'mask.error': 'Não foi possível carregar o seu painel. Verifique a ligação à internet e tente novamente.',
+      'mask.retry': 'Tentar novamente',
+      'bell.title': 'Notificações',
+      'bell.mark-read': 'Marcar como visto',
+      'bell.empty': 'Sem notificações novas',
+      'topbar.logout-title': 'Sair',
     },
     en: {
       'greeting.subtitle': 'Track your health. Improve your future.',
@@ -1972,6 +2077,105 @@
       'estado.6': 'Reassessment · Lab processing',
       'estado.7': 'Reassessment · Results available',
       'estado.fallback': 'Active',
+
+      'nav.painel': 'Dashboard',
+      'nav.plano-alimentar': 'Meal plan',
+      'nav.suplementacao': 'Supplementation',
+      'nav.relatorio': 'Medical report',
+      'nav.biomarcadores': 'Biomarkers',
+      'nav.consultas': 'Appointments',
+      'nav.chat': 'Chat',
+      'nav.store': 'Lyvoo Store',
+      'nav.perfil': 'Profile',
+      'nav.conta': 'Account & security',
+      'nav.section.loja': 'Store',
+      'nav.section.dados-pessoais': 'Personal data',
+      'navm.plano': 'Plan',
+      'navm.analises': 'Analyses',
+      'navm.store': 'Store',
+
+      'sec.biomarcadores.sub': 'Results from your analysis',
+      'sec.biomarcadores.empty': 'Your results are not available yet. Coming soon!',
+      'sec.plano.sub': 'Personalised based on your biomarkers',
+      'sec.plano.empty': 'Your meal plan is not available yet. Coming soon!',
+      'sec.supp.sub': 'Prescribed based on your results',
+      'sec.supp.empty': 'Your supplementation plan is not available yet. Coming soon!',
+      'sec.relatorio.sub': 'Integrated analysis of your results',
+      'sec.relatorio.open-btn': 'Open report PDF ↗',
+      'sec.relatorio.score-label': 'Overall health score',
+      'sec.relatorio.sistemas-title': 'Your systems',
+      'sec.relatorio.select-hint': 'Select a system to see the details.',
+      'sec.relatorio.notas-title': 'Clinical notes from the Lyvoo team',
+      'sec.relatorio.empty': 'Your report is not available yet. You will be notified once it is ready.',
+      'sec.consultas.sub': 'Upcoming and past',
+      'sec.consultas.agendar': '+ Schedule',
+      'sec.consultas.empty': 'No appointments scheduled.',
+      'sec.consultas.empty-cta': 'Schedule your appointment →',
+      'sec.chat.sub': 'Chat directly with the Lyvoo team',
+      'sec.chat.loading': 'Loading messages…',
+      'sec.chat.placeholder': 'Write a message...',
+      'sec.chat.send': 'Send',
+      'sec.store.sub': 'Get the base plan and add specialist modules',
+      'sec.store.warn-perfil': 'You need to complete some details in the "Profile" area before you can proceed.',
+      'sec.store.warn-perfil-btn': 'Go to Profile →',
+      'sec.store.warn-expirado': 'Your annual plan has expired. Renew the base plan to regain access to the dashboard, meal plan, supplementation, reports, biomarkers and appointments.',
+      'sec.store.base-tag': 'Annual programme',
+      'sec.store.base-title': 'Lyvoo Base Plan',
+      'sec.store.base-price-sub': '/year · ≈ €1 per day',
+      'sec.store.base-sub': 'Single annual payment · No auto-renewal · Full transparency',
+      'sec.store.feat1': '20 essential biomarkers analysed',
+      'sec.store.feat2': 'Collection kit delivered home within 48h',
+      'sec.store.feat3': 'Integrated medical and nutritional report',
+      'sec.store.feat4': 'Personalised meal plan',
+      'sec.store.feat5': 'Reassessment every 6 months · 2 full panels per year',
+      'sec.store.feat6': 'Lyvoo dashboard with continuous follow-up',
+      'sec.store.buy-btn': 'Get the base plan',
+      'sec.store.mods-label': 'Additional modules',
+      'sec.store.mods-sub': 'Modules are exclusive add-ons for those with an active Base Plan.',
+      'sec.perfil.sub': 'Your personal details',
+      'sec.perfil.active-badge': '● Active',
+      'sec.conta.sub': 'Manage access and data',
+
+      'pf.section.dados': 'Personal data',
+      'pf.nome': 'First name',
+      'pf.apelido': 'Last name',
+      'pf.email': 'Email',
+      'pf.telemovel': 'Mobile phone',
+      'pf.dob': 'Date of birth',
+      'pf.idade': 'Age',
+      'pf.genero': 'Gender',
+      'pf.genero.select': 'Select...',
+      'pf.genero.feminino': 'Female',
+      'pf.genero.masculino': 'Male',
+      'pf.genero.hint': 'Needed to show the correct reference values.',
+      'pf.section.morada': 'Address for kit delivery',
+      'pf.morada': 'Address',
+      'pf.morada.ph': 'Street, number, floor',
+      'pf.distrito': 'District',
+      'pf.concelho': 'Municipality',
+      'pf.concelho.select-distrito': 'Select a district first',
+      'pf.cp': 'Postcode',
+      'pf.save': 'Save changes',
+
+      'conta.password.title': 'Password',
+      'conta.password.desc': 'We will send an email with a link to set a new password',
+      'conta.password.btn': 'Change',
+      'conta.privacy.title': 'Privacy Policy',
+      'conta.privacy.desc': 'How we handle your health data',
+      'conta.terms.title': 'Terms of Service',
+      'conta.terms.desc': 'Lyvoo programme conditions',
+      'conta.ver': 'View',
+      'conta.delete.title': 'Delete account',
+      'conta.delete.desc': 'Permanently delete all your data',
+      'conta.delete.btn': 'Delete',
+
+      'mask.loading': 'Loading your dashboard…',
+      'mask.error': 'We could not load your dashboard. Please check your internet connection and try again.',
+      'mask.retry': 'Try again',
+      'bell.title': 'Notifications',
+      'bell.mark-read': 'Mark as read',
+      'bell.empty': 'No new notifications',
+      'topbar.logout-title': 'Sign out',
     },
   };
   let _lang = 'pt';
@@ -2019,6 +2223,13 @@
     if (lang === _lang) return;
     applyLang(lang);
     try { localStorage.setItem('lyvoo_lang', lang); } catch (e) {}
+    // Título mobile (#pageTitle) é definido por navSection(), não por
+    // carregarDados() — atualizar à parte para refletir o novo idioma já.
+    const activeBtn = document.querySelector('.sb-link.active');
+    if (activeBtn) {
+      const pt = document.getElementById('pageTitle');
+      if (pt && pt.textContent) pt.textContent = sectionTitle(activeBtn.id.replace('sb-', ''));
+    }
     const u = auth.currentUser;
     if (u) {
       updateDoc(doc(db, 'users', u.uid), { lang }).catch(() => {});
@@ -2234,7 +2445,7 @@
     }
 
     if (!_bellNotifs.length) {
-      list.innerHTML = '<div class="bell-empty">Sem notificações novas</div>';
+      list.innerHTML = `<div class="bell-empty">${t('bell.empty')}</div>`;
       return;
     }
 
@@ -3337,17 +3548,9 @@
 
   // ── Navegação entre secções ──────────────────────────────────────────
   const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','chat','store','perfil','conta'];
-  const SECTION_TITLES = {
-    'biomarcadores':  'Biomarcadores',
-    'plano-alimentar':'Plano alimentar',
-    'suplementacao':  'Suplementação',
-    'relatorio':      'Relatório médico',
-    'consultas':      'Consultas',
-    'store':          'Lyvoo Store',
-    'perfil':         'Perfil',
-    'conta':          'Conta e segurança',
-    'painel':         'Painel'
-  };
+  // Título mostrado no topbar mobile (#pageTitle) — mesmo texto que o link
+  // da sidebar, por isso reutiliza as chaves nav.*.
+  function sectionTitle(name) { return t('nav.' + name); }
 
   window.navSection = function(name) {
     // Esconder todas as vistas e secções
@@ -3397,7 +3600,7 @@
     }
 
     // Atualizar título da página (usado em topbar)
-    document.getElementById('pageTitle').textContent = SECTION_TITLES[name] || '';
+    document.getElementById('pageTitle').textContent = name ? sectionTitle(name) : '';
 
     // Fazer scroll para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3814,7 +4017,7 @@
     const sub = document.getElementById('bio-sub');
     if (!resultados || !resultados.biomarcadores) return;
     _bioLastResultados = resultados;
-    if (resultados.dataAnalise) sub.textContent = 'Resultados da sua análise · ' + resultados.dataAnalise;
+    if (resultados.dataAnalise) sub.textContent = t('sec.biomarcadores.sub') + ' · ' + resultados.dataAnalise;
     const bio = resultados.biomarcadores;
     const catLabel = Object.fromEntries(BIO_SYSTEMS.map(s => [s.key, bioSysLabel(s.key)]));
 
@@ -4361,7 +4564,9 @@
     if (isNaN(inicio.getTime())) return true;
     return Date.now() >= inicio.getTime() - 5 * 60 * 1000;
   }
-  const CONSULT_EMPTY_HTML = '<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">Sem consultas agendadas. <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento(\'nutricao\');return false;">Agende a sua consulta →</a></div>';
+  function consultEmptyHtml() {
+    return `<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">${t('sec.consultas.empty')} <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;">${t('sec.consultas.empty-cta')}</a></div>`;
+  }
 
   function renderConsultas(list) {
     const container = document.getElementById('consult-content');
@@ -4370,7 +4575,7 @@
       .sort((a,b) => (a.data||'').localeCompare(b.data||''));
     window._consultasList = sorted;
     if (!sorted.length) {
-      container.innerHTML = CONSULT_EMPTY_HTML;
+      container.innerHTML = consultEmptyHtml();
       const agendarBtn = document.getElementById('consultas-agendar-btn');
       if (agendarBtn) agendarBtn.style.display = '';
       return;
