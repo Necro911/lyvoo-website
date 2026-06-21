@@ -1312,16 +1312,16 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           </div>
           <div style="flex:1; min-width:220px;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;">Reavaliação dos 6 meses</div>
-            <div style="font-size:20px;font-weight:800;color:var(--txt);letter-spacing:-0.03em;margin-bottom:8px;">A sua reavaliação está a ser preparada.</div>
-            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;margin-bottom:14px;">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;" data-i18n="banner.reeval.label">Reavaliação dos 6 meses</div>
+            <div style="font-size:20px;font-weight:800;color:var(--txt);letter-spacing:-0.03em;margin-bottom:8px;" data-i18n="banner.reeval.titulo">A sua reavaliação está a ser preparada.</div>
+            <div style="font-size:13.5px;color:var(--txt-2);line-height:1.7;max-width:560px;margin-bottom:14px;" data-i18n="banner.reeval.desc">Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.</div>
             <a href="#" id="reeval-agendar-btn" onclick="abrirAgendamento('reavaliacao');return false;" style="display:none;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-              Agendar reavaliação
+              <span data-i18n="banner.reeval.agendar-btn">Agendar reavaliação</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
             </a>
           </div>
           <div style="flex-shrink:0;text-align:right;">
-            <div style="font-size:11px;color:var(--txt-3);margin-bottom:4px;">Progresso do programa</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-bottom:4px;" data-i18n="banner.reeval.progresso-label">Progresso do programa</div>
             <div style="font-size:32px;font-weight:900;color:var(--violet);letter-spacing:-0.05em;line-height:1;">90<span style="font-size:16px;color:var(--txt-3);font-weight:600">%</span></div>
           </div>
         </div>
@@ -1335,14 +1335,14 @@
       <!-- Teaser comparação -->
       <div style="background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:20px;">
         <div style="flex:1;">
-          <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--txt-3);margin-bottom:6px;">O que vai receber</div>
-          <div style="font-size:14.5px;font-weight:700;color:var(--txt);margin-bottom:4px;">Relatório comparativo · Baseline vs. 6 meses</div>
-          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;">Cada biomarcador comparado com o resultado inicial. Vai ver, em números, o impacto do programa na sua saúde.</div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--txt-3);margin-bottom:6px;" data-i18n="banner.reeval.recebe-label">O que vai receber</div>
+          <div style="font-size:14.5px;font-weight:700;color:var(--txt);margin-bottom:4px;" data-i18n="banner.reeval.recebe-titulo">Relatório comparativo · Baseline vs. 6 meses</div>
+          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;" data-i18n="banner.reeval.recebe-desc">Cada biomarcador comparado com o resultado inicial. Vai ver, em números, o impacto do programa na sua saúde.</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;padding:0 8px;">
-          <div style="font-size:10px;color:var(--txt-3);font-weight:600;">ANTES</div>
+          <div style="font-size:10px;color:var(--txt-3);font-weight:600;" data-i18n="banner.reeval.antes">ANTES</div>
           <div style="width:2px;height:40px;background:linear-gradient(to bottom, var(--txt-3), var(--violet));border-radius:999px;"></div>
-          <div style="font-size:10px;color:var(--violet);font-weight:700;">DEPOIS</div>
+          <div style="font-size:10px;color:var(--violet);font-weight:700;" data-i18n="banner.reeval.depois">DEPOIS</div>
         </div>
       </div>
 
@@ -1352,8 +1352,8 @@
     <div id="results-banner" style="display:none; margin:0 32px 20px; padding:18px 24px; background:linear-gradient(135deg,rgba(74,222,128,0.09),rgba(61,217,232,0.06)); border:1px solid rgba(74,222,128,0.22); border-radius:16px; align-items:center; gap:16px;">
       <div style="font-size:26px; line-height:1;">🎉</div>
       <div style="flex:1;">
-        <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;">Os seus resultados estão prontos!</div>
-        <div style="font-size:13px;color:var(--txt-2);">O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.</div>
+        <div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;" data-i18n="banner.results.titulo">Os seus resultados estão prontos!</div>
+        <div style="font-size:13px;color:var(--txt-2);" data-i18n="banner.results.desc">O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.</div>
       </div>
       <button onclick="this.closest('#results-banner').style.display='none'; if(window._resultadosBannerKey) localStorage.setItem(window._resultadosBannerKey, '1')" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
     </div>
@@ -1365,12 +1365,12 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
         </div>
         <div style="flex:1;min-width:220px;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;">Próximo passo</div>
-          <div id="convite-banner-title" style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">Agende a sua consulta</div>
-          <div id="convite-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;">A equipa Lyvoo disponibilizou horários para a sua consulta.</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;" data-i18n="banner.convite.label">Próximo passo</div>
+          <div id="convite-banner-title" style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;" data-i18n="banner.convite.titulo">Agende a sua consulta</div>
+          <div id="convite-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;" data-i18n="banner.convite.sub">A equipa Lyvoo disponibilizou horários para a sua consulta.</div>
         </div>
         <a href="#" id="convite-banner-btn" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-          Agendar
+          <span data-i18n="banner.convite.btn">Agendar</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -1383,13 +1383,13 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <div style="flex:1;min-width:220px;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;">Nova data proposta</div>
-          <div id="reagendar-banner-title" style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">A sua equipa Lyvoo propôs uma nova data para a sua consulta</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:4px;" data-i18n="banner.reagendar.label">Nova data proposta</div>
+          <div id="reagendar-banner-title" style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;" data-i18n="banner.reagendar.titulo">A sua equipa Lyvoo propôs uma nova data para a sua consulta</div>
           <div id="reagendar-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;"></div>
         </div>
         <div style="display:flex; gap:10px; flex-shrink:0;">
-          <a href="#" id="reagendar-aceitar-btn" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#0A1F0A;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Aceitar</a>
-          <a href="#" id="reagendar-sugerir-btn" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Sugerir outra data</a>
+          <a href="#" id="reagendar-aceitar-btn" style="display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#0A1F0A;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'" data-i18n="banner.reagendar.aceitar">Aceitar</a>
+          <a href="#" id="reagendar-sugerir-btn" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'" data-i18n="banner.reagendar.sugerir">Sugerir outra data</a>
         </div>
       </div>
     </div>
@@ -1401,11 +1401,11 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         </div>
         <div style="flex:1;min-width:220px;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:4px;">Consulta cancelada</div>
-          <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">A sua consulta foi cancelada pela equipa Lyvoo</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:4px;" data-i18n="banner.cancelada.label">Consulta cancelada</div>
+          <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;" data-i18n="banner.cancelada.titulo">A sua consulta foi cancelada pela equipa Lyvoo</div>
           <div id="cancelada-banner-sub" style="font-size:13px;color:var(--txt-2);line-height:1.6;"></div>
         </div>
-        <a href="#" id="cancelada-banner-ok-btn" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Entendido</a>
+        <a href="#" id="cancelada-banner-ok-btn" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--txt);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'" data-i18n="banner.cancelada.entendido">Entendido</a>
       </div>
     </div>
 
@@ -1416,12 +1416,12 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <div style="flex:1; min-width:200px;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;">Próximo passo</div>
-          <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;">Agende a sua consulta de nutrição</div>
-          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;">Os seus resultados estão prontos. Falta agendar a consulta com a sua nutricionista para traduzir os biomarcadores em ação concreta.</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--violet);margin-bottom:4px;" data-i18n="banner.nutricta.label">Próximo passo</div>
+          <div style="font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px;letter-spacing:-0.02em;" data-i18n="banner.nutricta.titulo">Agende a sua consulta de nutrição</div>
+          <div style="font-size:13px;color:var(--txt-2);line-height:1.6;" data-i18n="banner.nutricta.desc">Os seus resultados estão prontos. Falta agendar a consulta com a sua nutricionista para traduzir os biomarcadores em ação concreta.</div>
         </div>
         <a href="#" onclick="abrirAgendamento('nutricao');return false;" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;background:var(--violet);color:#fff;font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-          Agendar
+          <span data-i18n="banner.nutricta.btn">Agendar</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </a>
       </div>
@@ -1431,8 +1431,8 @@
     <div id="novidades-banner" style="display:none; margin:0 32px 20px; padding:18px 24px; background:linear-gradient(135deg,rgba(61,217,232,0.08),rgba(11,82,90,0.06)); border:1px solid rgba(61,217,232,0.2); border-radius:16px; align-items:center; gap:16px;">
       <div style="font-size:26px; line-height:1;">🔔</div>
       <div style="flex:1;">
-        <div style="font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:3px;">Tem novidades no seu painel</div>
-        <div style="font-size:13px;color:var(--txt-2);" id="novidades-banner-sub">O seu perfil foi atualizado. Explore as novidades abaixo.</div>
+        <div style="font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:3px;" data-i18n="banner.novidades.titulo">Tem novidades no seu painel</div>
+        <div style="font-size:13px;color:var(--txt-2);" id="novidades-banner-sub" data-i18n="banner.novidades.sub">O seu perfil foi atualizado. Explore as novidades abaixo.</div>
       </div>
       <button id="novidades-banner-close" style="background:none;border:none;color:var(--txt-3);cursor:pointer;font-size:18px;line-height:1;padding:4px;">×</button>
     </div>
@@ -1442,7 +1442,7 @@
 
       <!-- Program progress -->
       <div class="panel">
-        <div class="panel-head"><h2>Progresso do programa</h2><span class="ciclo-badge" id="prog-ciclo-badge" style="display:none;"></span></div>
+        <div class="panel-head"><h2 data-i18n="painel.prog.titulo">Progresso do programa</h2><span class="ciclo-badge" id="prog-ciclo-badge" style="display:none;"></span></div>
         <div class="ring-wrap">
           <div class="ring">
             <svg width="132" height="132">
@@ -1450,21 +1450,21 @@
               <circle id="prog-ring-fill" cx="66" cy="66" r="56" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="204.1"/>
               <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#0D7A87"/></linearGradient></defs>
             </svg>
-            <div class="ring-center"><div class="ring-val" id="prog-pct">42<small>%</small></div><div class="ring-sub">progresso 6 meses</div></div>
+            <div class="ring-center"><div class="ring-val" id="prog-pct">42<small>%</small></div><div class="ring-sub" data-i18n="greeting.progresso-6-meses">progresso 6 meses</div></div>
           </div>
           <div class="checklist" id="prog-checklist">
-            <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Avaliação inicial</div><div class="check-state">Concluída</div></div></div>
-            <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title">Consultas iniciais</div><div class="check-state">Concluídas</div></div></div>
-            <div class="check-item"><div class="check-mark prog"></div><div class="check-body"><div class="check-title">Plano personalizado</div><div class="check-state">Em curso</div></div></div>
-            <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title">Reavaliação</div><div class="check-state">Em breve</div></div></div>
+            <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title" data-i18n="painel.prog.check.avaliacao">Avaliação inicial</div><div class="check-state" data-i18n="painel.prog.estado.concluida">Concluída</div></div></div>
+            <div class="check-item"><div class="check-mark done"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="check-body"><div class="check-title" data-i18n="painel.prog.check.consultas">Consultas iniciais</div><div class="check-state" data-i18n="painel.prog.estado.concluidas">Concluídas</div></div></div>
+            <div class="check-item"><div class="check-mark prog"></div><div class="check-body"><div class="check-title" data-i18n="painel.prog.check.plano">Plano personalizado</div><div class="check-state" data-i18n="painel.prog.estado.em-curso">Em curso</div></div></div>
+            <div class="check-item"><div class="check-mark todo"></div><div class="check-body"><div class="check-title" data-i18n="painel.prog.check.reavaliacao">Reavaliação</div><div class="check-state" data-i18n="painel.prog.estado.em-breve">Em breve</div></div></div>
           </div>
         </div>
-        <a href="#" class="btn-ghost" onclick="navSection('plano-alimentar');return false;">Ver plano completo</a>
+        <a href="#" class="btn-ghost" onclick="navSection('plano-alimentar');return false;" data-i18n="painel.prog.ver-plano">Ver plano completo</a>
       </div>
 
       <!-- Health score -->
       <div class="panel">
-        <div class="panel-head"><h2>Score de saúde</h2></div>
+        <div class="panel-head"><h2 data-i18n="painel.score.titulo">Score de saúde</h2></div>
         <div class="ring-wrap">
           <div class="ring">
             <svg width="132" height="132">
@@ -1472,13 +1472,13 @@
               <circle id="hs-ring-fill" cx="66" cy="66" r="56" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
               <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DD9E8"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
             </svg>
-            <div class="ring-center"><div class="ring-val" id="hs-val">-<small>/100</small></div><div class="ring-sub" id="hs-sub">Aguarda análise</div></div>
+            <div class="ring-center"><div class="ring-val" id="hs-val">-<small>/100</small></div><div class="ring-sub" id="hs-sub" data-i18n="painel.score.aguarda-analise">Aguarda análise</div></div>
           </div>
           <div class="hs-dist" id="hs-dist">
-            <div class="hs-dist-empty">A distribuição dos seus biomarcadores aparece aqui após a primeira análise.</div>
+            <div class="hs-dist-empty" data-i18n="painel.score.dist-empty">A distribuição dos seus biomarcadores aparece aqui após a primeira análise.</div>
           </div>
         </div>
-        <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;">Ver relatório</a>
+        <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;" data-i18n="painel.score.ver-relatorio">Ver relatório</a>
       </div>
 
     </div>
@@ -1487,46 +1487,46 @@
     <div class="grid row-4 mb">
 
       <a href="#" class="feature" id="fc-plano" style="--fc-accent:rgba(74,222,128,0.35)" onclick="navSection('plano-alimentar');return false;">
-        <div class="feature-head">Plano alimentar</div>
+        <div class="feature-head" data-i18n="nav.plano-alimentar">Plano alimentar</div>
         <div class="feature-img" style="background:linear-gradient(145deg,#051A0C 0%,#0D4020 45%,#1A7A40 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3v7"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Nutrição personalizada com base nos seus biomarcadores e objetivos.</div>
-          <div class="feature-cta">Ver plano <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <div class="feature-desc" data-i18n="painel.feature.plano.desc">Nutrição personalizada com base nos seus biomarcadores e objetivos.</div>
+          <div class="feature-cta"><span data-i18n="painel.feature.plano.cta">Ver plano</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
       <a href="#" class="feature" style="--fc-accent:rgba(167,139,250,0.35)" onclick="navSection('suplementacao');return false;">
-        <div class="feature-head">Suplementação</div>
+        <div class="feature-head" data-i18n="nav.suplementacao">Suplementação</div>
         <div class="feature-img" style="background:linear-gradient(145deg,#0D0520 0%,#2E1260 45%,#6D35B0 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Suplementos prescritos à medida das suas necessidades.</div>
-          <div class="feature-cta">Ver suplementos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <div class="feature-desc" data-i18n="painel.feature.supp.desc">Suplementos prescritos à medida das suas necessidades.</div>
+          <div class="feature-cta"><span data-i18n="painel.feature.supp.cta">Ver suplementos</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
       <a href="#" class="feature" id="fc-bio" style="--fc-accent:rgba(61,217,232,0.35)" onclick="navSection('biomarcadores');return false;">
-        <div class="feature-head">Biomarcadores</div>
+        <div class="feature-head" data-i18n="nav.biomarcadores">Biomarcadores</div>
         <div class="feature-img" style="background:linear-gradient(145deg,#020E10 0%,#062E35 45%,#0B6B78 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Acompanhe a evolução dos seus indicadores de saúde.</div>
-          <div class="feature-cta">Ver biomarcadores <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <div class="feature-desc" data-i18n="painel.feature.bio.desc">Acompanhe a evolução dos seus indicadores de saúde.</div>
+          <div class="feature-cta"><span data-i18n="painel.feature.bio.cta">Ver biomarcadores</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
       <a href="#" class="feature" style="--fc-accent:rgba(251,191,36,0.35)" onclick="navSection('consultas');return false;">
-        <div class="feature-head">Consultas</div>
+        <div class="feature-head" data-i18n="nav.consultas">Consultas</div>
         <div class="feature-img" style="background:linear-gradient(145deg,#0C0800 0%,#2E2000 45%,#7A5400 100%);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
         <div class="feature-body">
-          <div class="feature-desc">Gerencie e acompanhe todas as suas consultas médicas.</div>
-          <div class="feature-cta">Ver consultas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
+          <div class="feature-desc" data-i18n="painel.feature.consultas.desc">Gerencie e acompanhe todas as suas consultas médicas.</div>
+          <div class="feature-cta"><span data-i18n="painel.feature.consultas.cta">Ver consultas</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
         </div>
       </a>
 
@@ -1535,15 +1535,15 @@
     <!-- ROW 3: biomarker highlights -->
     <div class="panel mb">
       <div class="panel-head">
-        <h2>Biomarcadores em destaque</h2>
+        <h2 data-i18n="painel.bio.titulo">Biomarcadores em destaque</h2>
         <div class="bio-legend">
-          <a href="#" class="panel-link" onclick="navSection('biomarcadores');return false;">Ver todos</a>
-          <span><i style="background:#3DD9E8"></i>Atual</span>
-          <span><i style="background:#5E6C72"></i>Anterior</span>
+          <a href="#" class="panel-link" onclick="navSection('biomarcadores');return false;" data-i18n="painel.bio.ver-todos">Ver todos</a>
+          <span><i style="background:#3DD9E8"></i><span data-i18n="painel.bio.atual">Atual</span></span>
+          <span><i style="background:#5E6C72"></i><span data-i18n="painel.bio.anterior">Anterior</span></span>
         </div>
       </div>
       <div class="bio-grid">
-        <div class="bio-empty" style="grid-column:1/-1;padding:28px 20px;text-align:center;font-size:13.5px;color:var(--txt-3);">
+        <div class="bio-empty" style="grid-column:1/-1;padding:28px 20px;text-align:center;font-size:13.5px;color:var(--txt-3);" data-i18n="painel.bio.empty">
           Os seus biomarcadores em destaque aparecem aqui após a primeira análise.
         </div>
       </div>
@@ -2028,6 +2028,102 @@
       'topbar.logout-title': 'Sair',
       'a11y.close': 'Fechar',
 
+      // ── Painel (home): progresso, score, feature cards, destaques ──
+      'painel.prog.titulo': 'Progresso do programa',
+      'painel.prog.ciclo': 'Ciclo {n}',
+      'painel.prog.ver-plano': 'Ver plano completo',
+      'painel.prog.passo.reavaliacao-iniciada': 'Reavaliação iniciada',
+      'painel.prog.passo.plano-adquirido': 'Plano adquirido',
+      'painel.prog.passo.kit': 'Kit de colheita em casa',
+      'painel.prog.passo.lab': 'Análise laboratorial',
+      'painel.prog.passo.novos-resultados': 'Novos resultados e plano',
+      'painel.prog.passo.resultados': 'Resultados e plano',
+      'painel.prog.estado.concluido': 'Concluído',
+      'painel.prog.estado.concluida': 'Concluída',
+      'painel.prog.estado.kit-caminho': 'A caminho · ~48h',
+      'painel.prog.estado.lab-curso': 'Em curso · 1-5 dias',
+      'painel.prog.estado.disponivel': 'Disponível',
+      'painel.prog.estado.pendente': 'Pendente',
+      'painel.prog.estado.em-curso': 'Em curso',
+      'painel.prog.estado.concluidas': 'Concluídas',
+      'painel.prog.estado.em-breve': 'Em breve',
+      'painel.prog.check.avaliacao': 'Avaliação inicial',
+      'painel.prog.check.consultas': 'Consultas iniciais',
+      'painel.prog.check.plano': 'Plano personalizado',
+      'painel.prog.check.reavaliacao': 'Reavaliação',
+      'greeting.progresso-6-meses': 'progresso 6 meses',
+      'painel.score.titulo': 'Score de saúde',
+      'painel.score.aguarda-analise': 'Aguarda análise',
+      'painel.score.dist-empty': 'A distribuição dos seus biomarcadores aparece aqui após a primeira análise.',
+      'painel.score.ver-relatorio': 'Ver relatório',
+      'painel.feature.plano.desc': 'Nutrição personalizada com base nos seus biomarcadores e objetivos.',
+      'painel.feature.plano.cta': 'Ver plano',
+      'painel.feature.supp.desc': 'Suplementos prescritos à medida das suas necessidades.',
+      'painel.feature.supp.cta': 'Ver suplementos',
+      'painel.feature.bio.desc': 'Acompanhe a evolução dos seus indicadores de saúde.',
+      'painel.feature.bio.cta': 'Ver biomarcadores',
+      'painel.feature.consultas.desc': 'Gerencie e acompanhe todas as suas consultas médicas.',
+      'painel.feature.consultas.cta': 'Ver consultas',
+      'painel.feature.novo-badge': 'Novo',
+      'painel.bio.titulo': 'Biomarcadores em destaque',
+      'painel.bio.ver-todos': 'Ver todos',
+      'painel.bio.atual': 'Atual',
+      'painel.bio.anterior': 'Anterior',
+      'painel.bio.empty': 'Os seus biomarcadores em destaque aparecem aqui após a primeira análise.',
+      'painel.bio.tag.otimo': 'Ótimo',
+      'painel.bio.tag.atencao': 'Atenção',
+      'painel.bio.tag.critico': 'Crítico',
+      'painel.score-class.excelente': 'Excelente',
+      'painel.score-class.bom': 'Bom',
+      'painel.score-class.moderado': 'Moderado',
+      'painel.score-class.atencao': 'Atenção',
+
+      // ── Banners (estado da subscrição/consultas) ──
+      'banner.reeval.label': 'Reavaliação dos 6 meses',
+      'banner.reeval.titulo': 'A sua reavaliação está a ser preparada.',
+      'banner.reeval.desc': 'Passaram 6 meses desde o início do programa. Vamos comparar os novos resultados com o seu baseline e medir a evolução real da sua saúde.',
+      'banner.reeval.agendar-btn': 'Agendar reavaliação',
+      'banner.reeval.progresso-label': 'Progresso do programa',
+      'banner.reeval.recebe-label': 'O que vai receber',
+      'banner.reeval.recebe-titulo': 'Relatório comparativo · Baseline vs. 6 meses',
+      'banner.reeval.recebe-desc': 'Cada biomarcador comparado com o resultado inicial. Vai ver, em números, o impacto do programa na sua saúde.',
+      'banner.reeval.antes': 'ANTES',
+      'banner.reeval.depois': 'DEPOIS',
+      'banner.reeval.timeline.kit': 'Kit a caminho / recolha',
+      'banner.reeval.timeline.lab': 'Laboratório',
+      'banner.reeval.timeline.relatorio': 'Relatório comparativo',
+      'banner.results.titulo': 'Os seus resultados estão prontos!',
+      'banner.results.desc': 'O relatório médico, os biomarcadores e o plano nutricional estão disponíveis. Explore os resultados abaixo.',
+      'banner.convite.label': 'Próximo passo',
+      'banner.convite.titulo': 'Agende a sua consulta',
+      'banner.convite.sub': 'A equipa Lyvoo disponibilizou horários para a sua consulta.',
+      'banner.convite.btn': 'Agendar',
+      'banner.convite.titulo-reavaliacao': 'Agende a sua reavaliação dos 6 meses',
+      'banner.convite.titulo-nutricao': 'Agende a sua consulta de nutrição',
+      'banner.convite.sub-pendente': 'A equipa Lyvoo disponibilizou horários para a sua consulta. Escolha o que melhor lhe convém.',
+      'banner.convite.titulo-aguarda': 'Aguarda novas datas',
+      'banner.convite.sub-aguarda': 'O seu pedido foi enviado à equipa Lyvoo. Receberá uma notificação assim que novas datas estiverem disponíveis para agendar a sua consulta.',
+      'banner.reagendar.label': 'Nova data proposta',
+      'banner.reagendar.titulo': 'A sua equipa Lyvoo propôs uma nova data para a sua consulta',
+      'banner.reagendar.aceitar': 'Aceitar',
+      'banner.reagendar.sugerir': 'Sugerir outra data',
+      'banner.reagendar.sub': 'Nova proposta: {data}{hora}. Pode aceitar ou sugerir outra data.',
+      'banner.reagendar.sub-hora': ' às {hora}',
+      'banner.cancelada.label': 'Consulta cancelada',
+      'banner.cancelada.titulo': 'A sua consulta foi cancelada pela equipa Lyvoo',
+      'banner.cancelada.entendido': 'Entendido',
+      'banner.cancelada.sub': 'A consulta{data}{hora} foi cancelada.{motivo} A equipa irá enviar novas datas em breve.',
+      'banner.cancelada.sub-data': ' de {data}',
+      'banner.cancelada.sub-hora': ' às {hora}',
+      'banner.cancelada.sub-motivo': ' Motivo: {motivo}',
+      'banner.nutricta.label': 'Próximo passo',
+      'banner.nutricta.titulo': 'Agende a sua consulta de nutrição',
+      'banner.nutricta.desc': 'Os seus resultados estão prontos. Falta agendar a consulta com a sua nutricionista para traduzir os biomarcadores em ação concreta.',
+      'banner.nutricta.btn': 'Agendar',
+      'banner.novidades.titulo': 'Tem novidades no seu painel',
+      'banner.novidades.sub': 'O seu perfil foi atualizado. Explore as novidades abaixo.',
+      'banner.novidades.sub-resultados': 'Os seus resultados{data} estão disponíveis. Explore as novidades abaixo.',
+
       // ── Nomes de meses/dias (cobre consultas, banners de reagendamento,
       // convites, calendário de marcação) ──
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Fev', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Abr',
@@ -2262,6 +2358,100 @@
       'bell.empty': 'No new notifications',
       'topbar.logout-title': 'Sign out',
       'a11y.close': 'Close',
+
+      'painel.prog.titulo': 'Programme progress',
+      'painel.prog.ciclo': 'Cycle {n}',
+      'painel.prog.ver-plano': 'See full plan',
+      'painel.prog.passo.reavaliacao-iniciada': 'Reassessment started',
+      'painel.prog.passo.plano-adquirido': 'Plan purchased',
+      'painel.prog.passo.kit': 'Home collection kit',
+      'painel.prog.passo.lab': 'Lab analysis',
+      'painel.prog.passo.novos-resultados': 'New results and plan',
+      'painel.prog.passo.resultados': 'Results and plan',
+      'painel.prog.estado.concluido': 'Completed',
+      'painel.prog.estado.concluida': 'Completed',
+      'painel.prog.estado.kit-caminho': 'On its way · ~48h',
+      'painel.prog.estado.lab-curso': 'In progress · 1-5 days',
+      'painel.prog.estado.disponivel': 'Available',
+      'painel.prog.estado.pendente': 'Pending',
+      'painel.prog.estado.em-curso': 'In progress',
+      'painel.prog.estado.concluidas': 'Completed',
+      'painel.prog.estado.em-breve': 'Coming soon',
+      'painel.prog.check.avaliacao': 'Initial assessment',
+      'painel.prog.check.consultas': 'Initial appointments',
+      'painel.prog.check.plano': 'Personalised plan',
+      'painel.prog.check.reavaliacao': 'Reassessment',
+      'greeting.progresso-6-meses': '6-month progress',
+      'painel.score.titulo': 'Health score',
+      'painel.score.aguarda-analise': 'Awaiting analysis',
+      'painel.score.dist-empty': 'The distribution of your biomarkers appears here after your first analysis.',
+      'painel.score.ver-relatorio': 'See report',
+      'painel.feature.plano.desc': 'Personalised nutrition based on your biomarkers and goals.',
+      'painel.feature.plano.cta': 'See plan',
+      'painel.feature.supp.desc': 'Supplements prescribed to your specific needs.',
+      'painel.feature.supp.cta': 'See supplements',
+      'painel.feature.bio.desc': 'Track the evolution of your health indicators.',
+      'painel.feature.bio.cta': 'See biomarkers',
+      'painel.feature.consultas.desc': 'Manage and track all your medical appointments.',
+      'painel.feature.consultas.cta': 'See appointments',
+      'painel.feature.novo-badge': 'New',
+      'painel.bio.titulo': 'Featured biomarkers',
+      'painel.bio.ver-todos': 'See all',
+      'painel.bio.atual': 'Current',
+      'painel.bio.anterior': 'Previous',
+      'painel.bio.empty': 'Your featured biomarkers appear here after your first analysis.',
+      'painel.bio.tag.otimo': 'Optimal',
+      'painel.bio.tag.atencao': 'Attention',
+      'painel.bio.tag.critico': 'Critical',
+      'painel.score-class.excelente': 'Excellent',
+      'painel.score-class.bom': 'Good',
+      'painel.score-class.moderado': 'Moderate',
+      'painel.score-class.atencao': 'Attention',
+
+      'banner.reeval.label': '6-month reassessment',
+      'banner.reeval.titulo': 'Your reassessment is being prepared.',
+      'banner.reeval.desc': '6 months have passed since the start of your programme. We will compare the new results with your baseline and measure the real impact on your health.',
+      'banner.reeval.agendar-btn': 'Schedule reassessment',
+      'banner.reeval.progresso-label': 'Programme progress',
+      'banner.reeval.recebe-label': 'What you will get',
+      'banner.reeval.recebe-titulo': 'Comparative report · Baseline vs. 6 months',
+      'banner.reeval.recebe-desc': 'Every biomarker compared with your initial result. See, in numbers, the impact of the programme on your health.',
+      'banner.reeval.antes': 'BEFORE',
+      'banner.reeval.depois': 'AFTER',
+      'banner.reeval.timeline.kit': 'Kit on its way / collection',
+      'banner.reeval.timeline.lab': 'Laboratory',
+      'banner.reeval.timeline.relatorio': 'Comparative report',
+      'banner.results.titulo': 'Your results are ready!',
+      'banner.results.desc': 'The medical report, biomarkers and nutrition plan are available. Explore your results below.',
+      'banner.convite.label': 'Next step',
+      'banner.convite.titulo': 'Schedule your appointment',
+      'banner.convite.sub': 'The Lyvoo team has made time slots available for your appointment.',
+      'banner.convite.btn': 'Schedule',
+      'banner.convite.titulo-reavaliacao': 'Schedule your 6-month reassessment',
+      'banner.convite.titulo-nutricao': 'Schedule your nutrition appointment',
+      'banner.convite.sub-pendente': 'The Lyvoo team has made time slots available for your appointment. Choose whichever suits you best.',
+      'banner.convite.titulo-aguarda': 'Awaiting new dates',
+      'banner.convite.sub-aguarda': 'Your request has been sent to the Lyvoo team. You will be notified as soon as new dates are available to schedule your appointment.',
+      'banner.reagendar.label': 'New date proposed',
+      'banner.reagendar.titulo': 'Your Lyvoo team proposed a new date for your appointment',
+      'banner.reagendar.aceitar': 'Accept',
+      'banner.reagendar.sugerir': 'Suggest another date',
+      'banner.reagendar.sub': 'New proposal: {data}{hora}. You can accept or suggest another date.',
+      'banner.reagendar.sub-hora': ' at {hora}',
+      'banner.cancelada.label': 'Appointment cancelled',
+      'banner.cancelada.titulo': 'Your appointment was cancelled by the Lyvoo team',
+      'banner.cancelada.entendido': 'Got it',
+      'banner.cancelada.sub': 'The appointment{data}{hora} was cancelled.{motivo} The team will send new dates shortly.',
+      'banner.cancelada.sub-data': ' on {data}',
+      'banner.cancelada.sub-hora': ' at {hora}',
+      'banner.cancelada.sub-motivo': ' Reason: {motivo}',
+      'banner.nutricta.label': 'Next step',
+      'banner.nutricta.titulo': 'Schedule your nutrition appointment',
+      'banner.nutricta.desc': 'Your results are ready. You just need to schedule your appointment with your nutritionist to turn your biomarkers into concrete action.',
+      'banner.nutricta.btn': 'Schedule',
+      'banner.novidades.titulo': 'You have updates on your dashboard',
+      'banner.novidades.sub': 'Your profile has been updated. Explore the updates below.',
+      'banner.novidades.sub-resultados': 'Your results{data} are available. Explore the updates below.',
 
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Feb', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Apr',
       'mes.abrev.4': 'May', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Aug',
@@ -4798,7 +4988,7 @@
     if (!highlights.length) return;
     grid.innerHTML = highlights.map(r => {
       const tagCls = r.tag==='otimo'?'good':r.tag==='atencao'?'warn':'crit';
-      const tagLbl = r.tag==='otimo'?'Ótimo':r.tag==='atencao'?'Atenção':'Crítico';
+      const tagLbl = r.tag==='otimo'?t('painel.bio.tag.otimo'):r.tag==='atencao'?t('painel.bio.tag.atencao'):t('painel.bio.tag.critico');
       const deltaDir = r.delta && (r.delta.startsWith('-')||r.delta.startsWith('↓')) ? 'down' : 'up';
       return `<div class="bio-card">
         <div class="bio-top"><span class="bio-name">${r.nome}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span></div>
@@ -4817,7 +5007,7 @@
   }
 
   function scoreClassLabel(score) {
-    return score >= 85 ? 'Excelente' : score >= 70 ? 'Bom' : score >= 50 ? 'Moderado' : 'Atenção';
+    return score >= 85 ? t('painel.score-class.excelente') : score >= 70 ? t('painel.score-class.bom') : score >= 50 ? t('painel.score-class.moderado') : t('painel.score-class.atencao');
   }
 
   // ── Render: Secção Relatório médico ──────────────────────────────────
@@ -4852,11 +5042,12 @@
       if (valEl) relCountUp(valEl, score);
       const clsEl = document.getElementById('rel-classificacao');
       if (clsEl) {
-        clsEl.textContent = relatorio.classificacao || 'Bom';
-        const cls = relatorio.classificacao?.toLowerCase() || '';
-        clsEl.style.color = cls.includes('excelente') ? 'var(--green)'
-                          : cls.includes('bom')        ? 'var(--cyan)'
-                          : cls.includes('moder')      ? 'var(--amber)'
+        clsEl.textContent = relatorio.classificacao || t('painel.score-class.bom');
+        // Cor pela pontuação numérica (não por substring do texto, que deixou de
+        // ser fiável depois de classificacao passar a poder vir em EN).
+        clsEl.style.color = score >= 85 ? 'var(--green)'
+                          : score >= 70 ? 'var(--cyan)'
+                          : score >= 50 ? 'var(--amber)'
                           : 'var(--red)';
       }
 
@@ -4926,7 +5117,7 @@
   function renderScore(relatorio, resultados) {
     if (!relatorio?.score) return;
     const scoreVal = relatorio.score;
-    const cls = relatorio.classificacao || 'Bom';
+    const cls = relatorio.classificacao || t('painel.score-class.bom');
     const circumference = 351.9;
     const offset = circumference - (scoreVal / 100) * circumference;
     const ringEl = document.getElementById('hs-ring-fill');
@@ -5151,7 +5342,7 @@
           if (notifTs > vistoTs && banner) {
             if (d.estado >= 4 && sub) {
               const data = d.resultados?.dataAnalise ? ` · ${d.resultados.dataAnalise}` : '';
-              sub.textContent = `Os seus resultados${data} estão disponíveis. Explore as novidades abaixo.`;
+              sub.textContent = t('banner.novidades.sub-resultados', { data });
             }
             banner.style.display = 'flex';
             const marcarVisto = () => {
@@ -5218,9 +5409,8 @@
         if (conviteBanner) {
           const tipo = window._convite.tipo;
           document.getElementById('convite-banner-title').textContent =
-            tipo === 'reavaliacao' ? 'Agende a sua reavaliação dos 6 meses' : 'Agende a sua consulta de nutrição';
-          document.getElementById('convite-banner-sub').textContent =
-            'A equipa Lyvoo disponibilizou horários para a sua consulta. Escolha o que melhor lhe convém.';
+            tipo === 'reavaliacao' ? t('banner.convite.titulo-reavaliacao') : t('banner.convite.titulo-nutricao');
+          document.getElementById('convite-banner-sub').textContent = t('banner.convite.sub-pendente');
           const btn = document.getElementById('convite-banner-btn');
           btn.style.display = '';
           btn.onclick = (e) => { e.preventDefault(); abrirAgendamento(tipo); };
@@ -5232,9 +5422,8 @@
       if (window._convite?.estado === 'cancelado_cliente') {
         const conviteBanner = document.getElementById('convite-banner');
         if (conviteBanner) {
-          document.getElementById('convite-banner-title').textContent = 'Aguarda novas datas';
-          document.getElementById('convite-banner-sub').textContent =
-            'O seu pedido foi enviado à equipa Lyvoo. Receberá uma notificação assim que novas datas estiverem disponíveis para agendar a sua consulta.';
+          document.getElementById('convite-banner-title').textContent = t('banner.convite.titulo-aguarda');
+          document.getElementById('convite-banner-sub').textContent = t('banner.convite.sub-aguarda');
           document.getElementById('convite-banner-btn').style.display = 'none';
           conviteBanner.style.display = 'flex';
         }
@@ -5247,8 +5436,11 @@
           const ca = d.consultaCanceladaAdmin;
           const ed = ca.data ? new Date(ca.data + 'T00:00:00') : null;
           const dataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '';
-          document.getElementById('cancelada-banner-sub').textContent =
-            `A consulta${dataStr ? ' de ' + dataStr : ''}${ca.hora ? ' às ' + ca.hora : ''} foi cancelada.${ca.motivo ? ' Motivo: ' + ca.motivo : ''} A equipa irá enviar novas datas em breve.`;
+          document.getElementById('cancelada-banner-sub').textContent = t('banner.cancelada.sub', {
+            data: dataStr ? t('banner.cancelada.sub-data', { data: dataStr }) : '',
+            hora: ca.hora ? t('banner.cancelada.sub-hora', { hora: ca.hora }) : '',
+            motivo: ca.motivo ? t('banner.cancelada.sub-motivo', { motivo: ca.motivo }) : ''
+          });
           document.getElementById('cancelada-banner-ok-btn').onclick = async (e) => {
             e.preventDefault();
             banner.style.display = 'none';
@@ -5267,8 +5459,10 @@
           const esc = window._convite.escolha;
           const ed = esc.data ? new Date(esc.data + 'T00:00:00') : null;
           const dataStr = ed ? `${ed.getDate()} ${mesAbrev(ed.getMonth())} ${ed.getFullYear()}` : '-';
-          document.getElementById('reagendar-banner-sub').textContent =
-            `Nova proposta: ${dataStr}${esc.hora ? ' às ' + esc.hora : ''}. Pode aceitar ou sugerir outra data.`;
+          document.getElementById('reagendar-banner-sub').textContent = t('banner.reagendar.sub', {
+            data: dataStr,
+            hora: esc.hora ? t('banner.reagendar.sub-hora', { hora: esc.hora }) : ''
+          });
           banner.style.display = 'flex';
         }
       }
@@ -5284,7 +5478,7 @@
       if (cicloBadge) {
         const ciclo = d.cicloAtual || 1;
         if (reaval && ciclo > 1) {
-          cicloBadge.textContent = `Ciclo ${ciclo}`;
+          cicloBadge.textContent = t('painel.prog.ciclo', { n: ciclo });
           cicloBadge.style.display = 'inline-flex';
         } else {
           cicloBadge.style.display = 'none';
@@ -5303,15 +5497,15 @@
       const kitDone = subFase !== 'kit';
       const labDone = subFase === 'resultados';
       const passos = [
-        { titulo: reaval ? 'Reavaliação iniciada' : 'Plano adquirido', done: true,    ativo: false,                 descDone: 'Concluído' },
-        { titulo: 'Kit de colheita em casa',  done: kitDone, ativo: subFase === 'kit', descDone: 'Concluído',  descAtivo: 'A caminho · ~48h' },
-        { titulo: 'Análise laboratorial',     done: labDone, ativo: subFase === 'lab', descDone: 'Concluída',  descAtivo: 'Em curso · 1-5 dias' },
-        { titulo: reaval ? 'Novos resultados e plano' : 'Resultados e plano', done: labDone, ativo: false, descDone: 'Disponível', descAtivo: '' },
+        { titulo: reaval ? t('painel.prog.passo.reavaliacao-iniciada') : t('painel.prog.passo.plano-adquirido'), done: true, ativo: false, descDone: t('painel.prog.estado.concluido') },
+        { titulo: t('painel.prog.passo.kit'),  done: kitDone, ativo: subFase === 'kit', descDone: t('painel.prog.estado.concluido'),  descAtivo: t('painel.prog.estado.kit-caminho') },
+        { titulo: t('painel.prog.passo.lab'),  done: labDone, ativo: subFase === 'lab', descDone: t('painel.prog.estado.concluida'),  descAtivo: t('painel.prog.estado.lab-curso') },
+        { titulo: reaval ? t('painel.prog.passo.novos-resultados') : t('painel.prog.passo.resultados'), done: labDone, ativo: false, descDone: t('painel.prog.estado.disponivel'), descAtivo: '' },
       ];
       const checklist = document.getElementById('prog-checklist');
       if (checklist) checklist.innerHTML = passos.map(p => {
         const cls   = p.done ? 'done' : p.ativo ? 'prog' : 'todo';
-        const state = p.done ? p.descDone : p.ativo ? p.descAtivo : 'Pendente';
+        const state = p.done ? p.descDone : p.ativo ? p.descAtivo : t('painel.prog.estado.pendente');
         return `<div class="check-item"><div class="check-mark ${cls}">${p.done ? doneSvg : ''}</div><div class="check-body"><div class="check-title">${p.titulo}</div><div class="check-state"${p.ativo ? ' style="color:var(--cyan)"' : ''}>${state}</div></div></div>`;
       }).join('');
 
@@ -5345,7 +5539,7 @@
           if (el && !localStorage.getItem('lyvoo_seen_' + sec + '_e' + estadoNum) && !el.querySelector('.feature-new')) {
             const badge = document.createElement('span');
             badge.className = 'feature-new';
-            badge.textContent = 'Novo';
+            badge.textContent = t('painel.feature.novo-badge');
             el.appendChild(badge);
           }
         });
@@ -5372,9 +5566,9 @@
           // subEstado: 0 = kit a caminho/recolha (estado 5), 1 = laboratório (estado 6)
           const subEstado = estadoNum === 6 ? 1 : 0;
           const steps = [
-            { label: 'Kit a caminho / recolha', done: subEstado >= 1, active: subEstado === 0 },
-            { label: 'Laboratório',             done: false,          active: subEstado === 1 },
-            { label: 'Relatório comparativo',   done: false,          active: false },
+            { label: t('banner.reeval.timeline.kit'),      done: subEstado >= 1, active: subEstado === 0 },
+            { label: t('banner.reeval.timeline.lab'),      done: false,          active: subEstado === 1 },
+            { label: t('banner.reeval.timeline.relatorio'), done: false,          active: false },
           ];
           reevalTimeline.innerHTML = steps.map((s, i) => `
             <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;">
@@ -5391,7 +5585,7 @@
                     : ''}
               </div>
               <div style="font-size:11px;font-weight:${s.active?'700':'500'};color:${s.done||s.active?'var(--txt)':'var(--txt-3)'};text-align:center;line-height:1.3;">${s.label}</div>
-              ${s.active?'<div style="font-size:10px;color:var(--violet);font-weight:600;">Em curso</div>':''}
+              ${s.active?`<div style="font-size:10px;color:var(--violet);font-weight:600;">${t('painel.prog.estado.em-curso')}</div>`:''}
             </div>`).join('');
         }
       }
