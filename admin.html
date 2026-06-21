@@ -160,9 +160,6 @@
     .opcao-ou { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-3); margin-top:10px; width:24px; flex-shrink:0; text-align:center; }
     .opcao-ou--first { color:var(--cyan); }
     .opcao-input { flex:1; min-height:60px; }
-    .opcao-row > div { flex:1; min-width:0; }
-    .opcao-nota-input { min-height:48px; font-size:12.5px; color:var(--txt-2); border-style:dashed; }
-    .opcao-nota-input::placeholder { color:var(--txt-3); }
     .opcao-del { background:none; border:none; color:var(--txt-3); cursor:pointer; font-size:16px; padding:6px 4px; margin-top:4px; border-radius:6px; transition:all 0.15s; flex-shrink:0; }
     .opcao-del:hover { background:rgba(248,113,113,0.1); color:var(--red); }
 
@@ -1924,7 +1921,6 @@
     ).join('');
     // Suporte legado: se só existe r.desc (string), converter para array
     const opcoes = r.opcoes && r.opcoes.length ? r.opcoes : (r.desc ? [r.desc] : ['']);
-    const notas = r.notas || [];
     div.innerHTML = `
       <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
       <div class="form-row">
@@ -1940,20 +1936,17 @@
       <div class="form-field">
         <label class="form-label">Opções de refeição</label>
         <div class="opcoes-list">
-          ${opcoes.map((o, i) => buildOpcaoRow(o, i === 0, notas[i]||'')).join('')}
+          ${opcoes.map((o, i) => buildOpcaoRow(o, i === 0)).join('')}
         </div>
         <button type="button" class="btn-add-opcao" onclick="addOpcaoRow(this)">+ Ou isto</button>
       </div>`;
     container.appendChild(div);
   }
 
-  function buildOpcaoRow(val, isFirst, nota) {
+  function buildOpcaoRow(val, isFirst) {
     return `<div class="opcao-row">
       ${!isFirst ? '<span class="opcao-ou">ou</span>' : '<span class="opcao-ou opcao-ou--first">→</span>'}
-      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
-        <textarea class="form-textarea opcao-input" name="r-opcao" rows="2" placeholder="Ex: 2 ovos mexidos, 1 fatia de pão integral…">${val||''}</textarea>
-        <textarea class="form-textarea opcao-nota-input" name="r-opcao-nota" rows="2" placeholder="Observações de preparo desta opção (opcional) — ex: cozer os ovos em água a ferver durante 6 min para ficarem em ponto médio.">${nota||''}</textarea>
-      </div>
+      <textarea class="form-textarea opcao-input" name="r-opcao" rows="2" placeholder="Ex: 2 ovos mexidos, 1 fatia de pão integral…">${val||''}</textarea>
       ${!isFirst ? '<button type="button" class="opcao-del" onclick="this.closest(\'.opcao-row\').remove()" title="Remover">×</button>' : '<span class="opcao-del-placeholder"></span>'}
     </div>`;
   }
@@ -1961,7 +1954,7 @@
   window.addOpcaoRow = function(btn) {
     const list = btn.previousElementSibling;
     const isFirst = list.children.length === 0;
-    list.insertAdjacentHTML('beforeend', buildOpcaoRow('', false, ''));
+    list.insertAdjacentHTML('beforeend', buildOpcaoRow('', false));
     list.lastElementChild.querySelector('textarea').focus();
   };
 
@@ -2044,17 +2037,16 @@
   function collectRefeicaoData() {
     return [...document.getElementById('refeicoes-list').querySelectorAll('.card-editor')].map(card => {
       const rows = [...card.querySelectorAll('.opcao-row')];
-      const opcoes = [], notas = [];
+      const opcoes = [];
       rows.forEach(row => {
         const o = row.querySelector('[name=r-opcao]').value.trim();
         if (!o) return;
         opcoes.push(o);
-        notas.push(row.querySelector('[name=r-opcao-nota]').value.trim());
       });
       return {
         nome:  card.querySelector('[name=r-nome]').value,
         hora:  card.querySelector('[name=r-hora]').value.trim(),
-        opcoes, notas,
+        opcoes,
       };
     }).filter(r => r.opcoes.length || r.hora);
   }
