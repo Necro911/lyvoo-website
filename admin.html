@@ -329,10 +329,25 @@
     <span class="admin-badge">Admin</span>
   </div>
   <div class="hdr-right">
+    <button class="btn-ghost-sm" id="btn-open-inbox" style="position:relative;" onclick="openInbox()">
+      Caixa de entrada
+      <span id="inbox-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:var(--red);color:#fff;font-size:10.5px;font-weight:700;min-width:17px;height:17px;border-radius:999px;align-items:center;justify-content:center;padding:0 4px;">0</span>
+    </button>
     <span class="hdr-email" id="admin-email"></span>
     <button class="btn-ghost-sm" id="btn-logout">Sair</button>
   </div>
 </header>
+
+<div id="inbox-overlay" class="unsaved-modal-overlay" style="z-index:600;">
+  <div class="unsaved-modal" style="max-width:560px;width:92%;max-height:80vh;display:flex;flex-direction:column;">
+    <h3 style="margin:0 0 4px;">Caixa de entrada</h3>
+    <p style="font-size:12.5px;color:var(--txt-3);margin:0 0 14px;">Confirmações de consultas, pedidos de reagendamento e mensagens de clientes.</p>
+    <div id="inbox-list" style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:8px;">A carregar…</div>
+    <div class="save-bar" style="margin-top:14px;">
+      <button class="ef-btn" onclick="closeInbox()">Fechar</button>
+    </div>
+  </div>
+</div>
 
 <div id="loading-state">A verificar acesso…</div>
 <div id="access-denied" style="display:none"><h2>Acesso negado</h2><p>Esta área é exclusiva para administradores da Lyvoo.</p><a href="index.html" style="display:inline-block;margin-top:16px;color:var(--cyan);font-size:14px;">← Voltar ao site</a></div>
@@ -1076,11 +1091,150 @@
       _chatMeta = {};
       snap.forEach(d => { _chatMeta[d.id] = d.data(); });
       applyFilters();
+      updateInboxBadge();
     }, (err) => {
       _chatsMetaUnsub = null;
       console.error('Listener de chats falhou — verifique as Firestore Rules da coleção "chats":', err);
     });
   }
+
+  // ── Caixa de entrada: agrega em tempo real, entre TODOS os clientes (não
+  // depende da paginação de allUsers), tudo o que precisa de atenção do
+  // admin — confirmações/sugestões de consulta, pedidos de reagendamento e
+  // mensagens de chat não lidas. Sem isto, o admin só descobria estas coisas
+  // ao entrar manualmente em cada cliente.
+  let _inboxRespostas = [];
+  let _inboxCanceladas = [];
+  let _inboxRespUnsub = null;
+  let _inboxCancUnsub = null;
+  const _inboxNomeCache = {};
+
+  function initInboxListeners() {
+    if (_inboxRespUnsub && _inboxCancUnsub) return;
+    _inboxRespUnsub = onSnapshot(query(collection(db,'users'), where('respostaCliente.visto','==',false)), (snap) => {
+      _inboxRespostas = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+      updateInboxBadge();
+      if (document.getElementById('inbox-overlay').classList.contains('show')) renderInbox();
+    }, (err) => console.error('Listener de respostas de clientes falhou:', err));
+    _inboxCancUnsub = onSnapshot(query(collection(db,'users'), where('consultaCancelada.visto','==',false)), (snap) => {
+      _inboxCanceladas = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+      updateInboxBadge();
+      if (document.getElementById('inbox-overlay').classList.contains('show')) renderInbox();
+    }, (err) => console.error('Listener de cancelamentos de clientes falhou:', err));
+  }
+
+  function countUnreadChats() {
+    return Object.keys(_chatMeta).filter(uid => temChatNaoLido(uid)).length;
+  }
+
+  function updateInboxBadge() {
+    const total = _inboxRespostas.length + _inboxCanceladas.length + countUnreadChats();
+    const badge = document.getElementById('inbox-badge');
+    if (!badge) return;
+    badge.textContent = total > 99 ? '99+' : String(total);
+    badge.style.display = total ? 'flex' : 'none';
+  }
+
+  async function nomeDoCliente(uid) {
+    if (_inboxNomeCache[uid]) return _inboxNomeCache[uid];
+    const cached = allUsers.find(u => u.uid === uid);
+    if (cached) {
+      const nome = [cached.firstName,cached.lastName].filter(Boolean).join(' ') || cached.email?.split('@')[0] || uid;
+      _inboxNomeCache[uid] = nome;
+      return nome;
+    }
+    try {
+      const snap = await getDoc(doc(db,'users',uid));
+      const d = snap.exists() ? snap.data() : {};
+      const nome = [d.firstName,d.lastName].filter(Boolean).join(' ') || d.email?.split('@')[0] || uid;
+      _inboxNomeCache[uid] = nome;
+      return nome;
+    } catch(e) { return uid; }
+  }
+
+  function tsMillis(ts) {
+    if (!ts) return 0;
+    return ts.toDate ? ts.toDate().getTime() : new Date(ts).getTime();
+  }
+
+  async function renderInbox() {
+    const list = document.getElementById('inbox-list');
+    const items = [];
+
+    for (const u of _inboxRespostas) {
+      const rc = u.respostaCliente;
+      const tipoLbl = rc.tipo === 'sugestao' ? 'sugeriu uma nova data' : 'confirmou a consulta';
+      items.push({
+        ts: tsMillis(rc.em),
+        uid: u.uid,
+        icon: rc.tipo === 'sugestao' ? '↩' : '✓',
+        color: rc.tipo === 'sugestao' ? 'var(--amber)' : 'var(--green)',
+        texto: `${tipoLbl}${rc.data ? ` · ${fmtDate(rc.data)}${rc.hora ? ' às ' + rc.hora : ''}` : ''}`,
+        tab: 'consultas',
+        marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'respostaCliente.visto': true }),
+      });
+    }
+    for (const u of _inboxCanceladas) {
+      const cc = u.consultaCancelada;
+      items.push({
+        ts: tsMillis(cc.canceladoEm),
+        uid: u.uid,
+        icon: '⚠',
+        color: 'var(--red)',
+        texto: `cancelou a consulta${cc.data ? ` de ${fmtDate(cc.data)}${cc.hora ? ' às ' + cc.hora : ''}` : ''} — aguarda nova proposta`,
+        tab: 'consultas',
+        marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'consultaCancelada.visto': true }),
+      });
+    }
+    for (const uid of Object.keys(_chatMeta)) {
+      if (!temChatNaoLido(uid)) continue;
+      const meta = _chatMeta[uid];
+      items.push({
+        ts: tsMillis(meta.ultimaMensagemEm),
+        uid,
+        icon: '💬',
+        color: 'var(--cyan)',
+        texto: 'enviou uma nova mensagem no chat',
+        tab: 'chat',
+        marcarVisto: null, // já é marcado ao abrir o tab Chat (initAdminChat)
+      });
+    }
+
+    if (!items.length) {
+      list.innerHTML = '<div style="font-size:13px;color:var(--txt-3);text-align:center;padding:24px 0;">Sem novidades. ✓</div>';
+      return;
+    }
+
+    items.sort((a,b) => b.ts - a.ts);
+    const nomes = await Promise.all(items.map(it => nomeDoCliente(it.uid)));
+    list.innerHTML = items.map((it, i) => `
+      <div class="inbox-item" data-idx="${i}" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel-2);cursor:pointer;">
+        <span style="font-size:15px;color:${it.color};flex-shrink:0;">${it.icon}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13.5px;font-weight:600;">${nomes[i]}</div>
+          <div style="font-size:12.5px;color:var(--txt-2);margin-top:2px;">${it.texto}</div>
+        </div>
+      </div>`).join('');
+    list.querySelectorAll('.inbox-item').forEach(el => {
+      el.onclick = () => {
+        const it = items[+el.dataset.idx];
+        it.marcarVisto?.();
+        closeInbox();
+        openUser(it.uid).then(() => switchTab(it.tab));
+      };
+    });
+  }
+
+  window.openInbox = function() {
+    document.getElementById('inbox-overlay').classList.add('show');
+    renderInbox();
+  };
+  window.closeInbox = function() {
+    document.getElementById('inbox-overlay').classList.remove('show');
+  };
+  document.getElementById('inbox-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeInbox();
+  });
   let allWaitlist = [];
   let currentUID = null;
   let selectedEstado = 1;
@@ -2243,7 +2397,15 @@
         // email de resultados (guard do envio automático em saveGeral); o sino
         // do cliente usa agendamentoConvite.criadoEm para notificar o convite.
       });
-      await loadConvite(_conviteUid);
+      // Repor o calendário e a lista de horas para o estado inicial — o
+      // convite que acabou de ser enviado já foi guardado, não há motivo
+      // para continuar a mostrar os dias/horas selecionados.
+      _conviteSlots = [];
+      _calView = null;
+      renderConviteCal();
+      renderConviteSlotsList();
+      document.getElementById('convite-status').textContent = 'Convite pendente - o cliente ainda não escolheu data.';
+      document.getElementById('convite-link-box').style.display = 'none';
       msg.style.color = 'var(--green)';
       msg.textContent = '✓ Convite enviado ao cliente';
     } catch(e) {
@@ -3020,6 +3182,7 @@
     document.getElementById('admin-email').textContent = user.email;
     document.getElementById('main-layout').style.display = 'grid';
     initChatsMetaListener();
+    initInboxListeners();
     await loadUsers();
   });
 

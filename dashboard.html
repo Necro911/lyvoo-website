@@ -2233,7 +2233,7 @@
       'consultas.tag.agendada': 'Agendada',
       'consultas.medico-fallback': 'Videochamada',
       'consultas.entrar': 'Entrar',
-      'consultas.disponivel-hint': 'Disponível 5 min antes da consulta',
+      'consultas.disponivel-hint': 'Disponível 10 min antes da consulta',
       'consultas.detail.fallback-title': 'Consulta',
       'consultas.detail.data': 'Data',
       'consultas.detail.hora': 'Hora',
@@ -2241,7 +2241,9 @@
       'consultas.detail.estado': 'Estado',
       'consultas.detail.nutricionista-fallback': 'Nutricionista',
       'consultas.detail.entrar': 'Entrar na consulta',
-      'consultas.detail.hint-5min': 'O botão "Entrar na consulta" fica disponível 5 minutos antes da hora marcada.',
+      'consultas.detail.link': 'Link da consulta',
+      'consultas.detail.link-abrir': 'Abrir link',
+      'consultas.detail.link-hint': 'Este link estará disponível 10 min antes do início da consulta.',
       'consultas.detail.hint-link-pending': 'O link da videochamada será disponibilizado aqui antes da consulta.',
       'consultas.detail.cancelar': 'Cancelar consulta',
       'consultas.detail.contact-hint': 'Para alterar ou cancelar esta consulta, contacte hello@lyvoo.pt.',
@@ -2644,7 +2646,7 @@
       'consultas.tag.agendada': 'Scheduled',
       'consultas.medico-fallback': 'Video call',
       'consultas.entrar': 'Join',
-      'consultas.disponivel-hint': 'Available 5 min before the appointment',
+      'consultas.disponivel-hint': 'Available 10 min before the appointment',
       'consultas.detail.fallback-title': 'Appointment',
       'consultas.detail.data': 'Date',
       'consultas.detail.hora': 'Time',
@@ -2652,7 +2654,9 @@
       'consultas.detail.estado': 'Status',
       'consultas.detail.nutricionista-fallback': 'Nutritionist',
       'consultas.detail.entrar': 'Join appointment',
-      'consultas.detail.hint-5min': 'The "Join appointment" button becomes available 5 minutes before the scheduled time.',
+      'consultas.detail.link': 'Appointment link',
+      'consultas.detail.link-abrir': 'Open link',
+      'consultas.detail.link-hint': 'This link will be available 10 minutes before the appointment starts.',
       'consultas.detail.hint-link-pending': 'The video call link will be made available here before the appointment.',
       'consultas.detail.cancelar': 'Cancel appointment',
       'consultas.detail.contact-hint': 'To change or cancel this appointment, contact hello@lyvoo.pt.',
@@ -3359,12 +3363,19 @@
     if (c.hora) rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.hora')}</span><span class="cd-value">${c.hora}</span></div>`;
     rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.com')}</span><span class="cd-value">${c.medico || t('consultas.detail.nutricionista-fallback')}</span></div>`;
     rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.estado')}</span><span class="cd-value">${c.estado === 'confirmada' ? t('consultas.tag.confirmada') : t('consultas.tag.agendada')}</span></div>`;
+    if (c.link) {
+      const linkValue = podeEntrar(c)
+        ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" style="color:var(--cyan)">${t('consultas.detail.link-abrir')}</a>`
+        : '—';
+      rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.link')}</span><span class="cd-value">${linkValue}</span></div>`;
+    }
 
     let extra = '';
     if (c.link && podeEntrar(c)) {
       extra += `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="cd-enter-btn">${t('consultas.detail.entrar')} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`;
+      extra += `<div class="cd-note">${t('consultas.detail.link-hint')}</div>`;
     } else if (c.link) {
-      extra += `<div class="cd-note">${t('consultas.detail.hint-5min')}</div>`;
+      extra += `<div class="cd-note">${t('consultas.detail.link-hint')}</div>`;
     } else {
       extra += `<div class="cd-note">${t('consultas.detail.hint-link-pending')}</div>`;
     }
@@ -3392,7 +3403,7 @@
           // Pedir nova sugestão de datas ao admin: a margem antiga deixa de
           // ter efeito (podem entretanto existir horários ocupados por outros)
           const userUpdate = {
-            consultaCancelada: { tipo: c.tipo || null, data: c.data || null, hora: c.hora || null, canceladoEm: serverTimestamp() }
+            consultaCancelada: { tipo: c.tipo || null, data: c.data || null, hora: c.hora || null, canceladoEm: serverTimestamp(), visto: false }
           };
           if (c.tipo && window._convite?.tipo === c.tipo && window._convite?.estado === 'agendado') {
             userUpdate['agendamentoConvite.estado'] = 'cancelado_cliente';
@@ -5124,12 +5135,12 @@
   function normLink(link) {
     return /^https?:\/\//i.test(link) ? link : `https://${link}`;
   }
-  // O botão "Entrar" só fica ativo a partir de 5 min antes da hora marcada
+  // O link da consulta só fica disponível a partir de 10 min antes da hora marcada
   function podeEntrar(c) {
     if (!c.data || !c.hora) return true;
     const inicio = new Date(`${c.data}T${c.hora}:00`);
     if (isNaN(inicio.getTime())) return true;
-    return Date.now() >= inicio.getTime() - 5 * 60 * 1000;
+    return Date.now() >= inicio.getTime() - 10 * 60 * 1000;
   }
   function consultEmptyHtml() {
     return `<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">${t('sec.consultas.empty')}</div>`;
