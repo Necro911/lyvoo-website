@@ -1661,10 +1661,9 @@
     <div id="sec-consultas" class="sec-wrap" style="display:none">
       <div class="sec-header">
         <div><h2 class="sec-title" data-i18n="nav.consultas">Consultas</h2><p class="sec-sub" data-i18n="sec.consultas.sub">Próximas e passadas</p></div>
-        <a href="#" id="consultas-agendar-btn" class="sec-btn" onclick="abrirAgendamento('nutricao');return false;" data-i18n="sec.consultas.agendar">+ Agendar</a>
       </div>
       <div class="consult-list" id="consult-content">
-        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px"><span data-i18n="sec.consultas.empty">Sem consultas agendadas.</span> <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;" data-i18n="sec.consultas.empty-cta">Agende a sua consulta →</a></div>
+        <div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px" data-i18n="sec.consultas.empty">Sem consultas agendadas.</div>
       </div>
     </div>
 
@@ -1955,9 +1954,7 @@
       'sec.relatorio.notas-title': 'Notas clínicas da equipa Lyvoo',
       'sec.relatorio.empty': 'O seu relatório ainda não está disponível. Será notificado quando estiver pronto.',
       'sec.consultas.sub': 'Próximas e passadas',
-      'sec.consultas.agendar': '+ Agendar',
       'sec.consultas.empty': 'Sem consultas agendadas.',
-      'sec.consultas.empty-cta': 'Agende a sua consulta →',
       'sec.chat.sub': 'Converse diretamente com a equipa Lyvoo',
       'sec.chat.loading': 'A carregar mensagens…',
       'sec.chat.placeholder': 'Escreva uma mensagem...',
@@ -2375,9 +2372,7 @@
       'sec.relatorio.notas-title': 'Clinical notes from the Lyvoo team',
       'sec.relatorio.empty': 'Your report is not available yet. You will be notified once it is ready.',
       'sec.consultas.sub': 'Upcoming and past',
-      'sec.consultas.agendar': '+ Schedule',
       'sec.consultas.empty': 'No appointments scheduled.',
-      'sec.consultas.empty-cta': 'Schedule your appointment →',
       'sec.chat.sub': 'Chat directly with the Lyvoo team',
       'sec.chat.loading': 'Loading messages…',
       'sec.chat.placeholder': 'Write a message...',
@@ -5123,7 +5118,7 @@
     return Date.now() >= inicio.getTime() - 5 * 60 * 1000;
   }
   function consultEmptyHtml() {
-    return `<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">${t('sec.consultas.empty')} <a href="#" style="color:var(--cyan)" onclick="abrirAgendamento('nutricao');return false;">${t('sec.consultas.empty-cta')}</a></div>`;
+    return `<div style="padding:40px 0;text-align:center;color:var(--txt-3);font-size:14px">${t('sec.consultas.empty')}</div>`;
   }
 
   function renderConsultas(list) {
@@ -5134,8 +5129,6 @@
     window._consultasList = sorted;
     if (!sorted.length) {
       container.innerHTML = consultEmptyHtml();
-      const agendarBtn = document.getElementById('consultas-agendar-btn');
-      if (agendarBtn) agendarBtn.style.display = '';
       return;
     }
     container.innerHTML = sorted.map((c, idx) => {
@@ -5169,11 +5162,6 @@
         ${rightBlock}
       </div>`;
     }).join('');
-
-    // Esconde "+ Agendar" se já existe uma consulta agendada futura
-    const proximas  = sorted.filter(c => c.data && c.estado !== 'realizada' && new Date(c.data + 'T00:00:00') >= today).slice(0, 3);
-    const agendarBtn = document.getElementById('consultas-agendar-btn');
-    if (agendarBtn) agendarBtn.style.display = proximas.length ? 'none' : '';
   }
 
   // ── Render: Highlights biomarcadores no painel ────────────────────────
