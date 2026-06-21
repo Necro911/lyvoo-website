@@ -2169,6 +2169,31 @@
       'bio.detail.dir.dentro': 'dentro do intervalo ótimo',
       'bio.detail.note': 'O seu valor encontra-se <b style="color:var(--txt-2)">{dir}</b>. Acompanhe a evolução nas próximas análises com a equipa Lyvoo.',
 
+      // ── Plano alimentar: hero/donut/resumo do dia/hidratação/tags ──
+      'plano.hero.objectivo-label': 'Objectivo principal',
+      'plano.hero.distribuicao-label': 'Distribuição diária',
+      'plano.hero.macros-titulo': 'Macronutrientes recomendados',
+      'plano.donut.kcal-dia': 'kcal/dia',
+      'plano.legend.proteina': 'Proteína',
+      'plano.legend.gordura': 'Gordura',
+      'plano.legend.hidratos': 'Hidratos',
+      'plano.metrics.titulo': 'Resumo do dia',
+      'plano.metrics.exemplo': 'Exemplo',
+      'plano.metrics.exemplo-title': 'Valores ilustrativos — em breve com seguimento real',
+      'plano.metrics.hcs': 'HCs',
+      'plano.metrics.proteina': 'Proteína',
+      'plano.metrics.lipidos': 'Lípidos',
+      'plano.metrics.agua': 'Água',
+      'plano.hidratacao.titulo': 'Hidrate-se ao longo do dia',
+      'plano.hidratacao.meta': 'Meta diária: 2,5L de água',
+      'plano.hidratacao.de': 'de 2,5L',
+      'plano.tags.priorizar': '✓ Priorizar',
+      'plano.tags.reduzir': '✗ Reduzir',
+      'plano.observacoes': 'Observações',
+      'plano.macro.p': 'P',
+      'plano.macro.hc': 'HC',
+      'plano.macro.g': 'G',
+
       // ── Nomes de meses/dias (cobre consultas, banners de reagendamento,
       // convites, calendário de marcação) ──
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Fev', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Abr',
@@ -2540,6 +2565,30 @@
       'bio.detail.dir.abaixo': 'below the optimal range',
       'bio.detail.dir.dentro': 'within the optimal range',
       'bio.detail.note': 'Your value is <b style="color:var(--txt-2)">{dir}</b>. Track its evolution in upcoming analyses with the Lyvoo team.',
+
+      'plano.hero.objectivo-label': 'Main goal',
+      'plano.hero.distribuicao-label': 'Daily distribution',
+      'plano.hero.macros-titulo': 'Recommended macronutrients',
+      'plano.donut.kcal-dia': 'kcal/day',
+      'plano.legend.proteina': 'Protein',
+      'plano.legend.gordura': 'Fat',
+      'plano.legend.hidratos': 'Carbs',
+      'plano.metrics.titulo': 'Daily summary',
+      'plano.metrics.exemplo': 'Example',
+      'plano.metrics.exemplo-title': 'Illustrative values — real tracking coming soon',
+      'plano.metrics.hcs': 'Carbs',
+      'plano.metrics.proteina': 'Protein',
+      'plano.metrics.lipidos': 'Fat',
+      'plano.metrics.agua': 'Water',
+      'plano.hidratacao.titulo': 'Stay hydrated throughout the day',
+      'plano.hidratacao.meta': 'Daily goal: 2.5L of water',
+      'plano.hidratacao.de': 'of 2.5L',
+      'plano.tags.priorizar': '✓ Prioritise',
+      'plano.tags.reduzir': '✗ Reduce',
+      'plano.observacoes': 'Notes',
+      'plano.macro.p': 'P',
+      'plano.macro.hc': 'C',
+      'plano.macro.g': 'F',
 
       'mes.abrev.0': 'Jan', 'mes.abrev.1': 'Feb', 'mes.abrev.2': 'Mar', 'mes.abrev.3': 'Apr',
       'mes.abrev.4': 'May', 'mes.abrev.5': 'Jun', 'mes.abrev.6': 'Jul', 'mes.abrev.7': 'Aug',
@@ -4843,9 +4892,9 @@
         const insights = deriveMealInsights(r, planFocus);
         const tagsHtml = insights.length ? `<div class="meal-tags">${insights.map(t => `<span class="meal-tag" style="color:rgb(${t.rgba});background:rgba(${t.rgba},0.1);border-color:rgba(${t.rgba},0.28)">${t.label}</span>`).join('')}</div>` : '';
         const macrosHtml = (r.macros && (r.macros.p!=null||r.macros.c!=null||r.macros.f!=null)) ? `<div class="meal-macros">
-          ${r.macros.p!=null?`<span class="meal-macro">P <b>${r.macros.p}g</b></span>`:''}
-          ${r.macros.c!=null?`<span class="meal-macro">HC <b>${r.macros.c}g</b></span>`:''}
-          ${r.macros.f!=null?`<span class="meal-macro">G <b>${r.macros.f}g</b></span>`:''}
+          ${r.macros.p!=null?`<span class="meal-macro">${t('plano.macro.p')} <b>${r.macros.p}g</b></span>`:''}
+          ${r.macros.c!=null?`<span class="meal-macro">${t('plano.macro.hc')} <b>${r.macros.c}g</b></span>`:''}
+          ${r.macros.f!=null?`<span class="meal-macro">${t('plano.macro.g')} <b>${r.macros.f}g</b></span>`:''}
         </div>` : '';
         const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
 
@@ -4884,13 +4933,13 @@
         <div class="plano-donut" style="background:conic-gradient(var(--cyan) 0% ${a1}%, var(--violet) ${a1}% ${a2}%, var(--green) ${a2}% 100%)">
           <div class="plano-donut-center">
             <span class="plano-donut-kcal">${pa.kcal||'—'}</span>
-            <span class="plano-donut-label">kcal/dia</span>
+            <span class="plano-donut-label">${t('plano.donut.kcal-dia')}</span>
           </div>
         </div>
         <div class="plano-legend">
-          <div class="plano-legend-item"><span class="plano-legend-dot" style="background:var(--cyan)"></span>Proteína<b>${prot}%</b></div>
-          <div class="plano-legend-item"><span class="plano-legend-dot" style="background:var(--violet)"></span>Gordura<b>${gord}%</b></div>
-          <div class="plano-legend-item"><span class="plano-legend-dot" style="background:var(--green)"></span>Hidratos<b>${hidr}%</b></div>
+          <div class="plano-legend-item"><span class="plano-legend-dot" style="background:var(--cyan)"></span>${t('plano.legend.proteina')}<b>${prot}%</b></div>
+          <div class="plano-legend-item"><span class="plano-legend-dot" style="background:var(--violet)"></span>${t('plano.legend.gordura')}<b>${gord}%</b></div>
+          <div class="plano-legend-item"><span class="plano-legend-dot" style="background:var(--green)"></span>${t('plano.legend.hidratos')}<b>${hidr}%</b></div>
         </div>
       </div>` : '';
 
@@ -4898,10 +4947,10 @@
     const heroCard = (pa.objectivo || temMacros) ? `
       <div class="plano-hero">
         <div class="plano-hero-info">
-          ${pa.objectivo ? `<div class="plano-hero-label">Objectivo principal</div>
+          ${pa.objectivo ? `<div class="plano-hero-label">${t('plano.hero.objectivo-label')}</div>
           <div class="plano-hero-title">${pa.objectivo}</div>
-          ${pa.objectivoDesc ? `<div class="plano-hero-desc">${pa.objectivoDesc}</div>` : ''}` : `<div class="plano-hero-label">Distribuição diária</div>
-          <div class="plano-hero-title">Macronutrientes recomendados</div>`}
+          ${pa.objectivoDesc ? `<div class="plano-hero-desc">${pa.objectivoDesc}</div>` : ''}` : `<div class="plano-hero-label">${t('plano.hero.distribuicao-label')}</div>
+          <div class="plano-hero-title">${t('plano.hero.macros-titulo')}</div>`}
         </div>
         ${donut}
       </div>` : '';
@@ -4922,14 +4971,14 @@
     const metricsCard = `
       <div class="plano-metrics">
         <div class="plano-metrics-head">
-          <span class="plano-metrics-title">Resumo do dia</span>
-          <span class="demo-pill" title="Valores ilustrativos — em breve com seguimento real">Exemplo</span>
+          <span class="plano-metrics-title">${t('plano.metrics.titulo')}</span>
+          <span class="demo-pill" title="${t('plano.metrics.exemplo-title')}">${t('plano.metrics.exemplo')}</span>
         </div>
         <div class="metric-grid">
-          ${_mTile('251,146,60', _icoHCs, (hidrG || '—'), 'g', 'HCs')}
-          ${_mTile('74,222,128', _icoProt, (protG || '—'), 'g', 'Proteína')}
-          ${_mTile('250,204,21', _icoLip, (gordG || '—'), 'g', 'Lípidos')}
-          ${_mTile('61,217,232', _icoWater, (aguaL || '—'), 'l', 'Água')}
+          ${_mTile('251,146,60', _icoHCs, (hidrG || '—'), 'g', t('plano.metrics.hcs'))}
+          ${_mTile('74,222,128', _icoProt, (protG || '—'), 'g', t('plano.metrics.proteina'))}
+          ${_mTile('250,204,21', _icoLip, (gordG || '—'), 'g', t('plano.metrics.lipidos'))}
+          ${_mTile('61,217,232', _icoWater, (aguaL || '—'), 'l', t('plano.metrics.agua'))}
         </div>
       </div>`;
 
@@ -4939,20 +4988,20 @@
       <div class="hydration-card">
         <div class="hydration-bottle"><span class="hydration-bottle-cap"></span><span class="hydration-fill" data-fill="48"></span></div>
         <div class="hydration-body">
-          <div class="hydration-title">Hidrate-se ao longo do dia</div>
-          <div class="hydration-sub">Meta diária: 2,5L de água <span class="demo-pill" style="margin-left:6px">Exemplo</span></div>
+          <div class="hydration-title">${t('plano.hidratacao.titulo')}</div>
+          <div class="hydration-sub">${t('plano.hidratacao.meta')} <span class="demo-pill" style="margin-left:6px">${t('plano.metrics.exemplo')}</span></div>
           <div class="hydration-bar"><span data-fill="48"></span></div>
         </div>
-        <div class="hydration-val"><b>1,2L</b><span>de 2,5L</span></div>
+        <div class="hydration-val"><b>1,2L</b><span>${t('plano.hidratacao.de')}</span></div>
       </div>` : '';
 
     const tags = (prTags || rdTags) ? `
       <div class="plano-tags-grid">
-        ${prTags ? `<div class="plano-tag-card plano-tag-card--good"><div class="sec-list-title" style="color:var(--green)">✓ Priorizar</div><div class="sec-tags">${prTags}</div></div>` : ''}
-        ${rdTags ? `<div class="plano-tag-card plano-tag-card--bad"><div class="sec-list-title" style="color:var(--red)">✗ Reduzir</div><div class="sec-tags">${rdTags}</div></div>` : ''}
+        ${prTags ? `<div class="plano-tag-card plano-tag-card--good"><div class="sec-list-title" style="color:var(--green)">${t('plano.tags.priorizar')}</div><div class="sec-tags">${prTags}</div></div>` : ''}
+        ${rdTags ? `<div class="plano-tag-card plano-tag-card--bad"><div class="sec-list-title" style="color:var(--red)">${t('plano.tags.reduzir')}</div><div class="sec-tags">${rdTags}</div></div>` : ''}
       </div>` : '';
 
-    const obsCard = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">Observações</div><div class="plano-note">${pa.obs}</div></div>` : '';
+    const obsCard = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">${t('plano.observacoes')}</div><div class="plano-note">${pa.obs}</div></div>` : '';
 
     container.innerHTML = `
       ${heroRow}
