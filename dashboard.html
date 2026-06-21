@@ -698,6 +698,10 @@
     .greeting p { font-size: 14px; color: var(--txt-2); }
 
     .topbar-right { display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+    .lang-toggle { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+    .lang-toggle button { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 9px; background: none; border: none; color: var(--txt-3); cursor: pointer; transition: color 0.2s, background 0.2s; font-family: inherit; }
+    .lang-toggle button.active { background: rgba(255,255,255,0.08); color: var(--txt); }
+    .lang-toggle button:hover:not(.active) { color: var(--txt-2); }
     .bell { position: relative; color: var(--txt-2); cursor: pointer; transition: color 0.2s; }
     .bell:hover { color: var(--txt); }
     .bell .dot { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg); transition: opacity 0.3s; }
@@ -1261,9 +1265,13 @@
       <div class="greeting">
         <h1 id="greeting">Olá</h1>
         <span id="pageTitle" style="display:none"></span>
-        <p>Acompanhe a sua saúde. Melhore o seu futuro.</p>
+        <p data-i18n="greeting.subtitle">Acompanhe a sua saúde. Melhore o seu futuro.</p>
       </div>
       <div class="topbar-right">
+        <div class="lang-toggle" id="lang-toggle" aria-label="Idioma / Language">
+          <button type="button" data-lang="pt" onclick="setLang('pt')">PT</button>
+          <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
+        </div>
         <div class="bell" id="bell-btn" onclick="toggleBellPopover()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="dot" id="bell-dot" style="display:none"></span>
@@ -1841,6 +1849,76 @@
   import { onAuthStateChanged, signOut, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { doc, getDoc, setDoc, updateDoc, serverTimestamp, collection, getDocs, addDoc, orderBy, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
   import { auth, db } from './lyvoo-firebase.js';
+
+  // ══════════════════════════════════════════════════════════════════════
+  // i18n — dicionário in-place PT/EN (Fase 1: scaffolding).
+  // Um só ficheiro: o chrome da UI traduz-se por t() e [data-i18n]; o
+  // conteúdo clínico (descrições de refeições, objetivo, relatório) NÃO é
+  // traduzido — fica na língua escrita pelo nutricionista.
+  // Idioma guardado no perfil Firestore (campo `lang`); resolução inicial
+  // local: localStorage → navigator.language → 'pt'.
+  // ══════════════════════════════════════════════════════════════════════
+  const I18N = {
+    pt: {
+      'greeting.subtitle': 'Acompanhe a sua saúde. Melhore o seu futuro.',
+    },
+    en: {
+      'greeting.subtitle': 'Track your health. Improve your future.',
+    },
+  };
+  let _lang = 'pt';
+  let _langSynced = false; // true após sincronizar o idioma do perfil (1.ª carga)
+
+  // t(key, vars?): tradução no idioma ativo, fallback en→pt→própria chave.
+  // vars opcional para interpolar {nome} → valor.
+  function t(key, vars) {
+    let s = (I18N[_lang] && I18N[_lang][key]) ?? I18N.pt[key] ?? key;
+    if (vars) for (const k in vars) s = s.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
+    return s;
+  }
+  window.t = t;
+
+  // Preenche os nós marcados com as chaves do dicionário.
+  function applyStaticI18n(root = document) {
+    root.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.getAttribute('data-i18n')); });
+    root.querySelectorAll('[data-i18n-ph]').forEach(el => { el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph'))); });
+    root.querySelectorAll('[data-i18n-title]').forEach(el => { el.setAttribute('title', t(el.getAttribute('data-i18n-title'))); });
+  }
+
+  // Aplica visualmente um idioma (sem persistir).
+  function applyLang(lang) {
+    _lang = (lang === 'en') ? 'en' : 'pt';
+    document.documentElement.lang = (_lang === 'en') ? 'en' : 'pt-PT';
+    document.querySelectorAll('.lang-toggle [data-lang]').forEach(b =>
+      b.classList.toggle('active', b.getAttribute('data-lang') === _lang));
+    applyStaticI18n();
+  }
+
+  // Resolução inicial síncrona (antes de o perfil Firestore carregar).
+  function initLang() {
+    let lang = null;
+    try { lang = localStorage.getItem('lyvoo_lang'); } catch (e) {}
+    if (lang !== 'en' && lang !== 'pt') {
+      lang = (navigator.language || 'pt').toLowerCase().startsWith('en') ? 'en' : 'pt';
+    }
+    applyLang(lang);
+  }
+
+  // Troca de idioma pelo utilizador: aplica, persiste (localStorage + perfil
+  // Firestore) e volta a renderizar as secções dinâmicas no novo idioma.
+  window.setLang = function (lang) {
+    lang = (lang === 'en') ? 'en' : 'pt';
+    if (lang === _lang) return;
+    applyLang(lang);
+    try { localStorage.setItem('lyvoo_lang', lang); } catch (e) {}
+    const u = auth.currentUser;
+    if (u) {
+      updateDoc(doc(db, 'users', u.uid), { lang }).catch(() => {});
+      carregarDados(u);
+    }
+  };
+
+  initLang();
 
   // ── Chat com a equipa Lyvoo ──────────────────────────────────────────
   function escapeHtml(str) {
@@ -4474,6 +4552,16 @@
         window._planoNome = nome;
         window._convite = d.agendamentoConvite || null;
         window._userData = d;
+        // Idioma guardado no perfil: aplicar só na 1.ª carga, antes dos
+        // renders abaixo (para usarem o idioma certo). Cargas seguintes não
+        // revertem a escolha em sessão (ex.: logo após setLang()).
+        if (!_langSynced) {
+          _langSynced = true;
+          if ((d.lang === 'en' || d.lang === 'pt') && d.lang !== _lang) {
+            applyLang(d.lang);
+            try { localStorage.setItem('lyvoo_lang', d.lang); } catch (e) {}
+          }
+        }
         _vistoNotifTs = tsToMs(d.vistoNotificacoesEm);
         _vistoChatTs  = tsToMs(d.vistoChatEm);
         atualizarStoreUI();
