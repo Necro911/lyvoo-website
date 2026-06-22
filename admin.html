@@ -2723,6 +2723,15 @@
     if (u?.kitDevolvido && u.kitDevolvido.visto === false && selectedEstado !== 2 && selectedEstado !== 5) {
       data['kitDevolvido.visto'] = true;
     }
+    // Se o admin está a (re)entrar na fase de kit (estado 2 ou 5) vindo de um
+    // estado diferente — manualmente, sem passar pelo botão "Iniciar
+    // reavaliação" — limpar kitDevolvido. Sem isto, uma confirmação antiga
+    // (mesmo cicloAtual, já que este caminho não o incrementa) continua a
+    // bater no `kitDevolvido.ciclo === cicloAtual` da dashboard e o cliente
+    // vê "Obrigado, já confirmou" em vez do formulário para o novo kit.
+    if ((selectedEstado === 2 || selectedEstado === 5) && estadoAnterior !== selectedEstado) {
+      data.kitDevolvido = null;
+    }
     await saveDoc(data, 'msg-geral');
     refreshStats(); // estado pode ter mudado → atualizar contadores
 
