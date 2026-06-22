@@ -1532,13 +1532,23 @@
       if (reevalBox) {
         reevalBox.style.display = 'flex';
         const cicloAtual  = u?.cicloAtual || 1;
-        const proximoCiclo = cicloAtual + 1;
         const title = reevalBox.querySelector('.notify-box-title');
         const sub   = document.getElementById('reeval-box-sub');
         const btn   = document.getElementById('btn-reeval');
-        if (title) title.textContent = `Reavaliação - iniciar ciclo ${proximoCiclo}?`;
-        if (sub) sub.textContent = `Os resultados do ciclo ${cicloAtual} são arquivados no histórico e o cliente avança para o ciclo ${proximoCiclo} (estado 5, novo kit a caminho). Mantém o acesso aos resultados atuais até chegarem os novos.`;
-        if (btn) btn.textContent = `🔄 Iniciar ciclo ${proximoCiclo}`;
+        if (n === 7) {
+          // Estado 7 = fim do ano pago. Isto É a renovação anual: novo
+          // ciclo, +1 ano de validade, novo baseline (estado 2).
+          const proximoCiclo = cicloAtual + 1;
+          if (title) title.textContent = `Renovação anual - iniciar ciclo ${proximoCiclo}?`;
+          if (sub) sub.textContent = `Os resultados do ciclo ${cicloAtual} são arquivados no histórico. O cliente avança para o ciclo ${proximoCiclo} (estado 2, novo kit/baseline) e a validade do plano estende-se +1 ano.`;
+          if (btn) btn.textContent = `🔄 Iniciar ciclo ${proximoCiclo} (renovação)`;
+        } else {
+          // Estado 4 = meio do ano já pago. A reavaliação dos 6 meses NÃO é
+          // uma renovação — mesmo ciclo, mesma validade do plano.
+          if (title) title.textContent = `Reavaliação dos 6 meses - avançar?`;
+          if (sub) sub.textContent = `Os resultados atuais são arquivados no histórico (comparação no relatório). O cliente avança para o estado 5 (novo kit a caminho), dentro do mesmo ciclo ${cicloAtual} — sem alterar a validade do plano.`;
+          if (btn) btn.textContent = `🔄 Avançar para reavaliação`;
+        }
       }
       const btn = document.getElementById('btn-notify');
       const sub = box.querySelector('.notify-box-sub');
@@ -3018,15 +3028,27 @@
     if (e.target === e.currentTarget) closeClinicalConfirm();
   });
 
-  // ── Reavaliação: iniciar novo ciclo ──────────────────────────────────
+  // ── Reavaliação: avançar dentro do ciclo OU renovar o ciclo anual ───────
+  // Mesmo botão, dois comportamentos distintos segundo o estado de origem:
+  //  - estado 4 → 5: reavaliação dos 6 meses, incluída no plano anual já
+  //    pago. NÃO toca em cicloAtual/planoValidoAte.
+  //  - estado 7 → 2: fim do ano pago — é aqui que a renovação acontece de
+  //    facto (novo baseline, +1 ano de validade, cicloAtual++).
   window.iniciarReavaliacao = async function() {
     if (!currentUID) return;
     const u = allUsers.find(x => x.uid === currentUID);
     if (!u) return;
     const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || '';
-    const primeiro = nome.split(' ')[0] || 'Cliente';
 
-    if (!confirm(`Iniciar reavaliação (novo ciclo de 6 meses) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico e o cliente passa ao estado 5 (novo kit a caminho). O cliente mantém o acesso aos resultados atuais até chegarem os novos.`)) return;
+    const ehRenovacaoAnual = u.estado === 7;
+    const destino = ehRenovacaoAnual ? 2 : 5;
+    const cicloAtual = u.cicloAtual || 1;
+    const novoCiclo = ehRenovacaoAnual ? cicloAtual + 1 : cicloAtual;
+
+    const confirmMsg = ehRenovacaoAnual
+      ? `Iniciar renovação anual (ciclo ${novoCiclo}) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico e o cliente passa ao estado 2 (novo kit/baseline). A validade do plano estende-se +1 ano.`
+      : `Avançar para a reavaliação dos 6 meses (estado 5) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico (para comparação no relatório). Mantém-se no ciclo ${cicloAtual} — a validade do plano não é alterada.`;
+    if (!confirm(confirmMsg)) return;
 
     const btn = document.getElementById('btn-reeval');
     if (btn) { btn.disabled = true; btn.textContent = 'A processar…'; }
@@ -3038,15 +3060,15 @@
           dataAnalise: u.resultados.dataAnalise || '',
           biomarcadores: u.resultados.biomarcadores,
           criadoEm: serverTimestamp(),
-          ciclo: 'reavaliacao',
+          ciclo: ehRenovacaoAnual ? 'renovacao' : 'reavaliacao',
         });
       }
 
-      // 1.5 Resolver as consultas pendentes do ciclo que termina. Sem isto, o
-      //     documento em agendamentosNutri continua com estado 'agendada'/
-      //     'confirmada' e a dashboard do cliente — que combina d.consultas com
-      //     todos os agendamentosNutri não cancelados — continuaria a mostrar a
-      //     consulta do ciclo anterior como ativa no novo ciclo. Passam a
+      // 1.5 Resolver as consultas pendentes do ciclo/fase que termina. Sem
+      //     isto, o documento em agendamentosNutri continua com estado
+      //     'agendada'/'confirmada' e a dashboard do cliente — que combina
+      //     d.consultas com todos os agendamentosNutri não cancelados —
+      //     continuaria a mostrar a consulta anterior como ativa. Passam a
       //     'realizada' para ficarem arquivadas no histórico do cliente.
       try {
         const agSnap = await getDocs(query(collection(db,'agendamentosNutri'), where('uid','==',currentUID)));
@@ -3056,7 +3078,7 @@
             await updateDoc(doc(db,'agendamentosNutri',dSnap.id), {
               estado: 'realizada',
               resolvidoEm: serverTimestamp(),
-              resolvidoPor: 'reavaliacao',
+              resolvidoPor: ehRenovacaoAnual ? 'renovacao' : 'reavaliacao',
             });
           }
         }
@@ -3064,47 +3086,56 @@
         console.error('Erro ao resolver consultas do ciclo anterior:', e);
       }
 
-      // 2. Avançar para estado 5 (reavaliação · kit a caminho). Os resultados
-      //    atuais mantêm-se visíveis para o cliente até chegarem os novos.
-      //    Renovação implica novo ano de plano: avança ciclo e validade.
-      const novoCiclo = (u.cicloAtual || 1) + 1;
-      const novaValidade = new Date();
-      novaValidade.setFullYear(novaValidade.getFullYear() + 1);
-      await updateDoc(doc(db, 'users', currentUID), {
-        estado:      5,
-        estadoLabel: ESTADO_LABELS[5],
+      // 2. Avançar de estado. Os resultados atuais mantêm-se visíveis para o
+      //    cliente até chegarem os novos.
+      const payload = {
+        estado:      destino,
+        estadoLabel: ESTADO_LABELS[destino],
         notificadoEm: null,
         notificadoPor: null,
         atualizadoEm: serverTimestamp(),
         cicloReavaliacao: serverTimestamp(),
-        cicloAtual: novoCiclo,
-        planoValidoAte: novaValidade.toISOString(),
-        // limpar notificações de consultas do ciclo anterior
+        // limpar notificações de consultas do ciclo/fase anterior
         consultaConfirmada: null,
         consultaAlterada: null,
         consultaCancelada: null,
         consultaCanceladaAdmin: null,
         agendamentoConvite: null,
-        // limpar confirmação de kit do ciclo anterior — o novo kit (estado 5)
-        // exige nova confirmação do cliente
+        // limpar confirmação de kit do ciclo anterior — o novo kit exige
+        // nova confirmação do cliente
         kitDevolvido: null,
-      });
+      };
+      let novaValidadeIso = u.planoValidoAte;
+      if (ehRenovacaoAnual) {
+        const novaValidade = new Date();
+        novaValidade.setFullYear(novaValidade.getFullYear() + 1);
+        novaValidadeIso = novaValidade.toISOString();
+        payload.cicloAtual = novoCiclo;
+        payload.planoValidoAte = novaValidadeIso;
+      }
+      await updateDoc(doc(db, 'users', currentUID), payload);
 
       // 3. Atualizar cache local
       const idx = allUsers.findIndex(x => x.uid === currentUID);
       if (idx !== -1) {
-        allUsers[idx] = { ...allUsers[idx], estado: 5, estadoLabel: ESTADO_LABELS[5], notificadoEm: null, cicloAtual: novoCiclo, planoValidoAte: novaValidade.toISOString() };
+        allUsers[idx] = {
+          ...allUsers[idx],
+          estado: destino, estadoLabel: ESTADO_LABELS[destino], notificadoEm: null,
+          ...(ehRenovacaoAnual ? { cicloAtual: novoCiclo, planoValidoAte: novaValidadeIso } : {}),
+        };
       }
-      selectEstado(5);
+      selectEstado(destino);
       document.getElementById('reeval-box').style.display = 'none';
 
-      showMsg('msg-geral', '✓ Reavaliação iniciada · Resultados anteriores arquivados no histórico', false);
+      showMsg('msg-geral', ehRenovacaoAnual
+        ? '✓ Renovação anual iniciada · Resultados anteriores arquivados no histórico'
+        : '✓ Reavaliação dos 6 meses iniciada · Resultados anteriores arquivados no histórico', false);
       applyFilters();
       refreshStats();
 
     } catch(e) {
       console.error(e);
-      if (btn) { btn.disabled = false; btn.textContent = '🔄 Iniciar novo ciclo'; }
+      if (btn) { btn.disabled = false; btn.textContent = ehRenovacaoAnual ? '🔄 Iniciar ciclo (renovação)' : '🔄 Avançar para reavaliação'; }
       showMsg('msg-geral', 'Erro: ' + e.message, true);
     }
   };
