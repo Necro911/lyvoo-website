@@ -1636,7 +1636,7 @@
         <span class="grad-text">Saúde preventiva</span>
       </h1>
       <div class="hero-subhead fade fade-d2">
-        Transformamos análises em decisões.<br/>Sem sair de casa.
+        Construa o seu histórico de saúde.<br/>Ano após ano.
       </div>
 
       <div class="hero-actions fade fade-d3">
@@ -1654,7 +1654,7 @@
         <div class="proof-divider"></div>
         <div class="proof-item">
           <span class="proof-num grad-text">6 meses</span>
-          <span class="proof-label">Reavaliação real</span>
+          <span class="proof-label">Reavaliação bianual</span>
         </div>
         <div class="proof-divider"></div>
         <div class="proof-item">
@@ -2004,8 +2004,8 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
         </div>
         <div class="cmp-solution">
-          <p class="cmp-solution-title">Reavaliação contínua. Evolução medida.</p>
-          <p class="cmp-solution-sub">Reavaliações a cada 6 meses. O plano adapta-se à sua evolução real ao longo do tempo.</p>
+          <p class="cmp-solution-title">O seu histórico de saúde. Ano após ano.</p>
+          <p class="cmp-solution-sub">Cada avaliação é comparada com as anteriores. Após 3 anos, tem um registo de 6 avaliações comparáveis. Esse histórico não existe em mais lado nenhum.</p>
         </div>
       </div>
 
@@ -2580,6 +2580,121 @@
         </div><!-- app-phone-3d -->
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── ACOMPANHAMENTO LONGITUDINAL (renovação anual) ── -->
+<section class="step-layer layer-dark yr-section" id="longitudinal">
+  <style>
+    .yr-section { position: relative; overflow: hidden; }
+    .yr-section .yr-glow-a { position: absolute; top: -10%; right: -8%; width: 46%; height: 60%; background: radial-gradient(circle, rgba(61,217,232,0.10) 0%, transparent 68%); pointer-events: none; }
+    .yr-section .yr-glow-b { position: absolute; bottom: -12%; left: -10%; width: 50%; height: 60%; background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 68%); pointer-events: none; }
+    .yr-section .container { position: relative; z-index: 1; }
+
+    .yr-header { text-align: center; max-width: 780px; margin: 0 auto 60px; }
+    .yr-header .label { color: var(--cyan); border-color: rgba(61,217,232,0.25); }
+    .yr-h { font-size: clamp(30px, 4.3vw, 56px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; color: #fff; margin: 14px 0 18px; }
+    .yr-sub { font-size: clamp(15px, 1.7vw, 18px); color: rgba(255,255,255,0.6); line-height: 1.72; max-width: 640px; margin: 0 auto; }
+
+    /* ── Timeline vertical ── */
+    .yr-timeline { position: relative; max-width: 720px; margin: 0 auto; }
+    .yr-spine { position: absolute; left: 27px; top: 28px; bottom: 28px; width: 2px; background: linear-gradient(180deg, rgba(61,217,232,0.55) 0%, rgba(139,92,246,0.45) 55%, rgba(139,92,246,0.12) 100%); z-index: 0; }
+    .yr-item { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 26px; padding-bottom: 38px; }
+    .yr-item:last-child { padding-bottom: 0; }
+    .yr-rail { position: relative; }
+    .yr-dot {
+      position: relative; z-index: 2; width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 850; letter-spacing: -0.03em; color: #fff;
+      background: radial-gradient(circle at 50% 38%, rgba(61,217,232,0.24) 0%, #0A151C 72%);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 0 0 6px rgba(6,15,22,0.6), inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 26px rgba(61,217,232,0.10);
+    }
+    .yr-item:nth-child(3) .yr-dot { background: radial-gradient(circle at 50% 38%, rgba(139,92,246,0.26) 0%, #0A151C 72%); box-shadow: 0 0 0 6px rgba(6,15,22,0.6), inset 0 1px 0 rgba(255,255,255,0.12), 0 10px 26px rgba(139,92,246,0.12); }
+    .yr-card {
+      background: linear-gradient(165deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 100%);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 22px 24px;
+      transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    }
+    .yr-card:hover { border-color: rgba(61,217,232,0.28); transform: translateY(-3px); background: linear-gradient(165deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%); }
+    .yr-item:nth-child(3) .yr-card:hover { border-color: rgba(139,92,246,0.3); }
+    .yr-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; flex-wrap: wrap; }
+    .yr-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); }
+    .yr-item:nth-child(3) .yr-eyebrow { color: var(--violet); }
+    .yr-chip { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: rgba(255,255,255,0.62); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 3px 10px; }
+    .yr-title { font-size: clamp(18px, 2.1vw, 22px); font-weight: 800; letter-spacing: -0.03em; color: #fff; margin-bottom: 6px; line-height: 1.25; }
+    .yr-desc { font-size: 14.5px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+    /* ── Remate de impacto ── */
+    .yr-impact { max-width: 720px; margin: 60px auto 0; text-align: center; padding-top: 44px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .yr-impact-line { font-size: clamp(15px, 1.7vw, 18px); font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 14px; }
+    .yr-impact-punch { font-size: clamp(24px, 3.4vw, 40px); font-weight: 850; letter-spacing: -0.04em; line-height: 1.18; color: #fff; }
+
+    @media (max-width: 560px) {
+      .yr-spine { left: 23px; }
+      .yr-item { grid-template-columns: 48px 1fr; gap: 18px; }
+      .yr-dot { width: 48px; height: 48px; font-size: 13.5px; }
+      .yr-card { padding: 18px 18px; }
+    }
+  </style>
+
+  <div class="yr-glow-a"></div>
+  <div class="yr-glow-b"></div>
+
+  <div class="container">
+
+    <div class="yr-header fade">
+      <span class="label">Acompanhamento longitudinal</span>
+      <h2 class="yr-h">Os anos passam,<br/><span class="grad-text">a Lyvoo acompanha</span></h2>
+      <p class="yr-sub">Construa o seu historial de saúde longitudinal. Biomarcadores, nutrição e medicina preventiva, acompanhados ao longo dos anos.</p>
+    </div>
+
+    <div class="yr-timeline">
+      <div class="yr-spine"></div>
+
+      <div class="yr-item fade fade-d1">
+        <div class="yr-rail"><div class="yr-dot">1</div></div>
+        <div class="yr-card">
+          <div class="yr-meta">
+            <span class="yr-eyebrow">Ano 1</span>
+            <span class="yr-chip">Baseline</span>
+          </div>
+          <div class="yr-title">Conheça-se, finalmente.</div>
+          <p class="yr-desc">Sabe pela primeira vez o que está realmente a acontecer dentro de si.</p>
+        </div>
+      </div>
+
+      <div class="yr-item fade fade-d2">
+        <div class="yr-rail"><div class="yr-dot">2</div></div>
+        <div class="yr-card">
+          <div class="yr-meta">
+            <span class="yr-eyebrow">Ano 2</span>
+            <span class="yr-chip">Consolidar</span>
+          </div>
+          <div class="yr-title">Manter o que conquistou.</div>
+          <p class="yr-desc">Manteve os benefícios? Muitos perdem o progresso. Este ano é sobre não regredir.</p>
+        </div>
+      </div>
+
+      <div class="yr-item fade fade-d3">
+        <div class="yr-rail"><div class="yr-dot">3+</div></div>
+        <div class="yr-card">
+          <div class="yr-meta">
+            <span class="yr-eyebrow">Ano 3+</span>
+            <span class="yr-chip">Monitorizar</span>
+          </div>
+          <div class="yr-title">Ver o que uma análise isolada nunca mostra.</div>
+          <p class="yr-desc">O histórico revela tendências que um único exame, num único momento, jamais revelaria.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="yr-impact fade fade-d2">
+      <div class="yr-impact-line">O envelhecimento não para. Novos riscos emergem.</div>
+      <div class="yr-impact-punch">Se a saúde é contínua,<br/><span class="grad-text">porque não a monitorização?</span></div>
+    </div>
+
   </div>
 </section>
 
