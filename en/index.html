@@ -136,8 +136,10 @@
     .hc-sd-num{font-size:54px;font-weight:850;color:#fff;letter-spacing:-0.06em;line-height:1}
     .hc-sd-max{font-size:14px;color:rgba(255,255,255,0.6);margin-top:2px}
     .hc-sd-badge{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.28);color:#4ADE80;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;white-space:nowrap}
-    .hc-sd-spark{width:90px;height:26px;margin:4px 0 2px;overflow:visible}
-    .hc-sd-spark .spark-last{filter:drop-shadow(0 0 3px rgba(61,217,232,0.85))}
+    .hc-sd-spark{width:122px;height:auto;margin:7px 0 1px;overflow:visible}
+    .hc-sd-spark .spark-last{filter:drop-shadow(0 0 4px rgba(61,217,232,0.9))}
+    .hc-sd-spark .spark-cap{fill:rgba(255,255,255,0.42);font-family:'Inter',sans-serif;font-size:8px;font-weight:600;letter-spacing:0.04em}
+    .hc-sd-spark .spark-cap-now{fill:var(--cyan)}
     .hc-metric{position:absolute;background:rgba(8,14,18,0.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:11px 16px;display:flex;flex-direction:column;gap:3px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
     /* Cards enter once (staggered) then rest — perpetual motion competed with the
        headline/CTA for attention. Hero life stays in the soft orb glow. */
@@ -704,11 +706,21 @@
             <div class="hc-sd-label">Health score</div>
             <div class="hc-sd-num">87</div>
             <div class="hc-sd-max">/ 100</div>
-            <svg class="hc-sd-spark" viewBox="0 0 100 30" fill="none" aria-hidden="true">
-              <polyline points="8,24 50,15 92,6" stroke="#3DD9E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="8" cy="24" r="2" fill="rgba(255,255,255,0.4)"/>
-              <circle cx="50" cy="15" r="2" fill="rgba(255,255,255,0.55)"/>
-              <circle class="spark-last" cx="92" cy="6" r="3" fill="#3DD9E8"/>
+            <svg class="hc-sd-spark" viewBox="0 0 132 50" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.30"/>
+                  <stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M12,34 L66,22 L120,10 L120,40 L12,40 Z" fill="url(#sparkFill)"/>
+              <polyline points="12,34 66,22 120,10" stroke="#3DD9E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="34" r="2.6" fill="#0B2A30" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+              <circle cx="66" cy="22" r="2.6" fill="#0B2A30" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+              <circle class="spark-last" cx="120" cy="10" r="3.4" fill="#3DD9E8"/>
+              <text class="spark-cap" x="12" y="49" text-anchor="middle">Year 1</text>
+              <text class="spark-cap" x="66" y="49" text-anchor="middle">Year 2</text>
+              <text class="spark-cap spark-cap-now" x="120" y="49" text-anchor="middle">Year 3</text>
             </svg>
             <div class="hc-sd-badge">↑ +15 vs. baseline</div>
           </div>
