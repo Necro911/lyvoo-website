@@ -1561,12 +1561,24 @@
     .ba-detail-food-label { color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; font-weight: 700; }
     .ba-detail-food-list { color: rgba(255,255,255,0.55); }
 
+    .ba-more-btn { display: none; }
     @media (max-width: 960px) {
       .step-atlas-top { grid-template-columns: 1fr; gap: 28px; }
       .ba-grid { grid-template-columns: repeat(3, 1fr); }
       .ba-detail { display: none; }
       .ba-detail-hint { display: none; }
       .ba-filters { display: flex; flex-wrap: wrap; justify-content: center; }
+      .ba-grid-wrap { position: relative; max-height: 290px; overflow: hidden; transition: max-height 0.4s ease; }
+      .ba-grid-wrap.expanded { max-height: none; }
+      .ba-grid-wrap:not(.expanded)::after {
+        content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 56px;
+        background: linear-gradient(transparent, #07090B); pointer-events: none;
+      }
+      .ba-more-btn {
+        display: flex; align-items: center; gap: 6px; margin: 4px auto 18px;
+        background: none; border: none; color: var(--cyan); font-size: 13px; font-weight: 700;
+        cursor: pointer; padding: 8px 16px;
+      }
     }
     @media (max-width: 600px) {
       .ba-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2071,7 +2083,9 @@
           </div>
         </div>
         <div class="ba-body">
-          <div class="ba-grid" id="baGrid"></div>
+          <div class="ba-grid-wrap" id="baGridWrap">
+            <div class="ba-grid" id="baGrid"></div>
+          </div>
           <div class="ba-detail" id="baDetail">
             <div class="ba-detail-empty">
               <svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -2079,6 +2093,10 @@
             </div>
           </div>
         </div>
+        <button class="ba-more-btn" id="baMoreBtn" onclick="toggleBaGrid()">
+          <span id="baMoreLabel">Ver mais</span>
+          <svg id="baMoreIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
       </div><!-- fim bioatlas wrapper -->
     </div>
   </div>
@@ -3615,6 +3633,16 @@
   }
 
   initAtlas();
+
+  function toggleBaGrid() {
+    const wrap = document.getElementById('baGridWrap');
+    const label = document.getElementById('baMoreLabel');
+    const icon = document.getElementById('baMoreIcon');
+    const expanded = wrap.classList.toggle('expanded');
+    label.textContent = expanded ? 'Ver menos' : 'Ver mais';
+    icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
+    if (!expanded) wrap.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(btn => {
