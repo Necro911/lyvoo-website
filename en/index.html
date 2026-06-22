@@ -649,7 +649,7 @@
         <div class="proof-divider"></div>
         <div class="proof-item">
           <span class="proof-num grad-text">6 months</span>
-          <span class="proof-label">Biannual reassessment</span>
+          <span class="proof-label">Between reassessments</span>
         </div>
         <div class="proof-divider"></div>
         <div class="proof-item">
@@ -1326,6 +1326,28 @@
     .yr-bio-note { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; margin-top: 24px; padding-left: 2px; }
     .yr-bio-note strong { color: var(--ink-2); font-weight: 700; }
 
+    /* ── Value that compounds year after year (#5) ── */
+    .yr-compound { max-width: 900px; margin: 60px auto 0; padding-top: 44px; border-top: 1px solid var(--border); }
+    .yr-cmp-head { text-align: center; margin-bottom: 34px; }
+    .yr-cmp-head .label { color: var(--teal-light); border-color: rgba(11,82,90,0.2); }
+    .yr-cmp-title { font-size: clamp(20px, 2.6vw, 28px); font-weight: 800; letter-spacing: -0.03em; color: var(--ink); margin-top: 14px; line-height: 1.2; }
+    .yr-cmp-row { display: flex; align-items: flex-start; justify-content: center; gap: 10px; }
+    .yr-cmp-step { flex: 1; max-width: 200px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 9px; }
+    .yr-cmp-viz { width: 100%; max-width: 128px; }
+    .yr-cmp-viz svg { width: 100%; height: auto; display: block; }
+    .yr-cmp-n { font-size: 12px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--teal); }
+    .yr-cmp-t { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+    .yr-cmp-sep { color: var(--ink-3); opacity: 0.35; flex-shrink: 0; margin-top: 18px; }
+    .yr-cmp-sep svg { display: block; }
+    .yr-cmp-trust { display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 36px; font-size: 13.5px; color: var(--ink-2); }
+    .yr-cmp-trust svg { color: var(--teal-light); flex-shrink: 0; }
+    .yr-cmp-trust strong { color: var(--ink); font-weight: 700; }
+    @media (max-width: 640px) {
+      .yr-cmp-row { flex-direction: column; align-items: center; gap: 16px; }
+      .yr-cmp-step { max-width: 240px; }
+      .yr-cmp-sep { margin-top: 0; transform: rotate(90deg); }
+    }
+
     @media (max-width: 860px) {
       .yr-wrap { grid-template-columns: 1fr; gap: 36px; }
       .yr-sub { max-width: none; }
@@ -1420,6 +1442,60 @@
       </div>
     </div>
 
+    <!-- ── Value that compounds year after year (#5) ── -->
+    <div class="yr-compound fade">
+      <div class="yr-cmp-head">
+        <span class="label">Why renew</span>
+        <h3 class="yr-cmp-title">Each year of data is worth <span class="grad-text">more than the last</span>.</h3>
+      </div>
+      <div class="yr-cmp-row">
+        <div class="yr-cmp-step">
+          <div class="yr-cmp-viz">
+            <svg viewBox="0 0 110 44" fill="none"><circle cx="55" cy="24" r="4.5" fill="var(--teal)"/></svg>
+          </div>
+          <div class="yr-cmp-n">1 point</div>
+          <div class="yr-cmp-t">A number.</div>
+        </div>
+        <div class="yr-cmp-sep">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="yr-cmp-step">
+          <div class="yr-cmp-viz">
+            <svg viewBox="0 0 110 44" fill="none">
+              <polyline points="20,34 55,24 90,14" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="20" cy="34" r="3.5" fill="#fff" stroke="var(--teal)" stroke-width="2"/>
+              <circle cx="55" cy="24" r="3.5" fill="#fff" stroke="var(--teal)" stroke-width="2"/>
+              <circle cx="90" cy="14" r="4" fill="var(--teal)"/>
+            </svg>
+          </div>
+          <div class="yr-cmp-n">3 points</div>
+          <div class="yr-cmp-t">A trajectory.</div>
+        </div>
+        <div class="yr-cmp-sep">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="yr-cmp-step">
+          <div class="yr-cmp-viz">
+            <svg viewBox="0 0 110 44" fill="none">
+              <defs><linearGradient id="cmpGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#0D7A87"/></linearGradient></defs>
+              <polyline points="12,34 32,28 53,30 74,18 98,8" stroke="url(#cmpGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="34" r="3" fill="#fff" stroke="#0D7A87" stroke-width="1.8"/>
+              <circle cx="32" cy="28" r="3" fill="#fff" stroke="#0D7A87" stroke-width="1.8"/>
+              <circle cx="53" cy="30" r="3" fill="#fff" stroke="#0D7A87" stroke-width="1.8"/>
+              <circle cx="74" cy="18" r="3" fill="#fff" stroke="#1AA3B0" stroke-width="1.8"/>
+              <circle cx="98" cy="8" r="4" fill="#3DD9E8"/>
+            </svg>
+          </div>
+          <div class="yr-cmp-n">5 points</div>
+          <div class="yr-cmp-t">Your biology.</div>
+        </div>
+      </div>
+      <div class="yr-cmp-trust">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span>Every reassessment is reviewed by the <strong>Lyvoo medical team</strong>.</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1485,12 +1561,12 @@
               <span class="ring-label">Health score</span>
             </div>
             <div class="ams-chart-wrap">
-              <div class="ams-chart-top"><span class="ams-chart-title">Biomarker trends</span><span class="ams-chart-period">6 months</span></div>
+              <div class="ams-chart-top"><span class="ams-chart-title">Biomarker trends</span><span class="ams-chart-period">24 months</span></div>
               <div class="ams-chart-legend"><span><i style="background:#3DD9E8"></i>LDL</span><span><i style="background:#8B5CF6"></i>Triglycerides</span><span><i style="background:#C084FC"></i>CRP</span></div>
               <svg viewBox="0 0 200 60" class="ams-sparkline">
                 <defs><linearGradient id="fill1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.2"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient></defs>
                 <line x1="0" y1="20" x2="200" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/><line x1="0" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-                <text x="10" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Jan</text><text x="50" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Mar</text><text x="100" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Apr</text><text x="150" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">May</text><text x="193" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Jun</text>
+                <text x="10" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">Base</text><text x="50" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">6M</text><text x="100" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">12M</text><text x="150" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">18M</text><text x="193" y="57" font-family="Inter,sans-serif" font-size="5" fill="rgba(255,255,255,0.25)" text-anchor="middle">24M</text>
                 <path d="M10,48 L50,42 L100,34 L150,24 L193,12 L193,55 L10,55Z" fill="url(#fill1)"/>
                 <polyline points="10,48 50,42 100,34 150,24 193,12" fill="none" stroke="#3DD9E8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="193" cy="12" r="2.5" fill="#3DD9E8"/>
                 <polyline points="10,52 50,49 100,45 150,40 193,36" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="193" cy="36" r="2.5" fill="#8B5CF6"/>
