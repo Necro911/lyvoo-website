@@ -2699,6 +2699,84 @@
     if (btn) { btn.disabled = false; btn.textContent = 'Guardar' + (msgId.includes('bio')?' biomarcadores':msgId.includes('plano')?' plano':msgId.includes('supp')?' suplementação':msgId.includes('consult')?' consultas':msgId.includes('rel')?' relatório':''); }
   }
 
+  // ── Efeitos de transição de estado ──────────────────────────────────────
+  // Helper único, partilhado pelo "Guardar" geral (mudança manual de estado
+  // via cartões) e pelo botão dedicado "Iniciar reavaliação". Antes disto,
+  // cada caminho tinha a sua própria cópia dos efeitos secundários — entrar
+  // numa fase de kit, arquivar resultados, resolver consultas pendentes,
+  // renovar o ciclo anual — e era fácil acrescentar um efeito num só sítio
+  // e esquecer o outro (foi exatamente o que aconteceu com kitDevolvido).
+  // Devolve só os campos extra a juntar ao payload de updateDoc; os efeitos
+  // assíncronos (arquivo de resultados, resolução de agendamentosNutri) são
+  // executados aqui dentro, antes de devolver.
+  async function aplicarEfeitosDeTransicao(uid, estadoAnterior, novoEstado, u) {
+    const extra = {};
+    if (estadoAnterior === novoEstado) return extra;
+
+    const entrouFaseKit    = (novoEstado === 2 || novoEstado === 5);
+    const saiuFaseKit      = (estadoAnterior === 2 || estadoAnterior === 5) && !entrouFaseKit;
+    const veioDeResultados = (estadoAnterior === 4 || estadoAnterior === 7);
+    const ehRenovacaoAnual = estadoAnterior === 7 && novoEstado === 2;
+
+    if (entrouFaseKit) {
+      // Nova fase de kit (1.ª vez ou reavaliação) — limpar tudo o que
+      // pertencia à fase/ciclo anterior, para o cliente ver um estado limpo.
+      extra.kitDevolvido          = null;
+      extra.consultaConfirmada    = null;
+      extra.consultaAlterada      = null;
+      extra.consultaCancelada     = null;
+      extra.consultaCanceladaAdmin = null;
+      extra.agendamentoConvite    = null;
+      extra.notificadoEm          = null;
+      extra.notificadoPor         = null;
+    }
+    if (saiuFaseKit && u?.kitDevolvido && u.kitDevolvido.visto === false) {
+      // Sair da fase de kit sem o admin ter aberto a notificação na Caixa de
+      // entrada — dar por tratada mesmo assim.
+      extra['kitDevolvido.visto'] = true;
+    }
+    if (ehRenovacaoAnual) {
+      // Fim do ano pago (estado 7) → novo baseline (estado 2): é aqui que a
+      // renovação anual de facto acontece.
+      const novaValidade = new Date();
+      novaValidade.setFullYear(novaValidade.getFullYear() + 1);
+      extra.cicloAtual     = (u?.cicloAtual || 1) + 1;
+      extra.planoValidoAte = novaValidade.toISOString();
+    }
+
+    if (entrouFaseKit && veioDeResultados) {
+      // Arquivar resultados atuais na subcoleção (se existirem) e resolver
+      // as consultas pendentes da fase que termina — sem isto, o documento
+      // em agendamentosNutri continuaria 'agendada'/'confirmada' e a
+      // dashboard voltaria a mostrar a consulta antiga como ativa.
+      if (u?.resultados?.biomarcadores) {
+        try {
+          await addDoc(collection(db, 'users', uid, 'analises'), {
+            dataAnalise: u.resultados.dataAnalise || '',
+            biomarcadores: u.resultados.biomarcadores,
+            criadoEm: serverTimestamp(),
+            ciclo: ehRenovacaoAnual ? 'renovacao' : 'reavaliacao',
+          });
+        } catch (e) { console.error('Erro ao arquivar resultados:', e); }
+      }
+      try {
+        const agSnap = await getDocs(query(collection(db,'agendamentosNutri'), where('uid','==',uid)));
+        for (const dSnap of agSnap.docs) {
+          const est = dSnap.data().estado || 'agendada';
+          if (est === 'agendada' || est === 'confirmada') {
+            await updateDoc(doc(db,'agendamentosNutri',dSnap.id), {
+              estado: 'realizada',
+              resolvidoEm: serverTimestamp(),
+              resolvidoPor: ehRenovacaoAnual ? 'renovacao' : 'reavaliacao',
+            });
+          }
+        }
+      } catch (e) { console.error('Erro ao resolver consultas do ciclo anterior:', e); }
+    }
+
+    return extra;
+  }
+
   window.saveGeral = async function() {
     const u = allUsers.find(x => x.uid === currentUID);
     const estadoAnterior = u?.estado ?? null;
@@ -2717,21 +2795,7 @@
       concelho:       document.getElementById('g-concelho').value,
       codigoPostal:   document.getElementById('g-cp').value.trim(),
     };
-    // Se o cliente já tinha confirmado a devolução do kit e o admin avança para
-    // lá da fase de kit (estado != 2 e != 5), dar a confirmação por tratada para
-    // sair da Caixa de entrada — mesmo que o admin não tenha aberto o item.
-    if (u?.kitDevolvido && u.kitDevolvido.visto === false && selectedEstado !== 2 && selectedEstado !== 5) {
-      data['kitDevolvido.visto'] = true;
-    }
-    // Se o admin está a (re)entrar na fase de kit (estado 2 ou 5) vindo de um
-    // estado diferente — manualmente, sem passar pelo botão "Iniciar
-    // reavaliação" — limpar kitDevolvido. Sem isto, uma confirmação antiga
-    // (mesmo cicloAtual, já que este caminho não o incrementa) continua a
-    // bater no `kitDevolvido.ciclo === cicloAtual` da dashboard e o cliente
-    // vê "Obrigado, já confirmou" em vez do formulário para o novo kit.
-    if ((selectedEstado === 2 || selectedEstado === 5) && estadoAnterior !== selectedEstado) {
-      data.kitDevolvido = null;
-    }
+    Object.assign(data, await aplicarEfeitosDeTransicao(currentUID, estadoAnterior, selectedEstado, u));
     await saveDoc(data, 'msg-geral');
     refreshStats(); // estado pode ter mudado → atualizar contadores
 
@@ -3049,7 +3113,8 @@
     if (!u) return;
     const nome = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || '';
 
-    const ehRenovacaoAnual = u.estado === 7;
+    const estadoAnterior = u.estado;
+    const ehRenovacaoAnual = estadoAnterior === 7;
     const destino = ehRenovacaoAnual ? 2 : 5;
     const cicloAtual = u.cicloAtual || 1;
     const novoCiclo = ehRenovacaoAnual ? cicloAtual + 1 : cicloAtual;
@@ -3063,75 +3128,23 @@
     if (btn) { btn.disabled = true; btn.textContent = 'A processar…'; }
 
     try {
-      // 1. Arquivar resultados atuais na subcoleção (se existirem)
-      if (u.resultados?.biomarcadores) {
-        await addDoc(collection(db, 'users', currentUID, 'analises'), {
-          dataAnalise: u.resultados.dataAnalise || '',
-          biomarcadores: u.resultados.biomarcadores,
-          criadoEm: serverTimestamp(),
-          ciclo: ehRenovacaoAnual ? 'renovacao' : 'reavaliacao',
-        });
-      }
-
-      // 1.5 Resolver as consultas pendentes do ciclo/fase que termina. Sem
-      //     isto, o documento em agendamentosNutri continua com estado
-      //     'agendada'/'confirmada' e a dashboard do cliente — que combina
-      //     d.consultas com todos os agendamentosNutri não cancelados —
-      //     continuaria a mostrar a consulta anterior como ativa. Passam a
-      //     'realizada' para ficarem arquivadas no histórico do cliente.
-      try {
-        const agSnap = await getDocs(query(collection(db,'agendamentosNutri'), where('uid','==',currentUID)));
-        for (const dSnap of agSnap.docs) {
-          const est = dSnap.data().estado || 'agendada';
-          if (est === 'agendada' || est === 'confirmada') {
-            await updateDoc(doc(db,'agendamentosNutri',dSnap.id), {
-              estado: 'realizada',
-              resolvidoEm: serverTimestamp(),
-              resolvidoPor: ehRenovacaoAnual ? 'renovacao' : 'reavaliacao',
-            });
-          }
-        }
-      } catch(e) {
-        console.error('Erro ao resolver consultas do ciclo anterior:', e);
-      }
-
-      // 2. Avançar de estado. Os resultados atuais mantêm-se visíveis para o
-      //    cliente até chegarem os novos.
+      // Os mesmos efeitos de transição usados pelo "Guardar" geral (arquivar
+      // resultados, resolver consultas pendentes, limpar a fase de kit
+      // anterior, e — só no caso 7→2 — avançar cicloAtual/planoValidoAte).
+      const extra = await aplicarEfeitosDeTransicao(currentUID, estadoAnterior, destino, u);
       const payload = {
         estado:      destino,
         estadoLabel: ESTADO_LABELS[destino],
-        notificadoEm: null,
-        notificadoPor: null,
         atualizadoEm: serverTimestamp(),
         cicloReavaliacao: serverTimestamp(),
-        // limpar notificações de consultas do ciclo/fase anterior
-        consultaConfirmada: null,
-        consultaAlterada: null,
-        consultaCancelada: null,
-        consultaCanceladaAdmin: null,
-        agendamentoConvite: null,
-        // limpar confirmação de kit do ciclo anterior — o novo kit exige
-        // nova confirmação do cliente
-        kitDevolvido: null,
+        ...extra,
       };
-      let novaValidadeIso = u.planoValidoAte;
-      if (ehRenovacaoAnual) {
-        const novaValidade = new Date();
-        novaValidade.setFullYear(novaValidade.getFullYear() + 1);
-        novaValidadeIso = novaValidade.toISOString();
-        payload.cicloAtual = novoCiclo;
-        payload.planoValidoAte = novaValidadeIso;
-      }
       await updateDoc(doc(db, 'users', currentUID), payload);
 
-      // 3. Atualizar cache local
+      // Atualizar cache local
       const idx = allUsers.findIndex(x => x.uid === currentUID);
       if (idx !== -1) {
-        allUsers[idx] = {
-          ...allUsers[idx],
-          estado: destino, estadoLabel: ESTADO_LABELS[destino], notificadoEm: null,
-          ...(ehRenovacaoAnual ? { cicloAtual: novoCiclo, planoValidoAte: novaValidadeIso } : {}),
-        };
+        allUsers[idx] = { ...allUsers[idx], ...payload };
       }
       selectEstado(destino);
       document.getElementById('reeval-box').style.display = 'none';
