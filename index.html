@@ -1218,6 +1218,19 @@
       .glp-concerns { grid-template-columns: 1fr; }
       .glp-meds { grid-template-columns: repeat(2, auto); }
     }
+    .glp-teaser-link { display: none; }
+    @media (max-width: 760px) {
+      .glp-reveal-wrap { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(.22,.61,.36,1), opacity 0.45s ease; }
+      .glp-section.expanded .glp-reveal-wrap { max-height: 3200px; opacity: 1; }
+      .glp-section.expanded .glp-teaser-link { display: none; }
+      .glp-teaser-link {
+        display: flex; flex-direction: column; align-items: center; gap: 10px;
+        text-decoration: none; color: var(--cyan); font-weight: 700; font-size: 14px;
+        margin: 0 auto 36px; transition: gap 0.25s;
+      }
+      .glp-teaser-link:hover { gap: 16px; }
+      .glp-teaser-arrow { display: flex; color: var(--cyan); }
+    }
 
     /* ── Testemunhos ── */
     .tst-header { text-align: center; margin-bottom: 60px; }
@@ -2757,6 +2770,15 @@
       </h2>
     </div>
 
+    <a href="#" class="glp-teaser-link" id="glpTeaserLink" onclick="handleGlpArrowClick(event)">
+      <span class="glp-teaser-arrow">
+        <svg width="16" height="40" viewBox="0 0 16 40" fill="none"><line x1="8" y1="0" x2="8" y2="30" stroke="currentColor" stroke-width="2"/><path d="M2 24l6 8 6-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </span>
+      <span>ver mais</span>
+    </a>
+
+    <div class="glp-reveal-wrap" id="glpRevealWrap">
+
     <!-- Parágrafo + pills em linha -->
     <div class="glp-intro-row fade fade-d2">
       <p>
@@ -2837,8 +2859,15 @@
 
 
     </div><!-- /glp-inner -->
+    </div><!-- /glp-reveal-wrap -->
   </div>
 </section>
+<script>
+  function handleGlpArrowClick(e) {
+    e.preventDefault();
+    document.getElementById('glp-friendly').classList.add('expanded');
+  }
+</script>
 
 </div><!-- /dark-continuum -->
 
