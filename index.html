@@ -2530,6 +2530,22 @@
     .yr-title { font-size: clamp(17px, 1.9vw, 20px); font-weight: 800; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 5px; line-height: 1.25; }
     .yr-desc { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
 
+    /* ── Dados reais: ApoB a descer ao longo dos anos ── */
+    .yr-items { position: relative; }
+    .yr-bio { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .yr-bio-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .yr-bio-name { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-right: auto; }
+    .yr-bio-val { font-size: 15px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+    .yr-bio-unit { font-size: 11px; font-weight: 600; color: var(--ink-3); }
+    .yr-bio-tag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+    .yr-bio-tag.high { background: rgba(239,68,68,0.10); color: #DC2626; border: 1px solid rgba(239,68,68,0.22); }
+    .yr-bio-tag.mid  { background: rgba(245,158,11,0.12); color: #B45309; border: 1px solid rgba(245,158,11,0.28); }
+    .yr-bio-tag.ok   { background: rgba(34,197,94,0.12); color: #15803D; border: 1px solid rgba(34,197,94,0.30); }
+    .yr-bio-bar { height: 5px; border-radius: 999px; background: rgba(11,82,90,0.08); overflow: hidden; }
+    .yr-bio-fill { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+    .yr-bio-note { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; margin-top: 24px; padding-left: 2px; }
+    .yr-bio-note strong { color: var(--ink-2); font-weight: 700; }
+
     @media (max-width: 860px) {
       .yr-wrap { grid-template-columns: 1fr; gap: 36px; }
       .yr-sub { max-width: none; }
@@ -2556,6 +2572,7 @@
 
       <!-- ── Direita: timeline ── -->
       <div class="yr-timeline fade fade-d1">
+        <div class="yr-items">
         <div class="yr-spine"></div>
 
         <div class="yr-item">
@@ -2567,6 +2584,14 @@
             </div>
             <div class="yr-title">Conheça-se, finalmente.</div>
             <p class="yr-desc">Sabe pela primeira vez o que está realmente a acontecer dentro de si.</p>
+            <div class="yr-bio">
+              <div class="yr-bio-top">
+                <span class="yr-bio-name">ApoB</span>
+                <span class="yr-bio-val">1,18<span class="yr-bio-unit"> g/L</span></span>
+                <span class="yr-bio-tag high">Elevado</span>
+              </div>
+              <div class="yr-bio-bar"><div class="yr-bio-fill" style="width:76%;background:#EF4444"></div></div>
+            </div>
           </div>
         </div>
 
@@ -2579,6 +2604,14 @@
             </div>
             <div class="yr-title">Manter o que conquistou.</div>
             <p class="yr-desc">Manteve os benefícios? Muitos perdem o progresso. Este ano é sobre não regredir.</p>
+            <div class="yr-bio">
+              <div class="yr-bio-top">
+                <span class="yr-bio-name">ApoB</span>
+                <span class="yr-bio-val">0,95<span class="yr-bio-unit"> g/L</span></span>
+                <span class="yr-bio-tag mid">A descer</span>
+              </div>
+              <div class="yr-bio-bar"><div class="yr-bio-fill" style="width:50%;background:#F59E0B"></div></div>
+            </div>
           </div>
         </div>
 
@@ -2591,9 +2624,19 @@
             </div>
             <div class="yr-title">Ver o que uma análise isolada nunca mostra.</div>
             <p class="yr-desc">O histórico revela tendências que um único exame, num único momento, jamais revelaria.</p>
+            <div class="yr-bio">
+              <div class="yr-bio-top">
+                <span class="yr-bio-name">ApoB</span>
+                <span class="yr-bio-val">0,74<span class="yr-bio-unit"> g/L</span></span>
+                <span class="yr-bio-tag ok">Ótimo</span>
+              </div>
+              <div class="yr-bio-bar"><div class="yr-bio-fill" style="width:27%;background:#22C55E"></div></div>
+            </div>
           </div>
         </div>
 
+        </div><!-- /yr-items -->
+        <p class="yr-bio-note"><strong>Exemplo ilustrativo</strong> — ApoB (g/L), marcador-chave de risco cardiovascular, ao longo de 3 reavaliações.</p>
       </div>
     </div>
 
