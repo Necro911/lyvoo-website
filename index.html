@@ -799,6 +799,17 @@
     .ev-conclusion-inner svg { flex-shrink: 0; margin-top: 2px; }
     .ev-conclusion-inner p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.75; margin: 0; }
     .ev-source { text-align: center; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.04em; }
+    .ev-more-btn { display: none; }
+    @media (max-width: 760px) {
+      .ev-rest-text, .ev-source.ev-rest-block { display: none; }
+      .ev-conclusion.expanded .ev-rest-text { display: inline; }
+      .ev-conclusion.expanded .ev-source.ev-rest-block { display: block; }
+      .ev-more-btn {
+        display: flex; align-items: center; gap: 6px; margin: 14px auto 0;
+        background: none; border: none; color: var(--cyan); font-size: 13px; font-weight: 700;
+        cursor: pointer; padding: 4px 8px;
+      }
+    }
 
     @media (max-width: 860px) {
       .ev-stats { grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -2763,12 +2774,16 @@
     </div>
 
     <!-- Conclusion block -->
-    <div class="ev-conclusion fade fade-d3">
+    <div class="ev-conclusion fade fade-d3" id="evConclusion">
       <div class="ev-conclusion-inner">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>Os melhores resultados surgem da combinação entre acompanhamento clínico e monitorização contínua. A telemedicina transforma cuidados episódicos em prevenção regular, aumentando a adesão, o controlo dos fatores de risco e a qualidade de vida.</p>
+        <p>Os melhores resultados surgem da combinação entre acompanhamento clínico e monitorização contínua.<span class="ev-rest-text"> A telemedicina transforma cuidados episódicos em prevenção regular, aumentando a adesão, o controlo dos fatores de risco e a qualidade de vida.</span></p>
       </div>
-      <div class="ev-source">Fontes: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis  · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
+      <div class="ev-source ev-rest-block">Fontes: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis  · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
+      <button class="ev-more-btn" id="evMoreBtn" onclick="toggleEvConclusion()">
+        <span id="evMoreLabel">Ver mais</span>
+        <svg id="evMoreIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
     </div>
 
   </div>
@@ -3633,6 +3648,15 @@
   }
 
   initAtlas();
+
+  function toggleEvConclusion() {
+    const box = document.getElementById('evConclusion');
+    const label = document.getElementById('evMoreLabel');
+    const icon = document.getElementById('evMoreIcon');
+    const expanded = box.classList.toggle('expanded');
+    label.textContent = expanded ? 'Ver menos' : 'Ver mais';
+    icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
+  }
 
   function toggleBaGrid() {
     const wrap = document.getElementById('baGridWrap');
