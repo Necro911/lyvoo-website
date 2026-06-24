@@ -270,8 +270,33 @@
     .ev-conclusion-inner p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.75;margin:0}
     .ev-source{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.04em}
     .ev-more-btn{display:none}
+    .ev-scroller,.ev-track{display:contents}
+    .ev-dots{display:none}
     @media(max-width:760px){.ev-rest-text,.ev-source.ev-rest-block{display:none}.ev-conclusion.expanded .ev-rest-text{display:inline}.ev-conclusion.expanded .ev-source.ev-rest-block{display:block}.ev-more-btn{display:flex;align-items:center;gap:6px;margin:14px auto 0;background:none;border:none;color:var(--cyan);font-size:13px;font-weight:700;cursor:pointer;padding:4px 8px}}
     @media(max-width:860px){.ev-stats{grid-template-columns:1fr 1fr;gap:40px}.ev-divider{display:none}.ev-stat{padding:0}}
+    @media(max-width:768px){
+      .ev-header{margin-bottom:34px}
+      .ev-scroller{display:block;margin:0 -22px;padding:8px 0 2px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:22px;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+      .ev-scroller::-webkit-scrollbar{display:none}
+      .ev-track{display:flex;align-items:stretch;gap:14px;width:max-content;padding:0 22px}
+      .ev-stats{display:contents;margin:0}
+      .ev-divider{display:none}
+      .ev-stat,.ev-conclusion{flex:0 0 80vw;max-width:360px;margin:0;scroll-snap-align:center;scroll-snap-stop:always;opacity:0.45;transform:scale(0.955);transition:opacity 0.5s ease,transform 0.5s ease;will-change:opacity,transform}
+      .ev-stat.ev-slide-in,.ev-conclusion.ev-slide-in{opacity:1;transform:scale(1)}
+      .ev-stat{display:flex;flex-direction:column;justify-content:center;text-align:left;min-height:224px;padding:30px 26px;background:linear-gradient(165deg,rgba(61,217,232,0.07),rgba(139,92,246,0.055));border:1px solid rgba(255,255,255,0.09);border-radius:22px;box-shadow:0 18px 42px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.05)}
+      .ev-num{font-size:54px;margin-bottom:14px}
+      .ev-label{font-size:15px;margin-bottom:10px}
+      .ev-sub{font-size:13.5px;line-height:1.65}
+      .ev-conclusion{display:flex;flex-direction:column;justify-content:center}
+      .ev-conclusion-inner{height:100%;margin-bottom:14px}
+      .ev-dots{display:flex;justify-content:center;gap:8px;margin-top:26px}
+      .ev-dots .ev-dot{width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,0.22);transition:width 0.35s ease,background 0.35s ease}
+      .ev-dots .ev-dot.active{width:22px;background:linear-gradient(90deg,#3DD9E8,#8B5CF6)}
+    }
+    @media(max-width:768px) and (prefers-reduced-motion:reduce){
+      .ev-stat,.ev-conclusion{transition:none;opacity:1;transform:none}
+      .ev-scroller{scroll-behavior:auto}
+    }
     .bio-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:1040px;margin:0 auto}
     .bio-card{background:#FAFCFC;border:1px solid rgba(11,82,90,0.08);border-radius:22px;padding:36px 32px}
     .bio-card.bio-12{background:linear-gradient(160deg, rgba(61,217,232,0.06), rgba(139,92,246,0.05));border:1px solid rgba(61,217,232,0.18)}
@@ -527,13 +552,14 @@
     .ba-body{display:flex;min-height:340px}
     .ba-grid{flex:1;display:grid;grid-template-columns:repeat(5,1fr);padding:14px;gap:3px;align-content:start}
     .ba-item{padding:9px 10px;border-radius:8px;cursor:pointer;transition:opacity 0.2s,background 0.2s,border-color 0.2s;border:1px solid transparent}
-    .ba-item:hover:not(.dimmed){background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}
-    .ba-item.dimmed{opacity:0.1;pointer-events:none}
+    .ba-item:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}
+    .ba-item.hidden{display:none}
     .ba-item.selected{background:rgba(61,217,232,0.07);border-color:rgba(61,217,232,0.28)}
     .ba-item-row{display:flex;align-items:flex-start;gap:6px}
     .ba-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
     .ba-name{font-size:12px;font-weight:600;color:rgba(255,255,255,0.78);line-height:1.3}
     .ba-catname{font-size:9.5px;color:rgba(255,255,255,0.2);margin-top:3px;text-transform:uppercase;letter-spacing:0.06em}
+    .ba-count{font-size:11px;font-weight:600;letter-spacing:0.04em;color:rgba(255,255,255,0.6);padding:10px 16px 0}
     .ba-detail{width:230px;flex-shrink:0;border-left:1px solid rgba(255,255,255,0.07);padding:22px 20px;display:flex;flex-direction:column;gap:14px}
     .ba-detail-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;opacity:0.3}
     .ba-detail-empty svg{width:28px;height:28px;color:rgba(255,255,255,0.4)}
@@ -733,7 +759,7 @@
         <div class="hc-metric hc-m2">
           <div class="hcm-label">HbA1c</div>
           <div class="hcm-val" style="color:#4ADE80">5.1% - optimal</div>
-          <div class="hcm-stat">No insulin resistance</div>
+          <div class="hcm-stat">Low insulin resistance</div>
         </div>
         <div class="hc-metric hc-m3">
           <div class="hcm-label">Vitamin D</div>
@@ -922,6 +948,7 @@
               <button class="ba-filter ba-filter-wide" data-cat="intolerancias">Food Intolerances</button>
             </div>
           </div>
+          <div class="ba-count" id="baCount" role="status" aria-live="polite"></div>
           <div class="ba-body">
             <div class="ba-grid-wrap" id="baGridWrap">
               <div class="ba-grid" id="baGrid"></div>
@@ -1445,8 +1472,7 @@
     <!-- ── Value that compounds year after year (#5) ── -->
     <div class="yr-compound fade">
       <div class="yr-cmp-head">
-        <span class="label">Why renew</span>
-        <h3 class="yr-cmp-title">Each year of data is worth <span class="grad-text">more than the last</span>.</h3>
+        <h3 class="yr-cmp-title">Each year reveals more than the last.</h3>
       </div>
       <div class="yr-cmp-row">
         <div class="yr-cmp-step">
@@ -1593,6 +1619,10 @@
       <h2 style="color:#fff;">Prevention works.<br/><span class="grad-text">The numbers prove it.</span></h2>
       <p style="color:rgba(255,255,255,0.589);">Published clinical studies demonstrate that continuous preventive monitoring and telemedicine produce measurable, consistent results.</p>
     </div>
+    <!-- Stats + conclusion: static row on desktop, swipeable carousel on mobile -->
+    <div class="ev-scroller fade fade-d2" id="evScroller">
+      <div class="ev-track">
+
     <div class="ev-stats fade fade-d2">
       <div class="ev-stat">
         <div class="ev-num">−18<span class="ev-unit">mg/dL</span></div>
@@ -1629,6 +1659,13 @@
         <svg id="evMoreIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
     </div>
+
+      </div><!-- /ev-track -->
+    </div><!-- /ev-scroller -->
+
+    <!-- Progress indicator (mobile only) -->
+    <div class="ev-dots" id="evDots" aria-hidden="true"></div>
+
   </div>
 </section>
 
@@ -1923,7 +1960,7 @@
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Reassessment every 6 months</strong><span>2 full panels per year, included in the subscription</span></div></li>
           <li><span class="sp-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><strong>Lyvoo dashboard with continuous support</strong></div></li>
         </ul>
-        <a href="register.html?plano=lyvoo" class="sp-cta">Start the programme <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
+        <a href="register.html?plano=lyvoo" class="sp-cta">Get started <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
         <p class="sp-guarantee">Free cancellation before kit dispatch · No automatic renewal</p>
       </div>
       <div class="sp-right">
@@ -1945,7 +1982,7 @@
   </div>
 </section>
 
-<!-- WAITLIST -->
+<!-- CTA FINAL (register.html → prelaunch.js swaps it for the waitlist pre-launch) -->
 <div class="cta-footer-wrap">
   <div class="cta-glow"></div>
 <!-- CTA -->
@@ -1955,7 +1992,7 @@
     <h2 class="fade fade-d1">The first step<br/>is understanding where you stand.</h2>
     <p class="fade fade-d2">From there, we chart the path together: with real data, a clear plan, and results that can be measured.</p>
     <div class="cta-btns fade fade-d3">
-      <a href="contact.html#contactForm" class="btn btn-white">Join the waitlist <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 16 16"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
+      <a href="register.html" class="btn btn-white">Get started <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 16 16"><path d="M3 13L13 3M13 13V3H3"/></svg></a>
       <a href="mailto:hello@lyvoo.pt" class="btn btn-ghost-white">Talk to the team</a>
     </div>
     <div class="cta-trust fade fade-d4">
@@ -2211,20 +2248,53 @@
       el.addEventListener('click', () => selectBiomarker(b, el));
       grid.appendChild(el);
     });
+    updateBaCount(BIOMARKERS.length);
     document.querySelectorAll('.ba-filter').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.ba-filter').forEach(f => f.classList.remove('active'));
         btn.classList.add('active');
         const cat = btn.dataset.cat;
+        let visible = 0;
         document.querySelectorAll('.ba-item').forEach(item => {
           const match = cat === 'todos' || item.dataset.cats.split(',').includes(cat);
-          item.classList.toggle('dimmed', !match);
-          if (!match) item.classList.remove('selected');
+          item.classList.toggle('hidden', !match);
+          if (match) visible++;
+          else item.classList.remove('selected');
         });
+        updateBaCount(visible);
+        // "See more" (mobile collapse) only makes sense for the "All" pill (long list).
+        // For a specific category we show the full set, with no collapse and no button.
+        const wrap = document.getElementById('baGridWrap');
+        const moreBtn = document.getElementById('baMoreBtn');
+        if (cat === 'todos') {
+          wrap.classList.remove('expanded');
+          if (moreBtn) {
+            moreBtn.style.display = '';
+            const lbl = document.getElementById('baMoreLabel');
+            const ic = document.getElementById('baMoreIcon');
+            if (lbl) lbl.textContent = 'See more';
+            if (ic) ic.style.transform = 'rotate(0deg)';
+          }
+        } else {
+          wrap.classList.add('expanded');
+          if (moreBtn) moreBtn.style.display = 'none';
+        }
         const sel = grid.querySelector('.ba-item.selected');
         if (!sel) detail.innerHTML = `<div class="ba-detail-empty"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Select a parameter to view details</span></div>`;
+        // On mobile the grid sits below the filter chips; nudge it into view so
+        // the response to the tap is visible (respects reduced-motion).
+        if (window.matchMedia('(max-width: 960px)').matches) {
+          const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          document.getElementById('baGridWrap').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+        }
       });
     });
+  }
+
+  function updateBaCount(n) {
+    const el = document.getElementById('baCount');
+    if (!el) return;
+    el.textContent = n === 1 ? '1 parameter' : `${n} parameters`;
   }
 
   function selectBiomarker(b, el) {
@@ -2270,6 +2340,42 @@
     label.textContent = expanded ? 'See less' : 'See more';
     icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
   }
+
+  // ── Evidence carousel (mobile only): subtle slide-in + progress dots ──
+  function initEvCarousel() {
+    const scroller = document.getElementById('evScroller');
+    const dotsWrap = document.getElementById('evDots');
+    if (!scroller || !dotsWrap) return;
+    const slides = Array.from(scroller.querySelectorAll('.ev-stat, .ev-conclusion'));
+    if (!slides.length) return;
+
+    if (!dotsWrap.childElementCount) {
+      slides.forEach((_, i) => {
+        const d = document.createElement('span');
+        d.className = 'ev-dot' + (i === 0 ? ' active' : '');
+        dotsWrap.appendChild(d);
+      });
+    }
+    const dots = Array.from(dotsWrap.children);
+    const ratios = new Map();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        ratios.set(e.target, e.intersectionRatio);
+        if (e.intersectionRatio >= 0.55) e.target.classList.add('ev-slide-in');
+      });
+      let best = 0, bestR = -1;
+      slides.forEach((s, i) => {
+        const r = ratios.get(s) || 0;
+        if (r > bestR) { bestR = r; best = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === best));
+    }, { root: scroller, threshold: [0, 0.25, 0.55, 0.8, 1] });
+
+    slides.forEach(s => io.observe(s));
+    slides[0].classList.add('ev-slide-in');
+  }
+  initEvCarousel();
 
   function toggleBaGrid() {
     const wrap = document.getElementById('baGridWrap');
