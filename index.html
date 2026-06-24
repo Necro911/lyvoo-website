@@ -858,8 +858,7 @@
       .ev-stats { display: contents; margin: 0; }
       .ev-divider { display: none; }
 
-      .ev-stat,
-      .ev-conclusion {
+      .ev-stat {
         flex: 0 0 80vw;
         max-width: 360px;
         margin: 0;
@@ -870,8 +869,7 @@
         transition: opacity 0.5s ease, transform 0.5s ease;
         will-change: opacity, transform;
       }
-      .ev-stat.ev-slide-in,
-      .ev-conclusion.ev-slide-in { opacity: 1; transform: scale(1); }
+      .ev-stat.ev-slide-in { opacity: 1; transform: scale(1); }
 
       /* chrome premium para os slides de estatística */
       .ev-stat {
@@ -884,12 +882,18 @@
         border-radius: 22px;
         box-shadow: 0 18px 42px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
       }
+      /* anular os resets de padding do desktop (1.º e último card) */
+      .ev-stat:first-child { padding-left: 26px; }
+      .ev-stat:last-child { padding-right: 26px; }
       .ev-num { font-size: 54px; margin-bottom: 14px; }
       .ev-label { font-size: 15px; margin-bottom: 10px; }
       .ev-sub { font-size: 13.5px; line-height: 1.65; }
 
-      .ev-conclusion { display: flex; flex-direction: column; justify-content: center; }
-      .ev-conclusion-inner { height: 100%; margin-bottom: 14px; }
+      /* conclusão: estática, abaixo do carrossel, texto completo sem "ver mais" */
+      .ev-conclusion { margin: 30px auto 0; }
+      .ev-more-btn { display: none; }
+      .ev-rest-text { display: inline; }
+      .ev-source.ev-rest-block { display: block; }
 
       /* indicador de progresso */
       .ev-dots {
@@ -3007,24 +3011,20 @@
       </div>
     </div>
 
-    <!-- Conclusion block -->
+      </div><!-- /ev-track -->
+    </div><!-- /ev-scroller -->
+
+    <!-- Indicador de progresso (só telemóvel) -->
+    <div class="ev-dots" id="evDots" aria-hidden="true"></div>
+
+    <!-- Conclusão (estática, abaixo do carrossel) -->
     <div class="ev-conclusion fade fade-d3" id="evConclusion">
       <div class="ev-conclusion-inner">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <p>Os melhores resultados surgem da combinação entre acompanhamento clínico e monitorização contínua.<span class="ev-rest-text"> A telemedicina transforma cuidados episódicos em prevenção regular, aumentando a adesão, o controlo dos fatores de risco e a qualidade de vida.</span></p>
       </div>
       <div class="ev-source ev-rest-block">Fontes: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis  · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
-      <button class="ev-more-btn" id="evMoreBtn" onclick="toggleEvConclusion()">
-        <span id="evMoreLabel">Ver mais</span>
-        <svg id="evMoreIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
     </div>
-
-      </div><!-- /ev-track -->
-    </div><!-- /ev-scroller -->
-
-    <!-- Indicador de progresso (só telemóvel) -->
-    <div class="ev-dots" id="evDots" aria-hidden="true"></div>
 
   </div>
 </section>
