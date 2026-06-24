@@ -1542,13 +1542,14 @@
       transition: opacity 0.2s, background 0.2s, border-color 0.2s;
       border: 1px solid transparent;
     }
-    .ba-item:hover:not(.dimmed) { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-    .ba-item.dimmed { opacity: 0.1; pointer-events: none; }
+    .ba-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+    .ba-item.hidden { display: none; }
     .ba-item.selected { background: rgba(61,217,232,0.07); border-color: rgba(61,217,232,0.28); }
     .ba-item-row { display: flex; align-items: flex-start; gap: 6px; }
     .ba-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
     .ba-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.78); line-height: 1.3; }
     .ba-catname { font-size: 9.5px; color: rgba(255,255,255,0.589); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .ba-count { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: rgba(255,255,255,0.6); padding: 10px 16px 0; }
 
     .ba-detail {
       width: 230px; flex-shrink: 0; border-left: 1px solid rgba(255,255,255,0.07);
@@ -1790,7 +1791,7 @@
               <text class="spark-cap" x="66" y="49" text-anchor="middle">Ano 2</text>
               <text class="spark-cap spark-cap-now" x="120" y="49" text-anchor="middle">Ano 3</text>
             </svg>
-            <div class="hc-sd-badge">↑ +15 vs. baseline</div>
+            <div class="hc-sd-badge">↑ +15 vs. início</div>
           </div>
         </div>
 
@@ -2113,6 +2114,7 @@
             <button class="ba-filter ba-filter-wide" data-cat="intolerancias">Intolerâncias Alimentares</button>
           </div>
         </div>
+        <div class="ba-count" id="baCount" role="status" aria-live="polite"></div>
         <div class="ba-body">
           <div class="ba-grid-wrap" id="baGridWrap">
             <div class="ba-grid" id="baGrid"></div>
@@ -2665,8 +2667,7 @@
     <!-- ── Valor que compõe ano após ano (#5) ── -->
     <div class="yr-compound fade">
       <div class="yr-cmp-head">
-        <span class="label">Porquê renovar</span>
-        <h3 class="yr-cmp-title">Cada ano de dados vale <span class="grad-text">mais que o anterior</span>.</h3>
+        <h3 class="yr-cmp-title">Cada ano revela mais que o anterior.</h3>
       </div>
       <div class="yr-cmp-row">
         <div class="yr-cmp-step">
@@ -3355,7 +3356,7 @@
         </ul>
 
         <a href="registar.html?plano=lyvoo" class="sp-cta">
-          Começar o programa
+          Começar agora
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg>
         </a>
         <p class="sp-guarantee">Cancelamento gratuito antes do envio do kit · Sem renovação automática</p>
@@ -3412,7 +3413,7 @@
   </div>
 </section>
 
-<!-- ── WAITLIST ── -->
+<!-- ── CTA FINAL (registar.html → prelaunch.js troca por lista de espera no pré-lançamento) ── -->
 <div class="cta-footer-wrap">
   <div class="cta-glow"></div>
 <!-- ── CTA ── -->
@@ -3426,8 +3427,8 @@
       A partir daí, traçamos o caminho juntos: com dados reais, um plano claro e resultados que se medem.
     </p>
     <div class="cta-btns fade fade-d3">
-      <a href="contacto.html#contactForm" class="btn btn-white">
-        Junte-se à lista de espera
+      <a href="registar.html" class="btn btn-white">
+        Começar agora
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 16 16"><path d="M3 13L13 3M13 13V3H3"/></svg>
       </a>
       <a href="mailto:hello@lyvoo.pt" class="btn btn-ghost-white">Falar com a equipa</a>
@@ -3734,23 +3735,57 @@
       grid.appendChild(el);
     });
 
+    updateBaCount(BIOMARKERS.length);
+
     document.querySelectorAll('.ba-filter').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.ba-filter').forEach(f => f.classList.remove('active'));
         btn.classList.add('active');
         const cat = btn.dataset.cat;
+        let visible = 0;
         document.querySelectorAll('.ba-item').forEach(item => {
           const match = cat === 'todos' || item.dataset.cats.split(',').includes(cat);
-          item.classList.toggle('dimmed', !match);
-          if (!match) item.classList.remove('selected');
+          item.classList.toggle('hidden', !match);
+          if (match) visible++;
+          else item.classList.remove('selected');
         });
-        // Reset detail if selected item got dimmed
+        updateBaCount(visible);
+        // "Ver mais" (colapso mobile) só faz sentido na pill "Todos" (lista longa).
+        // Numa categoria específica mostramos o conjunto completo, sem colapso nem botão.
+        const wrap = document.getElementById('baGridWrap');
+        const moreBtn = document.getElementById('baMoreBtn');
+        if (cat === 'todos') {
+          wrap.classList.remove('expanded');
+          if (moreBtn) {
+            moreBtn.style.display = '';
+            const lbl = document.getElementById('baMoreLabel');
+            const ic = document.getElementById('baMoreIcon');
+            if (lbl) lbl.textContent = 'Ver mais';
+            if (ic) ic.style.transform = 'rotate(0deg)';
+          }
+        } else {
+          wrap.classList.add('expanded');
+          if (moreBtn) moreBtn.style.display = 'none';
+        }
+        // Reset detail if no item is selected anymore
         const sel = grid.querySelector('.ba-item.selected');
         if (!sel) {
           detail.innerHTML = `<div class="ba-detail-empty"><svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Selecione um parâmetro para ver detalhes</span></div>`;
         }
+        // On mobile the grid is below the filter chips; nudge it into view so the
+        // response to the tap is visible (respects reduced-motion).
+        if (window.matchMedia('(max-width: 960px)').matches) {
+          const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          document.getElementById('baGridWrap').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+        }
       });
     });
+  }
+
+  function updateBaCount(n) {
+    const el = document.getElementById('baCount');
+    if (!el) return;
+    el.textContent = n === 1 ? '1 parâmetro' : `${n} parâmetros`;
   }
 
   function selectBiomarker(b, el) {
