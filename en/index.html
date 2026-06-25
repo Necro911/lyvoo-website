@@ -274,54 +274,6 @@
     .ams-metrics{padding:0 12px;display:flex;flex-direction:column;gap:5px}
     .ams-metric{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border-radius:9px;padding:7px 9px;border:1px solid rgba(255,255,255,0.05)}
     .mm-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}.mm-name{font-size:9px;color:rgba(255,255,255,0.55);flex:1}.mm-val{font-size:9px;font-weight:700}
-    .ev-header{text-align:center;max-width:640px;margin:0 auto 60px}
-    .ev-header h2{font-size:clamp(30px,4vw,54px);font-weight:800;letter-spacing:-0.04em;margin:14px 0 16px}
-    .ev-header p{font-size:17px;line-height:1.75;max-width:640px;margin:0 auto}
-    .ev-stats{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:0;align-items:start;margin-bottom:56px}
-    .ev-stat{padding:0 32px;text-align:center}.ev-stat:first-child{padding-left:0}.ev-stat:last-child{padding-right:0}
-    .ev-num{font-size:clamp(36px,5vw,64px);font-weight:800;letter-spacing:-0.04em;line-height:1;background:linear-gradient(135deg,#3DD9E8,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
-    .ev-unit{font-size:0.45em;font-weight:700;vertical-align:super}
-    .ev-label{font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:0.01em}
-    .ev-sub{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6}
-    .ev-divider{width:1px;background:rgba(255,255,255,0.08);align-self:stretch;margin:8px 0}
-    .ev-conclusion{max-width:760px;margin:0 auto}
-    .ev-conclusion-inner{display:flex;gap:16px;align-items:flex-start;background:rgba(61,217,232,0.06);border:1px solid rgba(61,217,232,0.15);border-radius:16px;padding:24px 28px;margin-bottom:20px}
-    .ev-conclusion-inner svg{flex-shrink:0;margin-top:2px}
-    .ev-conclusion-inner p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.75;margin:0}
-    .ev-source{text-align:center;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.04em}
-    .ev-more-btn{display:none}
-    .ev-scroller,.ev-track{display:contents}
-    .ev-dots{display:none}
-    @media(max-width:760px){.ev-rest-text,.ev-source.ev-rest-block{display:none}.ev-conclusion.expanded .ev-rest-text{display:inline}.ev-conclusion.expanded .ev-source.ev-rest-block{display:block}.ev-more-btn{display:flex;align-items:center;gap:6px;margin:14px auto 0;background:none;border:none;color:var(--cyan);font-size:13px;font-weight:700;cursor:pointer;padding:4px 8px}}
-    @media(max-width:860px){.ev-stats{grid-template-columns:1fr 1fr;gap:40px}.ev-divider{display:none}.ev-stat{padding:0}}
-    @media(max-width:768px){
-      .ev-header{margin-bottom:34px}
-      .ev-scroller{display:block;margin:0 -22px;padding:8px 0 2px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:22px;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
-      .ev-scroller::-webkit-scrollbar{display:none}
-      .ev-track{display:flex;align-items:stretch;gap:14px;width:max-content;padding:0 22px}
-      .ev-stats{display:contents;margin:0}
-      .ev-divider{display:none}
-      .ev-stat{flex:0 0 80vw;max-width:360px;margin:0;scroll-snap-align:center;scroll-snap-stop:always;opacity:0.45;transform:scale(0.955);transition:opacity 0.5s ease,transform 0.5s ease;will-change:opacity,transform}
-      .ev-stat.ev-slide-in{opacity:1;transform:scale(1)}
-      .ev-stat{display:flex;flex-direction:column;justify-content:center;text-align:left;min-height:224px;padding:30px 26px;background:linear-gradient(165deg,rgba(61,217,232,0.07),rgba(139,92,246,0.055));border:1px solid rgba(255,255,255,0.09);border-radius:22px;box-shadow:0 18px 42px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.05)}
-      .ev-stat:first-child{padding-left:26px}
-      .ev-stat:last-child{padding-right:26px}
-      .ev-num{font-size:54px;margin-bottom:14px}
-      .ev-label{font-size:15px;margin-bottom:10px}
-      .ev-sub{font-size:13.5px;line-height:1.65}
-      .ev-conclusion{margin:30px auto 0}
-      .ev-conclusion-inner{display:none}
-      .ev-more-btn{display:none}
-      .ev-rest-text{display:inline}
-      .ev-source.ev-rest-block{display:block}
-      .ev-dots{display:flex;justify-content:center;gap:8px;margin-top:26px}
-      .ev-dots .ev-dot{width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,0.22);transition:width 0.35s ease,background 0.35s ease}
-      .ev-dots .ev-dot.active{width:22px;background:linear-gradient(90deg,#3DD9E8,#8B5CF6)}
-    }
-    @media(max-width:768px) and (prefers-reduced-motion:reduce){
-      .ev-stat,.ev-conclusion{transition:none;opacity:1;transform:none}
-      .ev-scroller{scroll-behavior:auto}
-    }
     .bio-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:1040px;margin:0 auto}
     .bio-card{background:#FAFCFC;border:1px solid rgba(11,82,90,0.08);border-radius:22px;padding:36px 32px}
     .bio-card.bio-12{background:linear-gradient(160deg, rgba(61,217,232,0.06), rgba(139,92,246,0.05));border:1px solid rgba(61,217,232,0.18)}
@@ -438,7 +390,7 @@
     @media(max-width:860px){.team-grid{grid-template-columns:1fr 1fr}}
     @media(max-width:560px){.team-grid{grid-template-columns:1fr;max-width:360px}}
     .dark-continuum{background:linear-gradient(to bottom,#071018 0%,#060F16 30%,#050D14 60%,#060F16 100%)}
-    .dark-continuum .app-section{background:transparent}.dark-continuum #evidencia{background:transparent!important}.dark-continuum .glp-section{background:transparent}.dark-continuum #atlas{background:transparent!important}.dark-continuum #modulos{background:transparent!important}.dark-continuum #condicoes{background:transparent!important}
+    .dark-continuum .app-section{background:transparent}.dark-continuum .glp-section{background:transparent}.dark-continuum #atlas{background:transparent!important}.dark-continuum #modulos{background:transparent!important}.dark-continuum #condicoes{background:transparent!important}
     .glp-section{background:var(--dark-bg);padding:120px 0;position:relative;overflow:hidden}
     .glp-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 60% at 0% 50%,rgba(61,217,232,0.05) 0%,transparent 65%),radial-gradient(ellipse 45% 50% at 100% 20%,rgba(139,92,246,0.05) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 60% 90%,rgba(74,222,128,0.04) 0%,transparent 55%)}
     .glp-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(61,217,232,0.08);border:1px solid rgba(61,217,232,0.22);border-radius:999px;padding:6px 16px;margin-bottom:28px;font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan)}
@@ -591,7 +543,7 @@
     .process-step h3{font-size:clamp(36px,5.5vw,68px);letter-spacing:-0.045em;line-height:1.08}
     .layer-dark .label{color:rgba(61,217,232,0.55)}.layer-dark h3{color:#fff}.layer-dark .step-text p{color:rgba(255,255,255,0.6)}.layer-dark .step-detail-item{color:rgba(255,255,255,0.6)}.layer-dark .step-detail-item svg{color:var(--cyan)}.layer-dark .step-detail-item strong{color:rgba(255,255,255,0.9)}.layer-dark .step-subhead{color:rgba(61,217,232,0.85)}.layer-dark .step-atlas-top h3{color:#fff}.layer-dark .step-atlas-right p{color:rgba(255,255,255,0.589)}.layer-dark .step-atlas-right .step-detail-item{color:rgba(255,255,255,0.6)}.layer-dark .process-intro h2{color:#fff}.layer-dark .process-intro p{color:rgba(255,255,255,0.589)}
     .hero h1{font-size:clamp(34px,4.6vw,60px);letter-spacing:-0.045em;white-space:nowrap}
-    .process-intro h2,.problem-intro h2,.ev-header h2,.sp-header h2,.modules-header h2,.team-header h2,.team-header-left h2,.tst-header h2,.faq-header h2,.app-text h2{font-size:clamp(30px,4vw,54px);line-height:1.15;letter-spacing:-0.04em}
+    .process-intro h2,.problem-intro h2,.sp-header h2,.modules-header h2,.team-header h2,.team-header-left h2,.tst-header h2,.faq-header h2,.app-text h2{font-size:clamp(30px,4vw,54px);line-height:1.15;letter-spacing:-0.04em}
     .cta-section h2{font-size:clamp(40px,7vw,84px)}
     .process-step.step-atlas{display:block}
     .step-atlas-top{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-bottom:32px}
@@ -675,6 +627,7 @@
     <ul class="nav-links-center">
       <li><a href="how-it-works.html">How it works</a></li>
       <li><a href="#atlas">What we test</a></li>
+      <li><a href="science.html">The science</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -693,6 +646,7 @@
 <div class="mob-menu" id="mobMenu">
   <a href="how-it-works.html" onclick="closeMob()">How it works</a>
   <a href="#atlas" onclick="closeMob()">What we test</a>
+  <a href="science.html" onclick="closeMob()">The science</a>
   <a href="#faq" onclick="closeMob()">FAQ</a>
   <a href="contact.html" onclick="closeMob()">Contact</a>
   <a href="login.html" onclick="closeMob()" style="text-align:center;color:rgba(0,0,0,0.65);">Sign in</a>
@@ -1724,61 +1678,6 @@
   </div>
 </section>
 
-<!-- SCIENTIFIC EVIDENCE -->
-<section class="step-layer layer-dark" id="evidencia">
-  <div class="container">
-    <div class="ev-header fade">
-      <span class="label" style="color:var(--cyan);border-color:rgba(61,217,232,0.2);">Scientific evidence</span>
-      <h2 style="color:#fff;">Prevention works.<br/><span class="grad-text">The numbers prove it.</span></h2>
-      <p style="color:rgba(255,255,255,0.589);">Published clinical studies demonstrate that continuous preventive monitoring and telemedicine produce measurable, consistent results.</p>
-    </div>
-    <!-- Stats + conclusion: static row on desktop, swipeable carousel on mobile -->
-    <div class="ev-scroller fade fade-d2" id="evScroller">
-      <div class="ev-track">
-
-    <div class="ev-stats fade fade-d2">
-      <div class="ev-stat">
-        <div class="ev-num">−18<span class="ev-unit">mg/dL</span></div>
-        <div class="ev-label">LDL reduction</div>
-        <div class="ev-sub">vs. −5.7 mg/dL in conventional care, in remote monitoring programmes</div>
-      </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">−5.6<span class="ev-unit">mmHg</span></div>
-        <div class="ev-label">Systolic reduction</div>
-        <div class="ev-sub">at 6 and 12 months, in a review of 54 clinical trials combining telemonitoring and teleconsultation</div>
-      </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">−0.45<span class="ev-unit">%</span></div>
-        <div class="ev-label">HbA1c reduction</div>
-        <div class="ev-sub">in type 2 diabetes patients followed remotely, with direct impact on cardiovascular risk</div>
-      </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">84<span class="ev-unit">%</span></div>
-        <div class="ev-label">Patient satisfaction</div>
-        <div class="ev-sub">rated the remote monitoring programme as very useful, with higher reported therapeutic adherence</div>
-      </div>
-    </div>
-
-      </div><!-- /ev-track -->
-    </div><!-- /ev-scroller -->
-
-    <!-- Progress indicator (mobile only) -->
-    <div class="ev-dots" id="evDots" aria-hidden="true"></div>
-
-    <!-- Conclusion (static, below the carousel) -->
-    <div class="ev-conclusion fade fade-d3" id="evConclusion">
-      <div class="ev-conclusion-inner">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>The best results come from combining clinical monitoring with continuous follow-up.<span class="ev-rest-text"> Telemedicine transforms episodic care into regular prevention, increasing adherence, risk factor control and quality of life.</span></p>
-      </div>
-      <div class="ev-source ev-rest-block">Sources: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
-    </div>
-
-  </div>
-</section>
 
 <!-- GLP-FRIENDLY -->
 <section class="glp-section" id="glp-friendly">
@@ -2443,51 +2342,6 @@
 
   initAtlas();
 
-  function toggleEvConclusion() {
-    const box = document.getElementById('evConclusion');
-    const label = document.getElementById('evMoreLabel');
-    const icon = document.getElementById('evMoreIcon');
-    const expanded = box.classList.toggle('expanded');
-    label.textContent = expanded ? 'See less' : 'See more';
-    icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
-  }
-
-  // ── Evidence carousel (mobile only): subtle slide-in + progress dots ──
-  function initEvCarousel() {
-    const scroller = document.getElementById('evScroller');
-    const dotsWrap = document.getElementById('evDots');
-    if (!scroller || !dotsWrap) return;
-    const slides = Array.from(scroller.querySelectorAll('.ev-stat, .ev-conclusion'));
-    if (!slides.length) return;
-
-    if (!dotsWrap.childElementCount) {
-      slides.forEach((_, i) => {
-        const d = document.createElement('span');
-        d.className = 'ev-dot' + (i === 0 ? ' active' : '');
-        dotsWrap.appendChild(d);
-      });
-    }
-    const dots = Array.from(dotsWrap.children);
-    const ratios = new Map();
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        ratios.set(e.target, e.intersectionRatio);
-        if (e.intersectionRatio >= 0.55) e.target.classList.add('ev-slide-in');
-      });
-      let best = 0, bestR = -1;
-      slides.forEach((s, i) => {
-        const r = ratios.get(s) || 0;
-        if (r > bestR) { bestR = r; best = i; }
-      });
-      dots.forEach((d, i) => d.classList.toggle('active', i === best));
-    }, { root: scroller, threshold: [0, 0.25, 0.55, 0.8, 1] });
-
-    slides.forEach(s => io.observe(s));
-    slides[0].classList.add('ev-slide-in');
-  }
-  initEvCarousel();
-
   function initSwipeCarousel(scrollerId, dotsId, slideSelector, slideInClass, dotClass) {
     const scroller = document.getElementById(scrollerId);
     const dotsWrap = document.getElementById(dotsId);
@@ -2527,7 +2381,7 @@
   initSwipeCarousel('modScroller', 'modDots', '.module-card', 'mod-slide-in', 'mod-dot');
 
   (function resetCarouselScroll() {
-    const ids = ['evScroller', 'prScroller', 'yrScroller', 'modScroller'];
+    const ids = ['prScroller', 'yrScroller', 'modScroller'];
     const reset = () => ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.scrollLeft = 0;

@@ -805,153 +805,6 @@
        WHY LYVOO - stats-forward
     ────────────────────────────────────────── */
 
-    /* ── Evidência científica ── */
-    .ev-header { text-align: center; max-width: 640px; margin: 0 auto 60px; }
-    .ev-header h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 800; letter-spacing: -0.04em; margin: 14px 0 16px; }
-    .ev-header p { font-size: 17px; line-height: 1.75; max-width: 640px; margin: 0 auto; }
-
-    .ev-stats {
-      display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-      gap: 0; align-items: start; margin-bottom: 56px;
-    }
-    .ev-stat { padding: 0 32px; text-align: center; }
-    .ev-stat:first-child { padding-left: 0; }
-    .ev-stat:last-child  { padding-right: 0; }
-
-    .ev-num {
-      font-size: clamp(36px, 5vw, 64px); font-weight: 800;
-      letter-spacing: -0.04em; line-height: 1;
-      background: linear-gradient(135deg, #3DD9E8, #8B5CF6);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text; margin-bottom: 10px;
-    }
-    .ev-unit { font-size: 0.45em; font-weight: 700; vertical-align: super; }
-    .ev-label { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 0.01em; }
-    .ev-sub { font-size: 12px; color: rgba(255, 255, 255, 0.589); line-height: 1.6; }
-
-    .ev-divider { width: 1px; background: rgba(255,255,255,0.08); align-self: stretch; margin: 8px 0; }
-
-    .ev-conclusion { max-width: 760px; margin: 0 auto; }
-    .ev-conclusion-inner {
-      display: flex; gap: 16px; align-items: flex-start;
-      background: rgba(61,217,232,0.06); border: 1px solid rgba(61,217,232,0.15);
-      border-radius: 16px; padding: 24px 28px; margin-bottom: 20px;
-    }
-    .ev-conclusion-inner svg { flex-shrink: 0; margin-top: 2px; }
-    .ev-conclusion-inner p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.75; margin: 0; }
-    .ev-source { text-align: center; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.04em; }
-    .ev-more-btn { display: none; }
-
-    /* Carrossel: wrappers inertes no desktop/tablet (sem caixa), ativos só no telemóvel */
-    .ev-scroller, .ev-track { display: contents; }
-    .ev-dots { display: none; }
-
-    @media (max-width: 760px) {
-      .ev-rest-text, .ev-source.ev-rest-block { display: none; }
-      .ev-conclusion.expanded .ev-rest-text { display: inline; }
-      .ev-conclusion.expanded .ev-source.ev-rest-block { display: block; }
-      .ev-more-btn {
-        display: flex; align-items: center; gap: 6px; margin: 14px auto 0;
-        background: none; border: none; color: var(--cyan); font-size: 13px; font-weight: 700;
-        cursor: pointer; padding: 4px 8px;
-      }
-    }
-
-    @media (max-width: 860px) {
-      .ev-stats { grid-template-columns: 1fr 1fr; gap: 40px; }
-      .ev-divider { display: none; }
-      .ev-stat { padding: 0; }
-    }
-
-    /* ── Telemóvel: experiência swipeable de storytelling (estilo Apple / WHOOP) ── */
-    @media (max-width: 768px) {
-      .ev-header { margin-bottom: 34px; }
-
-      /* viewport de scroll horizontal, edge-to-edge */
-      .ev-scroller {
-        display: block;
-        margin: 0 -22px;
-        padding: 8px 0 2px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scroll-padding-inline: 22px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        overscroll-behavior-x: contain;
-      }
-      .ev-scroller::-webkit-scrollbar { display: none; }
-
-      /* a faixa que se move */
-      .ev-track {
-        display: flex;
-        align-items: stretch;
-        gap: 14px;
-        width: max-content;
-        padding: 0 22px;
-      }
-
-      /* achatar a grelha de stats para que cada stat seja um slide */
-      .ev-stats { display: contents; margin: 0; }
-      .ev-divider { display: none; }
-
-      .ev-stat {
-        flex: 0 0 80vw;
-        max-width: 360px;
-        margin: 0;
-        scroll-snap-align: center;
-        scroll-snap-stop: always;
-        opacity: 0.45;
-        transform: scale(0.955);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-        will-change: opacity, transform;
-      }
-      .ev-stat.ev-slide-in { opacity: 1; transform: scale(1); }
-
-      /* chrome premium para os slides de estatística */
-      .ev-stat {
-        display: flex; flex-direction: column; justify-content: center;
-        text-align: left;
-        min-height: 224px;
-        padding: 30px 26px;
-        background: linear-gradient(165deg, rgba(61,217,232,0.07), rgba(139,92,246,0.055));
-        border: 1px solid rgba(255,255,255,0.09);
-        border-radius: 22px;
-        box-shadow: 0 18px 42px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
-      }
-      /* anular os resets de padding do desktop (1.º e último card) */
-      .ev-stat:first-child { padding-left: 26px; }
-      .ev-stat:last-child { padding-right: 26px; }
-      .ev-num { font-size: 54px; margin-bottom: 14px; }
-      .ev-label { font-size: 15px; margin-bottom: 10px; }
-      .ev-sub { font-size: 13.5px; line-height: 1.65; }
-
-      /* conclusão: estática, abaixo do carrossel, texto completo sem "ver mais" */
-      .ev-conclusion { margin: 30px auto 0; }
-      .ev-conclusion-inner { display: none; }
-      .ev-more-btn { display: none; }
-      .ev-rest-text { display: inline; }
-      .ev-source.ev-rest-block { display: block; }
-
-      /* indicador de progresso */
-      .ev-dots {
-        display: flex; justify-content: center; gap: 8px; margin-top: 26px;
-      }
-      .ev-dots .ev-dot {
-        width: 7px; height: 7px; border-radius: 999px;
-        background: rgba(255,255,255,0.22);
-        transition: width 0.35s ease, background 0.35s ease;
-      }
-      .ev-dots .ev-dot.active {
-        width: 22px;
-        background: linear-gradient(90deg, #3DD9E8, #8B5CF6);
-      }
-    }
-
-    @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
-      .ev-stat, .ev-conclusion { transition: none; opacity: 1; transform: none; }
-      .ev-scroller { scroll-behavior: auto; }
-    }
 
     /* ── O que muda no seu corpo (biomarcadores) ── */
     .bio-grid {
@@ -1239,7 +1092,6 @@
       );
     }
     .dark-continuum .app-section  { background: transparent; }
-    .dark-continuum #evidencia    { background: transparent !important; }
     .dark-continuum .glp-section  { background: transparent; }
     .dark-continuum #atlas        { background: transparent !important; }
     .dark-continuum #modulos      { background: transparent !important; }
@@ -1673,7 +1525,6 @@
     .hero h1 { font-size: clamp(34px, 4.6vw, 60px); letter-spacing: -0.045em; white-space: nowrap; }
     .process-intro h2,
     .problem-intro h2,
-    .ev-header h2,
     .sp-header h2,
     .modules-header h2,
     .team-header h2,
@@ -1825,6 +1676,7 @@
     <ul class="nav-links-center">
       <li><a href="como-funciona.html">Como funciona</a></li>
       <li><a href="#atlas">O que testamos</a></li>
+      <li><a href="ciencia.html">A ciência</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
@@ -1843,6 +1695,7 @@
 <div class="mob-menu" id="mobMenu">
   <a href="como-funciona.html" onclick="closeMob()">Como funciona</a>
   <a href="#atlas" onclick="closeMob()">O que testamos</a>
+  <a href="ciencia.html" onclick="closeMob()">A ciência</a>
   <a href="#faq" onclick="closeMob()">FAQ</a>
   <a href="contacto.html" onclick="closeMob()">Contacto</a>
   <a href="login.html" onclick="closeMob()" style="text-align:center;border:1.5px solid var(--border);margin-top:6px;">Entrar</a>
@@ -3124,64 +2977,6 @@
   </div>
 </section>
 
-<!-- ── EVIDÊNCIA CIENTÍFICA ── -->
-<section class="step-layer layer-dark" id="evidencia">
-  <div class="container">
-
-    <div class="ev-header fade">
-      <span class="label" style="color:var(--cyan);border-color:rgba(61,217,232,0.2);">Evidência científica</span>
-      <h2 style="color:#fff;">A prevenção funciona.<br/><span class="grad-text">Os números provam.</span></h2>
-      <p style="color:rgba(255,255,255,0.589);">Estudos clínicos publicados demonstram que o acompanhamento preventivo contínuo e a telemedicina produzem resultados mensuráveis e consistentes.</p>
-    </div>
-
-    <!-- Stats + conclusão: linha estática no desktop, carrossel swipeable no telemóvel -->
-    <div class="ev-scroller fade fade-d2" id="evScroller">
-      <div class="ev-track">
-
-    <!-- Big stats row -->
-    <div class="ev-stats fade fade-d2">
-      <div class="ev-stat">
-        <div class="ev-num">−18<span class="ev-unit">mg/dL</span></div>
-        <div class="ev-label">Redução de LDL</div>
-        <div class="ev-sub">vs. −5,7 mg/dL nos cuidados convencionais, em programas de acompanhamento remoto</div>
-      </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">−5,6<span class="ev-unit">mmHg</span></div>
-        <div class="ev-label">Redução sistólica</div>
-        <div class="ev-sub">aos 6 e 12 meses, numa revisão de 54 ensaios clínicos combinando telemonitorização e teleconsultas</div>
-      </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">−0,45<span class="ev-unit">%</span></div>
-        <div class="ev-label">Redução de HbA1c</div>
-        <div class="ev-sub">em pessoas com diabetes tipo 2 acompanhadas remotamente, com impacto direto no risco cardiovascular</div>
-      </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">84<span class="ev-unit">%</span></div>
-        <div class="ev-label">Satisfação dos pacientes</div>
-        <div class="ev-sub">consideraram o programa de acompanhamento remoto muito útil, com maior adesão terapêutica reportada</div>
-      </div>
-    </div>
-
-      </div><!-- /ev-track -->
-    </div><!-- /ev-scroller -->
-
-    <!-- Indicador de progresso (só telemóvel) -->
-    <div class="ev-dots" id="evDots" aria-hidden="true"></div>
-
-    <!-- Conclusão (estática, abaixo do carrossel) -->
-    <div class="ev-conclusion fade fade-d3" id="evConclusion">
-      <div class="ev-conclusion-inner">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>Os melhores resultados surgem da combinação entre acompanhamento clínico e monitorização contínua.<span class="ev-rest-text"> A telemedicina transforma cuidados episódicos em prevenção regular, aumentando a adesão, o controlo dos fatores de risco e a qualidade de vida.</span></p>
-      </div>
-      <div class="ev-source ev-rest-block">Fontes: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis  · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
-    </div>
-
-  </div>
-</section>
 
 
 
@@ -4077,51 +3872,6 @@
 
   initAtlas();
 
-  function toggleEvConclusion() {
-    const box = document.getElementById('evConclusion');
-    const label = document.getElementById('evMoreLabel');
-    const icon = document.getElementById('evMoreIcon');
-    const expanded = box.classList.toggle('expanded');
-    label.textContent = expanded ? 'Ver menos' : 'Ver mais';
-    icon.style.transform = expanded ? 'rotate(180deg)' : 'rotate(0deg)';
-  }
-
-  // ── Carrossel de evidência (só telemóvel): slide-in subtil + dots de progresso ──
-  function initEvCarousel() {
-    const scroller = document.getElementById('evScroller');
-    const dotsWrap = document.getElementById('evDots');
-    if (!scroller || !dotsWrap) return;
-    const slides = Array.from(scroller.querySelectorAll('.ev-stat, .ev-conclusion'));
-    if (!slides.length) return;
-
-    if (!dotsWrap.childElementCount) {
-      slides.forEach((_, i) => {
-        const d = document.createElement('span');
-        d.className = 'ev-dot' + (i === 0 ? ' active' : '');
-        dotsWrap.appendChild(d);
-      });
-    }
-    const dots = Array.from(dotsWrap.children);
-    const ratios = new Map();
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        ratios.set(e.target, e.intersectionRatio);
-        if (e.intersectionRatio >= 0.55) e.target.classList.add('ev-slide-in');
-      });
-      let best = 0, bestR = -1;
-      slides.forEach((s, i) => {
-        const r = ratios.get(s) || 0;
-        if (r > bestR) { bestR = r; best = i; }
-      });
-      dots.forEach((d, i) => d.classList.toggle('active', i === best));
-    }, { root: scroller, threshold: [0, 0.25, 0.55, 0.8, 1] });
-
-    slides.forEach(s => io.observe(s));
-    slides[0].classList.add('ev-slide-in'); // primeiro slide visível à entrada
-  }
-  initEvCarousel();
-
   // ── Carrossel genérico (telemóvel): slide-in subtil + dots de progresso ──
   function initSwipeCarousel(scrollerId, dotsId, slideSelector, slideInClass, dotClass) {
     const scroller = document.getElementById(scrollerId);
@@ -4167,7 +3917,7 @@
   // recarregar a página (mesmo comportamento de "scroll anchoring" do scroll vertical) -
   // força sempre o regresso ao 1.º slide.
   (function resetCarouselScroll() {
-    const ids = ['evScroller', 'prScroller', 'yrScroller', 'modScroller'];
+    const ids = ['prScroller', 'yrScroller', 'modScroller'];
     const reset = () => ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.scrollLeft = 0;
