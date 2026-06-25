@@ -578,12 +578,49 @@
     .cmp-solution-title { font-size: 17px; font-weight: 700; color: var(--teal); margin: 0 0 5px; line-height: 1.4; }
     .cmp-solution-sub   { font-size: 13px; color: var(--ink-2); margin: 0; line-height: 1.6; }
 
-    @media (max-width: 680px) {
-      .cmp-row { grid-template-columns: 1fr; gap: 10px; padding: 20px 0; }
-      .cmp-arrow { justify-content: flex-start; transform: rotate(90deg); }
-      .cmp-solution { padding-left: 0; border-left: none; border-top: 2px solid rgba(11,82,90,0.12); padding-top: 12px; }
-      .cmp-problem-sub { display: none; }
-      .cmp-arrow { display: none; }
+    /* Carrossel: wrappers inertes no desktop/tablet (sem caixa), ativos só no telemóvel */
+    .pr-scroller, .pr-track { display: contents; }
+    .pr-dots { display: none; }
+
+    /* ── Telemóvel: mesmo storytelling swipeable da secção "Evidência científica" ── */
+    @media (max-width: 768px) {
+      .pr-scroller {
+        display: block; margin: 0 -22px; padding: 8px 0 2px;
+        overflow-x: auto; overflow-y: hidden;
+        scroll-snap-type: x mandatory; scroll-padding-inline: 22px;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        overscroll-behavior-x: contain;
+      }
+      .pr-scroller::-webkit-scrollbar { display: none; }
+      .pr-track { display: flex; align-items: stretch; gap: 14px; width: max-content; padding: 0 22px; }
+      .cmp-rows { display: contents; margin: 0; }
+
+      .cmp-row {
+        grid-template-columns: 1fr;
+        flex: 0 0 80vw; max-width: 360px; margin: 0; gap: 14px;
+        padding: 28px 26px; border-top: none;
+        scroll-snap-align: center; scroll-snap-stop: always;
+        opacity: 0.45; transform: scale(0.955);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        will-change: opacity, transform;
+        background: #fff; border: 1px solid var(--border); border-radius: 22px;
+        box-shadow: 0 14px 34px rgba(11,18,21,0.07);
+      }
+      .cmp-row.pr-slide-in { opacity: 1; transform: scale(1); }
+
+      .cmp-problem { padding-right: 0; }
+      .cmp-problem-sub { display: block; }
+      .cmp-arrow { display: flex; justify-content: flex-start; transform: rotate(90deg); margin-left: 36px; }
+      .cmp-solution { padding-left: 0; border-left: none; border-top: 2px solid rgba(11,82,90,0.12); padding-top: 14px; }
+
+      .pr-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+      .pr-dots .pr-dot { width: 7px; height: 7px; border-radius: 999px; background: rgba(11,82,90,0.18); transition: width 0.35s ease, background 0.35s ease; }
+      .pr-dots .pr-dot.active { width: 22px; background: linear-gradient(90deg, var(--teal), var(--violet)); }
+    }
+
+    @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+      .cmp-row { transition: none; opacity: 1; transform: none; }
+      .pr-scroller { scroll-behavior: auto; }
     }
 
     /* Visual 3: Report mockup */
@@ -1513,6 +1550,7 @@
     }
     @media (max-width: 600px) {
       .modules-grid { grid-template-columns: 1fr; }
+      .modules-grid.collapsed .module-card:nth-child(n+4) { display: none; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
       .footer-grid > div:first-child, .footer-grid > div:last-child { grid-column: 1 / -1; }
       .footer-grid > div:first-child { text-align: center; }
@@ -2089,8 +2127,10 @@
       <p>A maioria faz análises uma vez por ano e fica meses à espera de uma consulta.<br/>Sem contexto. Sem plano. Sem continuidade.</p>
     </div>
 
-    <!-- Editorial comparison -->
-    <div class="cmp-rows fade fade-d2">
+    <!-- Editorial comparison: linha estática no desktop, carrossel swipeable no telemóvel -->
+    <div class="pr-scroller fade fade-d2" id="prScroller">
+      <div class="pr-track">
+    <div class="cmp-rows">
 
       <div class="cmp-row">
         <div class="cmp-problem">
@@ -2161,6 +2201,12 @@
       </div>
 
     </div>
+      </div><!-- /pr-track -->
+    </div><!-- /pr-scroller -->
+
+    <!-- Indicador de progresso (só telemóvel) -->
+    <div class="pr-dots" id="prDots" aria-hidden="true"></div>
+
   </div>
 </section>
 
@@ -2254,24 +2300,24 @@
       </div>
 
       <div class="module-card fade fade-d2">
+        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Mars symbol ♂ --><circle cx="10" cy="14" r="5.5"/><line x1="14" y1="10" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg></div>
+        <div class="mod-name">Hormonal Masculino</div>
+        <div class="mod-desc">Testosterona total e livre, SHBG, PSA, FSH e LH. Avaliação hormonal masculina completa com interpretação clínica.</div>
+        <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-masculino.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
+      </div>
+
+      <div class="module-card fade">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/></svg></div>
         <div class="mod-name">Vitaminas</div>
         <div class="mod-desc">Vitamina D, B12 e Folato. Avalie défices nutricionais que afetam energia, imunidade e saúde a longo prazo.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/vitaminas.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
-      <div class="module-card fade">
+      <div class="module-card fade fade-d1">
         <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
         <div class="mod-name">Teste de Intolerâncias Alimentares</div>
         <div class="mod-desc">Resposta imunitária (IgG) a 59 alimentos, organizados por grupo: laticínios, ovos, frutos, grãos, vegetais, carne, peixe, especiarias, sementes e nozes.</div>
         <div class="mod-footer"><a class="mod-add" href="modulos/intolerancias-alimentares.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
-      </div>
-
-      <div class="module-card fade fade-d1">
-        <div class="mod-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><!-- Mars symbol ♂ --><circle cx="10" cy="14" r="5.5"/><line x1="14" y1="10" x2="21" y2="3"/><polyline points="16 3 21 3 21 8"/></svg></div>
-        <div class="mod-name">Hormonal Masculino</div>
-        <div class="mod-desc">Testosterona total e livre, SHBG, PSA, FSH e LH. Avaliação hormonal masculina completa com interpretação clínica.</div>
-        <div class="mod-footer"><a class="mod-add" href="modulos/hormonal-masculino.html">Saber mais <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13L13 3M13 13V3H3"/></svg></a></div>
       </div>
 
       <div class="module-card fade fade-d2">
@@ -2674,6 +2720,51 @@
       .yr-dot { width: 48px; height: 48px; font-size: 13.5px; }
       .yr-card { padding: 16px 16px; }
     }
+
+    /* Carrossel: wrappers inertes no desktop/tablet (sem caixa), ativos só no telemóvel */
+    .yr-scroller, .yr-track { display: contents; }
+    .yr-pdots { display: none; }
+
+    /* ── Telemóvel: mesmo storytelling swipeable das outras secções ── */
+    @media (max-width: 768px) {
+      .yr-scroller {
+        display: block; margin: 0 -22px; padding: 8px 0 2px;
+        overflow-x: auto; overflow-y: hidden;
+        scroll-snap-type: x mandatory; scroll-padding-inline: 22px;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        overscroll-behavior-x: contain;
+      }
+      .yr-scroller::-webkit-scrollbar { display: none; }
+      .yr-track { display: flex; align-items: stretch; gap: 14px; width: max-content; padding: 0 22px; }
+      .yr-items { display: contents; }
+      .yr-spine { display: none; }
+
+      .yr-item {
+        display: block;
+        flex: 0 0 80vw; max-width: 360px; margin: 0; padding-bottom: 0;
+        scroll-snap-align: center; scroll-snap-stop: always;
+        opacity: 0.45; transform: scale(0.955);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        will-change: opacity, transform;
+      }
+      .yr-item.yr-slide-in { opacity: 1; transform: scale(1); }
+      .yr-rail { display: none; }
+      .yr-card {
+        height: 100%;
+        background: linear-gradient(165deg, rgba(11,82,90,0.04), rgba(139,92,246,0.045));
+        border: 1px solid rgba(11,82,90,0.12); border-radius: 22px; padding: 28px 26px;
+        box-shadow: 0 14px 34px rgba(11,18,21,0.07);
+      }
+
+      .yr-pdots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+      .yr-pdots .yr-pdot { width: 7px; height: 7px; border-radius: 999px; background: rgba(11,82,90,0.18); transition: width 0.35s ease, background 0.35s ease; }
+      .yr-pdots .yr-pdot.active { width: 22px; background: linear-gradient(90deg, var(--teal), var(--violet)); }
+    }
+
+    @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+      .yr-item { transition: none; opacity: 1; transform: none; }
+      .yr-scroller { scroll-behavior: auto; }
+    }
   </style>
 
   <div class="container">
@@ -2690,6 +2781,8 @@
 
       <!-- ── Direita: timeline ── -->
       <div class="yr-timeline fade fade-d1">
+        <div class="yr-scroller" id="yrScroller">
+        <div class="yr-track">
         <div class="yr-items">
         <div class="yr-spine"></div>
 
@@ -2754,6 +2847,9 @@
         </div>
 
         </div><!-- /yr-items -->
+        </div><!-- /yr-track -->
+        </div><!-- /yr-scroller -->
+        <div class="yr-pdots" id="yrDots" aria-hidden="true"></div>
         <p class="yr-bio-note"><strong>Exemplo ilustrativo</strong> - ApoB (g/L), marcador-chave de risco cardiovascular, ao longo de 3 reavaliações.</p>
       </div>
     </div>
@@ -3967,6 +4063,43 @@
     slides[0].classList.add('ev-slide-in'); // primeiro slide visível à entrada
   }
   initEvCarousel();
+
+  // ── Carrossel genérico (telemóvel): slide-in subtil + dots de progresso ──
+  function initSwipeCarousel(scrollerId, dotsId, slideSelector, slideInClass, dotClass) {
+    const scroller = document.getElementById(scrollerId);
+    const dotsWrap = document.getElementById(dotsId);
+    if (!scroller || !dotsWrap) return;
+    const slides = Array.from(scroller.querySelectorAll(slideSelector));
+    if (!slides.length) return;
+
+    if (!dotsWrap.childElementCount) {
+      slides.forEach((_, i) => {
+        const d = document.createElement('span');
+        d.className = dotClass + (i === 0 ? ' active' : '');
+        dotsWrap.appendChild(d);
+      });
+    }
+    const dots = Array.from(dotsWrap.children);
+    const ratios = new Map();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        ratios.set(e.target, e.intersectionRatio);
+        if (e.intersectionRatio >= 0.55) e.target.classList.add(slideInClass);
+      });
+      let best = 0, bestR = -1;
+      slides.forEach((s, i) => {
+        const r = ratios.get(s) || 0;
+        if (r > bestR) { bestR = r; best = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === best));
+    }, { root: scroller, threshold: [0, 0.25, 0.55, 0.8, 1] });
+
+    slides.forEach(s => io.observe(s));
+    slides[0].classList.add(slideInClass);
+  }
+  initSwipeCarousel('prScroller', 'prDots', '.cmp-row', 'pr-slide-in', 'pr-dot');
+  initSwipeCarousel('yrScroller', 'yrDots', '.yr-item', 'yr-slide-in', 'yr-pdot');
 
   function toggleBaGrid() {
     const wrap = document.getElementById('baGridWrap');
