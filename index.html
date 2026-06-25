@@ -1550,7 +1550,6 @@
     }
     @media (max-width: 600px) {
       .modules-grid { grid-template-columns: 1fr; }
-      .modules-grid.collapsed .module-card:nth-child(n+4) { display: none; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
       .footer-grid > div:first-child, .footer-grid > div:last-child { grid-column: 1 / -1; }
       .footer-grid > div:first-child { text-align: center; }
@@ -1570,6 +1569,44 @@
       .cf-section { padding: 72px 0; }
       .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
       .footer-bottom-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+    }
+
+    /* Carrossel: wrappers inertes no desktop/tablet (sem caixa), ativos só no telemóvel */
+    .mod-scroller, .mod-track { display: contents; }
+    .mod-dots { display: none; }
+
+    /* ── Telemóvel: módulos opcionais em carrossel swipeable (mesmo padrão das outras secções) ── */
+    @media (max-width: 768px) {
+      .modules-toggle { display: none !important; }
+      .mod-scroller {
+        display: block; margin: 0 -22px; padding: 8px 0 2px;
+        overflow-x: auto; overflow-y: hidden;
+        scroll-snap-type: x mandatory; scroll-padding-inline: 22px;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        overscroll-behavior-x: contain;
+      }
+      .mod-scroller::-webkit-scrollbar { display: none; }
+      .mod-track { display: flex; align-items: stretch; gap: 14px; width: max-content; padding: 0 22px; }
+      .modules-grid { display: contents; }
+      .modules-grid.collapsed .module-card:nth-child(n+1) { display: flex; }
+
+      .module-card {
+        flex: 0 0 80vw; max-width: 320px; margin: 0;
+        scroll-snap-align: center; scroll-snap-stop: always;
+        opacity: 0.45; transform: scale(0.955);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        will-change: opacity, transform;
+      }
+      .module-card.mod-slide-in { opacity: 1; transform: scale(1); }
+
+      .mod-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+      .mod-dots .mod-dot { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,0.22); transition: width 0.35s ease, background 0.35s ease; }
+      .mod-dots .mod-dot.active { width: 22px; background: linear-gradient(90deg, #3DD9E8, #8B5CF6); }
+    }
+
+    @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+      .module-card { transition: none; opacity: 1; transform: none; }
+      .mod-scroller { scroll-behavior: auto; }
     }
 
     /* mobile menu */
@@ -2283,6 +2320,8 @@
       <h2 class="fade fade-d1"><span class="grad-text">Precisão</span> individual</h2>
       <p class="fade fade-d2">Adicione análises especializadas ao seu plano.<br/>Cada módulo inclui análise, interpretação clínica e recomendações específicas.</p>
     </div>
+    <div class="mod-scroller" id="modScroller">
+    <div class="mod-track">
     <div class="modules-grid collapsed" id="modulesGrid">
 
       <div class="module-card module-card--highlight fade">
@@ -2370,6 +2409,9 @@
       </div>
 
     </div>
+    </div><!-- /mod-track -->
+    </div><!-- /mod-scroller -->
+    <div class="mod-dots" id="modDots" aria-hidden="true"></div>
     <button class="modules-toggle" id="modulesToggle" onclick="toggleModules()" aria-expanded="false" aria-controls="modulesGrid">
       <span class="mt-label-more">Ver mais</span>
       <span class="mt-label-less">Ver menos</span>
@@ -4100,6 +4142,7 @@
   }
   initSwipeCarousel('prScroller', 'prDots', '.cmp-row', 'pr-slide-in', 'pr-dot');
   initSwipeCarousel('yrScroller', 'yrDots', '.yr-item', 'yr-slide-in', 'yr-pdot');
+  initSwipeCarousel('modScroller', 'modDots', '.module-card', 'mod-slide-in', 'mod-dot');
 
   function toggleBaGrid() {
     const wrap = document.getElementById('baGridWrap');
