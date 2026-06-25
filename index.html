@@ -1042,6 +1042,14 @@
     @media (max-width: 760px) {
       .team-teaser-row { flex-direction: column; align-items: flex-start; gap: 28px; }
     }
+    /* Desktop: secção "Equipa" sempre no estado expandido (sem seta/clique) */
+    @media (min-width: 861px) {
+      .team-teaser-link { display: none !important; }
+      .team-teaser-row { flex-direction: column; justify-content: center; align-items: center; gap: 40px; }
+      .team-header-left { text-align: center; max-width: 640px; }
+      .team-reveal-wrap { max-height: none; opacity: 1; overflow: visible; }
+      .team-reveal-grid { transform: none; }
+    }
     .team-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 28px; max-width: 960px; margin: 0 auto;
