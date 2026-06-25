@@ -136,8 +136,6 @@
       border-radius: 999px; text-decoration: none; border: none;
       cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
     }
-    .btn-dark { background: var(--ink); color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.22); }
-    .btn-dark:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(0,0,0,0.32); }
     .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
     .btn-outline:hover { border-color: var(--ink-3); background: var(--surface); }
     .btn-white { background: #fff; color: var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,0.18); }
@@ -438,7 +436,6 @@
     /* 02 - plan checklist */
     .how-plan-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
     .how-plan-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
-    .how-plan-seal { font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; color: #0B7A85; background: rgba(61,217,232,0.16); border-radius: 999px; padding: 3px 9px; }
     .how-plan-list { display: flex; flex-direction: column; gap: 10px; }
     .how-check { display: flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
     .how-check-mark { width: 19px; height: 19px; border-radius: 6px; background: rgba(61,217,232,0.16); color: #0D7A87; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -464,13 +461,6 @@
       border-top: 1px solid var(--border);
     }
     .process-step:first-child { border-top: none; }
-    .process-step.reverse .step-text { order: 2; }
-    .process-step.reverse .step-visual { order: 1; }
-    .step-text h3 {
-      font-size: clamp(22px, 3vw, 34px); font-weight: 800;
-      letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.2;
-    }
-    .step-text p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin-bottom: 24px; }
     .step-detail { display: flex; flex-direction: column; gap: 12px; }
     .step-detail-item {
       display: flex; align-items: center; gap: 12px;
@@ -478,8 +468,6 @@
     }
     .step-detail-item svg { flex-shrink: 0; color: var(--teal-light); }
 
-    /* Step visuals */
-    .step-visual { position: relative; }
 
     /* Visual 1: Kit card */
     /* ── Conditions grid / marquee ── */
@@ -509,7 +497,6 @@
       border-color: rgba(61,217,232,0.3);
       color: rgba(255,255,255,0.88);
     }
-    .conditions-note { text-align: center; margin-top: 40px; font-size: 13px; color: rgba(255,255,255,0.589); }
 
 
     /* ── Problem section ── */
@@ -588,22 +575,6 @@
       .pr-scroller { scroll-behavior: auto; }
     }
 
-    /* Step 4 - imagem plano nutricional */
-    .step4-img-wrap {
-      border-radius: 20px; overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.13);
-      aspect-ratio: 4/3;
-    }
-    .step4-img-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: left center;
-      display: block;
-    }
-    .step-subhead {
-      font-size: clamp(18px, 2.2vw, 24px); font-weight: 700;
-      letter-spacing: -0.03em; color: var(--teal-light);
-      margin-bottom: 18px; margin-top: 2px;
-    }
     .step-detail-item strong { color: var(--ink); font-weight: 700; }
 
     
@@ -917,8 +888,6 @@
     .layer-dark .mod-add  { color: var(--cyan); }
 
     /* ── Equipa ── */
-    .team-header { text-align: center; margin-bottom: 60px; }
-    .team-header h2 { font-size: clamp(30px, 4vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: var(--ink); margin: 14px 0 16px; }
     .team-sub { font-size: 17px; color: var(--ink-2); max-width: 640px; margin: 0 auto; line-height: 1.75; }
     .team-teaser-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 56px; transition: justify-content 0.4s, gap 0.4s; }
     .team-header-left { text-align: left; max-width: 460px; transition: text-align 0.4s, max-width 0.4s; }
@@ -991,10 +960,6 @@
       .team-reveal-wrap { max-height: none; opacity: 1; overflow: visible; }
       .team-reveal-grid { transform: none; }
     }
-    .team-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 28px; max-width: 960px; margin: 0 auto;
-    }
     .team-card {
       background: var(--surface); border: 1.5px solid var(--border);
       border-radius: 24px; overflow: hidden;
@@ -1025,12 +990,6 @@
     .team-badge.ux     { background: rgba(139,92,246,0.10); color: var(--violet); border: 1px solid rgba(139,92,246,0.2); }
     .team-desc { font-size: 13.5px; color: var(--ink-3); line-height: 1.7; }
 
-    @media (max-width: 860px) {
-      .team-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 560px) {
-      .team-grid { grid-template-columns: 1fr; max-width: 360px; }
-    }
 
     /* ── GLP-Friendly ── */
     /* ── Gradiente contínuo: App + Evidência + GLP ── */
@@ -1316,8 +1275,6 @@
       .hero-proof { order: 4; margin-top: 24px; }
       .hero-actions { order: 5; margin-bottom: 24px; }
       .process-step { grid-template-columns: 1fr; gap: 40px; }
-      .process-step.reverse .step-text { order: 1; }
-      .process-step.reverse .step-visual { order: 2; }
       .app-inner { grid-template-columns: 1fr; }
       /* Mobile: mostrar o telemóvel (UI real da app) sem as bolhas flutuantes -
          resolve "o produto nunca é mostrado em mobile". .app-section tem
@@ -1446,11 +1403,9 @@
     /* Dark layer - text overrides */
     .layer-dark .label              { color: rgba(61,217,232,0.55); }
     .layer-dark h3                  { color: #fff; }
-    .layer-dark .step-text p        { color: rgba(255,255,255,0.6); }
     .layer-dark .step-detail-item   { color: rgba(255,255,255,0.6); }
     .layer-dark .step-detail-item svg { color: var(--cyan); }
     .layer-dark .step-detail-item strong { color: rgba(255,255,255,0.9); }
-    .layer-dark .step-subhead       { color: rgba(61,217,232,0.85); }
     .layer-dark .step-atlas-top h3  { color: #fff; }
     .layer-dark .step-atlas-right p { color: rgba(255,255,255,0.589); }
     .layer-dark .step-atlas-right .step-detail-item { color: rgba(255,255,255,0.6); }
@@ -1463,7 +1418,6 @@
     .problem-intro h2,
     .sp-header h2,
     .modules-header h2,
-    .team-header h2,
     .team-header-left h2,
     .tst-header h2,
     .faq-header h2,
@@ -1581,7 +1535,6 @@
 
     /* ── Texto cinzento mais legível em secções dark (mobile) ── */
     @media (max-width: 760px) {
-      .layer-dark .step-text p,
       .layer-dark .step-detail-item,
       .layer-dark .step-atlas-right p,
       .layer-dark .step-atlas-right .step-detail-item,
