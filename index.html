@@ -409,7 +409,9 @@
     /* Steps - Lyvoo flow (Perceber. Agir. Medir.) */
     .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1080px; margin: 0 auto; align-items: start; }
     .how-card {
-      position: relative; background: #fff; border: 1px solid var(--border);
+      position: relative;
+      background: linear-gradient(120deg, rgba(61,217,232,0.05) 0%, rgba(139,92,246,0.055) 55%, rgba(155,111,212,0.05) 100%), #fff;
+      border: 1px solid var(--border);
       border-radius: 20px; padding: 30px 26px 26px; overflow: hidden;
       box-shadow: 0 6px 30px rgba(11,82,90,0.05);
       transition: transform .28s ease, box-shadow .28s ease;
@@ -553,15 +555,15 @@
     .problem-intro p { font-size: 17px; color: var(--ink-2); line-height: 1.75; max-width: 640px; margin: 0 auto; }
 
     /* Editorial comparison rows */
-    .cmp-rows { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; }
+    .cmp-rows { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
 
     .cmp-row {
       display: grid; grid-template-columns: 1fr 48px 1fr;
       align-items: center; gap: 0;
-      padding: 32px 0;
-      border-top: 1px solid var(--border);
+      padding: 28px 28px;
+      background: linear-gradient(120deg, rgba(61,217,232,0.05) 0%, rgba(139,92,246,0.055) 55%, rgba(155,111,212,0.05) 100%), #fff;
+      border: 1px solid var(--border); border-radius: 16px;
     }
-    .cmp-rows .cmp-row:first-child { border-top: none; }
 
     .cmp-problem { display: flex; align-items: flex-start; gap: 20px; padding-right: 32px; }
     .cmp-problem-num {
@@ -598,12 +600,12 @@
       .cmp-row {
         grid-template-columns: 1fr;
         flex: 0 0 80vw; max-width: 360px; margin: 0; gap: 14px;
-        padding: 28px 26px; border-top: none;
+        padding: 28px 26px;
         scroll-snap-align: center; scroll-snap-stop: always;
         opacity: 0.45; transform: scale(0.955);
         transition: opacity 0.5s ease, transform 0.5s ease;
         will-change: opacity, transform;
-        background: #fff; border: 1px solid var(--border); border-radius: 22px;
+        border-radius: 22px;
         box-shadow: 0 14px 34px rgba(11,18,21,0.07);
       }
       .cmp-row.pr-slide-in { opacity: 1; transform: scale(1); }
