@@ -606,30 +606,7 @@
     }
     .step-detail-item strong { color: var(--ink); font-weight: 700; }
 
-    /* Visual 5: Comparison chart */
-    .chart-visual {
-      background: var(--dark-bg); border-radius: 28px; padding: 32px;
-      min-height: 340px; overflow: hidden; position: relative;
-    }
-    .chart-header { margin-bottom: 24px; }
-    .chart-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 4px; }
-    .chart-sub { font-size: 11px; color: rgba(255,255,255,0.35); }
-    .chart-legend { display: flex; gap: 16px; margin-bottom: 20px; }
-    .chart-leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,0.5); }
-    .chart-leg-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .chart-area { position: relative; height: 120px; }
-    svg.line-chart { width: 100%; height: 100%; overflow: visible; }
-    .chart-labels { display: flex; justify-content: space-between; margin-top: 8px; }
-    .chart-label { font-size: 10px; color: rgba(255,255,255,0.6); }
-    .chart-improvements { display: flex; gap: 10px;  }
-    .chart-imp-card {
-      flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px; padding: 12px;
-    }
-    .imp-name { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
-    .imp-change { font-size: 15px; font-weight: 800; }
-    .imp-pos { color: #4ADE80; }
-    .imp-neg { color: var(--cyan); }
+    
 
     /* ──────────────────────────────────────────
        APP SECTION
@@ -2381,78 +2358,7 @@
     .bm-cards .how-card { transform: none !important; height: 100%; }
     .bm-cards .how-card:hover { transform: translateY(-4px) !important; }
     .bm-cards .how-num { display: none; }
-    .bm-bullet-ico { width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(11,82,90,0.08); color: var(--teal); }
-    .bm-bullet-ico svg { width: 15px; height: 15px; }
-    .bm-bullet-t { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-    .bm-bullet-d { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
-
-    /* === Dashboard unificado (lado direito) === */
-    .bm-visual { display: flex; justify-content: center; }
-    .bm-dash {
-      position: relative; width: 100%; max-width: 480px;
-      background: linear-gradient(165deg, #0A161D 0%, #060F16 100%);
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 24px;
-      padding: 22px 22px 20px; overflow: hidden;
-      box-shadow: 0 34px 80px rgba(6,15,22,0.30), 0 4px 14px rgba(6,15,22,0.18), inset 0 1px 0 rgba(255,255,255,0.05);
-    }
-    .bm-dash::before { content: ''; position: absolute; top: -40%; right: -30%; width: 70%; height: 70%; background: radial-gradient(circle, rgba(61,217,232,0.12) 0%, transparent 70%); pointer-events: none; }
-    .bm-dash::after  { content: ''; position: absolute; bottom: -35%; left: -25%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(139,92,246,0.10) 0%, transparent 70%); pointer-events: none; }
-    .bm-dash > * { position: relative; z-index: 1; }
-
-    .bm-dh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-    .bm-dh-id { display: flex; align-items: center; gap: 11px; }
-    .bm-mono { width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg, var(--teal-light), var(--cyan)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #042227; flex-shrink: 0; }
-    .bm-dh-name { font-size: 13.5px; font-weight: 700; color: #fff; line-height: 1.2; }
-    .bm-dh-sub { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; }
-    .bm-dh-score { text-align: right; }
-    .bm-dh-score b { font-size: 26px; font-weight: 850; color: #fff; letter-spacing: -0.04em; line-height: 1; }
-    .bm-dh-score b span { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.4); }
-    .bm-dh-delta { display: inline-block; margin-top: 3px; font-size: 9.5px; font-weight: 700; color: #4ADE80; background: rgba(74,222,128,0.12); border-radius: 999px; padding: 2px 8px; }
-
-    .bm-cap { font-size: 9px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.34); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
-    .bm-cap span { color: rgba(255,255,255,0.6); letter-spacing: 0.04em; }
-
-    /* biomarker bars */
-    .bm-bars { display: flex; flex-direction: column; gap: 9px; }
-    .bm-row { display: grid; grid-template-columns: 92px 1fr auto; align-items: center; gap: 10px; }
-    .bm-row-n { font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.78); }
-    .bm-track { height: 6px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
-    .bm-fill { height: 100%; border-radius: 999px; }
-    .bm-tag { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
-
-    /* engine connector */
-    .bm-engine { display: flex; align-items: center; gap: 10px; margin: 16px 0 14px; }
-    .bm-engine-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14)); }
-    .bm-engine-line.r { background: linear-gradient(90deg, rgba(255,255,255,0.14), transparent); }
-    .bm-engine-chip { display: flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; color: var(--cyan); background: rgba(61,217,232,0.08); border: 1px solid rgba(61,217,232,0.22); border-radius: 999px; padding: 5px 11px; white-space: nowrap; }
-    .bm-engine-chip svg { width: 12px; height: 12px; }
-
-    /* outputs */
-    .bm-outputs { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
-    .bm-out { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 13px 13px 14px; }
-    .bm-out-kcal { font-size: 19px; font-weight: 850; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 2px; }
-    .bm-out-kcal span { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); }
-    .bm-macros { display: flex; flex-direction: column; gap: 7px; margin-top: 11px; }
-    .bm-macro { display: grid; grid-template-columns: 50px 1fr 26px; align-items: center; gap: 7px; }
-    .bm-macro-n { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); }
-    .bm-macro-v { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.85); text-align: right; font-variant-numeric: tabular-nums; }
-    .bm-macro-track { height: 4px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
-    .bm-macro-fill { height: 100%; border-radius: 999px; }
-    /* supplement pills */
-    .bm-supps { display: flex; flex-direction: column; gap: 8px; margin-top: 11px; }
-    .bm-supp { display: flex; align-items: center; gap: 9px; }
-    .bm-pill { width: 22px; height: 11px; border-radius: 999px; flex-shrink: 0; position: relative; overflow: hidden; box-shadow: inset 0 0 0 0.5px rgba(255,255,255,0.18); }
-    .bm-pill i { position: absolute; top: 0; bottom: 0; width: 50%; }
-    .bm-pill i.l { left: 0; } .bm-pill i.r { right: 0; }
-    .bm-supp-n { font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,0.78); flex: 1; line-height: 1.15; }
-    .bm-supp-d { font-size: 9.5px; font-weight: 700; white-space: nowrap; }
-
-    /* progress */
-    .bm-prog { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 14px; }
-    .bm-prog-spark { flex: 1; }
-    .bm-prog-meta { text-align: right; flex-shrink: 0; }
-    .bm-prog-meta b { font-size: 16px; font-weight: 850; color: #4ADE80; letter-spacing: -0.03em; line-height: 1; display: block; }
-    .bm-prog-meta span { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 0.03em; }
+    
 
     @media (max-width: 640px) {
       .bm-cards { grid-template-columns: 1fr; }
