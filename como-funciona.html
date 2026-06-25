@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
@@ -7,13 +7,13 @@
   <link rel="icon" href="images/og-image.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Como funciona - Lyvoo</title>
-  <meta name="description" content="Da analise ao plano em quatro passos simples: subscreva, recolha em casa, relatorio integrado e otimizacao continua da sua saude." />
+  <meta name="description" content="Da recolha em casa ao plano personalizado, em quatro passos simples. Sem clinicas, sem filas, sem complicacoes." />
   <link rel="canonical" href="https://lyvoo.pt/como-funciona.html" />
   <link rel="alternate" hreflang="pt-PT" href="https://lyvoo.pt/como-funciona.html" />
   <link rel="alternate" hreflang="en" href="https://lyvoo.pt/en/how-it-works.html" />
   <link rel="alternate" hreflang="x-default" href="https://lyvoo.pt/como-funciona.html" />
   <meta property="og:title" content="Como funciona - Lyvoo" />
-  <meta property="og:description" content="Da analise ao plano em quatro passos simples." />
+  <meta property="og:description" content="Tao simples que surpreende. Da recolha em casa ao plano personalizado." />
   <meta property="og:image" content="https://lyvoo.pt/images/og-image.png" />
   <meta property="og:site_name" content="Lyvoo" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -30,11 +30,17 @@
       --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
       --violet: #8B5CF6; --purple: #9B6FD4; --bg: #FFFFFF; --surface: #F6F8F9;
       --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96;
+      --dark: #070B0D; --dark-2: #0B0A18;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
-    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── Nav ── */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.9); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 92px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
     .nav-logo { text-decoration: none; }
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
@@ -45,35 +51,187 @@
     .lang-toggle a, .lang-toggle span { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 0; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
     .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
-    .hero { background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%); padding: 140px 0 72px; text-align: center; position: relative; overflow: hidden; }
-    .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%); }
-    .hero .container { position: relative; }
-    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
-    .hero h1 { font-size: clamp(30px, 5vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 16px; line-height: 1.1; }
-    .hero p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; margin: 0 auto; line-height: 1.7; }
-    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
-    .fade { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+
+    /* ── Scroll reveal ── */
+    .fade { opacity: 0; transform: translateY(34px); transition: opacity 0.8s cubic-bezier(.22,.61,.36,1), transform 0.8s cubic-bezier(.22,.61,.36,1); }
     .fade.in { opacity: 1; transform: translateY(0); }
-    .fade-d1 { transition-delay: 0.1s; }
-    /* ── Como funciona (cf) ── */
-    .cf-section { background: #fff; padding: 96px 0 110px; }
-    .cf-steps { display: flex; flex-direction: column; }
-    .cf-step { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; padding: 56px 0; }
-    .cf-step + .cf-step { border-top: 1px solid var(--border); }
-    .cf-step.cf-rev .cf-text { order: 2; }
-    .cf-step.cf-rev .cf-visual { order: 1; }
-    .cf-numrow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-    .cf-circle { width: 38px; height: 38px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .cf-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-light); }
-    .cf-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: #EEF9F9; color: var(--teal); border: 1px solid rgba(11,82,90,0.15); margin-left: auto; }
-    .cf-text h3 { font-size: clamp(22px, 2.8vw, 33px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 14px; color: var(--ink); }
-    .cf-text p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin: 0 0 22px; }
-    .cf-checks { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-    .cf-checks li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); }
-    .cf-chk { width: 22px; height: 22px; border-radius: 50%; background: var(--teal); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .cf-visual { border-radius: 24px; overflow: hidden; aspect-ratio: 4 / 3; background: linear-gradient(145deg, #F0F9FA 0%, #E6F3F5 100%); border: 1px solid rgba(11,82,90,0.1); display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 48px rgba(11,82,90,0.08); }
-    .cf-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .fade-d1 { transition-delay: 0.08s; } .fade-d2 { transition-delay: 0.16s; } .fade-d3 { transition-delay: 0.26s; } .fade-d4 { transition-delay: 0.36s; }
+    @media (prefers-reduced-motion: reduce) { .fade { transition: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+
+    /* ── Shared section shells ── */
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+    .eyebrow .num { font-variant-numeric: tabular-nums; }
+    .sec { position: relative; overflow: hidden; }
+    .sec-dark { background: var(--dark); color: #fff; }
+    .sec-dark-2 { background: radial-gradient(ellipse 80% 70% at 50% 0%, #0D0A1E 0%, var(--dark) 60%); color: #fff; }
+    .sec-light { background: var(--bg); }
+    .sec-surface { background: var(--surface); }
+    .pad { padding: clamp(88px, 13vw, 156px) 0; }
+    .glow-a { position: absolute; inset: 0; pointer-events: none; }
+
+    h2.big { font-size: clamp(31px, 4.6vw, 54px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; }
+    .lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.7; color: var(--ink-2); }
+    .sec-dark .lead, .sec-dark-2 .lead { color: rgba(255,255,255,0.6); }
+
+    /* ════════ HERO ════════ */
+    .hero { position: relative; background: linear-gradient(180deg, #0A1416 0%, #06141C 42%, #0B0820 100%); text-align: center; padding: 168px 0 96px; overflow: hidden; }
+    .hero-glow { position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 55% at 50% 8%, rgba(61,217,232,0.16) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 50% at 18% 80%, rgba(139,92,246,0.14) 0%, transparent 62%),
+                  radial-gradient(ellipse 50% 45% at 85% 70%, rgba(13,122,135,0.16) 0%, transparent 60%); }
+    .hero .container { position: relative; z-index: 1; }
+    .hero .eyebrow { color: var(--cyan); margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(42px, 7.6vw, 86px); font-weight: 850; letter-spacing: -0.055em; line-height: 0.98; color: #fff; margin: 0 auto 24px; max-width: 14ch; }
+    .hero-sub { font-size: clamp(16.5px, 2vw, 20px); color: rgba(255,255,255,0.62); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    /* Hero product journey stage */
+    .stage { margin: clamp(54px, 7vw, 88px) auto 0; max-width: 940px; position: relative; }
+    .stage-frame {
+      position: relative; border-radius: 28px; padding: clamp(22px, 3vw, 38px);
+      background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    }
+    .jrail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; position: relative; }
+    .jrail::before { content: ''; position: absolute; top: 38px; left: 12%; right: 12%; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--purple)); opacity: 0.4; border-radius: 2px; }
+    .jtile { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 8px 4px; }
+    .jicon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      background: linear-gradient(150deg, rgba(61,217,232,0.16), rgba(139,92,246,0.16));
+      border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12); }
+    .jicon svg { width: 26px; height: 26px; }
+    .jname { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+    .jmeta { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); letter-spacing: 0.02em; margin-top: -6px; }
+
+    /* ════════ STEP shell ════════ */
+    .step-head { max-width: 620px; }
+    .step-head.center { margin: 0 auto; text-align: center; }
+    .step-head .eyebrow { margin-bottom: 20px; color: var(--teal-light); }
+    .sec-dark .step-head .eyebrow, .sec-dark-2 .step-head .eyebrow { color: var(--cyan); }
+    .step-head .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .step-head h2 { margin: 0 0 18px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 92px); align-items: center; }
+    .grid-2.rev .col-text { order: 2; } .grid-2.rev .col-visual { order: 1; }
+
+    /* chips list */
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; padding: 9px 15px; border-radius: 999px;
+      background: rgba(11,82,90,0.05); border: 1px solid rgba(11,82,90,0.12); color: var(--ink-2); }
+    .chip svg { width: 14px; height: 14px; color: var(--teal-light); flex-shrink: 0; }
+    .sec-dark .chip, .sec-dark-2 .chip { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.78); }
+    .sec-dark .chip svg, .sec-dark-2 .chip svg { color: var(--cyan); }
+
+    /* ── STEP 1 visual: welcome card (neutral, no kit branding) ── */
+    .welcome-wrap { position: relative; display: flex; justify-content: center; }
+    .welcome { position: relative; width: 100%; max-width: 380px; border-radius: 26px; padding: 30px 28px 26px;
+      background: linear-gradient(165deg, #0E2A30 0%, #0A1E24 100%);
+      border: 1px solid rgba(61,217,232,0.18); box-shadow: 0 36px 80px rgba(11,82,90,0.22), inset 0 1px 0 rgba(255,255,255,0.06);
+      transform: rotate(-1.4deg); }
+    .welcome::after { content: ''; position: absolute; inset: 0; border-radius: 26px; pointer-events: none;
+      background: radial-gradient(ellipse 80% 50% at 80% 0%, rgba(61,217,232,0.16), transparent 65%); }
+    .wel-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; position: relative; z-index: 1; }
+    .wel-logo { display: flex; align-items: center; gap: 9px; color: #fff; font-weight: 800; letter-spacing: -0.02em; font-size: 15px; }
+    .wel-logo .mk { width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(135deg, var(--cyan), var(--violet)); display: flex; align-items: center; justify-content: center; }
+    .wel-live { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #4ADE80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.28); padding: 4px 9px; border-radius: 999px; }
+    .wel-h { color: #fff; font-size: 21px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; position: relative; z-index: 1; }
+    .wel-p { color: rgba(255,255,255,0.5); font-size: 13px; line-height: 1.6; margin-top: 8px; position: relative; z-index: 1; }
+    .wel-row { display: flex; align-items: center; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 1; }
+    .wel-parcel { width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--cyan); }
+    .wel-parcel svg { width: 21px; height: 21px; }
+    .wel-rt b { color: #fff; font-size: 13.5px; font-weight: 700; display: block; }
+    .wel-rt span { color: rgba(255,255,255,0.45); font-size: 11.5px; }
+    .wel-float { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700;
+      padding: 9px 13px; border-radius: 12px; background: rgba(255,255,255,0.9); color: var(--teal); box-shadow: 0 16px 36px rgba(11,82,90,0.18);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+    .wel-float.f1 { top: -16px; right: -8px; }
+    .wel-float.f2 { bottom: 6px; left: -22px; }
+    .wel-float .dotg { width: 8px; height: 8px; border-radius: 50%; background: #4ADE80; }
+
+    /* ── STEP 2 visual: collection stage ── */
+    .collect { position: relative; max-width: 560px; margin: clamp(48px,6vw,72px) auto 0; aspect-ratio: 1 / 0.78; }
+    .collect-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(56%, 300px); }
+    .collect-ring svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .cr-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+    .cr-center .v { font-size: clamp(34px, 6vw, 56px); font-weight: 850; letter-spacing: -0.05em; color: #fff; line-height: 1; white-space: nowrap; }
+    .cr-center .u { font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: 0.04em; margin-top: 4px; }
+    .cfloat { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff;
+      padding: 11px 15px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+    .cfloat svg { width: 16px; height: 16px; color: var(--cyan); }
+    .cfloat.c1 { top: 4%; left: 0; }
+    .cfloat.c2 { top: 12%; right: 0; }
+    .cfloat.c3 { bottom: 14%; left: 4%; }
+    .cfloat.c4 { bottom: 2%; right: 6%; }
+
+    /* ── STEP 3 visual: dashboard → plan ── */
+    .dash { position: relative; width: 100%; max-width: 540px; border-radius: 24px; overflow: hidden;
+      background: #0B1417; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 90px rgba(11,18,21,0.16); }
+    .dash-hd { padding: 18px 20px; background: linear-gradient(135deg, rgba(61,217,232,0.1), rgba(139,92,246,0.06)); border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between; }
+    .dash-hd b { color: #fff; font-size: 13.5px; font-weight: 800; letter-spacing: -0.02em; }
+    .dash-hd .tag { font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #4ADE80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.26); padding: 3px 9px; border-radius: 999px; }
+    .dash-bd { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .dash-score { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 16px 18px; }
+    .dash-ring { width: 60px; height: 60px; flex-shrink: 0; }
+    .dash-score .sc { font-size: 30px; font-weight: 850; color: #fff; letter-spacing: -0.04em; line-height: 1; }
+    .dash-score .sc span { font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 600; }
+    .dash-score .sl { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+    .dash-score .sd { font-size: 11.5px; color: #4ADE80; font-weight: 700; margin-top: 5px; }
+    .bio { display: flex; align-items: center; gap: 11px; padding: 2px; }
+    .bio .d { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .bio .n { font-size: 12.5px; color: rgba(255,255,255,0.78); font-weight: 600; flex: 1; }
+    .bio .s { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+    .s-ok { background: rgba(74,222,128,0.12); color: #4ADE80; } .s-mid { background: rgba(251,191,36,0.12); color: #FBBF24; }
+    .dash-arrow { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 2px 0; color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .dash-arrow .ln { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(61,217,232,0.4), transparent); }
+    .dash-plan { display: flex; gap: 10px; }
+    .pcard { flex: 1; border-radius: 14px; padding: 13px 14px; background: linear-gradient(160deg, rgba(61,217,232,0.08), rgba(139,92,246,0.06)); border: 1px solid rgba(61,217,232,0.16); }
+    .pcard .pi { width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); color: var(--cyan); margin-bottom: 9px; }
+    .pcard .pi svg { width: 15px; height: 15px; }
+    .pcard b { color: #fff; font-size: 12.5px; font-weight: 700; display: block; }
+    .pcard span { color: rgba(255,255,255,0.45); font-size: 11px; }
+    .dash-float { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--teal);
+      padding: 9px 13px; border-radius: 12px; background: rgba(255,255,255,0.94); box-shadow: 0 18px 40px rgba(11,82,90,0.2); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .dash-float svg { width: 15px; height: 15px; color: var(--violet); }
+    .dash-float.df1 { top: 16%; right: -26px; }
+
+    /* ── STEP 4 visual: longitudinal chart ── */
+    .evo { position: relative; width: 100%; max-width: 920px; margin: clamp(48px,6vw,80px) auto 0; border-radius: 26px; overflow: hidden;
+      background: linear-gradient(160deg, #0A1216 0%, #0B0A1C 100%); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 50px 120px rgba(0,0,0,0.5);
+      padding: clamp(22px, 3.5vw, 40px); }
+    .evo-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .evo-top .t { color: #fff; font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+    .evo-top .s { color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 3px; }
+    .evo-legend { display: flex; gap: 16px; }
+    .evo-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.55); }
+    .evo-legend i { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
+    .evo-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .evo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+    .estat { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 14px 16px; text-align: center; }
+    .estat .en { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+    .estat .ev { font-size: clamp(18px, 2.4vw, 24px); font-weight: 850; letter-spacing: -0.03em; }
+    .ev-green { color: #4ADE80; } .ev-cyan { color: var(--cyan); }
+
+    /* ════════ CTA ════════ */
+    .cta { position: relative; text-align: center; }
+    .cta-card { position: relative; max-width: 720px; margin: 0 auto; border-radius: 30px; padding: clamp(48px, 7vw, 80px) clamp(28px, 5vw, 64px); overflow: hidden;
+      background: linear-gradient(150deg, #0B1E24 0%, #0C0A1E 100%); border: 1px solid rgba(61,217,232,0.16); box-shadow: 0 50px 120px rgba(0,0,0,0.4); }
+    .cta-card::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(61,217,232,0.18), transparent 60%), radial-gradient(ellipse 60% 50% at 80% 100%, rgba(139,92,246,0.16), transparent 60%); }
+    .cta-card > * { position: relative; z-index: 1; }
+    .cta-card h2 { color: #fff; }
+    .cta-card .lead { color: rgba(255,255,255,0.6); margin: 16px auto 0; max-width: 440px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+    .btn { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 700; padding: 15px 28px; border-radius: 999px; text-decoration: none; transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease; }
+    .btn svg { width: 15px; height: 15px; }
+    .btn-primary { background: #fff; color: var(--teal); box-shadow: 0 16px 40px rgba(61,217,232,0.18); }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-ghost { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Footer ── */
     .footer { background: linear-gradient(180deg, #0D0820 0%, #060A0C 60%); padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; }
     .footer-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 700px; height: 300px; background: radial-gradient(ellipse, rgba(11,82,90,0.25) 0%, transparent 70%); pointer-events: none; }
     .lf-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
@@ -86,33 +244,35 @@
     .lf-links { display: flex; gap: 20px; }
     .lf-links a, .lf-cookies { font-size: 12.5px; color: rgba(255,255,255,0.25); text-decoration: none; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
     .lf-links a:hover, .lf-cookies:hover { color: rgba(255,255,255,0.5); }
-    /* ── Chart visual (passo 4) ── */
-    .chart-visual { display: flex; flex-direction: column; gap: 14px; }
-    .chart-header { display: flex; flex-direction: column; gap: 4px; }
-    .chart-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
-    .chart-sub { font-size: 10.5px; color: rgba(255,255,255,0.35); letter-spacing: 0.01em; }
-    .chart-legend { display: flex; align-items: center; gap: 16px; }
-    .chart-leg-item { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: rgba(255,255,255,0.55); font-weight: 600; }
-    .chart-leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .chart-area { width: 100%; }
-    .line-chart { width: 100%; height: 90px; display: block; overflow: visible; }
-    .chart-labels { display: flex; justify-content: space-between; margin-top: 6px; }
-    .chart-label { font-size: 9.5px; color: rgba(255,255,255,0.6); font-weight: 600; }
-    .chart-improvements { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
-    .chart-imp-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; text-align: center; }
-    .imp-name { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-    .imp-change { font-size: 15px; font-weight: 800; letter-spacing: -0.03em; }
-    .imp-neg { color: #4ADE80; }
-    .imp-pos { color: #3DD9E8; }
 
+    /* ════════ Responsive ════════ */
     @media (max-width: 860px) {
-      .cf-step { grid-template-columns: 1fr; gap: 32px; }
-      .cf-step.cf-rev .cf-text, .cf-step.cf-rev .cf-visual { order: 0; }
+      .grid-2 { grid-template-columns: 1fr; gap: 44px; }
+      .grid-2.rev .col-text, .grid-2.rev .col-visual { order: 0; }
+      .step-head { max-width: none; }
+      .welcome { transform: none; }
     }
-    @media (max-width: 680px) {
+    @media (max-width: 600px) {
+      .nav-inner { height: 76px; }
       .nav-links > li { display: none; }
       .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; }
-      .lf-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 120px 0 72px; }
+      .jrail { gap: 8px; }
+      .jrail::before { top: 30px; left: 14%; right: 14%; }
+      .jicon { width: 48px; height: 48px; border-radius: 14px; }
+      .jicon svg { width: 21px; height: 21px; }
+      .jname { font-size: 12px; }
+      .jmeta { font-size: 10px; }
+      .stage-frame { padding: 18px 12px; }
+      .collect { aspect-ratio: 1 / 0.95; }
+      .cfloat { font-size: 11px; padding: 8px 11px; gap: 6px; }
+      .cfloat svg { width: 14px; height: 14px; }
+      .wel-float.f2 { left: -8px; }
+      .dash-float.df1 { right: -8px; }
+      .evo-stats { gap: 8px; }
+      .estat { padding: 11px 8px; }
+      .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .btn { width: 100%; justify-content: center; }
     }
   </style>
   <link rel="stylesheet" href="mobile-nav.css" />
@@ -121,7 +281,7 @@
 <nav class="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <img src="images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
+      <img src="images/logo.png" alt="Lyvoo" style="height:54px;width:auto;display:block;" />
     </a>
     <ul class="nav-links">
       <li><a href="como-funciona.html">Como funciona</a></li>
@@ -129,281 +289,234 @@
       <li><a href="ciencia.html">A ciência</a></li>
       <li><a href="index.html#faq">FAQ</a></li>
       <li><a href="contacto.html">Contacto</a></li>
-            <li class="lang-toggle"><a class="lang-active" aria-current="page">PT</a><a href="en/how-it-works.html" aria-label="Switch to English / Mudar para ingl&#234;s">EN</a></li>
-      <li><a href="registar.html" class="nav-cta">Come&#231;ar agora</a></li>
+      <li class="lang-toggle"><a class="lang-active" aria-current="page">PT</a><a href="en/how-it-works.html" aria-label="Switch to English / Mudar para inglês">EN</a></li>
+      <li><a href="registar.html" class="nav-cta">Começar agora</a></li>
     </ul>
   </div>
 </nav>
 
-<section class="hero">
+<!-- ════════ HERO ════════ -->
+<header class="hero">
   <div class="hero-glow"></div>
   <div class="container">
-    <span class="label">Como funciona</span>
-    <h1>Da an&#225;lise <span class="grad-text">ao plano</span></h1>
-    <p>Quatro passos simples, do registo &#224; otimiza&#231;&#227;o cont&#237;nua da sua sa&#250;de.</p>
+    <span class="eyebrow fade">Como funciona</span>
+    <h1 class="fade fade-d1">Tão simples<br/>que <span class="grad-text">surpreende.</span></h1>
+    <p class="hero-sub fade fade-d2">Da recolha em casa ao plano personalizado. Quatro passos pensados para serem invisíveis.</p>
+
+    <div class="stage fade fade-d3">
+      <div class="stage-frame">
+        <div class="jrail">
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#3DD9E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span>
+            <span class="jname">Kit</span>
+            <span class="jmeta">48 horas</span>
+          </div>
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#5BC8E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+            <span class="jname">Recolha</span>
+            <span class="jmeta">5 minutos</span>
+          </div>
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#8FA8EE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 13l2.5 2.5L16 10"/></svg></span>
+            <span class="jname">Relatório</span>
+            <span class="jmeta">7-10 dias</span>
+          </div>
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#B79BEC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span>
+            <span class="jname">Evolução</span>
+            <span class="jmeta">6 em 6 meses</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ STEP 01 — Aderir ════════ -->
+<section class="sec sec-light pad">
+  <div class="container">
+    <div class="grid-2">
+      <div class="col-text">
+        <div class="step-head fade">
+          <span class="eyebrow"><span class="num">01</span><span class="dot"></span>Aderir</span>
+          <h2 class="big">Torne-se membro.<br/>Hoje.</h2>
+          <p class="lead">Um programa anual, tudo incluído. Em poucos minutos está dentro — e o seu kit segue para casa.</p>
+          <div class="chips">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pagamento único anual</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acompanhamento médico</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Cancele quando quiser</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-visual">
+        <div class="welcome-wrap fade fade-d2">
+          <div class="welcome">
+            <div class="wel-top">
+              <span class="wel-logo"><span class="mk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg></span>Lyvoo</span>
+              <span class="wel-live">Plano ativo</span>
+            </div>
+            <div class="wel-h">Bem-vindo.</div>
+            <div class="wel-p">A sua jornada de saúde preventiva começa agora.</div>
+            <div class="wel-row">
+              <span class="wel-parcel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span>
+              <span class="wel-rt"><b>Kit a caminho</b><span>Entrega estimada · 48 horas</span></span>
+            </div>
+          </div>
+          <span class="wel-float f1"><span class="dotg"></span>Tudo incluído</span>
+          <span class="wel-float f2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sem custos extra</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="cf-section">
+<!-- ════════ STEP 02 — Recolher ════════ -->
+<section class="sec sec-dark-2 pad">
   <div class="container">
-    <div class="cf-steps">
+    <div class="step-head center fade">
+      <span class="eyebrow"><span class="num">02</span><span class="dot"></span>Recolher</span>
+      <h2 class="big">Cinco minutos.<br/>Em <span class="grad-text">casa.</span></h2>
+      <p class="lead">Uma simples picada no dedo. Sem agulhas, sem clínicas, sem marcações.</p>
+    </div>
 
-      <!-- 1 -->
-      <div class="cf-step fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">1</div>
-            <span class="cf-tag">Torne-se membro</span>
-            <span class="cf-badge">Hoje</span>
-          </div>
-          <h3>Subscreva e receba o kit em casa.</h3>
-          <p>Um único programa anual, tudo incluído. O kit de análise chega à sua morada em 48h, com tudo o que precisa para a análise em casa.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Pagamento anual único, sem surpresas</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Acompanhamento médico incluído</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Cancele quando quiser</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#F2EAE0,#EFE4D6); padding:0;">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="cfPath1" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient>
-              <filter id="cfGlowP1"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <filter id="cfShadowP1"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#7A5A3A" flood-opacity="0.16"/></filter>
-            </defs>
-            <!-- Ambient glow -->
-            <circle cx="370" cy="110" r="120" fill="#3DD9E8" opacity="0.07"/>
-            <!-- Journey track + gradient progress -->
-            <path d="M70,260 C130,235 150,225 190,210 C240,193 270,175 310,160 C350,145 380,125 410,110" fill="none" stroke="rgba(11,82,90,0.14)" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/>
-            <path d="M70,260 C130,235 150,225 190,210 C240,193 270,175 310,160 C350,145 380,125 410,110" fill="none" stroke="url(#cfPath1)" stroke-width="3" stroke-linecap="round" filter="url(#cfGlowP1)"/>
-            <!-- Waypoints -->
-            <circle cx="70" cy="260" r="7" fill="#fff" stroke="#0B525A" stroke-width="2.5"/>
-            <text x="70" y="288" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#5B4A36">Confirmado</text>
-            <circle cx="190" cy="210" r="7" fill="#fff" stroke="#0B525A" stroke-width="2.5"/>
-            <text x="190" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#5B4A36">Preparado</text>
-            <circle cx="310" cy="160" r="7" fill="#fff" stroke="#0B525A" stroke-width="2.5"/>
-            <text x="310" y="188" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#5B4A36">Enviado</text>
-            <circle cx="410" cy="110" r="11" fill="url(#cfPath1)" filter="url(#cfGlowP1)"/>
-            <circle cx="410" cy="110" r="11" fill="none" stroke="white" stroke-width="2"/>
-            <text x="410" y="138" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#0B525A">Entregue</text>
-            <!-- Badge: chega em 48h -->
-            <rect x="46" y="56" width="148" height="64" rx="16" fill="white" filter="url(#cfShadowP1)"/>
-            <text x="120" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#9C8A6E" letter-spacing="0.04em">CHEGA EM</text>
-            <text x="120" y="106" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="800" fill="#0B525A" letter-spacing="-0.5">48 horas</text>
-            <!-- Badge: tudo incluído -->
-            <rect x="266" y="246" width="172" height="56" rx="16" fill="white" filter="url(#cfShadowP1)"/>
-            <circle cx="292" cy="268" r="9" fill="#4ADE80"/>
-            <svg x="286" y="262" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <text x="309" y="265" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#5B4A36">Tudo incluído no kit</text>
-            <text x="309" y="278" font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#9C8A6E">sem custos extra</text>
-          </svg>
+    <div class="collect fade fade-d2">
+      <div class="collect-ring">
+        <svg viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+            <filter id="ringGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle cx="100" cy="100" r="84" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="12"/>
+          <circle cx="100" cy="100" r="84" fill="none" stroke="url(#ringGrad)" stroke-width="12" stroke-linecap="round"
+                  stroke-dasharray="343 528" transform="rotate(-90 100 100)" filter="url(#ringGlow)"/>
+          <circle cx="100" cy="100" r="58" fill="rgba(61,217,232,0.04)" stroke="rgba(61,217,232,0.14)" stroke-width="1"/>
+        </svg>
+        <div class="cr-center">
+          <div class="v">5 min</div>
+          <div class="u">Picada capilar</div>
         </div>
       </div>
+      <span class="cfloat c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Sem agulhas</span>
+      <span class="cfloat c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Sem clínica</span>
+      <span class="cfloat c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Sem colheita venosa</span>
+      <span class="cfloat c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Sem marcações</span>
+    </div>
+  </div>
+</section>
 
-      <!-- 2 -->
-      <div class="cf-step cf-rev fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">2</div>
-            <span class="cf-tag">Recolha em casa</span>
-            <span class="cf-badge">Dia 1</span>
+<!-- ════════ STEP 03 — Interpretar ════════ -->
+<section class="sec sec-surface pad">
+  <div class="container">
+    <div class="grid-2 rev">
+      <div class="col-text">
+        <div class="step-head fade">
+          <span class="eyebrow"><span class="num">03</span><span class="dot"></span>Interpretar</span>
+          <h2 class="big">Um relatório.<br/>Uma estratégia.</h2>
+          <p class="lead">Cada biomarcador interpretado por um médico e traduzido num plano de nutrição e suplementação só seu.</p>
+          <div class="chips">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Interpretação médica</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Consulta de nutrição</span>
           </div>
-          <h3>Faça a recolha. Sem dor, sem deslocações.</h3>
-          <p>Uma simples picada capilar recolhe a amostra em 5 minutos. Siga as instruções da app e devolva no envelope pré-pago incluído.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sem agulhas nem flebotomia</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Recolha em 5 minutos no conforto de casa</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Envio pré-pago para laboratório certificado</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#F8FFFE,#EBF7F8); padding:0;">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="cfGauge2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient>
-              <radialGradient id="cfCenter2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0E3A40"/><stop offset="100%" stop-color="#082A2F"/></radialGradient>
-              <filter id="cfGlow2"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <filter id="cfShadow2"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B525A" flood-opacity="0.10"/></filter>
-            </defs>
-            <!-- Ambient glow -->
-            <circle cx="240" cy="230" r="160" fill="#3DD9E8" opacity="0.05"/>
-            <!-- Gauge: recolha em poucos minutos -->
-            <path d="M96,230 A144,144 0 0 1 384,230" fill="none" stroke="rgba(61,217,232,0.14)" stroke-width="16" stroke-linecap="round"/>
-            <path d="M96,230 A144,144 0 0 1 384,230" fill="none" stroke="url(#cfGauge2)" stroke-width="16" stroke-linecap="round"
-                  stroke-dasharray="362 452" filter="url(#cfGlow2)"/>
-            <circle cx="357" cy="146" r="7" fill="#3DD9E8" filter="url(#cfGlow2)"/>
-            <!-- Scale labels -->
-            <text x="92"  y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">0</text>
-            <text x="240" y="74"  text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">5 min</text>
-            <text x="392" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">10 min</text>
-            <!-- Center hub -->
-            <circle cx="240" cy="230" r="76" fill="url(#cfCenter2)"/>
-            <circle cx="240" cy="230" r="76" stroke="rgba(61,217,232,0.18)" stroke-width="1"/>
-            <text x="240" y="222" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" letter-spacing="0.06em">RECOLHA EM</text>
-            <text x="240" y="252" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="#fff" letter-spacing="-0.5">5 min</text>
-            <text x="240" y="268" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#3DD9E8" font-weight="600">Sem agulhas</text>
-            <!-- Badge: picada capilar -->
-            <rect x="166" y="20" width="148" height="50" rx="14" fill="white" filter="url(#cfShadow2)"/>
-            <circle cx="190" cy="45" r="10" fill="#3DD9E8"/>
-            <text x="208" y="42" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#0B525A">Picada capilar</text>
-            <text x="208" y="54" font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#6B9298">simples e rápida</text>
-            <!-- Badge: envio pré-pago -->
-            <rect x="28" y="296" width="130" height="44" rx="14" fill="white" filter="url(#cfShadow2)"/>
-            <circle cx="50" cy="318" r="9" fill="#4ADE80"/>
-            <svg x="44" y="312" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <text x="67" y="316" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#0B525A">Envio pré-pago</text>
-            <text x="67" y="328" font-family="Inter,sans-serif" font-size="9" font-weight="500" fill="#6B9298">incluído no kit</text>
-          </svg>
         </div>
       </div>
-
-      <!-- 3 -->
-      <div class="cf-step fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">3</div>
-            <span class="cf-tag">Interpretação integrada</span>
-            <span class="cf-badge">7-10 dias</span>
-          </div>
-          <h3>Relatório médico. Consulta de nutrição.</h3>
-          <p>Quando os resultados ficam prontos, recebe um relatório com interpretação clínica real de cada biomarcador. Agendamos também uma consulta de nutrição para traduzir os resultados em ação concreta.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Interpretação médica de cada biomarcador fora do ideal</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Consulta de nutrição agendada após os resultados</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório na app em linguagem clara e acessível</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#F0F9FA,#E8F4F6); padding:0;">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="cfHub3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#0B525A"/></radialGradient>
-              <linearGradient id="cfLine3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.55"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient>
-              <filter id="cfGlow3"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <filter id="cfShadow3"><feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#0B525A" flood-opacity="0.10"/></filter>
-            </defs>
-            <!-- Ambient glow -->
-            <circle cx="240" cy="180" r="160" fill="#8B5CF6" opacity="0.04"/>
-            <!-- Connecting lines: biomarcadores → relatório -->
-            <g stroke="url(#cfLine3)" stroke-width="1.5">
-              <line x1="240" y1="180" x2="127" y2="115"/>
-              <line x1="240" y1="180" x2="240" y2="50"/>
-              <line x1="240" y1="180" x2="353" y2="115"/>
-              <line x1="240" y1="180" x2="353" y2="245"/>
-              <line x1="240" y1="180" x2="127" y2="245"/>
-            </g>
-            <!-- Biomarker nodes -->
-            <g font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#0B525A" text-anchor="middle">
-              <circle cx="127" cy="115" r="20" fill="white" filter="url(#cfShadow3)"/>
-              <text x="127" y="119">LDL</text>
-              <circle cx="240" cy="50" r="20" fill="white" filter="url(#cfShadow3)"/>
-              <text x="240" y="54">Vit D</text>
-              <circle cx="353" cy="115" r="20" fill="white" filter="url(#cfShadow3)"/>
-              <text x="353" y="119">PCR</text>
-              <circle cx="353" cy="245" r="20" fill="white" filter="url(#cfShadow3)"/>
-              <text x="353" y="249">HbA1c</text>
-              <circle cx="127" cy="245" r="20" fill="white" filter="url(#cfShadow3)"/>
-              <text x="127" y="249">TSH</text>
-            </g>
-            <!-- Hub: relatório integrado -->
-            <circle cx="240" cy="180" r="46" fill="url(#cfHub3)" filter="url(#cfGlow3)"/>
-            <circle cx="240" cy="180" r="46" fill="none" stroke="white" stroke-width="2" opacity="0.35"/>
-            <text x="240" y="177" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white" letter-spacing="0.04em">RELATÓRIO</text>
-            <text x="240" y="190" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="rgba(255,255,255,0.85)">integrado</text>
-            <!-- Badge: médico -->
-            <rect x="20" y="20" width="148" height="50" rx="14" fill="white" filter="url(#cfShadow3)"/>
-            <circle cx="44" cy="45" r="12" fill="#0B525A"/>
-            <text x="44" y="49" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">M</text>
-            <text x="64" y="49" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#111827">Médico</text>
-            <!-- Badge: nutricionista -->
-            <rect x="312" y="290" width="148" height="50" rx="14" fill="white" filter="url(#cfShadow3)"/>
-            <circle cx="336" cy="315" r="12" fill="#8B5CF6"/>
-            <text x="336" y="319" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">N</text>
-            <text x="356" y="319" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#111827">Nutricionista</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="cf-step cf-rev fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">4</div>
-            <span class="cf-tag">Acompanhe e otimize</span>
-            <span class="cf-badge">6 meses</span>
-          </div>
-          <h3>Plano que evolui consigo. Reavaliado.</h3>
-          <p>Ao fim de 6 meses repete o painel e comparamos os resultados com o seu início para provar a evolução.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Reavaliação a cada 6 meses com novo painel completo</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório comparativo início vs. 6 meses</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F); padding:0; border-color:rgba(61,217,232,0.15); display:flex; align-items:center; justify-content:center; aspect-ratio:unset; overflow:visible;">
-          <div class="chart-visual" style="background:transparent; width:100%; max-width:380px; padding:32px;">
-            <div class="chart-header">
-              <div class="chart-title">Evolução comparativa - 12 meses</div>
-              <div class="chart-sub">Início vs. 6 meses vs. 12 meses · Ricardo M.</div>
-            </div>
-            <div class="chart-legend">
-              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:rgba(255,255,255,0.25)"></div>Início</div>
-              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#3DD9E8"></div>6 meses</div>
-              <div class="chart-leg-item"><div class="chart-leg-dot" style="background:#8B5CF6"></div>12 meses</div>
-            </div>
-            <div class="chart-area">
-              <svg class="line-chart" viewBox="0 0 300 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="fillCyan" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.18"/>
-                    <stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/>
-                  </linearGradient>
-                  <linearGradient id="fillViolet" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.18"/>
-                    <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <!-- grid lines -->
-                <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-                <line x1="0" y1="50" x2="300" y2="50" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-                <line x1="0" y1="75" x2="300" y2="75" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-                <!-- baseline: Início (dashed) -->
-                <polyline points="0,72 300,72" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="5,4"/>
-                <!-- area fills -->
-                <polygon points="0,72 75,60 150,40 150,100 0,100" fill="url(#fillCyan)"/>
-                <polygon points="150,40 225,28 300,18 300,100 150,100" fill="url(#fillViolet)"/>
-                <!-- 6 meses line: Início → 6 meses (cyan) -->
-                <polyline points="0,72 75,60 150,40" fill="none" stroke="#3DD9E8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <!-- 12 meses line: 6 meses → 12 meses (violet) -->
-                <polyline points="150,40 225,28 300,18" fill="none" stroke="#8B5CF6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <!-- dots -->
-                <circle cx="0"   cy="72" r="3.5" fill="rgba(255,255,255,0.35)"/>
-                <circle cx="150" cy="40" r="4.5" fill="#3DD9E8" stroke="#0D1A1F" stroke-width="1.5"/>
-                <circle cx="300" cy="18" r="4.5" fill="#8B5CF6" stroke="#0D1A1F" stroke-width="1.5"/>
-              </svg>
-            </div>
-            <div class="chart-labels">
-              <span class="chart-label">Início</span>
-              <span class="chart-label">3 meses</span>
-              <span class="chart-label">6 meses</span>
-              <span class="chart-label">9 meses</span>
-              <span class="chart-label">12 meses</span>
-            </div>
-            <div class="chart-improvements">
-              <div class="chart-imp-card">
-                <div class="imp-name">LDL</div>
-                <div class="imp-change imp-neg">-18%</div>
+      <div class="col-visual">
+        <div class="welcome-wrap fade fade-d2" style="justify-content:center">
+          <div class="dash">
+            <div class="dash-hd"><b>Relatório integrado</b><span class="tag">Completo</span></div>
+            <div class="dash-bd">
+              <div class="dash-score">
+                <svg class="dash-ring" viewBox="0 0 60 60">
+                  <defs><linearGradient id="dsg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+                  <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                  <circle cx="30" cy="30" r="25" fill="none" stroke="url(#dsg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="137 157" transform="rotate(-90 30 30)"/>
+                </svg>
+                <div>
+                  <div class="sl">Score de saúde</div>
+                  <div class="sc">87<span>/100</span></div>
+                  <div class="sd">↑ +12 vs. início</div>
+                </div>
               </div>
-              <div class="chart-imp-card">
-                <div class="imp-name">PCR</div>
-                <div class="imp-change imp-neg">-34%</div>
-              </div>
-              <div class="chart-imp-card">
-                <div class="imp-name">Score</div>
-                <div class="imp-change imp-pos">+12 pts</div>
+              <div class="bio"><span class="d" style="background:#4ADE80"></span><span class="n">Perfil lipídico</span><span class="s s-ok">Ótimo</span></div>
+              <div class="bio"><span class="d" style="background:#FBBF24"></span><span class="n">PCR · inflamação</span><span class="s s-mid">Atenção</span></div>
+              <div class="bio"><span class="d" style="background:#4ADE80"></span><span class="n">HbA1c · glicémia</span><span class="s s-ok">Excelente</span></div>
+              <div class="dash-arrow"><span class="ln"></span>O seu plano<span class="ln"></span></div>
+              <div class="dash-plan">
+                <div class="pcard">
+                  <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v9a5 5 0 0 0 10 0V2"/><path d="M7 7h10"/></svg></span>
+                  <b>Nutrição</b><span>Ajustada aos seus valores</span>
+                </div>
+                <div class="pcard">
+                  <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a3.5 3.5 0 0 0-5-5l-10 10a3.5 3.5 0 0 0 5 5z"/><path d="m8.5 8.5 7 7"/></svg></span>
+                  <b>Suplementação</b><span>Só o que precisa</span>
+                </div>
               </div>
             </div>
           </div>
+          <span class="dash-float df1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5M17 3a4 4 0 0 0 0 8M7 13a4 4 0 0 0 0 8"/></svg>Linguagem clara</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
+<!-- ════════ STEP 04 — Evoluir ════════ -->
+<section class="sec sec-dark pad">
+  <div class="container">
+    <div class="step-head center fade">
+      <span class="eyebrow"><span class="num">04</span><span class="dot"></span>Evoluir</span>
+      <h2 class="big">Veja a evolução.<br/><span class="grad-text">Ano após ano.</span></h2>
+      <p class="lead">A cada 6 meses, repete o painel. Os números provam o progresso.</p>
+    </div>
+
+    <div class="evo fade fade-d2">
+      <div class="evo-top">
+        <div>
+          <div class="t">A sua trajetória de saúde</div>
+          <div class="s">Score de saúde · 12 meses</div>
+        </div>
+        <div class="evo-legend">
+          <span><i style="background:rgba(255,255,255,0.3)"></i>Início</span>
+          <span><i style="background:#3DD9E8"></i>6 meses</span>
+          <span><i style="background:#8B5CF6"></i>12 meses</span>
+        </div>
+      </div>
+      <div class="evo-chart">
+        <svg viewBox="0 0 800 280" preserveAspectRatio="none" style="height:clamp(180px,26vw,260px)">
+          <defs>
+            <linearGradient id="evoLine" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0D7A87"/><stop offset="55%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+            <linearGradient id="evoFill" x1="0" y1="0" x2="0" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.22"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient>
+            <filter id="evoDot"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#3DD9E8" flood-opacity="0.7"/></filter>
+          </defs>
+          <line x1="0" y1="70" x2="800" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5 6"/>
+          <line x1="0" y1="140" x2="800" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5 6"/>
+          <line x1="0" y1="210" x2="800" y2="210" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5 6"/>
+          <polyline points="40,210 40,210 760,210" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="6 5"/>
+          <path d="M40,206 C170,196 250,176 400,140 C520,110 640,78 760,52 L760,280 L40,280 Z" fill="url(#evoFill)"/>
+          <path d="M40,206 C170,196 250,176 400,140 C520,110 640,78 760,52" fill="none" stroke="url(#evoLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="40" cy="206" r="6" fill="#0A1216" stroke="rgba(255,255,255,0.5)" stroke-width="2.5"/>
+          <circle cx="400" cy="140" r="7" fill="#3DD9E8" stroke="#0A1216" stroke-width="3"/>
+          <circle cx="760" cy="52" r="9" fill="#8B5CF6" stroke="#0A1216" stroke-width="3" filter="url(#evoDot)"/>
+        </svg>
+      </div>
+      <div class="evo-stats">
+        <div class="estat"><div class="en">LDL</div><div class="ev ev-green">−18%</div></div>
+        <div class="estat"><div class="en">PCR</div><div class="ev ev-green">−34%</div></div>
+        <div class="estat"><div class="en">Score</div><div class="ev ev-cyan">+12 pts</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ CTA ════════ -->
+<section class="sec sec-light pad cta">
+  <div class="container">
+    <div class="cta-card fade">
+      <h2 class="big">Pronto para começar?</h2>
+      <p class="lead">O primeiro passo demora menos de dois minutos.</p>
+      <div class="cta-actions">
+        <a href="registar.html" class="btn btn-primary">Começar agora <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13 13 3M13 13V3H3"/></svg></a>
+        <a href="index.html#atlas" class="btn btn-ghost">O que testamos</a>
+      </div>
     </div>
   </div>
 </section>
@@ -414,14 +527,15 @@
     <div class="lf-grid">
       <div>
         <a href="index.html"><img src="images/logo.png" alt="Lyvoo" style="height:38px;width:auto;display:block;" /></a>
-        <p class="lf-brand">Preven&#231;&#227;o personalizada em sa&#250;de.<br/>Sem sair de casa. Feito em Portugal.</p>
+        <p class="lf-brand">Prevenção personalizada em saúde.<br/>Sem sair de casa. Feito em Portugal.</p>
       </div>
       <div class="lf-col"><h5>Produto</h5><ul>
         <li><a href="como-funciona.html" style="color:#fff">Como funciona</a></li>
         <li><a href="index.html#atlas">O que testamos</a></li>
+        <li><a href="ciencia.html">A ciência</a></li>
       </ul></div>
       <div class="lf-col"><h5>Empresa</h5><ul>
-        <li><a href="index.html#equipa">Equipa cl&#237;nica</a></li>
+        <li><a href="index.html#equipa">Equipa clínica</a></li>
       </ul></div>
       <div class="lf-col"><h5>Suporte</h5><ul>
         <li><a href="index.html#faq">FAQ</a></li>
@@ -431,19 +545,19 @@
       </ul></div>
     </div>
     <div class="lf-bottom">
-      <span>&#169; 2026 Lyvoo. Todos os direitos reservados.</span>
+      <span>© 2026 Lyvoo. Todos os direitos reservados.</span>
       <div class="lf-links">
-        <a href="privacidade.html">Pol&#237;tica de privacidade</a>
-        <a href="termos.html">Termos de servi&#231;o</a>
-        <button class="lf-cookies" onclick="window.LyvooCookies&amp;&amp;window.LyvooCookies.abrirDefinicoes()">Gerir cookies</button>
+        <a href="privacidade.html">Política de privacidade</a>
+        <a href="termos.html">Termos de serviço</a>
+        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Gerir cookies</button>
       </div>
     </div>
   </div>
 </footer>
 <script>
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 </script>
 </body>

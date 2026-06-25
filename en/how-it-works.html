@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,13 +7,13 @@
   <link rel="icon" href="../images/og-image.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>How it works - Lyvoo</title>
-  <meta name="description" content="From test to plan in four simple steps: subscribe, collect at home, integrated report and continuous health optimisation." />
+  <meta name="description" content="From at-home collection to a personalised plan, in four simple steps. No clinics, no queues, no hassle." />
   <link rel="canonical" href="https://lyvoo.pt/en/how-it-works.html" />
   <link rel="alternate" hreflang="pt-PT" href="https://lyvoo.pt/como-funciona.html" />
   <link rel="alternate" hreflang="en" href="https://lyvoo.pt/en/how-it-works.html" />
   <link rel="alternate" hreflang="x-default" href="https://lyvoo.pt/como-funciona.html" />
   <meta property="og:title" content="How it works - Lyvoo" />
-  <meta property="og:description" content="From test to plan in four simple steps." />
+  <meta property="og:description" content="So simple it surprises. From at-home collection to a personalised plan." />
   <meta property="og:image" content="https://lyvoo.pt/images/og-image.png" />
   <meta property="og:site_name" content="Lyvoo" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -30,11 +30,17 @@
       --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
       --violet: #8B5CF6; --purple: #9B6FD4; --bg: #FFFFFF; --surface: #F6F8F9;
       --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96;
+      --dark: #070B0D; --dark-2: #0B0A18;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
-    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── Nav ── */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.9); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 92px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
     .nav-logo { text-decoration: none; }
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
@@ -45,35 +51,182 @@
     .lang-toggle a, .lang-toggle span { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 0; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
     .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
-    .hero { background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%); padding: 140px 0 72px; text-align: center; position: relative; overflow: hidden; }
-    .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%); }
-    .hero .container { position: relative; }
-    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
-    .hero h1 { font-size: clamp(30px, 5vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 16px; line-height: 1.1; }
-    .hero p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; margin: 0 auto; line-height: 1.7; }
-    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
-    .fade { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+
+    /* ── Scroll reveal ── */
+    .fade { opacity: 0; transform: translateY(34px); transition: opacity 0.8s cubic-bezier(.22,.61,.36,1), transform 0.8s cubic-bezier(.22,.61,.36,1); }
     .fade.in { opacity: 1; transform: translateY(0); }
-    .fade-d1 { transition-delay: 0.1s; }
-    /* ── Como funciona (cf) ── */
-    .cf-section { background: #fff; padding: 96px 0 110px; }
-    .cf-steps { display: flex; flex-direction: column; }
-    .cf-step { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; padding: 56px 0; }
-    .cf-step + .cf-step { border-top: 1px solid var(--border); }
-    .cf-step.cf-rev .cf-text { order: 2; }
-    .cf-step.cf-rev .cf-visual { order: 1; }
-    .cf-numrow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-    .cf-circle { width: 38px; height: 38px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .cf-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-light); }
-    .cf-badge { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: #EEF9F9; color: var(--teal); border: 1px solid rgba(11,82,90,0.15); margin-left: auto; }
-    .cf-text h3 { font-size: clamp(22px, 2.8vw, 33px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin: 0 0 14px; color: var(--ink); }
-    .cf-text p { font-size: 15px; color: var(--ink-2); line-height: 1.8; margin: 0 0 22px; }
-    .cf-checks { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-    .cf-checks li { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-2); }
-    .cf-chk { width: 22px; height: 22px; border-radius: 50%; background: var(--teal); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-    .cf-visual { border-radius: 24px; overflow: hidden; aspect-ratio: 4 / 3; background: linear-gradient(145deg, #F0F9FA 0%, #E6F3F5 100%); border: 1px solid rgba(11,82,90,0.1); display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 48px rgba(11,82,90,0.08); }
-    .cf-visual img { width: 100%; height: 100%; object-fit: cover; }
+    .fade-d1 { transition-delay: 0.08s; } .fade-d2 { transition-delay: 0.16s; } .fade-d3 { transition-delay: 0.26s; } .fade-d4 { transition-delay: 0.36s; }
+    @media (prefers-reduced-motion: reduce) { .fade { transition: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+
+    /* ── Shared section shells ── */
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+    .eyebrow .num { font-variant-numeric: tabular-nums; }
+    .sec { position: relative; overflow: hidden; }
+    .sec-dark { background: var(--dark); color: #fff; }
+    .sec-dark-2 { background: radial-gradient(ellipse 80% 70% at 50% 0%, #0D0A1E 0%, var(--dark) 60%); color: #fff; }
+    .sec-light { background: var(--bg); }
+    .sec-surface { background: var(--surface); }
+    .pad { padding: clamp(88px, 13vw, 156px) 0; }
+
+    h2.big { font-size: clamp(31px, 4.6vw, 54px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; }
+    .lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.7; color: var(--ink-2); }
+    .sec-dark .lead, .sec-dark-2 .lead { color: rgba(255,255,255,0.6); }
+
+    /* ════════ HERO ════════ */
+    .hero { position: relative; background: linear-gradient(180deg, #0A1416 0%, #06141C 42%, #0B0820 100%); text-align: center; padding: 168px 0 96px; overflow: hidden; }
+    .hero-glow { position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 55% at 50% 8%, rgba(61,217,232,0.16) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 50% at 18% 80%, rgba(139,92,246,0.14) 0%, transparent 62%),
+                  radial-gradient(ellipse 50% 45% at 85% 70%, rgba(13,122,135,0.16) 0%, transparent 60%); }
+    .hero .container { position: relative; z-index: 1; }
+    .hero .eyebrow { color: var(--cyan); margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(42px, 7.6vw, 86px); font-weight: 850; letter-spacing: -0.055em; line-height: 0.98; color: #fff; margin: 0 auto 24px; max-width: 14ch; }
+    .hero-sub { font-size: clamp(16.5px, 2vw, 20px); color: rgba(255,255,255,0.62); max-width: 540px; margin: 0 auto; line-height: 1.7; }
+
+    .stage { margin: clamp(54px, 7vw, 88px) auto 0; max-width: 940px; position: relative; }
+    .stage-frame { position: relative; border-radius: 28px; padding: clamp(22px, 3vw, 38px);
+      background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .jrail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; position: relative; }
+    .jrail::before { content: ''; position: absolute; top: 38px; left: 12%; right: 12%; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--purple)); opacity: 0.4; border-radius: 2px; }
+    .jtile { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 8px 4px; }
+    .jicon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      background: linear-gradient(150deg, rgba(61,217,232,0.16), rgba(139,92,246,0.16));
+      border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12); }
+    .jicon svg { width: 26px; height: 26px; }
+    .jname { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+    .jmeta { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.45); letter-spacing: 0.02em; margin-top: -6px; }
+
+    /* ════════ STEP shell ════════ */
+    .step-head { max-width: 620px; }
+    .step-head.center { margin: 0 auto; text-align: center; }
+    .step-head .eyebrow { margin-bottom: 20px; color: var(--teal-light); }
+    .sec-dark .step-head .eyebrow, .sec-dark-2 .step-head .eyebrow { color: var(--cyan); }
+    .step-head .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .step-head h2 { margin: 0 0 18px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 92px); align-items: center; }
+    .grid-2.rev .col-text { order: 2; } .grid-2.rev .col-visual { order: 1; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; padding: 9px 15px; border-radius: 999px;
+      background: rgba(11,82,90,0.05); border: 1px solid rgba(11,82,90,0.12); color: var(--ink-2); }
+    .chip svg { width: 14px; height: 14px; color: var(--teal-light); flex-shrink: 0; }
+    .sec-dark .chip, .sec-dark-2 .chip { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.78); }
+    .sec-dark .chip svg, .sec-dark-2 .chip svg { color: var(--cyan); }
+
+    /* ── STEP 1 visual: welcome card (neutral, no kit branding) ── */
+    .welcome-wrap { position: relative; display: flex; justify-content: center; }
+    .welcome { position: relative; width: 100%; max-width: 380px; border-radius: 26px; padding: 30px 28px 26px;
+      background: linear-gradient(165deg, #0E2A30 0%, #0A1E24 100%);
+      border: 1px solid rgba(61,217,232,0.18); box-shadow: 0 36px 80px rgba(11,82,90,0.22), inset 0 1px 0 rgba(255,255,255,0.06);
+      transform: rotate(-1.4deg); }
+    .welcome::after { content: ''; position: absolute; inset: 0; border-radius: 26px; pointer-events: none;
+      background: radial-gradient(ellipse 80% 50% at 80% 0%, rgba(61,217,232,0.16), transparent 65%); }
+    .wel-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; position: relative; z-index: 1; }
+    .wel-logo { display: flex; align-items: center; gap: 9px; color: #fff; font-weight: 800; letter-spacing: -0.02em; font-size: 15px; }
+    .wel-logo .mk { width: 26px; height: 26px; border-radius: 8px; background: linear-gradient(135deg, var(--cyan), var(--violet)); display: flex; align-items: center; justify-content: center; }
+    .wel-live { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #4ADE80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.28); padding: 4px 9px; border-radius: 999px; }
+    .wel-h { color: #fff; font-size: 21px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; position: relative; z-index: 1; }
+    .wel-p { color: rgba(255,255,255,0.5); font-size: 13px; line-height: 1.6; margin-top: 8px; position: relative; z-index: 1; }
+    .wel-row { display: flex; align-items: center; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 1; }
+    .wel-parcel { width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--cyan); }
+    .wel-parcel svg { width: 21px; height: 21px; }
+    .wel-rt b { color: #fff; font-size: 13.5px; font-weight: 700; display: block; }
+    .wel-rt span { color: rgba(255,255,255,0.45); font-size: 11.5px; }
+    .wel-float { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700;
+      padding: 9px 13px; border-radius: 12px; background: rgba(255,255,255,0.9); color: var(--teal); box-shadow: 0 16px 36px rgba(11,82,90,0.18);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+    .wel-float.f1 { top: -16px; right: -8px; }
+    .wel-float.f2 { bottom: 6px; left: -22px; }
+    .wel-float .dotg { width: 8px; height: 8px; border-radius: 50%; background: #4ADE80; }
+
+    /* ── STEP 2 visual: collection stage ── */
+    .collect { position: relative; max-width: 560px; margin: clamp(48px,6vw,72px) auto 0; aspect-ratio: 1 / 0.78; }
+    .collect-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(56%, 300px); }
+    .collect-ring svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .cr-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+    .cr-center .v { font-size: clamp(34px, 6vw, 56px); font-weight: 850; letter-spacing: -0.05em; color: #fff; line-height: 1; white-space: nowrap; }
+    .cr-center .u { font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: 0.04em; margin-top: 4px; }
+    .cfloat { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff;
+      padding: 11px 15px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+    .cfloat svg { width: 16px; height: 16px; color: var(--cyan); }
+    .cfloat.c1 { top: 4%; left: 0; }
+    .cfloat.c2 { top: 12%; right: 0; }
+    .cfloat.c3 { bottom: 14%; left: 4%; }
+    .cfloat.c4 { bottom: 2%; right: 6%; }
+
+    /* ── STEP 3 visual: dashboard → plan ── */
+    .dash { position: relative; width: 100%; max-width: 540px; border-radius: 24px; overflow: hidden;
+      background: #0B1417; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 90px rgba(11,18,21,0.16); }
+    .dash-hd { padding: 18px 20px; background: linear-gradient(135deg, rgba(61,217,232,0.1), rgba(139,92,246,0.06)); border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between; }
+    .dash-hd b { color: #fff; font-size: 13.5px; font-weight: 800; letter-spacing: -0.02em; }
+    .dash-hd .tag { font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #4ADE80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.26); padding: 3px 9px; border-radius: 999px; }
+    .dash-bd { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .dash-score { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 16px 18px; }
+    .dash-ring { width: 60px; height: 60px; flex-shrink: 0; }
+    .dash-score .sc { font-size: 30px; font-weight: 850; color: #fff; letter-spacing: -0.04em; line-height: 1; }
+    .dash-score .sc span { font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 600; }
+    .dash-score .sl { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+    .dash-score .sd { font-size: 11.5px; color: #4ADE80; font-weight: 700; margin-top: 5px; }
+    .bio { display: flex; align-items: center; gap: 11px; padding: 2px; }
+    .bio .d { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .bio .n { font-size: 12.5px; color: rgba(255,255,255,0.78); font-weight: 600; flex: 1; }
+    .bio .s { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+    .s-ok { background: rgba(74,222,128,0.12); color: #4ADE80; } .s-mid { background: rgba(251,191,36,0.12); color: #FBBF24; }
+    .dash-arrow { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 2px 0; color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .dash-arrow .ln { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(61,217,232,0.4), transparent); }
+    .dash-plan { display: flex; gap: 10px; }
+    .pcard { flex: 1; border-radius: 14px; padding: 13px 14px; background: linear-gradient(160deg, rgba(61,217,232,0.08), rgba(139,92,246,0.06)); border: 1px solid rgba(61,217,232,0.16); }
+    .pcard .pi { width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); color: var(--cyan); margin-bottom: 9px; }
+    .pcard .pi svg { width: 15px; height: 15px; }
+    .pcard b { color: #fff; font-size: 12.5px; font-weight: 700; display: block; }
+    .pcard span { color: rgba(255,255,255,0.45); font-size: 11px; }
+    .dash-float { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--teal);
+      padding: 9px 13px; border-radius: 12px; background: rgba(255,255,255,0.94); box-shadow: 0 18px 40px rgba(11,82,90,0.2); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .dash-float svg { width: 15px; height: 15px; color: var(--violet); }
+    .dash-float.df1 { top: 16%; right: -26px; }
+
+    /* ── STEP 4 visual: longitudinal chart ── */
+    .evo { position: relative; width: 100%; max-width: 920px; margin: clamp(48px,6vw,80px) auto 0; border-radius: 26px; overflow: hidden;
+      background: linear-gradient(160deg, #0A1216 0%, #0B0A1C 100%); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 50px 120px rgba(0,0,0,0.5);
+      padding: clamp(22px, 3.5vw, 40px); }
+    .evo-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .evo-top .t { color: #fff; font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+    .evo-top .s { color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 3px; }
+    .evo-legend { display: flex; gap: 16px; }
+    .evo-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.55); }
+    .evo-legend i { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
+    .evo-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .evo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+    .estat { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 14px 16px; text-align: center; }
+    .estat .en { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+    .estat .ev { font-size: clamp(18px, 2.4vw, 24px); font-weight: 850; letter-spacing: -0.03em; }
+    .ev-green { color: #4ADE80; } .ev-cyan { color: var(--cyan); }
+
+    /* ════════ CTA ════════ */
+    .cta { position: relative; text-align: center; }
+    .cta-card { position: relative; max-width: 720px; margin: 0 auto; border-radius: 30px; padding: clamp(48px, 7vw, 80px) clamp(28px, 5vw, 64px); overflow: hidden;
+      background: linear-gradient(150deg, #0B1E24 0%, #0C0A1E 100%); border: 1px solid rgba(61,217,232,0.16); box-shadow: 0 50px 120px rgba(0,0,0,0.4); }
+    .cta-card::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(61,217,232,0.18), transparent 60%), radial-gradient(ellipse 60% 50% at 80% 100%, rgba(139,92,246,0.16), transparent 60%); }
+    .cta-card > * { position: relative; z-index: 1; }
+    .cta-card h2 { color: #fff; }
+    .cta-card .lead { color: rgba(255,255,255,0.6); margin: 16px auto 0; max-width: 440px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+    .btn { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 700; padding: 15px 28px; border-radius: 999px; text-decoration: none; transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease; }
+    .btn svg { width: 15px; height: 15px; }
+    .btn-primary { background: #fff; color: var(--teal); box-shadow: 0 16px 40px rgba(61,217,232,0.18); }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-ghost { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+    /* ── Footer ── */
     .footer { background: linear-gradient(180deg, #0D0820 0%, #060A0C 60%); padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; }
     .footer-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 700px; height: 300px; background: radial-gradient(ellipse, rgba(11,82,90,0.25) 0%, transparent 70%); pointer-events: none; }
     .lf-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
@@ -86,14 +239,35 @@
     .lf-links { display: flex; gap: 20px; }
     .lf-links a, .lf-cookies { font-size: 12.5px; color: rgba(255,255,255,0.25); text-decoration: none; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
     .lf-links a:hover, .lf-cookies:hover { color: rgba(255,255,255,0.5); }
+
+    /* ════════ Responsive ════════ */
     @media (max-width: 860px) {
-      .cf-step { grid-template-columns: 1fr; gap: 32px; }
-      .cf-step.cf-rev .cf-text, .cf-step.cf-rev .cf-visual { order: 0; }
+      .grid-2 { grid-template-columns: 1fr; gap: 44px; }
+      .grid-2.rev .col-text, .grid-2.rev .col-visual { order: 0; }
+      .step-head { max-width: none; }
+      .welcome { transform: none; }
     }
-    @media (max-width: 680px) {
+    @media (max-width: 600px) {
+      .nav-inner { height: 76px; }
       .nav-links > li { display: none; }
       .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; }
-      .lf-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 120px 0 72px; }
+      .jrail { gap: 8px; }
+      .jrail::before { top: 30px; left: 14%; right: 14%; }
+      .jicon { width: 48px; height: 48px; border-radius: 14px; }
+      .jicon svg { width: 21px; height: 21px; }
+      .jname { font-size: 12px; }
+      .jmeta { font-size: 10px; }
+      .stage-frame { padding: 18px 12px; }
+      .collect { aspect-ratio: 1 / 0.95; }
+      .cfloat { font-size: 11px; padding: 8px 11px; gap: 6px; }
+      .cfloat svg { width: 14px; height: 14px; }
+      .wel-float.f2 { left: -8px; }
+      .dash-float.df1 { right: -8px; }
+      .evo-stats { gap: 8px; }
+      .estat { padding: 11px 8px; }
+      .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .btn { width: 100%; justify-content: center; }
     }
   </style>
   <link rel="stylesheet" href="../mobile-nav.css" />
@@ -102,7 +276,7 @@
 <nav class="nav">
   <div class="nav-inner">
     <a href="../index.html" class="nav-logo">
-      <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
+      <img src="../images/logo.png" alt="Lyvoo" style="height:54px;width:auto;display:block;" />
     </a>
     <ul class="nav-links">
       <li><a href="how-it-works.html">How it works</a></li>
@@ -110,159 +284,234 @@
       <li><a href="science.html">The science</a></li>
       <li><a href="index.html#faq">FAQ</a></li>
       <li><a href="contact.html">Contact</a></li>
-            <li class="lang-toggle"><a href="../como-funciona.html" aria-label="Mudar para portugu&#234;s / Switch to Portuguese">PT</a><a class="lang-active" aria-current="page">EN</a></li>
+      <li class="lang-toggle"><a href="../como-funciona.html" aria-label="Mudar para português / Switch to Portuguese">PT</a><a class="lang-active" aria-current="page">EN</a></li>
       <li><a href="register.html" class="nav-cta">Get started</a></li>
     </ul>
   </div>
 </nav>
 
-<section class="hero">
+<!-- ════════ HERO ════════ -->
+<header class="hero">
   <div class="hero-glow"></div>
   <div class="container">
-    <span class="label">How it works</span>
-    <h1>From test <span class="grad-text">to plan</span></h1>
-    <p>Four simple steps, from sign-up to continuous health optimisation.</p>
+    <span class="eyebrow fade">How it works</span>
+    <h1 class="fade fade-d1">So simple<br/>it <span class="grad-text">surprises.</span></h1>
+    <p class="hero-sub fade fade-d2">From at-home collection to a personalised plan. Four steps designed to feel invisible.</p>
+
+    <div class="stage fade fade-d3">
+      <div class="stage-frame">
+        <div class="jrail">
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#3DD9E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span>
+            <span class="jname">Kit</span>
+            <span class="jmeta">48 hours</span>
+          </div>
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#5BC8E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+            <span class="jname">Collection</span>
+            <span class="jmeta">5 minutes</span>
+          </div>
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#8FA8EE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 13l2.5 2.5L16 10"/></svg></span>
+            <span class="jname">Report</span>
+            <span class="jmeta">7-10 days</span>
+          </div>
+          <div class="jtile">
+            <span class="jicon"><svg viewBox="0 0 24 24" fill="none" stroke="#B79BEC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span>
+            <span class="jname">Progress</span>
+            <span class="jmeta">every 6 months</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ STEP 01 — Join ════════ -->
+<section class="sec sec-light pad">
+  <div class="container">
+    <div class="grid-2">
+      <div class="col-text">
+        <div class="step-head fade">
+          <span class="eyebrow"><span class="num">01</span><span class="dot"></span>Join</span>
+          <h2 class="big">Become a member.<br/>Today.</h2>
+          <p class="lead">One annual programme, everything included. You're in within minutes — and your kit ships to your door.</p>
+          <div class="chips">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Single annual payment</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Medical supervision</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Cancel anytime</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-visual">
+        <div class="welcome-wrap fade fade-d2">
+          <div class="welcome">
+            <div class="wel-top">
+              <span class="wel-logo"><span class="mk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 1 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg></span>Lyvoo</span>
+              <span class="wel-live">Plan active</span>
+            </div>
+            <div class="wel-h">Welcome.</div>
+            <div class="wel-p">Your preventive health journey starts now.</div>
+            <div class="wel-row">
+              <span class="wel-parcel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span>
+              <span class="wel-rt"><b>Kit on its way</b><span>Estimated delivery · 48 hours</span></span>
+            </div>
+          </div>
+          <span class="wel-float f1"><span class="dotg"></span>All included</span>
+          <span class="wel-float f2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>No extra costs</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="cf-section">
+<!-- ════════ STEP 02 — Collect ════════ -->
+<section class="sec sec-dark-2 pad">
   <div class="container">
-    <div class="cf-steps">
+    <div class="step-head center fade">
+      <span class="eyebrow"><span class="num">02</span><span class="dot"></span>Collect</span>
+      <h2 class="big">Five minutes.<br/>At <span class="grad-text">home.</span></h2>
+      <p class="lead">A simple finger-prick. No needles, no clinics, no appointments.</p>
+    </div>
 
-      <!-- Step 1 -->
-      <div class="cf-step fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">1</div>
-            <span class="cf-tag">Become a member</span>
-            <span class="cf-badge">Today</span>
-          </div>
-          <h3>Subscribe and receive your kit at home.</h3>
-          <p>One annual programme, everything included. The collection kit arrives at your address within 48 hours, with everything you need for at-home testing.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Single annual payment, no surprises</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Medical supervision included</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Cancel at any time</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#F0F9FA,#E4F2F5);padding:0;">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs><filter id="s1"><feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#0B525A" flood-opacity="0.10"/></filter><linearGradient id="boxLid" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#0D7A87"/></linearGradient><linearGradient id="boxBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#F4FBFC"/></linearGradient></defs>
-            <circle cx="80" cy="70" r="90" fill="rgba(11,82,90,0.04)"/><circle cx="410" cy="300" r="110" fill="rgba(61,217,232,0.06)"/>
-            <rect x="155" y="110" width="170" height="160" rx="14" fill="url(#boxBody)" filter="url(#s1)"/>
-            <rect x="143" y="90" width="194" height="38" rx="10" fill="url(#boxLid)" filter="url(#s1)"/>
-            <text x="240" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="800" fill="white" letter-spacing="2.5">LYVOO</text>
-            <rect x="232" y="90" width="16" height="180" rx="2" fill="rgba(61,217,232,0.18)"/>
-            <rect x="178" y="138" width="84" height="10" rx="5" fill="#D0E9ED"/><rect x="178" y="158" width="64" height="10" rx="5" fill="#D0E9ED"/><rect x="178" y="178" width="74" height="10" rx="5" fill="#D0E9ED"/>
-            <rect x="348" y="115" width="82" height="26" rx="13" fill="white" filter="url(#s1)"/><circle cx="361" cy="128" r="7" fill="#3DD9E8"/><text x="396" y="133" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#0B525A">Lancet</text>
-            <rect x="50" y="150" width="72" height="50" rx="8" fill="white" filter="url(#s1)"/><rect x="50" y="150" width="72" height="20" rx="8 8 0 0" fill="#8B5CF6"/><text x="86" y="165" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">DBS</text><rect x="58" y="178" width="56" height="6" rx="3" fill="#E0E7FF"/><rect x="58" y="188" width="40" height="6" rx="3" fill="#E0E7FF"/>
-            <rect x="348" y="210" width="72" height="52" rx="8" fill="white" filter="url(#s1)"/><polyline points="348,210 384,238 420,210" fill="none" stroke="#FBBF24" stroke-width="2"/><rect x="348" y="238" width="72" height="24" rx="0 0 8 8" fill="#FFFBEB"/>
-            <rect x="168" y="292" width="144" height="30" rx="15" fill="#0B525A"/><text x="240" y="312" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white" letter-spacing="0.5">Delivered in 48h</text>
-          </svg>
+    <div class="collect fade fade-d2">
+      <div class="collect-ring">
+        <svg viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+            <filter id="ringGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle cx="100" cy="100" r="84" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="12"/>
+          <circle cx="100" cy="100" r="84" fill="none" stroke="url(#ringGrad)" stroke-width="12" stroke-linecap="round"
+                  stroke-dasharray="343 528" transform="rotate(-90 100 100)" filter="url(#ringGlow)"/>
+          <circle cx="100" cy="100" r="58" fill="rgba(61,217,232,0.04)" stroke="rgba(61,217,232,0.14)" stroke-width="1"/>
+        </svg>
+        <div class="cr-center">
+          <div class="v">5 min</div>
+          <div class="u">Finger-prick</div>
         </div>
       </div>
+      <span class="cfloat c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No needles</span>
+      <span class="cfloat c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No clinic</span>
+      <span class="cfloat c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No venous draw</span>
+      <span class="cfloat c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>No appointments</span>
+    </div>
+  </div>
+</section>
 
-      <!-- Step 2 -->
-      <div class="cf-step cf-rev fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">2</div>
-            <span class="cf-tag">Collect at home</span>
-            <span class="cf-badge">Day 1</span>
+<!-- ════════ STEP 03 — Interpret ════════ -->
+<section class="sec sec-surface pad">
+  <div class="container">
+    <div class="grid-2 rev">
+      <div class="col-text">
+        <div class="step-head fade">
+          <span class="eyebrow"><span class="num">03</span><span class="dot"></span>Interpret</span>
+          <h2 class="big">One report.<br/>One strategy.</h2>
+          <p class="lead">Every biomarker interpreted by a doctor and turned into a nutrition and supplementation plan that's yours alone.</p>
+          <div class="chips">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Medical interpretation</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Nutrition consultation</span>
           </div>
-          <h3>Collect your sample. No needles, no travel.</h3>
-          <p>A simple finger-prick collects your sample in 5 minutes. Follow the app instructions and return in the pre-paid envelope included.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>No needles or venepuncture</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5-minute collection from the comfort of home</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Pre-paid return to certified laboratory</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#F8FFFE,#EBF7F8);padding:0;">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs><filter id="s2"><feDropShadow dx="0" dy="6" stdDeviation="16" flood-color="#0B525A" flood-opacity="0.10"/></filter><radialGradient id="glow2en" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.12"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></radialGradient></defs>
-            <circle cx="240" cy="180" r="160" fill="url(#glow2en)"/>
-            <ellipse cx="240" cy="270" rx="70" ry="50" fill="#FDE8D8"/>
-            <rect x="155" y="170" width="36" height="110" rx="18" fill="#FDE8D8"/><rect x="200" y="150" width="36" height="130" rx="18" fill="#FDE8D8"/><rect x="245" y="145" width="36" height="135" rx="18" fill="#FDE8D8"/><rect x="290" y="155" width="36" height="120" rx="18" fill="#FDE8D8"/>
-            <rect x="200" y="150" width="36" height="130" rx="18" fill="#FDDCC8"/>
-            <circle cx="218" cy="152" r="10" fill="#3DD9E8" opacity="0.9"/><circle cx="218" cy="152" r="6" fill="#0D7A87"/>
-            <rect x="90" y="120" width="100" height="36" rx="18" fill="white" filter="url(#s2)"/><circle cx="108" cy="138" r="9" fill="#3DD9E8"/><text x="155" y="143" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#0B525A">Lancet</text>
-            <rect x="310" y="80" width="140" height="60" rx="14" fill="white" filter="url(#s2)"/><text x="380" y="105" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#6B9298" font-weight="500">Collect in</text><text x="380" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="800" fill="#0B525A" letter-spacing="-0.5">5 min</text>
-            <rect x="310" y="230" width="140" height="50" rx="14" fill="white" filter="url(#s2)"/><circle cx="330" cy="255" r="10" fill="#4ADE80" opacity="0.9"/><text x="390" y="251" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">No needles</text><text x="390" y="265" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">No travel</text>
-          </svg>
         </div>
       </div>
-
-      <!-- Step 3 -->
-      <div class="cf-step fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">3</div>
-            <span class="cf-tag">Integrated interpretation</span>
-            <span class="cf-badge">7-10 days</span>
+      <div class="col-visual">
+        <div class="welcome-wrap fade fade-d2" style="justify-content:center">
+          <div class="dash">
+            <div class="dash-hd"><b>Integrated report</b><span class="tag">Complete</span></div>
+            <div class="dash-bd">
+              <div class="dash-score">
+                <svg class="dash-ring" viewBox="0 0 60 60">
+                  <defs><linearGradient id="dsg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+                  <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                  <circle cx="30" cy="30" r="25" fill="none" stroke="url(#dsg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="137 157" transform="rotate(-90 30 30)"/>
+                </svg>
+                <div>
+                  <div class="sl">Health score</div>
+                  <div class="sc">87<span>/100</span></div>
+                  <div class="sd">↑ +12 vs. baseline</div>
+                </div>
+              </div>
+              <div class="bio"><span class="d" style="background:#4ADE80"></span><span class="n">Lipid profile</span><span class="s s-ok">Optimal</span></div>
+              <div class="bio"><span class="d" style="background:#FBBF24"></span><span class="n">CRP · inflammation</span><span class="s s-mid">Caution</span></div>
+              <div class="bio"><span class="d" style="background:#4ADE80"></span><span class="n">HbA1c · glucose</span><span class="s s-ok">Excellent</span></div>
+              <div class="dash-arrow"><span class="ln"></span>Your plan<span class="ln"></span></div>
+              <div class="dash-plan">
+                <div class="pcard">
+                  <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v9a5 5 0 0 0 10 0V2"/><path d="M7 7h10"/></svg></span>
+                  <b>Nutrition</b><span>Tailored to your values</span>
+                </div>
+                <div class="pcard">
+                  <span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a3.5 3.5 0 0 0-5-5l-10 10a3.5 3.5 0 0 0 5 5z"/><path d="m8.5 8.5 7 7"/></svg></span>
+                  <b>Supplementation</b><span>Only what you need</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <h3>Medical report. Nutrition consultation.</h3>
-          <p>When your results are ready, you receive a report with real clinical interpretation of each biomarker. We also schedule a nutrition consultation to turn your results into concrete action.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Medical interpretation of every out-of-range biomarker</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Nutrition consultation scheduled after results are ready</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Report in the app in clear, accessible language</li>
-          </ul>
-        </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#F0F9FA,#E8F4F6);padding:0;">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs><filter id="s3"><feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#0B525A" flood-opacity="0.09"/></filter><linearGradient id="cardTop3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#0D7A87"/></linearGradient></defs>
-            <circle cx="420" cy="60" r="100" fill="rgba(61,217,232,0.07)"/><circle cx="60" cy="310" r="80" fill="rgba(139,92,246,0.05)"/>
-            <rect x="80" y="50" width="320" height="270" rx="18" fill="white" filter="url(#s3)"/>
-            <rect x="80" y="50" width="320" height="52" rx="18 18 0 0" fill="url(#cardTop3)"/>
-            <text x="120" y="80" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="white">Integrated Report · Jan 2026</text>
-            <rect x="330" y="66" width="56" height="20" rx="10" fill="rgba(61,217,232,0.25)"/><text x="358" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="#3DD9E8">Complete</text>
-            <rect x="96" y="118" width="120" height="64" rx="12" fill="#F0F9FA"/><text x="156" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298" letter-spacing="0.5">Health score</text><text x="156" y="168" text-anchor="middle" font-family="Inter,sans-serif" font-size="28" font-weight="800" fill="#0B525A">87</text>
-            <rect x="232" y="118" width="152" height="64" rx="12" fill="#F0F9FA"/><text x="308" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#6B9298">Biomarkers OK</text>
-            <rect x="244" y="168" width="20" height="12" rx="2" fill="#3DD9E8" opacity="0.4"/><rect x="270" y="158" width="20" height="22" rx="2" fill="#3DD9E8" opacity="0.6"/><rect x="296" y="152" width="20" height="28" rx="2" fill="#3DD9E8" opacity="0.8"/><rect x="322" y="155" width="20" height="25" rx="2" fill="#3DD9E8"/><rect x="348" y="162" width="20" height="18" rx="2" fill="#4ADE80"/>
-            <circle cx="108" cy="215" r="5" fill="#4ADE80"/><text x="120" y="219" font-family="Inter,sans-serif" font-size="10" fill="#374151">Lipid profile - <tspan font-weight="700" fill="#4ADE80">optimal</tspan></text>
-            <circle cx="108" cy="237" r="5" fill="#FBBF24"/><text x="120" y="241" font-family="Inter,sans-serif" font-size="10" fill="#374151">CRP - <tspan font-weight="700" fill="#FBBF24">Caution</tspan></text>
-            <circle cx="108" cy="259" r="5" fill="#4ADE80"/><text x="120" y="263" font-family="Inter,sans-serif" font-size="10" fill="#374151">HbA1c - <tspan font-weight="700" fill="#4ADE80">Excellent</tspan></text>
-            <line x1="96" y1="285" x2="384" y2="285" stroke="#E8F2F4" stroke-width="1"/>
-            <circle cx="120" cy="306" r="14" fill="#0B525A"/><text x="120" y="311" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">D</text><text x="140" y="311" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#111827">Doctor</text>
-            <circle cx="280" cy="306" r="14" fill="#8B5CF6"/><text x="280" y="311" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="white">N</text><text x="300" y="311" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#111827">Nutritionist</text>
-          </svg>
+          <span class="dash-float df1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5M17 3a4 4 0 0 0 0 8M7 13a4 4 0 0 0 0 8"/></svg>Clear language</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <!-- Step 4 -->
-      <div class="cf-step cf-rev fade">
-        <div class="cf-text">
-          <div class="cf-numrow">
-            <div class="cf-circle">4</div>
-            <span class="cf-tag">Track and optimise</span>
-            <span class="cf-badge">6 months</span>
-          </div>
-          <h3>A plan that evolves with you. Reassessed.</h3>
-          <p>After 6 months you repeat the panel and we compare results against your baseline to prove the progress.</p>
-          <ul class="cf-checks">
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6-month reassessment with a new full panel</li>
-            <li><span class="cf-chk"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Comparative report: baseline vs. 6 months</li>
-          </ul>
+<!-- ════════ STEP 04 — Progress ════════ -->
+<section class="sec sec-dark pad">
+  <div class="container">
+    <div class="step-head center fade">
+      <span class="eyebrow"><span class="num">04</span><span class="dot"></span>Progress</span>
+      <h2 class="big">Watch the progress.<br/><span class="grad-text">Year after year.</span></h2>
+      <p class="lead">Every 6 months, you repeat the panel. The numbers prove the progress.</p>
+    </div>
+
+    <div class="evo fade fade-d2">
+      <div class="evo-top">
+        <div>
+          <div class="t">Your health trajectory</div>
+          <div class="s">Health score · 12 months</div>
         </div>
-        <div class="cf-visual" style="background:linear-gradient(145deg,#080E12,#0D1A1F);padding:0;border-color:rgba(61,217,232,0.15);">
-          <svg width="100%" height="100%" viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg">
-            <defs><filter id="s4"><feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="#000" flood-opacity="0.3"/></filter><linearGradient id="lineGrad4" x1="0" y1="0" x2="480" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0B525A"/><stop offset="100%" stop-color="#3DD9E8"/></linearGradient><linearGradient id="fillGrad4" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.2"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient></defs>
-            <ellipse cx="240" cy="180" rx="220" ry="140" fill="rgba(13,92,101,0.18)"/>
-            <line x1="60" y1="80" x2="60" y2="280" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><line x1="60" y1="280" x2="440" y2="280" stroke="rgba(255,255,255,0.06)" stroke-width="1"/><line x1="60" y1="200" x2="440" y2="200" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 4"/><line x1="60" y1="140" x2="440" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 4"/>
-            <text x="80" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Jan</text><text x="156" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Feb</text><text x="232" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Mar</text><text x="308" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Apr</text><text x="384" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">May</text><text x="430" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">Jun</text>
-            <polyline points="80,240 156,238 232,242 308,236 384,240 430,238" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="5 4"/>
-            <path d="M80,240 L156,220 L232,195 L308,168 L384,142 L430,118 L430,280 L80,280Z" fill="url(#fillGrad4)"/>
-            <polyline points="80,240 156,220 232,195 308,168 384,142 430,118" fill="none" stroke="url(#lineGrad4)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="80" cy="240" r="4" fill="rgba(255,255,255,0.6)"/><circle cx="232" cy="195" r="4" fill="#3DD9E8"/><circle cx="430" cy="118" r="6" fill="#3DD9E8" filter="url(#s4)"/>
-            <rect x="340" y="90" width="100" height="28" rx="14" fill="rgba(61,217,232,0.15)" stroke="rgba(61,217,232,0.3)" stroke-width="1"/><text x="390" y="109" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="#3DD9E8">↑ +12 pts</text>
-            <rect x="66" y="56" width="90" height="48" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="111" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">LDL</text><text x="111" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#4ADE80">−18%</text>
-            <rect x="168" y="56" width="90" height="48" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/><text x="213" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">CRP</text><text x="213" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#4ADE80">−34%</text>
-            <rect x="270" y="56" width="100" height="48" rx="12" fill="rgba(61,217,232,0.1)" stroke="rgba(61,217,232,0.2)" stroke-width="1"/><text x="320" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)">Score</text><text x="320" y="96" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="#3DD9E8">+12 pts</text>
-          </svg>
+        <div class="evo-legend">
+          <span><i style="background:rgba(255,255,255,0.3)"></i>Baseline</span>
+          <span><i style="background:#3DD9E8"></i>6 months</span>
+          <span><i style="background:#8B5CF6"></i>12 months</span>
         </div>
       </div>
+      <div class="evo-chart">
+        <svg viewBox="0 0 800 280" preserveAspectRatio="none" style="height:clamp(180px,26vw,260px)">
+          <defs>
+            <linearGradient id="evoLine" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0D7A87"/><stop offset="55%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+            <linearGradient id="evoFill" x1="0" y1="0" x2="0" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.22"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient>
+            <filter id="evoDot"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#3DD9E8" flood-opacity="0.7"/></filter>
+          </defs>
+          <line x1="0" y1="70" x2="800" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5 6"/>
+          <line x1="0" y1="140" x2="800" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5 6"/>
+          <line x1="0" y1="210" x2="800" y2="210" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5 6"/>
+          <polyline points="40,210 40,210 760,210" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="6 5"/>
+          <path d="M40,206 C170,196 250,176 400,140 C520,110 640,78 760,52 L760,280 L40,280 Z" fill="url(#evoFill)"/>
+          <path d="M40,206 C170,196 250,176 400,140 C520,110 640,78 760,52" fill="none" stroke="url(#evoLine)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="40" cy="206" r="6" fill="#0A1216" stroke="rgba(255,255,255,0.5)" stroke-width="2.5"/>
+          <circle cx="400" cy="140" r="7" fill="#3DD9E8" stroke="#0A1216" stroke-width="3"/>
+          <circle cx="760" cy="52" r="9" fill="#8B5CF6" stroke="#0A1216" stroke-width="3" filter="url(#evoDot)"/>
+        </svg>
+      </div>
+      <div class="evo-stats">
+        <div class="estat"><div class="en">LDL</div><div class="ev ev-green">−18%</div></div>
+        <div class="estat"><div class="en">CRP</div><div class="ev ev-green">−34%</div></div>
+        <div class="estat"><div class="en">Score</div><div class="ev ev-cyan">+12 pts</div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ════════ CTA ════════ -->
+<section class="sec sec-light pad cta">
+  <div class="container">
+    <div class="cta-card fade">
+      <h2 class="big">Ready to begin?</h2>
+      <p class="lead">The first step takes less than two minutes.</p>
+      <div class="cta-actions">
+        <a href="register.html" class="btn btn-primary">Get started <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13 13 3M13 13V3H3"/></svg></a>
+        <a href="index.html#atlas" class="btn btn-ghost">What we test</a>
+      </div>
     </div>
   </div>
 </section>
@@ -278,6 +527,7 @@
       <div class="lf-col"><h5>Product</h5><ul>
         <li><a href="how-it-works.html" style="color:#fff">How it works</a></li>
         <li><a href="index.html#atlas">What we test</a></li>
+        <li><a href="science.html">The science</a></li>
       </ul></div>
       <div class="lf-col"><h5>Company</h5><ul>
         <li><a href="index.html#equipa">Clinical team</a></li>
@@ -290,19 +540,19 @@
       </ul></div>
     </div>
     <div class="lf-bottom">
-      <span>&#169; 2026 Lyvoo. All rights reserved.</span>
+      <span>© 2026 Lyvoo. All rights reserved.</span>
       <div class="lf-links">
         <a href="../privacidade.html">Privacy policy</a>
         <a href="../termos.html">Terms of service</a>
-        <button class="lf-cookies" onclick="window.LyvooCookies&amp;&amp;window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+        <button class="lf-cookies" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
       </div>
     </div>
   </div>
 </footer>
 <script>
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
 </script>
 </body>
