@@ -1591,6 +1591,23 @@
       .modules-grid { display: contents; }
       .modules-grid.collapsed .module-card:nth-child(n+1) { display: flex; }
 
+      /* ordem só no telemóvel (mantém a ordem original no desktop/tablet):
+         1 Teste Genético, 2 Microbioma, 3 Hormonal Masculino, 4 Hormonal Feminino,
+         5 Cardio Avançado, 6 Vitaminas, 7 Intolerâncias Alimentares, 8 Tiroide Completo,
+         9 Fertilidade, 10 DST/IST Completo, 11 Hepatite B, 12 Stresse */
+      .modules-grid .module-card:nth-child(1)  { order: 1; }
+      .modules-grid .module-card:nth-child(2)  { order: 2; }
+      .modules-grid .module-card:nth-child(3)  { order: 3; }
+      .modules-grid .module-card:nth-child(4)  { order: 6; }
+      .modules-grid .module-card:nth-child(5)  { order: 7; }
+      .modules-grid .module-card:nth-child(6)  { order: 4; }
+      .modules-grid .module-card:nth-child(7)  { order: 9; }
+      .modules-grid .module-card:nth-child(8)  { order: 8; }
+      .modules-grid .module-card:nth-child(9)  { order: 12; }
+      .modules-grid .module-card:nth-child(10) { order: 5; }
+      .modules-grid .module-card:nth-child(11) { order: 10; }
+      .modules-grid .module-card:nth-child(12) { order: 11; }
+
       .module-card {
         flex: 0 0 80vw; max-width: 320px; margin: 0;
         scroll-snap-align: center; scroll-snap-stop: always;
@@ -4114,6 +4131,9 @@
     if (!scroller || !dotsWrap) return;
     const slides = Array.from(scroller.querySelectorAll(slideSelector));
     if (!slides.length) return;
+    // ordenar pela posição visual (não pela ordem no DOM), pois alguns carrosséis
+    // usam a propriedade CSS "order" para mostrar uma sequência diferente no telemóvel
+    slides.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
 
     if (!dotsWrap.childElementCount) {
       slides.forEach((_, i) => {

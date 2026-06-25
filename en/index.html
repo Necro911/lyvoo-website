@@ -555,6 +555,18 @@
       .mod-track{display:flex;align-items:stretch;gap:14px;width:max-content;padding:0 22px}
       .modules-grid{display:contents}
       .modules-grid.collapsed .module-card:nth-child(n+1){display:flex}
+      .modules-grid .module-card:nth-child(1){order:1}
+      .modules-grid .module-card:nth-child(2){order:2}
+      .modules-grid .module-card:nth-child(3){order:3}
+      .modules-grid .module-card:nth-child(4){order:6}
+      .modules-grid .module-card:nth-child(5){order:7}
+      .modules-grid .module-card:nth-child(6){order:4}
+      .modules-grid .module-card:nth-child(7){order:9}
+      .modules-grid .module-card:nth-child(8){order:8}
+      .modules-grid .module-card:nth-child(9){order:12}
+      .modules-grid .module-card:nth-child(10){order:5}
+      .modules-grid .module-card:nth-child(11){order:10}
+      .modules-grid .module-card:nth-child(12){order:11}
       .module-card{flex:0 0 80vw;max-width:320px;margin:0;scroll-snap-align:center;scroll-snap-stop:always;opacity:0.45;transform:scale(0.955);transition:opacity 0.5s ease,transform 0.5s ease;will-change:opacity,transform}
       .module-card.mod-slide-in{opacity:1;transform:scale(1)}
       .mod-dots{display:flex;justify-content:center;gap:8px;margin-top:24px}
@@ -2484,6 +2496,7 @@
     if (!scroller || !dotsWrap) return;
     const slides = Array.from(scroller.querySelectorAll(slideSelector));
     if (!slides.length) return;
+    slides.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
 
     if (!dotsWrap.childElementCount) {
       slides.forEach((_, i) => {
