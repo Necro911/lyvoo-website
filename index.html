@@ -4144,6 +4144,19 @@
   initSwipeCarousel('yrScroller', 'yrDots', '.yr-item', 'yr-slide-in', 'yr-pdot');
   initSwipeCarousel('modScroller', 'modDots', '.module-card', 'mod-slide-in', 'mod-dot');
 
+  // O browser tenta restaurar a posição de scroll horizontal destes carrosséis ao
+  // recarregar a página (mesmo comportamento de "scroll anchoring" do scroll vertical) -
+  // força sempre o regresso ao 1.º slide.
+  (function resetCarouselScroll() {
+    const ids = ['evScroller', 'prScroller', 'yrScroller', 'modScroller'];
+    const reset = () => ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.scrollLeft = 0;
+    });
+    reset();
+    window.addEventListener('pageshow', reset);
+  })();
+
   function toggleBaGrid() {
     const wrap = document.getElementById('baGridWrap');
     const label = document.getElementById('baMoreLabel');
