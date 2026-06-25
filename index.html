@@ -1471,7 +1471,9 @@
       border: 1px solid transparent;
     }
     .ba-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-    .ba-item.hidden { display: none; }
+    /* Desktop: itens fora da categoria ficam esbatidos/blurry, não desaparecem */
+    .ba-item.hidden { opacity: 0.22; filter: blur(2.5px); }
+    .ba-item.hidden:hover { opacity: 0.5; filter: blur(0); }
     .ba-item.selected { background: rgba(61,217,232,0.07); border-color: rgba(61,217,232,0.28); }
     .ba-item-row { display: flex; align-items: flex-start; gap: 6px; }
     .ba-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
@@ -1511,6 +1513,8 @@
       .ba-grid { grid-template-columns: repeat(3, 1fr); }
       .ba-detail { display: none; }
       .ba-detail-hint { display: none; }
+      /* Mobile: poupar espaço vertical - itens fora da categoria desaparecem (em vez de esbater) */
+      .ba-item.hidden { display: none; opacity: 1; filter: none; }
       .ba-filters { display: flex; flex-wrap: wrap; justify-content: center; }
       .ba-grid-wrap { position: relative; max-height: 290px; overflow: hidden; transition: max-height 0.4s ease; }
       .ba-grid-wrap.expanded { max-height: none; }
