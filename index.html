@@ -1369,7 +1369,7 @@
          a mesma proporção do desktop (500px), para que as posições em % dos
          cartões caiam exactamente no mesmo sítio relativo, só que mais pequenas
          (sem risco de overflow: .hero tem overflow:hidden). */
-      .hero-right { display: flex; padding-bottom: 0; }
+      .hero-right { display: flex; padding-bottom: 0; order: 3; }
       .hero-canvas { width: 100%; max-width: 300px; height: 300px; }
       .hc-orbit { width: 240px; height: 240px; }
       .hc-glow, .hc-legend { display: none; }
@@ -1378,7 +1378,12 @@
       .hcm-label { font-size: 8px; }
       .hcm-val { font-size: 11px; }
       .hcm-stat { font-size: 8px; }
-      .hero-left { padding-bottom: 24px; }
+      /* Mobile: header, subheader, gráfico do health score, 3 marcas, 2 botões */
+      .hero-left { display: contents; }
+      .hero-left h1 { order: 1; margin-bottom: 14px; }
+      .hero-subhead { order: 2; margin-bottom: 24px; }
+      .hero-proof { order: 4; margin-top: 24px; }
+      .hero-actions { order: 5; margin-bottom: 24px; }
       .process-step { grid-template-columns: 1fr; gap: 40px; }
       .process-step.reverse .step-text { order: 1; }
       .process-step.reverse .step-visual { order: 2; }
