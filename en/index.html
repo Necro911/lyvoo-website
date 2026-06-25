@@ -212,7 +212,7 @@
       .cmp-row.pr-slide-in{opacity:1;transform:scale(1)}
       .cmp-problem{padding-right:0}
       .cmp-problem-sub{display:block}
-      .cmp-arrow{display:flex;justify-content:flex-start;transform:rotate(90deg);margin-left:36px}
+      .cmp-arrow{display:none}
       .cmp-solution{padding-left:0;border-left:none;border-top:2px solid rgba(11,82,90,0.12);padding-top:14px}
       .pr-dots{display:flex;justify-content:center;gap:8px;margin-top:24px}
       .pr-dots .pr-dot{width:7px;height:7px;border-radius:999px;background:rgba(11,82,90,0.18);transition:width 0.35s ease,background 0.35s ease}
@@ -1405,7 +1405,7 @@
     }
 
     @media (max-width: 860px) {
-      .yr-wrap { grid-template-columns: 1fr; gap: 36px; }
+      .yr-wrap { grid-template-columns: minmax(0,1fr); gap: 36px; }
       .yr-sub { max-width: none; }
     }
     @media (max-width: 560px) {
