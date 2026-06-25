@@ -1352,7 +1352,12 @@
     .yr-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-light); }
     .yr-item:nth-child(3) .yr-eyebrow { color: var(--violet); }
     .yr-chip { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; color: var(--ink-3); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; }
-    .yr-title { font-size: clamp(17px, 1.9vw, 20px); font-weight: 800; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 5px; line-height: 1.25; }
+    .yr-title {
+      font-size: clamp(17px, 1.9vw, 20px); font-weight: 800; letter-spacing: -0.03em; color: var(--ink);
+      line-height: 1.25; display: inline-block;
+      background: linear-gradient(120deg, rgba(61,217,232,0.07) 0%, rgba(139,92,246,0.08) 55%, rgba(155,111,212,0.07) 100%);
+      padding: 3px 8px; margin: 0 -8px 4px; border-radius: 8px;
+    }
     .yr-desc { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
 
     /* ── Real data: ApoB descending over the years ── */
