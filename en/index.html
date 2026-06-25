@@ -371,6 +371,19 @@
     @media(max-width:860px){.team-teaser-row.expanded .team-reveal-wrap{max-height:2400px}}
     @media(max-width:560px){.team-reveal-grid{grid-template-columns:1fr;max-width:360px}}
     @media(max-width:760px){.team-teaser-row{flex-direction:column;align-items:flex-start;gap:28px}}
+    .team-fade,.team-more-btn{display:none}
+    @media(max-width:860px){
+      .team-collapse{position:relative;width:100%}
+      .team-reveal-wrap{max-height:200px;opacity:1}
+      .team-teaser-row.expanded .team-reveal-wrap{max-height:2400px}
+      .team-reveal-grid{transform:none}
+      .team-fade{display:block;position:absolute;left:0;right:0;bottom:0;height:150px;pointer-events:none;z-index:2;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0.6) 45%,var(--bg) 100%);-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 38%);mask-image:linear-gradient(to bottom,transparent 0%,#000 38%)}
+      .team-more-btn{display:inline-flex;align-items:center;gap:8px;position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:3;cursor:pointer;padding:13px 26px;border-radius:999px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:-0.01em;color:var(--teal);background:rgba(255,255,255,0.7);border:1px solid var(--border);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:0 8px 24px rgba(11,82,90,0.12),inset 0 1px 0 rgba(255,255,255,0.7);transition:background 0.25s ease,border-color 0.25s ease,transform 0.15s ease}
+      .team-more-btn:hover{background:rgba(255,255,255,0.92);border-color:rgba(11,82,90,0.25)}
+      .team-more-btn:active{transform:translateX(-50%) scale(0.97)}
+      .team-more-btn svg{opacity:0.7}
+      .team-teaser-row.expanded .team-fade,.team-teaser-row.expanded .team-more-btn{display:none}
+    }
     @media(min-width:861px){.team-teaser-link{display:none !important}.team-teaser-row{flex-direction:column;justify-content:center;align-items:center;gap:40px}.team-header-left{text-align:center;max-width:640px}.team-reveal-wrap{max-height:none;opacity:1;overflow:visible}.team-reveal-grid{transform:none}}
     .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:960px;margin:0 auto}
     .team-card{background:var(--surface);border:1.5px solid var(--border);border-radius:24px;overflow:hidden;transition:transform 0.25s,box-shadow 0.25s}
@@ -437,9 +450,9 @@
     .glp-fade,.glp-more-btn{display:none}
     @media(max-width:760px){
       .glp-collapse{position:relative}
-      .glp-reveal-wrap{max-height:280px;overflow:hidden;transition:max-height 0.7s cubic-bezier(.22,.61,.36,1)}
+      .glp-reveal-wrap{max-height:150px;overflow:hidden;transition:max-height 0.7s cubic-bezier(.22,.61,.36,1)}
       .glp-section.expanded .glp-reveal-wrap{max-height:3200px}
-      .glp-fade{display:block;position:absolute;left:0;right:0;bottom:0;height:200px;pointer-events:none;z-index:2;background:linear-gradient(to bottom,rgba(6,15,22,0) 0%,rgba(6,15,22,0.55) 45%,var(--dark-bg) 100%);-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 38%);mask-image:linear-gradient(to bottom,transparent 0%,#000 38%)}
+      .glp-fade{display:block;position:absolute;left:0;right:0;bottom:0;height:120px;pointer-events:none;z-index:2;background:linear-gradient(to bottom,rgba(6,15,22,0) 0%,rgba(6,15,22,0.55) 45%,var(--dark-bg) 100%);-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 38%);mask-image:linear-gradient(to bottom,transparent 0%,#000 38%)}
       .glp-more-btn{display:inline-flex;align-items:center;gap:8px;position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:3;cursor:pointer;padding:13px 26px;border-radius:999px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:-0.01em;color:#fff;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:0 8px 24px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.14);transition:background 0.25s ease,border-color 0.25s ease,transform 0.15s ease}
       .glp-more-btn:hover{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.28)}
       .glp-more-btn:active{transform:translateX(-50%) scale(0.97)}
@@ -1807,12 +1820,7 @@
         <h2 class="fade fade-d1">Built by people who believe<br/>in <span class="grad-text">prevention</span></h2>
         <p class="team-sub fade fade-d2">Lyvoo was born from the conviction that preventive medicine should be accessible to everyone. And that technology and clinical expertise complement each other.</p>
       </div>
-      <a href="team.html" class="team-teaser-link fade fade-d2" id="teamTeaserLink" onclick="handleTeamArrowClick(event)">
-        <span class="team-teaser-arrow">
-          <svg width="72" height="16" viewBox="0 0 72 16" fill="none"><line x1="0" y1="8" x2="62" y2="8" stroke="currentColor" stroke-width="2"/><path d="M56 2l8 6-8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-        </span>
-        <span class="team-teaser-link-label">Meet the Lyvoo team</span>
-      </a>
+      <div class="team-collapse" id="teamCollapse">
       <div class="team-reveal-wrap" id="teamRevealWrap">
       <div class="team-reveal-grid" id="teamRevealGrid">
         <a href="team.html" class="team-card team-card-reveal">
@@ -1860,7 +1868,13 @@
           </div>
         </a>
       </div>
-      </div>
+      </div><!-- /team-reveal-wrap -->
+        <div class="team-fade" aria-hidden="true"></div>
+        <button class="team-more-btn" id="teamMoreBtn" onclick="handleTeamArrowClick(event)" aria-controls="teamRevealWrap" aria-expanded="false">
+          See more
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div><!-- /team-collapse -->
     </div>
   </div>
 </section>
@@ -1870,6 +1884,8 @@
     if (!row.classList.contains('expanded')) {
       e.preventDefault();
       row.classList.add('expanded');
+      var btn = document.getElementById('teamMoreBtn');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
     }
   }
 </script>
