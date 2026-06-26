@@ -91,6 +91,9 @@
     .hero-trust .htl { font-size: 11.5px; color: rgba(255,255,255,0.45); font-weight: 600; }
     .hero-trust .sep { width: 1px; background: rgba(255,255,255,0.1); }
 
+    .hero-effect-wrap { width: 100%; }
+    .hero-effect-wrap .effect { width: 100%; }
+
     /* Hero dashboard composition */
     .hviz { position: relative; }
     .hviz-card { position: relative; border-radius: 24px; padding: 22px; overflow: hidden;
@@ -125,7 +128,7 @@
 
     /* ════════ EVIDENCE QUALITY ════════ */
     .qual .glow { background: radial-gradient(ellipse 45% 40% at 80% 30%, rgba(61,217,232,0.1) 0%, transparent 55%); }
-    .qual-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 4vw, 52px); align-items: stretch; margin-top: 48px; }
+    .qual-wrap { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
     .qual-card { padding: clamp(28px, 4vw, 40px); }
     .qual-card h3 { font-size: 19px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 4px; }
     .qual-card .qsub { font-size: 13.5px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 24px; }
@@ -361,46 +364,16 @@
         </div>
       </div>
 
-      <div class="hviz fade fade-d2">
-        <div class="hviz-card">
-          <svg class="hviz-dna" viewBox="0 0 100 100" fill="none" stroke="url(#dnaG)" stroke-width="2" stroke-linecap="round">
-            <defs><linearGradient id="dnaG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
-            <path d="M30 5 Q70 30 30 55 Q70 80 30 100"/><path d="M70 5 Q30 30 70 55 Q30 80 70 100"/>
-            <path d="M34 18 H66M30 34 H70M34 50 H66M30 66 H70M34 82 H66" stroke-width="1.5" opacity="0.7"/>
-          </svg>
-          <div class="hviz-hd"><b>Painel longitudinal</b><span class="hviz-live">Em monitorização</span></div>
-          <div class="hviz-row1">
-            <div class="hviz-score">
-              <div style="position:relative;display:flex;align-items:center;justify-content:center;">
-                <svg viewBox="0 0 60 60"><defs><linearGradient id="scoreG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
-                  <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
-                  <circle cx="30" cy="30" r="25" fill="none" stroke="url(#scoreG)" stroke-width="6" stroke-linecap="round" stroke-dasharray="137 157" transform="rotate(-90 30 30)"/>
-                </svg>
-                <span class="scv">87</span>
-              </div>
-              <span class="scl">Score de saúde</span>
-            </div>
-            <div class="hviz-chart">
-              <span class="ct">Tendência · 12 meses</span>
-              <span class="cd">↑ +12 pts</span>
-              <svg viewBox="0 0 200 56" preserveAspectRatio="none">
-                <defs><linearGradient id="hl" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0D7A87"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
-                  <linearGradient id="hf" x1="0" y1="0" x2="0" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.25"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient></defs>
-                <path d="M2,46 C50,42 80,34 110,24 C140,14 170,9 198,5 L198,56 L2,56 Z" fill="url(#hf)"/>
-                <path d="M2,46 C50,42 80,34 110,24 C140,14 170,9 198,5" fill="none" stroke="url(#hl)" stroke-width="2.5" stroke-linecap="round"/>
-                <circle cx="198" cy="5" r="3.5" fill="#8B5CF6"/>
-              </svg>
-            </div>
+      <div class="hero-effect-wrap fade fade-d2">
+        <div class="effect glass">
+          <div class="el">Dimensão do efeito global</div>
+          <div class="ev grad-text">SMD <span class="sc-count" data-to="0.62" data-dec="2">0,62</span></div>
+          <div class="ed">Efeito moderado a favor da telemedicina</div>
+          <div class="effect-row">
+            <div class="er"><div class="erv">IC 95%</div><div class="erl">Intervalo de confiança</div></div>
+            <div class="er"><div class="erv">p &lt; 0,001</div><div class="erl">Significância</div></div>
           </div>
-          <div class="hviz-bios">
-            <div class="hbio"><span class="hd2" style="background:var(--green)"></span><span class="hn">Colesterol LDL</span><span class="hbar"><i style="width:78%;background:var(--green)"></i></span><span class="hv" style="color:var(--green)">Ótimo</span></div>
-            <div class="hbio"><span class="hd2" style="background:var(--cyan)"></span><span class="hn">Pressão sistólica</span><span class="hbar"><i style="width:64%;background:var(--cyan)"></i></span><span class="hv" style="color:var(--cyan)">Bom</span></div>
-            <div class="hbio"><span class="hd2" style="background:var(--amber)"></span><span class="hn">HbA1c</span><span class="hbar"><i style="width:52%;background:var(--amber)"></i></span><span class="hv" style="color:var(--amber)">−0,45</span></div>
-          </div>
-        </div>
-        <div class="hviz-badge">
-          <span class="hbg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M19 9l-5 5-4-4-3 3"/></svg></span>
-          <div><div class="hbn">SMD <span class="sc-count" data-to="0.62" data-dec="2">0,62</span></div><div class="hbl">Efeito a favor da telemedicina</div></div>
+          <span class="effect-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A evidência global favorece a telemedicina</span>
         </div>
       </div>
     </div>
@@ -411,13 +384,13 @@
 <section class="sc qual">
   <div class="glow"></div>
   <div class="container">
-    <div class="sec-head fade">
-      <span class="eyebrow"><span class="dot"></span>A base</span>
-      <h2 class="big">Evidência de <span class="grad-text">elevada qualidade.</span></h2>
-      <p class="lead narrow">Antes dos resultados, a fonte. O modelo apoia-se numa revisão sistemática e meta-análise conduzida com rigor metodológico.</p>
-    </div>
-
     <div class="qual-wrap">
+      <div class="sec-head fade">
+        <span class="eyebrow"><span class="dot"></span>A base</span>
+        <h2 class="big">Evidência de <span class="grad-text">elevada qualidade.</span></h2>
+        <p class="lead">Antes dos resultados, a fonte. O modelo apoia-se numa revisão sistemática e meta-análise conduzida com rigor metodológico.</p>
+      </div>
+
       <div class="qual-card glass fade fade-d2">
         <h3>Revisão sistemática e meta-análise</h3>
         <p class="qsub">Telemedicina e cuidados preventivos · 2020–2025</p>
@@ -429,17 +402,6 @@
           <span class="badge big-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg><b><span class="sc-count" data-to="32" data-dec="0">32</span></b> estudos</span>
           <span class="badge big-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg><b><span class="sc-count" data-to="17" data-dec="0">17</span></b> ECA</span>
         </div>
-      </div>
-
-      <div class="effect glass fade fade-d3">
-        <div class="el">Dimensão do efeito global</div>
-        <div class="ev grad-text">SMD <span class="sc-count" data-to="0.62" data-dec="2">0,62</span></div>
-        <div class="ed">Efeito moderado a favor da telemedicina</div>
-        <div class="effect-row">
-          <div class="er"><div class="erv">IC 95%</div><div class="erl">Intervalo de confiança</div></div>
-          <div class="er"><div class="erv">p &lt; 0,001</div><div class="erl">Significância</div></div>
-        </div>
-        <span class="effect-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A evidência global favorece a telemedicina</span>
       </div>
     </div>
   </div>
@@ -633,57 +595,6 @@
   </div>
 </section>
 
-<!-- ════════ 8 · SCIENTIFIC LIBRARY ════════ -->
-<section class="sc lib">
-  <div class="glow"></div>
-  <div class="container">
-    <div class="sec-head center fade">
-      <span class="eyebrow"><span class="dot"></span>Biblioteca científica</span>
-      <h2 class="big">Uma base de evidência <span class="grad-text">a crescer.</span></h2>
-      <p class="lead">Organizamos a ciência por temas. Uma biblioteca viva, atualizada à medida que novos estudos são publicados.</p>
-    </div>
-
-    <div class="lib-grid">
-      <div class="lcard glass fade fade-d1">
-        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></span><span class="lcount">Em curadoria</span></div>
-        <h3>Telemedicina</h3>
-        <p>O acompanhamento à distância produz resultados clínicos comparáveis - e por vezes superiores - aos cuidados presenciais.</p>
-        <span class="lexp">Explorar evidência <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </div>
-      <div class="lcard glass fade fade-d2">
-        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z"/><path d="M3.5 12h4l1.5-3 3 6 1.5-3h4"/></svg></span><span class="lcount">Em curadoria</span></div>
-        <h3>Cardiologia preventiva</h3>
-        <p>Pequenas reduções sustentadas de LDL e pressão arterial traduzem-se em menor risco cardiovascular a longo prazo.</p>
-        <span class="lexp">Explorar evidência <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </div>
-      <div class="lcard glass fade fade-d3">
-        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v9a5 5 0 0 0 10 0V2"/><path d="M7 7h10"/></svg></span><span class="lcount">Em curadoria</span></div>
-        <h3>Nutrição personalizada</h3>
-        <p>Intervenções guiadas por biomarcadores superam recomendações genéricas na melhoria dos marcadores metabólicos.</p>
-        <span class="lexp">Explorar evidência <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </div>
-      <div class="lcard glass fade fade-d1">
-        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><span class="lcount">Em curadoria</span></div>
-        <h3>Biomarcadores</h3>
-        <p>Painéis abrangentes detetam desvios cedo, quando a intervenção é mais simples e mais eficaz.</p>
-        <span class="lexp">Explorar evidência <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </div>
-      <div class="lcard glass fade fade-d2">
-        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 2"/><path d="M22 2l-5 5"/></svg></span><span class="lcount">Em curadoria</span></div>
-        <h3>Mudança comportamental</h3>
-        <p>O feedback frequente e os objetivos claros são dos preditores mais fortes de adesão e mudança duradoura.</p>
-        <span class="lexp">Explorar evidência <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </div>
-      <div class="lcard glass fade fade-d3">
-        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="lcount">Em curadoria</span></div>
-        <h3>Monitorização contínua</h3>
-        <p>Medir com regularidade - e não uma vez por ano - é o que separa a prevenção real do diagnóstico tardio.</p>
-        <span class="lexp">Explorar evidência <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ════════ 9 · REFERENCES ════════ -->
 <section class="sc refs">
   <div class="glow"></div>
@@ -698,7 +609,7 @@
       <div class="ref fade fade-d1">
         <span class="ref-idx">01</span>
         <div class="ref-main">
-          <span class="rtype"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/></svg>Revisão sistemática & meta-análise</span>
+          <span class="rtype">Revisão sistemática & meta-análise</span>
           <h4>Digital Health Transformation Through Telemedicine (2020–2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis</h4>
           <div class="ref-meta"><span><b>Revista:</b> Encyclopedia (MDPI)</span><span><b>Ano:</b> 2025</span><span><b>DOI:</b> 10.3390/encyclopedia5040206</span></div>
         </div>
