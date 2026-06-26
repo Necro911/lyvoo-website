@@ -493,7 +493,7 @@
   const termsInput     = document.getElementById('terms');
   const termsErr       = document.getElementById('termsError');
 
-  // Touch tracking — re-validate on input only after first blur
+  // Touch tracking - re-validate on input only after first blur
   const touched = new Set();
 
   function validateFirstName() {
@@ -614,7 +614,7 @@
     // diferente do authDomain do Firebase (lyvoo-9d54b.firebaseapp.com), e os
     // browsers móveis bloqueiam o estado guardado nesse domínio ao regressar da
     // Google. Como o popup não recarrega a página, os checkboxes (termos/
-    // marketing) continuam disponíveis no DOM — sem necessidade de sessionStorage.
+    // marketing) continuam disponíveis no DOM - sem necessidade de sessionStorage.
     try {
       const result = await signInWithPopup(auth, provider);
       // Google fornece displayName; separa primeiro/último nome

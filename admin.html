@@ -302,7 +302,7 @@
       .estado-cards { grid-template-columns: repeat(3,1fr); }
       .form-row, .form-row-3, .form-row-4 { grid-template-columns: 1fr; }
 
-      /* Texto secundário/terciário ganha mais contraste em mobile — em ecrãs
+      /* Texto secundário/terciário ganha mais contraste em mobile - em ecrãs
          pequenos e com luz ambiente o cinzento escuro original (--txt-3) ficava
          demasiado difícil de ler. */
       :root {
@@ -891,7 +891,7 @@
   // ── Biomarcadores: categorias pré-definidas ─────────────────────────
   // Espelha a tabela de biomarcadores do index.html (Atlas), exceto os módulos
   // DST/IST, Hepatite B e Intolerâncias Alimentares. Nomes têm de coincidir
-  // com os do Atlas — o merge do editor e o render da dashboard são por nome.
+  // com os do Atlas - o merge do editor e o render da dashboard são por nome.
   const BIO_CATS = {
     base: {
       label: 'Plano Base (20 biomarcadores)',
@@ -928,7 +928,7 @@
         { nome:'Proteína Total',     unidade:'g/dL',
           referencia:'6.0-8.3 g/dL', refOtima:'6.8-8.0', refRisco:'6.0-6.7', refAcao:'<6.0 ou >8.3' },
         { nome:'Creatinina',    unidade:'mg/dL',
-          referencia:'0.6-1.2 mg/dL (H) — interpretar via eGFR', refOtima:'0.7-1.0' },
+          referencia:'0.6-1.2 mg/dL (H) - interpretar via eGFR', refOtima:'0.7-1.0' },
         { nome:'Ureia',         unidade:'mg/dL',
           referencia:'15-50 mg/dL', refOtima:'20-40', refRisco:'41-50', refAcao:'>50' },
         { nome:'Cálcio',       unidade:'mg/dL',
@@ -1094,13 +1094,13 @@
       updateInboxBadge();
     }, (err) => {
       _chatsMetaUnsub = null;
-      console.error('Listener de chats falhou — verifique as Firestore Rules da coleção "chats":', err);
+      console.error('Listener de chats falhou - verifique as Firestore Rules da coleção "chats":', err);
     });
   }
 
   // ── Caixa de entrada: agrega em tempo real, entre TODOS os clientes (não
   // depende da paginação de allUsers), tudo o que precisa de atenção do
-  // admin — confirmações/sugestões de consulta, pedidos de reagendamento e
+  // admin - confirmações/sugestões de consulta, pedidos de reagendamento e
   // mensagens de chat não lidas. Sem isto, o admin só descobria estas coisas
   // ao entrar manualmente em cada cliente.
   let _inboxRespostas = [];
@@ -1188,7 +1188,7 @@
         uid: u.uid,
         icon: '⚠',
         color: 'var(--red)',
-        texto: `cancelou a consulta${cc.data ? ` de ${fmtDate(cc.data)}${cc.hora ? ' às ' + cc.hora : ''}` : ''} — aguarda nova proposta`,
+        texto: `cancelou a consulta${cc.data ? ` de ${fmtDate(cc.data)}${cc.hora ? ' às ' + cc.hora : ''}` : ''} - aguarda nova proposta`,
         tab: 'consultas',
         marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'consultaCancelada.visto': true }),
       });
@@ -1201,7 +1201,7 @@
         uid: u.uid,
         icon: '📦',
         color: 'var(--cyan)',
-        texto: `confirmou a devolução do kit${ciclo} — pronto para avançar de estado`,
+        texto: `confirmou a devolução do kit${ciclo} - pronto para avançar de estado`,
         tab: 'geral',
         marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'kitDevolvido.visto': true }),
       });
@@ -1544,9 +1544,9 @@
           if (btn) btn.textContent = `🔄 Iniciar ciclo ${proximoCiclo} (renovação)`;
         } else {
           // Estado 4 = meio do ano já pago. A reavaliação dos 6 meses NÃO é
-          // uma renovação — mesmo ciclo, mesma validade do plano.
+          // uma renovação - mesmo ciclo, mesma validade do plano.
           if (title) title.textContent = `Reavaliação dos 6 meses - avançar?`;
-          if (sub) sub.textContent = `Os resultados atuais são arquivados no histórico (comparação no relatório). O cliente avança para o estado 5 (novo kit a caminho), dentro do mesmo ciclo ${cicloAtual} — sem alterar a validade do plano.`;
+          if (sub) sub.textContent = `Os resultados atuais são arquivados no histórico (comparação no relatório). O cliente avança para o estado 5 (novo kit a caminho), dentro do mesmo ciclo ${cicloAtual} - sem alterar a validade do plano.`;
           if (btn) btn.textContent = `🔄 Avançar para reavaliação`;
         }
       }
@@ -1593,7 +1593,7 @@
   // Em vez de ler TODA a coleção, carrega por páginas (mais recentes primeiro)
   // com cursor. O clienteId já vem persistido no doc (Cloud Function
   // assignClienteId) e as stats são calculadas por queries de agregação
-  // (refreshStats) — nada disto exige ter todos os clientes em memória.
+  // (refreshStats) - nada disto exige ter todos os clientes em memória.
   async function loadUsers() {
     try {
       allUsers = [];
@@ -1630,7 +1630,7 @@
     if (btn) btn.style.display = _allUsersLoaded ? 'none' : 'block';
   }
 
-  // Stats do dashboard via agregação (getCountFromServer) — escala a qualquer
+  // Stats do dashboard via agregação (getCountFromServer) - escala a qualquer
   // dimensão sem ler todos os docs. Conta utilizadores ATIVOS (arquivado==false)
   // no total e por estado. (P1)
   async function refreshStats() {
@@ -2343,7 +2343,7 @@
       document.getElementById('convite-tipo').value = convite.tipo || 'nutricao';
       // NÃO repor no calendário os dias/horas já enviados. Assim que o convite é
       // enviado o calendário colapsa (ver convite-send-btn) e deve manter-se
-      // colapsado mesmo ao reabrir o cliente — sobretudo depois de o cliente
+      // colapsado mesmo ao reabrir o cliente - sobretudo depois de o cliente
       // confirmar uma data, altura em que voltar a pintar a margem inteira é
       // confuso. O calendário é só um compositor para propor uma NOVA margem de
       // datas; o estado do convite é comunicado pelo texto de status abaixo.
@@ -2378,7 +2378,7 @@
         linkBox.style.display = '';
         carregarLink(esc);
       } else if (convite.estado === 'cancelado_cliente') {
-        status.textContent = '↩ O cliente cancelou a consulta e pediu nova sugestão de datas — envie nova disponibilidade abaixo.';
+        status.textContent = '↩ O cliente cancelou a consulta e pediu nova sugestão de datas - envie nova disponibilidade abaixo.';
       } else {
         status.textContent = 'Convite pendente - o cliente ainda não escolheu data.';
       }
@@ -2421,11 +2421,11 @@
         consultaAlterada: null,
         consultaCancelada: null,
         consultaCanceladaAdmin: null
-        // NOTA: não escrever notificadoEm aqui — esse campo está reservado ao
+        // NOTA: não escrever notificadoEm aqui - esse campo está reservado ao
         // email de resultados (guard do envio automático em saveGeral); o sino
         // do cliente usa agendamentoConvite.criadoEm para notificar o convite.
       });
-      // Repor o calendário e a lista de horas para o estado inicial — o
+      // Repor o calendário e a lista de horas para o estado inicial - o
       // convite que acabou de ser enviado já foi guardado, não há motivo
       // para continuar a mostrar os dias/horas selecionados.
       _conviteSlots = [];
@@ -2495,10 +2495,10 @@
       });
       _conviteSlots = [];
       renderConviteSlotsList();
-      document.getElementById('convite-status').textContent = 'Consulta cancelada — envie nova margem de datas ao cliente abaixo.';
+      document.getElementById('convite-status').textContent = 'Consulta cancelada - envie nova margem de datas ao cliente abaixo.';
       document.getElementById('convite-link-box').style.display = 'none';
       msg.style.color = 'var(--green)';
-      msg.textContent = '✓ Cancelada — cliente notificado com o motivo';
+      msg.textContent = '✓ Cancelada - cliente notificado com o motivo';
     } catch(e) {
       console.error(e);
       msg.style.color = 'var(--red)';
@@ -2639,7 +2639,7 @@
               }
             });
             msg.style.color = 'var(--green)';
-            msg.textContent = '✓ Cancelada — cliente notificado com o motivo';
+            msg.textContent = '✓ Cancelada - cliente notificado com o motivo';
             await loadAgendamentos(uid);
           } catch(e) {
             console.error(e);
@@ -2663,7 +2663,7 @@
     const btn = (typeof event !== 'undefined' && event?.target?.classList?.contains('btn-save')) ? event.target : null;
     if (btn) { btn.disabled = true; btn.textContent = 'A guardar…'; }
     try {
-      // Forçar refresh do token antes de escrever — garante que o claim admin:true
+      // Forçar refresh do token antes de escrever - garante que o claim admin:true
       // está presente no JWT enviado ao Firestore (Security Rules: request.auth.token.admin == true)
       await auth.currentUser?.getIdToken(true);
       // Guardar timestamp do tab actual
@@ -2702,9 +2702,9 @@
   // ── Efeitos de transição de estado ──────────────────────────────────────
   // Helper único, partilhado pelo "Guardar" geral (mudança manual de estado
   // via cartões) e pelo botão dedicado "Iniciar reavaliação". Antes disto,
-  // cada caminho tinha a sua própria cópia dos efeitos secundários — entrar
+  // cada caminho tinha a sua própria cópia dos efeitos secundários - entrar
   // numa fase de kit, arquivar resultados, resolver consultas pendentes,
-  // renovar o ciclo anual — e era fácil acrescentar um efeito num só sítio
+  // renovar o ciclo anual - e era fácil acrescentar um efeito num só sítio
   // e esquecer o outro (foi exatamente o que aconteceu com kitDevolvido).
   // Devolve só os campos extra a juntar ao payload de updateDoc; os efeitos
   // assíncronos (arquivo de resultados, resolução de agendamentosNutri) são
@@ -2719,7 +2719,7 @@
     const ehRenovacaoAnual = estadoAnterior === 7 && novoEstado === 2;
 
     if (entrouFaseKit) {
-      // Nova fase de kit (1.ª vez ou reavaliação) — limpar tudo o que
+      // Nova fase de kit (1.ª vez ou reavaliação) - limpar tudo o que
       // pertencia à fase/ciclo anterior, para o cliente ver um estado limpo.
       extra.kitDevolvido          = null;
       extra.consultaConfirmada    = null;
@@ -2732,7 +2732,7 @@
     }
     if (saiuFaseKit && u?.kitDevolvido && u.kitDevolvido.visto === false) {
       // Sair da fase de kit sem o admin ter aberto a notificação na Caixa de
-      // entrada — dar por tratada mesmo assim.
+      // entrada - dar por tratada mesmo assim.
       extra['kitDevolvido.visto'] = true;
     }
     if (ehRenovacaoAnual) {
@@ -2746,7 +2746,7 @@
 
     if (entrouFaseKit && veioDeResultados) {
       // Arquivar resultados atuais na subcoleção (se existirem) e resolver
-      // as consultas pendentes da fase que termina — sem isto, o documento
+      // as consultas pendentes da fase que termina - sem isto, o documento
       // em agendamentosNutri continuaria 'agendada'/'confirmada' e a
       // dashboard voltaria a mostrar a consulta antiga como ativa.
       if (u?.resultados?.biomarcadores) {
@@ -3105,7 +3105,7 @@
   // Mesmo botão, dois comportamentos distintos segundo o estado de origem:
   //  - estado 4 → 5: reavaliação dos 6 meses, incluída no plano anual já
   //    pago. NÃO toca em cicloAtual/planoValidoAte.
-  //  - estado 7 → 2: fim do ano pago — é aqui que a renovação acontece de
+  //  - estado 7 → 2: fim do ano pago - é aqui que a renovação acontece de
   //    facto (novo baseline, +1 ano de validade, cicloAtual++).
   window.iniciarReavaliacao = async function() {
     if (!currentUID) return;
@@ -3121,7 +3121,7 @@
 
     const confirmMsg = ehRenovacaoAnual
       ? `Iniciar renovação anual (ciclo ${novoCiclo}) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico e o cliente passa ao estado 2 (novo kit/baseline). A validade do plano estende-se +1 ano.`
-      : `Avançar para a reavaliação dos 6 meses (estado 5) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico (para comparação no relatório). Mantém-se no ciclo ${cicloAtual} — a validade do plano não é alterada.`;
+      : `Avançar para a reavaliação dos 6 meses (estado 5) para "${nome}"?\n\nOs resultados atuais são arquivados no histórico (para comparação no relatório). Mantém-se no ciclo ${cicloAtual} - a validade do plano não é alterada.`;
     if (!confirm(confirmMsg)) return;
 
     const btn = document.getElementById('btn-reeval');
@@ -3130,7 +3130,7 @@
     try {
       // Os mesmos efeitos de transição usados pelo "Guardar" geral (arquivar
       // resultados, resolver consultas pendentes, limpar a fase de kit
-      // anterior, e — só no caso 7→2 — avançar cicloAtual/planoValidoAte).
+      // anterior, e - só no caso 7→2 - avançar cicloAtual/planoValidoAte).
       const extra = await aplicarEfeitosDeTransicao(currentUID, estadoAnterior, destino, u);
       const payload = {
         estado:      destino,
@@ -3191,8 +3191,8 @@
     if (!currentUID) return;
     const u = allUsers.find(x => x.uid === currentUID);
     const nome = u ? ([u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || currentUID) : currentUID;
-    const conf = prompt(`ELIMINAÇÃO DEFINITIVA (RGPD) de "${nome}".\n\nApaga perfil, análises, chat, marcações e a conta de acesso — IRREVERSÍVEL.\n(Registos financeiros/Stripe são retidos por obrigação legal.)\n\nPara confirmar, escreve ELIMINAR:`);
-    if (conf !== 'ELIMINAR') { if (conf !== null) alert('Cancelado — o texto não corresponde a "ELIMINAR".'); return; }
+    const conf = prompt(`ELIMINAÇÃO DEFINITIVA (RGPD) de "${nome}".\n\nApaga perfil, análises, chat, marcações e a conta de acesso - IRREVERSÍVEL.\n(Registos financeiros/Stripe são retidos por obrigação legal.)\n\nPara confirmar, escreve ELIMINAR:`);
+    if (conf !== 'ELIMINAR') { if (conf !== null) alert('Cancelado - o texto não corresponde a "ELIMINAR".'); return; }
     const btn = document.getElementById('del-req-del-btn');
     if (btn) { btn.disabled = true; btn.textContent = 'A eliminar…'; }
     try {

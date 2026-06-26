@@ -82,7 +82,7 @@
     .sec-btn:hover { background: rgba(61,217,232,0.12); }
     .sec-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Relatório médico — hero score */
+    /* Relatório médico - hero score */
     @keyframes relFadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     .rel-hero {
       position: relative; overflow: hidden;
@@ -111,7 +111,7 @@
     .rel-hero-ring circle { transition: stroke-dashoffset 1.4s cubic-bezier(0.22,1,0.36,1); }
     .rel-hero-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    /* Relatório — sistemas do corpo */
+    /* Relatório - sistemas do corpo */
     .body-map-wrap { margin-bottom: 20px; animation: relFadeUp 0.5s 0.1s ease both; }
     .body-map-title { font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 14px; }
     .sys-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
@@ -130,7 +130,7 @@
     .sys-name { font-size: 12.5px; font-weight: 700; color: var(--txt); margin-bottom: 2px; letter-spacing: -0.01em; }
     .sys-count { font-size: 10.5px; color: var(--txt-3); }
 
-    /* Relatório — painel de detalhe do sistema */
+    /* Relatório - painel de detalhe do sistema */
     .sys-detail { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; }
     .sys-detail-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
     .sys-detail-title { font-size: 16px; font-weight: 800; color: var(--txt); letter-spacing: -0.02em; }
@@ -186,7 +186,7 @@
     .bio-delta.up   { color: var(--green); }
     .bio-delta.down { color: var(--cyan); }
 
-    /* Biomarcadores — health intelligence (premium) */
+    /* Biomarcadores - health intelligence (premium) */
     .biox-topbar { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px; flex-wrap:wrap; }
     .biox-view { display:inline-flex; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; flex-shrink:0; }
     .biox-view-btn {
@@ -363,7 +363,7 @@
     @keyframes meal-swap-in  { from { opacity:0; transform:translateX(22px); } to { opacity:1; transform:translateX(0); } }
     .meal-swapping-out { animation:meal-swap-out .19s ease-out forwards; pointer-events:none; }
     .meal-swapping-in  { animation:meal-swap-in  .22s ease-out forwards; }
-    /* ── Plano alimentar v2 — sistema de nutrição adaptativo ── */
+    /* ── Plano alimentar v2 - sistema de nutrição adaptativo ── */
     /* Segmentação por período */
     .meal-period { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--txt-3); margin:18px 0 9px; display:flex; align-items:center; gap:10px; }
     .meal-period:first-child { margin-top:4px; }
@@ -393,12 +393,12 @@
       .meal-row { gap:10px; }
       /* !important porque a regra base .plano-toprow (margin-left:58px, para
          alinhar com o rail no desktop) está declarada DEPOIS deste media query
-         no ficheiro — sem !important, a ordem de origem fazia a base ganhar e o
+         no ficheiro - sem !important, a ordem de origem fazia a base ganhar e o
          bloco objetivo/resumo ficava empurrado 58px para a direita em mobile. */
       .plano-toprow { margin-left:0 !important; }
       #sec-plano-alimentar .sec-header { margin-left:0; }
       /* Ícone pequeno e numa linha própria (com a hora), em vez de ao lado do
-         texto — liberta toda a largura do cartão para o nome/descrição da
+         texto - liberta toda a largura do cartão para o nome/descrição da
          refeição, que era o que ficava espremido. */
       .meal-thumb { width:30px; height:30px; order:1; margin:0; }
       .meal-thumb svg { width:14px; height:14px; }
@@ -417,7 +417,7 @@
     .sec-list-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
     .sec-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .sec-tags span { font-size: 12.5px; color: var(--txt-2); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; }
-    /* Plano alimentar — hero */
+    /* Plano alimentar - hero */
     .plano-hero {
       background: linear-gradient(105deg, rgba(61,217,232,0.10) 0%, rgba(139,92,246,0.07) 55%, var(--panel) 100%);
       border: 1px solid var(--line); border-radius: 18px;
@@ -449,7 +449,7 @@
     .plano-legend-item { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--txt-2); }
     .plano-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .plano-legend-item b { color: var(--txt); margin-left: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
-    /* Plano alimentar — topo premium (progresso + métricas) */
+    /* Plano alimentar - topo premium (progresso + métricas) */
     .plano-toprow { display:grid; grid-template-columns:1.5fr 1fr; gap:18px; margin-bottom:24px; margin-left:58px; align-items:stretch; }
     .plano-toprow .plano-hero { margin-bottom:0; height:100%; }
     @keyframes donutSpin { from { transform:rotate(-14deg) scale(0.9); opacity:0; } to { transform:none; opacity:1; } }
@@ -666,7 +666,7 @@
       .sec-cards-grid { grid-template-columns: 1fr; }
       .pf-row { grid-template-columns: 1fr; }
     }
-    /* Biomarcadores: tabela compacta (Parâmetro · Valor · Estado) — esconde
+    /* Biomarcadores: tabela compacta (Parâmetro · Valor · Estado) - esconde
        Referência (3), Intervalo (4) e Δ (6); robusto ao <span> vazio do range. */
     @media (max-width: 768px) {
       .bio-thead, .bio-row { grid-template-columns: minmax(0, 1fr) 80px 78px; gap: 10px; padding-left: 16px; padding-right: 16px; }
@@ -892,12 +892,12 @@
       .row-main { grid-template-columns: minmax(0, 1fr); }
       /* Em mobile, esconder os cartões de atalho (plano alimentar,
          suplementação, biomarcadores, consultas) e os biomarcadores em
-         destaque por baixo do score de saúde — acesso já é feito pela
+         destaque por baixo do score de saúde - acesso já é feito pela
          barra de navegação inferior. */
       .row-4.mb { display: none; }
       #view-resultados > .panel.mb { display: none; }
 
-      /* Texto secundário/terciário ganha mais contraste em mobile — em ecrãs
+      /* Texto secundário/terciário ganha mais contraste em mobile - em ecrãs
          pequenos e com luz ambiente o cinzento escuro original (--txt-3) ficava
          demasiado difícil de ler. */
       :root {
@@ -1864,16 +1864,16 @@
   import { auth, db } from './lyvoo-firebase.js';
 
   // ══════════════════════════════════════════════════════════════════════
-  // i18n — dicionário in-place PT/EN (Fase 1: scaffolding).
+  // i18n - dicionário in-place PT/EN (Fase 1: scaffolding).
   // Um só ficheiro: o chrome da UI traduz-se por t() e [data-i18n]; o
   // conteúdo clínico (descrições de refeições, objetivo, relatório) NÃO é
-  // traduzido — fica na língua escrita pelo nutricionista.
+  // traduzido - fica na língua escrita pelo nutricionista.
   // Idioma guardado no perfil Firestore (campo `lang`); resolução inicial
   // local: localStorage → navigator.language → 'pt'.
   //
   // Convenção de chaves: 'secção.elemento' (ex.: 'nav.painel',
   // 'biox.estado.otimo', 'meal.nome.almoco'). Usa sempre minúsculas,
-  // sem acentos, separadas por ponto — facilita grep e evita colisões
+  // sem acentos, separadas por ponto - facilita grep e evita colisões
   // entre secções diferentes.
   // ══════════════════════════════════════════════════════════════════════
   const I18N = {
@@ -1898,7 +1898,7 @@
       'bio.estado.otimo': 'Ótimo',
       'bio.estado.atencao': 'Atenção',
       'bio.estado.critico': 'Prioridade',
-      'bio.estado.': '—',
+      'bio.estado.': '-',
       'bio.descricao.otimo': 'Dentro do intervalo ótimo',
       'bio.descricao.atencao': 'Ligeiramente fora do ideal',
       'bio.descricao.critico': 'Fora do intervalo recomendado',
@@ -1950,7 +1950,7 @@
       'nav.conta': 'Conta e segurança',
       'nav.section.loja': 'Loja',
       'nav.section.dados-pessoais': 'Dados pessoais',
-      // Bottom nav mobile — versões curtas (diferem do texto completo)
+      // Bottom nav mobile - versões curtas (diferem do texto completo)
       'navm.plano': 'Plano',
       'navm.analises': 'Análises',
       'navm.store': 'Store',
@@ -2200,7 +2200,7 @@
       'plano.legend.hidratos': 'Hidratos',
       'plano.metrics.titulo': 'Resumo do dia',
       'plano.metrics.exemplo': 'Exemplo',
-      'plano.metrics.exemplo-title': 'Valores ilustrativos — em breve com seguimento real',
+      'plano.metrics.exemplo-title': 'Valores ilustrativos - em breve com seguimento real',
       'plano.metrics.hcs': 'HCs',
       'plano.metrics.proteina': 'Proteína',
       'plano.metrics.lipidos': 'Lípidos',
@@ -2272,10 +2272,10 @@
       'conta.password.sent': 'Email enviado para {email}. Verifique a sua caixa de entrada (e spam).',
       'conta.password.sent-btn': 'Email enviado',
       'conta.password.error': 'Não foi possível enviar o email. Tente novamente mais tarde.',
-      'conta.delete.pending-desc': 'Pedido de eliminação registado — a aguardar processamento pela equipa Lyvoo.',
+      'conta.delete.pending-desc': 'Pedido de eliminação registado - a aguardar processamento pela equipa Lyvoo.',
       'conta.delete.ver-pedido-btn': 'Ver pedido',
       'conta.delete.modal-title': 'Eliminar conta',
-      'conta.delete.modal-body': 'Tem o direito ao apagamento dos seus dados (RGPD, art. 17.º). Ao confirmar, a equipa Lyvoo apaga permanentemente a sua conta e todos os dados associados — perfil, biomarcadores, plano alimentar, suplementação, consultas e histórico — no prazo máximo de 30 dias.',
+      'conta.delete.modal-body': 'Tem o direito ao apagamento dos seus dados (RGPD, art. 17.º). Ao confirmar, a equipa Lyvoo apaga permanentemente a sua conta e todos os dados associados - perfil, biomarcadores, plano alimentar, suplementação, consultas e histórico - no prazo máximo de 30 dias.',
       'conta.delete.modal-irreversible': 'Esta ação é irreversível. Se tiver um plano ativo, será contactado(a) sobre eventuais implicações antes da eliminação.',
       'conta.delete.modal-confirm-btn': 'Pedir eliminação da conta',
       'conta.delete.registering': 'A registar…',
@@ -2333,7 +2333,7 @@
       'bio.estado.otimo': 'Optimal',
       'bio.estado.atencao': 'Attention',
       'bio.estado.critico': 'Priority',
-      'bio.estado.': '—',
+      'bio.estado.': '-',
       'bio.descricao.otimo': 'Within the optimal range',
       'bio.descricao.atencao': 'Slightly outside the ideal range',
       'bio.descricao.critico': 'Outside the recommended range',
@@ -2621,7 +2621,7 @@
       'plano.legend.hidratos': 'Carbs',
       'plano.metrics.titulo': 'Daily summary',
       'plano.metrics.exemplo': 'Example',
-      'plano.metrics.exemplo-title': 'Illustrative values — real tracking coming soon',
+      'plano.metrics.exemplo-title': 'Illustrative values - real tracking coming soon',
       'plano.metrics.hcs': 'Carbs',
       'plano.metrics.proteina': 'Protein',
       'plano.metrics.lipidos': 'Fat',
@@ -2688,10 +2688,10 @@
       'conta.password.sent': 'Email sent to {email}. Check your inbox (and spam folder).',
       'conta.password.sent-btn': 'Email sent',
       'conta.password.error': 'We could not send the email. Please try again later.',
-      'conta.delete.pending-desc': 'Deletion request registered — awaiting processing by the Lyvoo team.',
+      'conta.delete.pending-desc': 'Deletion request registered - awaiting processing by the Lyvoo team.',
       'conta.delete.ver-pedido-btn': 'View request',
       'conta.delete.modal-title': 'Delete account',
-      'conta.delete.modal-body': 'You have the right to erasure of your data (GDPR, art. 17). Once confirmed, the Lyvoo team will permanently delete your account and all associated data — profile, biomarkers, meal plan, supplementation, appointments and history — within a maximum of 30 days.',
+      'conta.delete.modal-body': 'You have the right to erasure of your data (GDPR, art. 17). Once confirmed, the Lyvoo team will permanently delete your account and all associated data - profile, biomarkers, meal plan, supplementation, appointments and history - within a maximum of 30 days.',
       'conta.delete.modal-irreversible': 'This action is irreversible. If you have an active plan, you will be contacted about any implications before deletion.',
       'conta.delete.modal-confirm-btn': 'Request account deletion',
       'conta.delete.registering': 'Registering…',
@@ -2776,14 +2776,14 @@
     applyLang(lang);
     try { localStorage.setItem('lyvoo_lang', lang); } catch (e) {}
     // Título mobile (#pageTitle) é definido por navSection(), não por
-    // carregarDados() — atualizar à parte para refletir o novo idioma já.
+    // carregarDados() - atualizar à parte para refletir o novo idioma já.
     const activeBtn = document.querySelector('.sb-link.active');
     if (activeBtn) {
       const pt = document.getElementById('pageTitle');
       if (pt && pt.textContent) pt.textContent = sectionTitle(activeBtn.id.replace('sb-', ''));
     }
     // Grid de módulos da Store: gerado uma vez no arranque, não por
-    // carregarDados() — sem isto ficaria preso no idioma anterior.
+    // carregarDados() - sem isto ficaria preso no idioma anterior.
     renderStoreModulos();
     const u = auth.currentUser;
     if (u) {
@@ -2820,8 +2820,8 @@
   // ── Estado "visto" sincronizado no Firestore (cross-device) ───────────
   // Antes era localStorage (por-dispositivo): noutro dispositivo o sino e o
   // chat reapareciam como não-lidos. Agora persiste no doc do utilizador.
-  let _vistoNotifTs = 0;  // d.vistoNotificacoesEm — sino de notificações
-  let _vistoChatTs  = 0;  // d.vistoChatEm — chat com a equipa
+  let _vistoNotifTs = 0;  // d.vistoNotificacoesEm - sino de notificações
+  let _vistoChatTs  = 0;  // d.vistoChatEm - chat com a equipa
   const tsToMs = (v) => v?.toDate ? v.toDate().getTime() : (v ? new Date(v).getTime() : 0);
   async function gravarVisto(campo) {
     const uid = auth.currentUser?.uid;
@@ -3052,7 +3052,7 @@
   // ── Agendar consulta de nutrição (calendário disponibilizado pela equipa) ──
   // CONVENÇÃO DE DATAS (D6): as datas dos slots são strings 'YYYY-MM-DD'. Para as
   // comparar/formatar SEM erro de fuso, fazer SEMPRE `new Date(str + 'T00:00:00')`
-  // (meia-noite LOCAL) — nunca `new Date(str)`, que interpreta como UTC e pode
+  // (meia-noite LOCAL) - nunca `new Date(str)`, que interpreta como UTC e pode
   // saltar um dia em fusos negativos. O "hoje" é ancorado com setHours(0,0,0,0)
   // e os busySlots são indexados pela própria string (comparação textual), por
   // isso a disponibilidade é independente de fuso. bkIso() constrói a string a
@@ -3071,7 +3071,7 @@
     _bkBusy = {};
     try {
       // Lê a ocupação a partir de busySlots (sem PII), mantido pela Cloud
-      // Function syncBusySlots — agendamentosNutri deixou de ser legível pelo
+      // Function syncBusySlots - agendamentosNutri deixou de ser legível pelo
       // cliente por conter PII (nome, email, link). (Fix 3)
       const datas = [...new Set(dateStrs)];
       const snaps = await Promise.all(datas.map(d => getDoc(doc(db, 'busySlots', d))));
@@ -3294,7 +3294,7 @@
     if (e.target.id === 'cd-overlay') fecharDetalheConsulta();
   });
 
-  // ── Modal: Eliminar conta (RGPD — pedido de apagamento) ──────────────
+  // ── Modal: Eliminar conta (RGPD - pedido de apagamento) ──────────────
   function mostrarPedidoEliminacaoFeito(ts) {
     const email = auth.currentUser?.email || '';
     const quando = ts ? new Date(ts).toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day:'numeric', month:'long', year:'numeric' }) : '';
@@ -3384,7 +3384,7 @@
     if (c.link) {
       const linkValue = podeEntrar(c)
         ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" style="color:var(--cyan)">${t('consultas.detail.link-abrir')}</a>`
-        : '—';
+        : '-';
       rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.link')}</span><span class="cd-value">${linkValue}</span></div>`;
     }
 
@@ -3466,7 +3466,7 @@
     const btn = document.getElementById('bk-confirm');
     const msg = document.getElementById('bk-msg');
     const tipo = document.getElementById('bk-overlay').dataset.tipo || 'nutricao';
-    // Fica sempre em PT — é gravado em agendamentosNutri.titulo e lido pelo
+    // Fica sempre em PT - é gravado em agendamentosNutri.titulo e lido pelo
     // admin.html (ferramenta interna, só em PT), independentemente do idioma
     // do cliente que marcou a consulta.
     const titulo = tipo === 'reavaliacao' ? 'Reavaliação dos 6 meses' : 'Consulta de Nutrição';
@@ -3477,7 +3477,7 @@
     try {
       // Verificar novamente disponibilidade via busySlots (sem PII). Atualizado
       // pela Cloud Function ~em segundos; conflitos raros são reconciliados pela
-      // equipa. (Fix 3 — o cliente já não pode ler agendamentosNutri de outros.)
+      // equipa. (Fix 3 - o cliente já não pode ler agendamentosNutri de outros.)
       const bsSnap = await getDoc(doc(db, 'busySlots', _bkSelectedDate));
       const ocupado = bsSnap.exists() && (bsSnap.data().horas || []).includes(_bkSelectedTime);
       if (ocupado) {
@@ -3808,10 +3808,10 @@
 
         // Tiles: HCs / Proteína / Lípidos / Água
         const tiles = [
-          { l: t('plano.metrics.hcs'),      v: hcG ? hcG + ' g' : '—',         c: [180,100,5]  },
-          { l: t('plano.metrics.proteina'), v: prG ? prG + ' g' : '—',         c: [22,163,74]  },
-          { l: t('plano.metrics.lipidos'),  v: goG ? goG + ' g' : '—',         c: [220,38,38]  },
-          { l: t('plano.metrics.agua'),     v: aguaTxt ? aguaTxt + ' L' : '—', c: [13,122,135] },
+          { l: t('plano.metrics.hcs'),      v: hcG ? hcG + ' g' : '-',         c: [180,100,5]  },
+          { l: t('plano.metrics.proteina'), v: prG ? prG + ' g' : '-',         c: [22,163,74]  },
+          { l: t('plano.metrics.lipidos'),  v: goG ? goG + ' g' : '-',         c: [220,38,38]  },
+          { l: t('plano.metrics.agua'),     v: aguaTxt ? aguaTxt + ' L' : '-', c: [13,122,135] },
         ];
         const gap = 4, tw = (cw - 18 - 3 * gap) / 4, th = 24, tx0 = ml + 9;
         tiles.forEach((t, i) => {
@@ -3859,7 +3859,7 @@
           doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(...mc);
           doc.text(mealNameLabel(r.nome), ml + 9, y + 9.5);
 
-          // Hora — pílula no canto superior direito
+          // Hora - pílula no canto superior direito
           if (r.hora) {
             doc.setFont('helvetica','bold'); doc.setFontSize(9);
             const tw = doc.getTextWidth(r.hora) + 9;
@@ -3927,7 +3927,7 @@
     }
   };
 
-  // Cabeçalho partilhado dos PDF (logo recortado + faixa) — devolve o Y abaixo do cabeçalho
+  // Cabeçalho partilhado dos PDF (logo recortado + faixa) - devolve o Y abaixo do cabeçalho
   async function lyvooPdfHeader(doc, W, TEAL, TEAL_D) {
     const HEADER_H = 32;
     doc.setFillColor(255,255,255);
@@ -3966,7 +3966,7 @@
     return HEADER_H + 13;
   }
 
-  // Exporta os biomarcadores em PDF — sempre a versão simplificada (lista por sistema)
+  // Exporta os biomarcadores em PDF - sempre a versão simplificada (lista por sistema)
   window.downloadBiomarcadoresPDF = async function() {
     const resultados = _bioLastResultados;
     if (!resultados || !resultados.biomarcadores) { mostrarToast(t('pdf.bio.sem-dados'), 'erro'); return; }
@@ -4034,7 +4034,7 @@
         y += 5.5;
       }
 
-      // Agrupar por sistema (ordem canónica) — versão simplificada
+      // Agrupar por sistema (ordem canónica) - versão simplificada
       const grupos = {};
       const vistos = new Set();
       Object.values(resultados.biomarcadores).forEach(list => (list || []).forEach(r => {
@@ -4055,14 +4055,14 @@
 
         g.forEach(r => {
           newPageIfNeeded(9);
-          const st = STATUS[r.tag] || { lbl:'—', c:TEXT3 };
+          const st = STATUS[r.tag] || { lbl:'-', c:TEXT3 };
           doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(...TEXT);
           doc.text(doc.splitTextToSize(String(bioNomeLabel(r.nome) || ''), cVal - cParam - 3)[0], cParam, y);
           doc.text(`${r.valor}${r.unidade ? ' ' + r.unidade : ''}`, cVal, y);
           doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...TEXT2);
-          doc.text(doc.splitTextToSize(String(r.referencia || '—'), cOt - cRef - 3)[0], cRef, y);
+          doc.text(doc.splitTextToSize(String(r.referencia || '-'), cOt - cRef - 3)[0], cRef, y);
           doc.setTextColor(...GREEN);
-          doc.text(doc.splitTextToSize(String(r.refOtima || '—'), cEst - cOt - 3)[0], cOt, y);
+          doc.text(doc.splitTextToSize(String(r.refOtima || '-'), cEst - cOt - 3)[0], cOt, y);
           // Pílula de estado
           doc.setFont('helvetica','bold'); doc.setFontSize(7);
           const pillW = doc.getTextWidth(st.lbl) + 4.6, pillH = 4.6;
@@ -4115,7 +4115,7 @@
 
   // ── Navegação entre secções ──────────────────────────────────────────
   const SECTIONS = ['biomarcadores','plano-alimentar','suplementacao','relatorio','consultas','chat','store','perfil','conta'];
-  // Título mostrado no topbar mobile (#pageTitle) — mesmo texto que o link
+  // Título mostrado no topbar mobile (#pageTitle) - mesmo texto que o link
   // da sidebar, por isso reutiliza as chaves nav.*.
   function sectionTitle(name) { return t('nav.' + name); }
 
@@ -4300,11 +4300,11 @@
     'Progesterona':'hormonal', 'Prolactina':'hormonal', 'AMH':'hormonal', 'Cortisol':'hormonal',
   };
   // Nomes de biomarcadores: vocabulário fixo do painel base + módulos (ver
-  // BIO_CATS em admin.html — o admin escolhe de uma lista fechada, não digita
+  // BIO_CATS em admin.html - o admin escolhe de uma lista fechada, não digita
   // livremente). Por isso, à semelhança de mealNameLabel(), traduz-se por
   // nome exato; o que não constar do mapa (ex.: nome inserido fora do
   // catálogo) passa tal-qual. Termos já universais (LDL, HDL, TSH, ApoB...)
-  // não têm entrada — ficam iguais nos dois idiomas.
+  // não têm entrada - ficam iguais nos dois idiomas.
   const BIO_NOME_EN = {
     'Colesterol total': 'Total Cholesterol',
     'Triglicéridos': 'Triglycerides',
@@ -4444,7 +4444,7 @@
   }
 
   // ── Biomarcadores: camada de interpretação (health intelligence) ─────
-  // O que cada marcador mede (facto de referência) — combinado com o estado
+  // O que cada marcador mede (facto de referência) - combinado com o estado
   // calculado por autoTag() para produzir uma interpretação honesta, sem
   // inventar conselho clínico que o admin não tenha autorizado.
   const BIO_SUBJECT = {
@@ -4486,7 +4486,7 @@
   const _bioCap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 
   // Badge curto ("Ótimo"/"Atenção"/"Prioridade") e descrição longa do estado
-  // do biomarcador — traduzidos via t(), chave por tag clínica.
+  // do biomarcador - traduzidos via t(), chave por tag clínica.
   function bioxLabel(tag) { return t('bio.estado.' + (tag || '')); }
   function bioxEstado(tag) { return t('bio.descricao.' + (tag || '')); }
   function bioInterp(r) {
@@ -4553,7 +4553,7 @@
     </svg></div>`;
   }
   function bioDelta(r) {
-    if (!r.delta) return '<div class="biox-delta flat">—</div>';
+    if (!r.delta) return '<div class="biox-delta flat">-</div>';
     const down = /^[-↓]/.test(String(r.delta).trim());
     return `<div class="biox-delta ${down ? 'down' : 'up'}">${down ? '↓' : '↑'} ${String(r.delta).replace(/^[↑↓]\s?/, '')}</div>`;
   }
@@ -4628,10 +4628,10 @@
     }));
     if (!rows.length) return;
 
-    // Ordenar por severidade (prioridades primeiro) — ajuda o foco do utilizador
+    // Ordenar por severidade (prioridades primeiro) - ajuda o foco do utilizador
     rows.sort((a, b) => (BIOX_SEV[a.tag] ?? 3) - (BIOX_SEV[b.tag] ?? 3));
 
-    // Chips de filtro — Todos + categorias presentes (na ordem canónica)
+    // Chips de filtro - Todos + categorias presentes (na ordem canónica)
     const presentes = BIO_SYSTEMS.filter(s => rows.some(r => r._cat === s.key));
     let chips = `<button class="biox-chip active" onclick="bioxFilter('todos', this)">${t('bio.filtro.todos')} <span class="biox-chip-n">${rows.length}</span></button>`;
     presentes.forEach(s => {
@@ -4639,7 +4639,7 @@
       chips += `<button class="biox-chip" onclick="bioxFilter('${s.key}', this)">${bioSysLabel(s.key)} <span class="biox-chip-n">${n}</span></button>`;
     });
 
-    // Alternador de vista — detalhado (cartões) vs. simplificado (lista)
+    // Alternador de vista - detalhado (cartões) vs. simplificado (lista)
     const _icoCards = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/></svg>';
     const _icoList = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>';
     const viewToggle = `<div class="biox-view">
@@ -4712,8 +4712,8 @@
         <div class="biox-detail"><div class="biox-detail-inner"><div class="biox-detail-pad">
           <div class="biox-stats">
             <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.resultado-atual')}</div><div class="biox-stat-v">${r.valor} ${r.unidade || ''}</div></div>
-            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.intervalo-otimo')}</div><div class="biox-stat-v opt">${r.refOtima || '—'}</div></div>
-            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.referencia')}</div><div class="biox-stat-v">${r.referencia || '—'}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.intervalo-otimo')}</div><div class="biox-stat-v opt">${r.refOtima || '-'}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.referencia')}</div><div class="biox-stat-v">${r.referencia || '-'}</div></div>
           </div>
           ${bar}
           ${ladder}
@@ -4850,9 +4850,9 @@
   }
 
   // ── Render: Plano alimentar ───────────────────────────────────────────
-  // ── Plano alimentar v2 — motor de inteligência ────────────────────────
+  // ── Plano alimentar v2 - motor de inteligência ────────────────────────
   // Liga cada refeição ao foco clínico REAL do plano. Nunca inventa valores
-  // laboratoriais nem macros — apenas mapeia palavras-chave do objectivo/
+  // laboratoriais nem macros - apenas mapeia palavras-chave do objectivo/
   // priorizar/reduzir para etiquetas de insight, filtradas por afinidade.
   const INSIGHT_DEFS = [
     { re:/glic|insulin|a[çc][úu]c|diabet|hba1c/i,                         label:'Controlo glicémico',   rgba:'61,217,232'  },
@@ -4899,7 +4899,7 @@
   window.mealSwap = function(i) {
     const pa = window._planoData; if (!pa || !pa.refeicoes) return;
     const r = pa.refeicoes[i]; const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
-    if (ops.length < 2) { if (window.toast) toast('Sem alternativas neste plano — peça uma à equipa clínica.'); return; }
+    if (ops.length < 2) { if (window.toast) toast('Sem alternativas neste plano - peça uma à equipa clínica.'); return; }
     const descEl = document.querySelector(`.meal-desc[data-meal="${i}"]`);
     const doSwap = () => {
       _mealSwapIdx[i] = ((_mealSwapIdx[i]||0) + 1) % ops.length;
@@ -4915,7 +4915,7 @@
     } else { doSwap(); }
   };
   // Nome de refeição: traduz só se vier do vocabulário fixo do admin
-  // (dropdown — chave existe em I18N.pt); nomes livres ficam como escritos.
+  // (dropdown - chave existe em I18N.pt); nomes livres ficam como escritos.
   function mealNameLabel(nome) {
     if (!nome) return t('meal.refeicao.fallback');
     const key = 'meal.nome.' + nome;
@@ -4933,7 +4933,7 @@
     const prTags = (pa.priorizar||[]).map(t=>`<span>${t}</span>`).join('');
     const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
 
-    // Refeições — paleta + ícones SVG por tipo
+    // Refeições - paleta + ícones SVG por tipo
     const MEAL_META = {
       'Pequeno-almoço': {
         color:'#3DD9E8', rgba:'61,217,232',
@@ -4981,7 +4981,7 @@
       const cards = pa.refeicoes.map((r, i) => {
         const m = MEAL_META[r.nome] || { color:'#9DAAB0', rgba:'94,108,114', icon:fallbackIcon };
 
-        // Opções com troca aplicada — mostra apenas a opção activa
+        // Opções com troca aplicada - mostra apenas a opção activa
         const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
         const off = _mealSwapIdx[i] || 0;
         const activeOp = ops.length ? ops[off % ops.length] : null;
@@ -5024,14 +5024,14 @@
       </div>`;
     })();
 
-    // Donut de macros (gradiente conic) — só faz sentido se houver distribuição
+    // Donut de macros (gradiente conic) - só faz sentido se houver distribuição
     const temMacros = (prot + gord + hidr) > 0;
     const a1 = prot, a2 = prot + gord;
     const donut = temMacros ? `
       <div class="plano-donut-wrap">
         <div class="plano-donut" style="background:conic-gradient(var(--cyan) 0% ${a1}%, var(--violet) ${a1}% ${a2}%, var(--green) ${a2}% 100%)">
           <div class="plano-donut-center">
-            <span class="plano-donut-kcal">${pa.kcal||'—'}</span>
+            <span class="plano-donut-kcal">${pa.kcal||'-'}</span>
             <span class="plano-donut-label">${t('plano.donut.kcal-dia')}</span>
           </div>
         </div>
@@ -5054,7 +5054,7 @@
         ${donut}
       </div>` : '';
 
-    // Resumo do dia (KPIs) — valores ilustrativos; seguimento real em breve
+    // Resumo do dia (KPIs) - valores ilustrativos; seguimento real em breve
     const _mTile = (rgba, icon, val, unit, lbl) => `
       <div class="metric-tile">
         <div class="metric-tile-head">
@@ -5074,10 +5074,10 @@
           <span class="demo-pill" title="${t('plano.metrics.exemplo-title')}">${t('plano.metrics.exemplo')}</span>
         </div>
         <div class="metric-grid">
-          ${_mTile('251,146,60', _icoHCs, (hidrG || '—'), 'g', t('plano.metrics.hcs'))}
-          ${_mTile('74,222,128', _icoProt, (protG || '—'), 'g', t('plano.metrics.proteina'))}
-          ${_mTile('250,204,21', _icoLip, (gordG || '—'), 'g', t('plano.metrics.lipidos'))}
-          ${_mTile('61,217,232', _icoWater, (aguaL || '—'), 'l', t('plano.metrics.agua'))}
+          ${_mTile('251,146,60', _icoHCs, (hidrG || '-'), 'g', t('plano.metrics.hcs'))}
+          ${_mTile('74,222,128', _icoProt, (protG || '-'), 'g', t('plano.metrics.proteina'))}
+          ${_mTile('250,204,21', _icoLip, (gordG || '-'), 'g', t('plano.metrics.lipidos'))}
+          ${_mTile('61,217,232', _icoWater, (aguaL || '-'), 'l', t('plano.metrics.agua'))}
         </div>
       </div>`;
 
@@ -5704,7 +5704,7 @@
                     : (estadoNum === 3 || estadoNum === 6) ? 'lab'
                     : 'resultados'; // 4 ou 7
 
-      // Badge "Ciclo N" — só visível durante reavaliações (ciclo 2, 3, ...)
+      // Badge "Ciclo N" - só visível durante reavaliações (ciclo 2, 3, ...)
       const cicloBadge = document.getElementById('prog-ciclo-badge');
       if (cicloBadge) {
         const ciclo = d.cicloAtual || 1;
@@ -5822,7 +5822,7 @@
         window._resultadosBannerKey = bKey;
         if (banner && !localStorage.getItem(bKey)) banner.style.display = 'flex';
 
-        // CTA consulta de nutrição — se não há consulta futura agendada nem convite ativo
+        // CTA consulta de nutrição - se não há consulta futura agendada nem convite ativo
         const nutriCta = document.getElementById('nutri-cta');
         if (nutriCta) {
           const today = new Date(); today.setHours(0,0,0,0);
@@ -5853,7 +5853,7 @@
 
       // ── Reavaliação (estados 5, 6 e 7): banner + mini-timeline ──
       // No estado 7 (resultados da reavaliação já prontos) o card mantém-se
-      // visível mas com texto coerente — "concluída" em vez de "a ser preparada".
+      // visível mas com texto coerente - "concluída" em vez de "a ser preparada".
       if (reaval) {
         const reevalBanner = document.getElementById('reeval-banner');
         if (reevalBanner) reevalBanner.style.display = 'block';
@@ -6001,7 +6001,7 @@
   };
 
   // Só permite aceitar cada consentimento depois de o texto ter sido lido
-  // até ao fim (scroll completo) — consentimento informado nos termos do RGPD
+  // até ao fim (scroll completo) - consentimento informado nos termos do RGPD
   function verificarLeituraConsent(box) {
     const lido = box.scrollTop + box.clientHeight >= box.scrollHeight - 4;
     if (!lido) return;
@@ -6154,7 +6154,7 @@
         <span class="consent-read-hint" id="hint-cs-saude">Leia até ao fim ↓</span>
       </div>
       <div class="consent-scroll" data-cb="cs-saude">
-        <p>Declaro que consinto, de forma livre, específica, informada e explícita, que a Lyvoo, na qualidade de responsável pelo tratamento, proceda ao tratamento dos meus dados pessoais de saúde — incluindo resultados de análises clínicas, biomarcadores, historial clínico, dados de anamnese e informação que eu venha a disponibilizar no âmbito do programa — para as seguintes finalidades: (i) análise e interpretação clínica dos meus resultados; (ii) elaboração de relatórios médicos e nutricionais personalizados; (iii) definição de planos alimentares e de suplementação ajustados ao meu perfil; e (iv) acompanhamento contínuo da minha saúde ao longo do programa.</p>
+        <p>Declaro que consinto, de forma livre, específica, informada e explícita, que a Lyvoo, na qualidade de responsável pelo tratamento, proceda ao tratamento dos meus dados pessoais de saúde - incluindo resultados de análises clínicas, biomarcadores, historial clínico, dados de anamnese e informação que eu venha a disponibilizar no âmbito do programa - para as seguintes finalidades: (i) análise e interpretação clínica dos meus resultados; (ii) elaboração de relatórios médicos e nutricionais personalizados; (iii) definição de planos alimentares e de suplementação ajustados ao meu perfil; e (iv) acompanhamento contínuo da minha saúde ao longo do programa.</p>
         <p>Base legal: consentimento explícito do titular, nos termos do artigo 9.º, n.º 2, alínea a) do RGPD. Os dados de saúde constituem uma categoria especial de dados pessoais e só são tratados com este consentimento.</p>
         <p>Os dados são conservados apenas durante o período necessário às finalidades indicadas e de acordo com os prazos legais aplicáveis, conforme detalhado na Política de Privacidade (lyvoo.pt/privacidade.html).</p>
         <p>Tenho o direito de retirar este consentimento a qualquer momento, através do email hello@lyvoo.pt ou da área "Conta e segurança", sem comprometer a licitude do tratamento efetuado até essa data. A retirada do consentimento poderá, no entanto, impossibilitar a prestação do serviço Lyvoo. Tenho ainda os direitos de acesso, retificação, apagamento, limitação, portabilidade e oposição, bem como o direito de apresentar reclamação à CNPD (Comissão Nacional de Proteção de Dados).</p>
@@ -6168,7 +6168,7 @@
         <span class="consent-read-hint" id="hint-cs-labs">Leia até ao fim ↓</span>
       </div>
       <div class="consent-scroll" data-cb="cs-labs">
-        <p>Declaro que consinto, de forma livre, específica, informada e explícita, que a Lyvoo partilhe os meus dados pessoais — nome, contactos, dados de identificação da amostra e requisição de análises — com laboratórios de análises clínicas certificados (norma ISO 15189) que atuam como parceiros da Lyvoo, exclusivamente para a finalidade de processamento laboratorial das minhas amostras biológicas e emissão dos respetivos resultados.</p>
+        <p>Declaro que consinto, de forma livre, específica, informada e explícita, que a Lyvoo partilhe os meus dados pessoais - nome, contactos, dados de identificação da amostra e requisição de análises - com laboratórios de análises clínicas certificados (norma ISO 15189) que atuam como parceiros da Lyvoo, exclusivamente para a finalidade de processamento laboratorial das minhas amostras biológicas e emissão dos respetivos resultados.</p>
         <p>Os laboratórios parceiros atuam ao abrigo de contratos de tratamento de dados nos termos do artigo 28.º do RGPD, estando obrigados a sigilo, a medidas técnicas e organizativas adequadas e à utilização dos dados estritamente para a finalidade indicada. Não é efetuada qualquer transferência dos meus dados para fora do Espaço Económico Europeu sem garantias adequadas nos termos do Capítulo V do RGPD.</p>
         <p>Base legal: consentimento explícito do titular, nos termos do artigo 9.º, n.º 2, alínea a) do RGPD.</p>
         <p>Tenho o direito de retirar este consentimento a qualquer momento através do email hello@lyvoo.pt, sem comprometer a licitude do tratamento efetuado até essa data. Sem esta partilha não é possível realizar as análises clínicas que integram o programa Lyvoo.</p>
@@ -6234,8 +6234,8 @@
     <div id="del-form">
       <div class="bk-sub" style="margin-bottom:14px;" data-i18n="conta.delete.modal-body">
         Tem o direito ao apagamento dos seus dados (RGPD, art.&nbsp;17.º). Ao confirmar, a equipa Lyvoo
-        apaga permanentemente a sua conta e todos os dados associados — perfil, biomarcadores, plano
-        alimentar, suplementação, consultas e histórico — no prazo máximo de 30 dias.
+        apaga permanentemente a sua conta e todos os dados associados - perfil, biomarcadores, plano
+        alimentar, suplementação, consultas e histórico - no prazo máximo de 30 dias.
       </div>
       <div class="cd-note" style="margin-bottom:18px;" data-i18n="conta.delete.modal-irreversible">Esta ação é irreversível. Se tiver um plano ativo, será contactado(a) sobre eventuais implicações antes da eliminação.</div>
       <button class="cd-cancel-btn" id="del-confirm-btn" style="margin-top:0;" data-i18n="conta.delete.modal-confirm-btn">Pedir eliminação da conta</button>

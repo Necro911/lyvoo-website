@@ -342,7 +342,7 @@
   function mensagemErro(code, err) {
     // Regista sempre o erro completo na consola para diagnóstico.
     if (err !== undefined) console.error('[login] falha de autenticação:', code, err);
-    // Para códigos não mapeados, mostramos o código entre parênteses — ajuda a
+    // Para códigos não mapeados, mostramos o código entre parênteses - ajuda a
     // diagnosticar problemas de App Check/reCAPTCHA/domínio em produção.
     return erros[code] || `Ocorreu um erro inesperado (${code || 'sem código'}). Tente novamente.`;
   }
@@ -432,7 +432,7 @@
   // ── Login com Google ──
   // Usamos sempre signInWithPopup (mobile e desktop). O signInWithRedirect NÃO
   // funciona aqui: o site está em lyvoo.pt (GitHub Pages) mas o authDomain do
-  // Firebase é lyvoo-9d54b.firebaseapp.com — domínios diferentes. Ao voltar da
+  // Firebase é lyvoo-9d54b.firebaseapp.com - domínios diferentes. Ao voltar da
   // Google, os browsers (sobretudo Safari/iOS) bloqueiam o acesso ao estado
   // guardado no domínio do Firebase e o login não completa (volta ao login.html).
   // O popup recebe o resultado por postMessage na mesma janela, sem depender
