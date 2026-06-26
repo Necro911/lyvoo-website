@@ -238,6 +238,14 @@ firebase emulators:exec --only firestore,auth \
 
 ---
 
+## Token-efficiency map for large files
+- `dashboard.html` (~6,250 lines) / `admin.html` (~3,275 lines): **NEVER `Read` in full** for a narrow task. `Grep` first, then `Edit` blind on the matched string, or `Read` with a tight `offset`/`limit` around the match.
+- `ciencia.html` + `en/science.html` share `science.css`; `como-funciona.html` + `en/how-it-works.html` share `how-it-works.css` — edit the shared stylesheet for layout/visual changes, the HTML file only for copy/structure.
+- The other ~40 pages (root/módulos/EN) still have inline `<style>` with real per-page drift (different nav opacity, container widths, hero padding) — do NOT assume they're interchangeable; diff before extracting.
+- See memory: `lyvoo-token-efficiency.md` for session-structuring rules.
+
+---
+
 ## Reference docs in-repo
 - `README.md` — architecture deep-dive (data model, Stripe flow, security, CI/CD).
 - `ROADMAP.md` — production roadmap and explicitly deferred debt.
