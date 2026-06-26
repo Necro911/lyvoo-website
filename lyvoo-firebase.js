@@ -19,10 +19,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // ── App Check (reCAPTCHA v3) ─────────────────────────────────────────────────
-// Site key v3 NOVA (15 Jun 2026), criada no console clássico (Score based v3).
-// NÃO voltar à antiga 6Lei…SAM4: essa foi migrada para Enterprise e, com o
-// ReCaptchaV3Provider, fazia o Identity Toolkit rejeitar TODOS os tokens
-// (auth/firebase-app-check-token-is-invalid) → bloqueava todo o login.
+// Site key v3 NOVA (26 Jun 2026), criada no console clássico (Score based v3),
+// domínios lyvoo.pt + localhost. A key anterior (6Lfbgx8t…Uck58) deixou de
+// aparecer no reCAPTCHA admin depois da transferência de Owner do projeto GCP
+// para outra conta Google — as chaves reCAPTCHA pertencem à conta que as criou,
+// não ao projeto Firebase, por isso "desapareceram" com a troca de titular.
+// NÃO voltar a nenhuma key antiga: se o Identity Toolkit rejeitar TODOS os
+// tokens (auth/firebase-app-check-token-is-invalid), confirmar que o *secret*
+// configurado na Firebase Console → App Check corresponde a ESTA site key.
 // O *secret* desta key vive só na Firebase Console → App Check (nunca no código).
 //
 // PRÉ-REQUISITOS no backend (Firebase Console → App Check), por ordem:
@@ -44,7 +48,7 @@ if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
   self.FIREBASE_APPCHECK_DEBUG_TOKEN = localStorage.getItem('APPCHECK_DEBUG_TOKEN') || true;
 }
 initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('6Lfbgx8tAAAAAGwkr0VPyki1t9kvAmu8ySjUck58'),
+  provider: new ReCaptchaV3Provider('6Lec-zYtAAAAAIj3Mxm4Wx6QS0CuL-M0iUmAZTiZ'),
   isTokenAutoRefreshEnabled: true
 });
 
