@@ -34,7 +34,7 @@
       --d0: #05080B; --d1: #070C12; --d2: #0A0A1A;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, var(--d0) 0%, var(--d1) 20%, var(--d2) 45%, var(--d1) 70%, var(--d0) 100%); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, var(--d0) 0%, var(--d2) 100%); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
     .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
@@ -66,8 +66,8 @@
     .sec > .container { position: relative; z-index: 1; }
     .pad { padding: clamp(88px, 13vw, 156px) 0; }
     .glow-a, .glow-b { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-    .glow-a { background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(61,217,232,0.14) 0%, transparent 60%), radial-gradient(ellipse 50% 45% at 90% 100%, rgba(139,92,246,0.12) 0%, transparent 60%); }
-    .glow-b { background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(139,92,246,0.12) 0%, transparent 60%); }
+    .glow-a { background: radial-gradient(ellipse 45% 35% at 30% 40%, rgba(61,217,232,0.12) 0%, transparent 50%), radial-gradient(ellipse 40% 35% at 80% 60%, rgba(139,92,246,0.1) 0%, transparent 50%); }
+    .glow-b { background: radial-gradient(ellipse 50% 35% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 50%); }
 
     h2.big { font-size: clamp(31px, 4.6vw, 54px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; color: #fff; }
     .lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.6); }

@@ -34,7 +34,7 @@
       --green: #4ADE80; --amber: #FBBF24; --red: #F87171;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, var(--d0) 0%, var(--d1) 20%, var(--d2) 45%, var(--d1) 70%, var(--d0) 100%); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, var(--d0) 0%, var(--d2) 100%); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
     .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
@@ -124,7 +124,7 @@
     .hviz-badge .hbl { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; }
 
     /* ════════ EVIDENCE QUALITY ════════ */
-    .qual .glow { background: radial-gradient(ellipse 50% 50% at 80% 10%, rgba(61,217,232,0.1) 0%, transparent 60%); }
+    .qual .glow { background: radial-gradient(ellipse 45% 40% at 80% 30%, rgba(61,217,232,0.1) 0%, transparent 55%); }
     .qual-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 4vw, 52px); align-items: stretch; margin-top: 48px; }
     .qual-card { padding: clamp(28px, 4vw, 40px); }
     .qual-card h3 { font-size: 19px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 4px; }
@@ -148,7 +148,7 @@
     .effect-note svg { width: 15px; height: 15px; }
 
     /* ════════ CLINICAL OUTCOMES ════════ */
-    .out .glow { background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(139,92,246,0.1) 0%, transparent 60%); }
+    .out .glow { background: radial-gradient(ellipse 50% 40% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 55%); }
     .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 50px; }
     .metric { padding: 26px 24px; transition: transform 0.3s cubic-bezier(.22,.61,.36,1), border-color 0.3s, box-shadow 0.3s; }
     .metric:hover { transform: translateY(-6px); border-color: rgba(61,217,232,0.3); box-shadow: 0 36px 70px rgba(0,0,0,0.5); }
@@ -177,7 +177,7 @@
     .farrow svg { width: 24px; height: 24px; }
 
     /* ════════ EFFECTIVE (compare) ════════ */
-    .eff .glow { background: radial-gradient(ellipse 50% 50% at 20% 30%, rgba(74,222,128,0.06) 0%, transparent 55%), radial-gradient(ellipse 50% 50% at 85% 70%, rgba(248,113,113,0.05) 0%, transparent 55%); }
+    .eff .glow { background: radial-gradient(ellipse 40% 35% at 25% 35%, rgba(74,222,128,0.06) 0%, transparent 50%), radial-gradient(ellipse 40% 35% at 80% 65%, rgba(248,113,113,0.05) 0%, transparent 50%); }
     .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 50px; }
     .ccard { padding: clamp(26px, 3.5vw, 38px); }
     .ccard.good { border-color: rgba(74,222,128,0.2); }
@@ -195,7 +195,7 @@
     .bad .cli .cmk { background: rgba(248,113,113,0.1); color: var(--red); }
 
     /* ════════ APPLY (mapping) ════════ */
-    .apply .glow { background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(61,217,232,0.08) 0%, transparent 60%); }
+    .apply .glow { background: radial-gradient(ellipse 50% 40% at 50% 50%, rgba(61,217,232,0.08) 0%, transparent 55%); }
     .map { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
     .map-hd { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 16px; align-items: center; padding: 0 clamp(18px,3vw,28px); margin-bottom: 4px; }
     .map-hd span { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
@@ -214,7 +214,7 @@
     .marrow svg { width: 22px; height: 22px; }
 
     /* ════════ JOURNEY ════════ */
-    .journey .glow { background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139,92,246,0.1) 0%, transparent 60%); }
+    .journey .glow { background: radial-gradient(ellipse 50% 35% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 55%); }
     .jline { position: relative; margin-top: 56px; }
     .jline::before { content: ''; position: absolute; top: 31px; left: 6%; right: 6%; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--violet), var(--purple)); opacity: 0.35; border-radius: 2px; }
     .jsteps { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; position: relative; }
@@ -243,7 +243,7 @@
     .lcard:hover .lexp svg { transform: translateX(3px); }
 
     /* ════════ REFERENCES ════════ */
-    .refs .glow { background: radial-gradient(ellipse 50% 50% at 50% 0%, rgba(61,217,232,0.06) 0%, transparent 55%); }
+    .refs .glow { background: radial-gradient(ellipse 45% 35% at 50% 50%, rgba(61,217,232,0.06) 0%, transparent 50%); }
     .ref-list { margin-top: 44px; display: flex; flex-direction: column; gap: 14px; }
     .ref { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; padding: 22px 26px; border-radius: 18px;
       background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.25s, background 0.25s; }
