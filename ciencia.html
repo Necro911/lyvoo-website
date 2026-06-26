@@ -316,7 +316,8 @@
       .flow { flex-direction: column; align-items: stretch; }
       .fstep { flex: none; flex-direction: row; justify-content: flex-start; gap: 16px; text-align: left; }
       .fstep .fn { max-width: none; }
-      .farrow { transform: rotate(90deg); width: 64px; justify-content: center; }
+      .farrow { transform: rotate(90deg); width: 64px; justify-content: center; display: flex; }
+      .farrow:nth-of-type(2) { display: flex; }
       .jsteps { grid-template-columns: 1fr 1fr; gap: 26px 10px; }
       .lib-grid { grid-template-columns: 1fr; }
       .ref { grid-template-columns: 1fr; gap: 14px; }
