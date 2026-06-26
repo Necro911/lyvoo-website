@@ -7,13 +7,13 @@
   <link rel="icon" href="../images/og-image.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The science - Lyvoo</title>
-  <meta name="description" content="Published clinical studies show that continuous preventive monitoring and telemedicine produce measurable, consistent results." />
+  <meta name="description" content="The Lyvoo model is built on high-quality scientific evidence: a systematic review and meta-analysis on prevention, telemedicine and continuous monitoring." />
   <link rel="canonical" href="https://lyvoo.pt/en/science.html" />
   <link rel="alternate" hreflang="pt-PT" href="https://lyvoo.pt/ciencia.html" />
   <link rel="alternate" hreflang="en" href="https://lyvoo.pt/en/science.html" />
   <link rel="alternate" hreflang="x-default" href="https://lyvoo.pt/ciencia.html" />
   <meta property="og:title" content="The science - Lyvoo" />
-  <meta property="og:description" content="Published clinical studies show that continuous preventive monitoring produces measurable results." />
+  <meta property="og:description" content="Prevention works. The numbers prove it. The science behind the Lyvoo model." />
   <meta property="og:image" content="https://lyvoo.pt/images/og-image.png" />
   <meta property="og:site_name" content="Lyvoo" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -30,11 +30,18 @@
       --teal: #0B525A; --teal-light: #0D7A87; --cyan: #3DD9E8;
       --violet: #8B5CF6; --purple: #9B6FD4; --bg: #FFFFFF; --surface: #F6F8F9;
       --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96;
+      --d0: #05080B; --d1: #070C12; --d2: #0A0A1A;
+      --green: #4ADE80; --amber: #FBBF24; --red: #F87171;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--d0); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
-    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,12,14,0.95); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+    /* ── Nav ── */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(5,8,11,0.82); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 92px; max-width: 1140px; margin: 0 auto; padding: 0 24px; }
     .nav-logo { text-decoration: none; }
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); text-decoration: none; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
@@ -42,60 +49,232 @@
     .nav-cta { background: #fff !important; color: var(--teal) !important; border-radius: 999px !important; padding: 9px 22px !important; font-weight: 700 !important; }
     .nav-cta:hover { opacity: 0.88; background: #fff !important; }
     .lang-toggle { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; overflow: hidden; }
-    .lang-toggle a, .lang-toggle span { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 0; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
+    .lang-toggle a, .lang-toggle span { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 5px 10px; color: rgba(255,255,255,0.55); text-decoration: none; transition: all 0.2s; }
     .lang-active { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
     .lang-toggle a:hover:not(.lang-active) { color: rgba(255,255,255,0.65); }
-    .hero { background: linear-gradient(180deg, #0A1415 0%, #051520 45%, #0D0820 100%); padding: 140px 0 72px; text-align: center; position: relative; overflow: hidden; }
-    .hero-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61,217,232,0.14) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.1) 0%, transparent 60%); }
-    .hero .container { position: relative; }
-    .hero .label { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); border: 1px solid rgba(61,217,232,0.25); padding: 5px 14px; border-radius: 999px; margin-bottom: 20px; }
-    .hero h1 { font-size: clamp(30px, 5vw, 54px); font-weight: 800; letter-spacing: -0.04em; color: #fff; margin-bottom: 16px; line-height: 1.1; }
-    .hero p { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; margin: 0 auto; line-height: 1.7; }
-    .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
-    .fade { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+
+    /* ── Motion ── */
+    .fade { opacity: 0; transform: translateY(34px); transition: opacity 0.8s cubic-bezier(.22,.61,.36,1), transform 0.8s cubic-bezier(.22,.61,.36,1); }
     .fade.in { opacity: 1; transform: translateY(0); }
-    .fade-d1 { transition-delay: 0.1s; }
-    .fade-d2 { transition-delay: 0.2s; }
-    .fade-d3 { transition-delay: 0.3s; }
+    .fade-d1 { transition-delay: 0.08s; } .fade-d2 { transition-delay: 0.16s; } .fade-d3 { transition-delay: 0.24s; }
+    .fade-d4 { transition-delay: 0.32s; } .fade-d5 { transition-delay: 0.4s; }
+    @media (prefers-reduced-motion: reduce) { .fade { transition: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
 
-    /* ── Scientific evidence (own page, no carousel) ── */
-    .ev-section { background: linear-gradient(180deg, #0D0820 0%, #060A0C 60%); padding: 96px 0 110px; }
-    .ev-stats {
-      display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-      gap: 0; align-items: start; margin-bottom: 56px;
-    }
-    .ev-stat { padding: 0 32px; text-align: center; }
-    .ev-stat:first-child { padding-left: 0; }
-    .ev-stat:last-child  { padding-right: 0; }
-    .ev-num {
-      font-size: clamp(36px, 5vw, 64px); font-weight: 800;
-      letter-spacing: -0.04em; line-height: 1;
-      background: linear-gradient(135deg, #3DD9E8, #8B5CF6);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text; margin-bottom: 10px;
-    }
-    .ev-unit { font-size: 0.45em; font-weight: 700; vertical-align: super; }
-    .ev-label { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 0.01em; }
-    .ev-sub { font-size: 12px; color: rgba(255, 255, 255, 0.589); line-height: 1.6; }
-    .ev-divider { width: 1px; background: rgba(255,255,255,0.08); align-self: stretch; margin: 8px 0; }
+    /* ── Section shells ── */
+    .sc { position: relative; padding: clamp(80px, 11vw, 138px) 0; overflow: hidden; }
+    .glow { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 18px; }
+    .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); }
+    .sec-head { max-width: 720px; }
+    .sec-head.center { margin: 0 auto; text-align: center; }
+    h2.big { font-size: clamp(30px, 4.4vw, 52px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.07; color: #fff; }
+    .lead { font-size: clamp(16px, 1.85vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.6); margin-top: 18px; }
+    .lead.narrow { max-width: 560px; }
+    .center .lead { margin-left: auto; margin-right: auto; }
 
-    .ev-conclusion { max-width: 760px; margin: 0 auto; }
-    .ev-conclusion-inner {
-      display: flex; gap: 16px; align-items: flex-start;
-      background: rgba(61,217,232,0.06); border: 1px solid rgba(61,217,232,0.15);
-      border-radius: 16px; padding: 24px 28px; margin-bottom: 20px;
-    }
-    .ev-conclusion-inner svg { flex-shrink: 0; margin-top: 2px; }
-    .ev-conclusion-inner p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.75; margin: 0; }
-    .ev-source { text-align: center; font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.04em; }
+    .glass { background: linear-gradient(165deg, rgba(255,255,255,0.05), rgba(255,255,255,0.018)); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 22px; box-shadow: 0 30px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06); }
 
-    @media (max-width: 860px) {
-      .ev-stats { grid-template-columns: 1fr 1fr; gap: 40px; }
-      .ev-divider { display: none; }
-      .ev-stat { padding: 0; }
-    }
+    /* ════════ HERO ════════ */
+    .hero { padding: 164px 0 96px; }
+    .hero .glow { background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(61,217,232,0.16) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 12% 60%, rgba(139,92,246,0.16) 0%, transparent 60%),
+      radial-gradient(ellipse 45% 45% at 90% 80%, rgba(13,122,135,0.18) 0%, transparent 60%); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(40px, 5vw, 72px); align-items: center; }
+    .hero h1 { font-size: clamp(40px, 6.6vw, 76px); font-weight: 850; letter-spacing: -0.055em; line-height: 0.98; color: #fff; }
+    .hero .lead { max-width: 480px; }
+    .hero-trust { display: flex; gap: 22px; margin-top: 30px; flex-wrap: wrap; }
+    .hero-trust .ht { display: flex; flex-direction: column; gap: 2px; }
+    .hero-trust .htv { font-size: 22px; font-weight: 850; letter-spacing: -0.03em; color: #fff; }
+    .hero-trust .htl { font-size: 11.5px; color: rgba(255,255,255,0.45); font-weight: 600; }
+    .hero-trust .sep { width: 1px; background: rgba(255,255,255,0.1); }
 
+    .hviz { position: relative; }
+    .hviz-card { position: relative; border-radius: 24px; padding: 22px; overflow: hidden;
+      background: linear-gradient(160deg, rgba(15,28,33,0.92), rgba(11,10,28,0.92));
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 50px 110px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07); }
+    .hviz-dna { position: absolute; right: -30px; top: -20px; width: 220px; opacity: 0.16; pointer-events: none; }
+    .hviz-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; position: relative; z-index: 1; }
+    .hviz-hd b { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+    .hviz-live { font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.28); padding: 3px 9px; border-radius: 999px; }
+    .hviz-row1 { display: flex; gap: 14px; align-items: stretch; margin-bottom: 14px; position: relative; z-index: 1; }
+    .hviz-score { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; width: 116px; border-radius: 16px; padding: 14px 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); }
+    .hviz-score svg { width: 78px; height: 78px; }
+    .hviz-score .scv { position: absolute; font-size: 26px; font-weight: 850; color: #fff; letter-spacing: -0.04em; }
+    .hviz-score .scl { font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    .hviz-chart { flex: 1; border-radius: 16px; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; }
+    .hviz-chart .ct { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
+    .hviz-chart .cd { font-size: 13px; font-weight: 800; color: var(--cyan); margin-bottom: 6px; }
+    .hviz-chart svg { width: 100%; height: 56px; display: block; overflow: visible; }
+    .hviz-bios { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
+    .hbio { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 11px; padding: 9px 12px; }
+    .hbio .hd2 { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .hbio .hn { font-size: 12px; color: rgba(255,255,255,0.78); font-weight: 600; flex: 1; }
+    .hbio .hbar { width: 56px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; flex-shrink: 0; }
+    .hbio .hbar i { display: block; height: 100%; border-radius: 999px; }
+    .hbio .hv { font-size: 10.5px; font-weight: 700; width: 30px; text-align: right; flex-shrink: 0; }
+    .hviz-badge { position: absolute; z-index: 3; bottom: -18px; left: -18px; display: flex; align-items: center; gap: 11px;
+      padding: 12px 16px; border-radius: 16px; background: rgba(10,16,22,0.86); border: 1px solid rgba(61,217,232,0.28);
+      box-shadow: 0 22px 48px rgba(0,0,0,0.5); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    .hviz-badge .hbg { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--cyan), var(--violet)); flex-shrink: 0; }
+    .hviz-badge .hbn { font-size: 17px; font-weight: 850; color: #fff; letter-spacing: -0.03em; line-height: 1; }
+    .hviz-badge .hbl { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; }
+
+    /* ════════ EVIDENCE QUALITY ════════ */
+    .qual { background: linear-gradient(180deg, var(--d0), var(--d1)); }
+    .qual .glow { background: radial-gradient(ellipse 50% 50% at 80% 10%, rgba(61,217,232,0.1) 0%, transparent 60%); }
+    .qual-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 4vw, 52px); align-items: stretch; margin-top: 48px; }
+    .qual-card { padding: clamp(28px, 4vw, 40px); }
+    .qual-card h3 { font-size: 19px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .qual-card .qsub { font-size: 13.5px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 24px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 9px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; padding: 9px 14px; border-radius: 11px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+    .badge svg { width: 14px; height: 14px; color: var(--cyan); flex-shrink: 0; }
+    .badge.big-num { background: linear-gradient(150deg, rgba(61,217,232,0.1), rgba(139,92,246,0.08)); border-color: rgba(61,217,232,0.22); }
+    .badge.big-num b { font-size: 15px; color: #fff; }
+    .effect { display: flex; flex-direction: column; justify-content: center; text-align: center; padding: clamp(28px, 4vw, 40px);
+      background: linear-gradient(160deg, rgba(61,217,232,0.1), rgba(139,92,246,0.08)); border: 1px solid rgba(61,217,232,0.22); }
+    .effect .el { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+    .effect .ev { font-size: clamp(48px, 8vw, 68px); font-weight: 850; letter-spacing: -0.05em; line-height: 1; }
+    .effect .ed { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 6px; font-weight: 600; }
+    .effect-row { display: flex; justify-content: center; gap: 14px; margin-top: 22px; flex-wrap: wrap; }
+    .effect-row .er { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; padding: 11px 18px; }
+    .effect-row .erv { font-size: 16px; font-weight: 800; color: #fff; }
+    .effect-row .erl { font-size: 10.5px; color: rgba(255,255,255,0.45); font-weight: 600; }
+    .effect-note { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: 12.5px; color: var(--cyan); font-weight: 700; }
+    .effect-note svg { width: 15px; height: 15px; }
+
+    /* ════════ CLINICAL OUTCOMES ════════ */
+    .out .glow { background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(139,92,246,0.1) 0%, transparent 60%); }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 50px; }
+    .metric { padding: 26px 24px; transition: transform 0.3s cubic-bezier(.22,.61,.36,1), border-color 0.3s, box-shadow 0.3s; }
+    .metric:hover { transform: translateY(-6px); border-color: rgba(61,217,232,0.3); box-shadow: 0 36px 70px rgba(0,0,0,0.5); }
+    .metric .mi { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+      background: linear-gradient(150deg, rgba(61,217,232,0.14), rgba(139,92,246,0.12)); border: 1px solid rgba(255,255,255,0.1); }
+    .metric .mi svg { width: 20px; height: 20px; color: var(--cyan); }
+    .metric .mv { font-size: clamp(30px, 4vw, 42px); font-weight: 850; letter-spacing: -0.05em; line-height: 1;
+      background: linear-gradient(135deg, #3DD9E8, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .metric .mu { font-size: 0.42em; font-weight: 700; -webkit-text-fill-color: rgba(255,255,255,0.55); }
+    .metric .ml { font-size: 14px; font-weight: 700; color: #fff; margin: 12px 0 8px; letter-spacing: -0.01em; }
+    .metric .md { font-size: 12.5px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+    .insight { display: flex; align-items: flex-start; gap: 16px; margin-top: 26px; padding: 24px 28px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(61,217,232,0.08), rgba(139,92,246,0.06)); border: 1px solid rgba(61,217,232,0.18); }
+    .insight svg { width: 22px; height: 22px; color: var(--cyan); flex-shrink: 0; margin-top: 2px; }
+    .insight p { font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,0.8); margin: 0; }
+    .insight p b { color: #fff; }
+
+    /* ════════ WHY IT WORKS ════════ */
+    .why { background: linear-gradient(180deg, var(--d1), var(--d0)); }
+    .flow { display: flex; align-items: stretch; gap: 0; margin-top: 54px; }
+    .fstep { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 0 8px; }
+    .fstep .fi { width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; position: relative;
+      background: linear-gradient(150deg, rgba(61,217,232,0.14), rgba(139,92,246,0.12)); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 14px 34px rgba(0,0,0,0.4); }
+    .fstep .fi svg { width: 28px; height: 28px; color: #fff; }
+    .fstep .fn { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.3; max-width: 130px; }
+    .farrow { display: flex; align-items: center; padding-top: 22px; color: rgba(255,255,255,0.25); flex-shrink: 0; }
+    .farrow svg { width: 24px; height: 24px; }
+
+    /* ════════ EFFECTIVE (compare) ════════ */
+    .eff .glow { background: radial-gradient(ellipse 50% 50% at 20% 30%, rgba(74,222,128,0.06) 0%, transparent 55%), radial-gradient(ellipse 50% 50% at 85% 70%, rgba(248,113,113,0.05) 0%, transparent 55%); }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 50px; }
+    .ccard { padding: clamp(26px, 3.5vw, 38px); }
+    .ccard.good { border-color: rgba(74,222,128,0.2); }
+    .ccard.bad { border-color: rgba(248,113,113,0.18); }
+    .ccard h3 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .ccard h3 .ch { width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .good h3 .ch { background: rgba(74,222,128,0.14); color: var(--green); }
+    .bad h3 .ch { background: rgba(248,113,113,0.14); color: var(--red); }
+    .clist { display: flex; flex-direction: column; gap: 13px; }
+    .cli { display: flex; align-items: center; gap: 12px; font-size: 14.5px; color: rgba(255,255,255,0.82); }
+    .cli .cmk { width: 22px; height: 22px; border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cli .cmk svg { width: 13px; height: 13px; }
+    .good .cli .cmk { background: rgba(74,222,128,0.12); color: var(--green); }
+    .bad .cli { color: rgba(255,255,255,0.5); }
+    .bad .cli .cmk { background: rgba(248,113,113,0.1); color: var(--red); }
+
+    /* ════════ APPLY (mapping) ════════ */
+    .apply { background: linear-gradient(180deg, var(--d0), var(--d2)); }
+    .apply .glow { background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(61,217,232,0.08) 0%, transparent 60%); }
+    .map { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
+    .map-hd { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 16px; align-items: center; padding: 0 clamp(18px,3vw,28px); margin-bottom: 4px; }
+    .map-hd span { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .map-hd span:last-child { color: var(--cyan); }
+    .mrow { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 16px; align-items: center; padding: 18px clamp(18px,3vw,28px); border-radius: 16px;
+      background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); transition: border-color 0.25s, background 0.25s; }
+    .mrow:hover { background: rgba(255,255,255,0.045); border-color: rgba(61,217,232,0.2); }
+    .mrow .ms { display: flex; align-items: center; gap: 12px; }
+    .mrow .ms .msi { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+    .mrow .ms .msi svg { width: 17px; height: 17px; color: rgba(255,255,255,0.7); }
+    .mrow .me .msi svg { color: var(--cyan); }
+    .mrow .me .msi { background: rgba(61,217,232,0.1); border-color: rgba(61,217,232,0.22); }
+    .mrow .mt { font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,0.85); line-height: 1.3; }
+    .mrow .me .mt { color: #fff; font-weight: 700; }
+    .marrow { display: flex; align-items: center; justify-content: center; color: rgba(61,217,232,0.5); }
+    .marrow svg { width: 22px; height: 22px; }
+
+    /* ════════ JOURNEY ════════ */
+    .journey .glow { background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(139,92,246,0.1) 0%, transparent 60%); }
+    .jline { position: relative; margin-top: 56px; }
+    .jline::before { content: ''; position: absolute; top: 31px; left: 6%; right: 6%; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--violet), var(--purple)); opacity: 0.35; border-radius: 2px; }
+    .jsteps { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; position: relative; }
+    .jstep { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+    .jstep .jc { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;
+      background: radial-gradient(circle at 30% 25%, rgba(61,217,232,0.2), rgba(11,10,28,0.95)); border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.45), 0 0 0 6px var(--d0); }
+    .jstep .jc svg { width: 26px; height: 26px; color: #fff; }
+    .jstep .jnum { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 800; color: var(--d0);
+      display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--cyan), var(--violet)); }
+    .jstep .jt { font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,0.85); line-height: 1.3; max-width: 110px; }
+
+    /* ════════ LIBRARY ════════ */
+    .lib { background: linear-gradient(180deg, var(--d2), var(--d0)); }
+    .lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+    .lcard { padding: 26px 24px; display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(.22,.61,.36,1), border-color 0.3s, box-shadow 0.3s; }
+    .lcard:hover { transform: translateY(-5px); border-color: rgba(61,217,232,0.28); box-shadow: 0 34px 64px rgba(0,0,0,0.5); }
+    .lcard .lh { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .lcard .li { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(150deg, rgba(61,217,232,0.14), rgba(139,92,246,0.12)); border: 1px solid rgba(255,255,255,0.1); }
+    .lcard .li svg { width: 21px; height: 21px; color: var(--cyan); }
+    .lcard .lcount { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); border-radius: 999px; padding: 4px 11px; }
+    .lcard h3 { font-size: 16.5px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .lcard p { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.65; margin-bottom: 18px; flex: 1; }
+    .lcard .lexp { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; color: var(--cyan); }
+    .lcard .lexp svg { width: 14px; height: 14px; transition: transform 0.2s; }
+    .lcard:hover .lexp svg { transform: translateX(3px); }
+
+    /* ════════ REFERENCES ════════ */
+    .refs .glow { background: radial-gradient(ellipse 50% 50% at 50% 0%, rgba(61,217,232,0.06) 0%, transparent 55%); }
+    .ref-list { margin-top: 44px; display: flex; flex-direction: column; gap: 14px; }
+    .ref { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; padding: 22px 26px; border-radius: 18px;
+      background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.25s, background 0.25s; }
+    .ref:hover { background: rgba(255,255,255,0.04); border-color: rgba(61,217,232,0.22); }
+    .ref-idx { font-size: 13px; font-weight: 800; color: var(--cyan); width: 30px; }
+    .ref-main .rtype { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); background: rgba(61,217,232,0.1); border: 1px solid rgba(61,217,232,0.2); border-radius: 999px; padding: 3px 9px; margin-bottom: 10px; }
+    .ref-main h4 { font-size: 15.5px; font-weight: 700; color: #fff; line-height: 1.4; letter-spacing: -0.01em; }
+    .ref-meta { font-size: 12.5px; color: rgba(255,255,255,0.45); margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+    .ref-meta b { color: rgba(255,255,255,0.7); font-weight: 600; }
+    .ref-link { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; color: #fff; padding: 10px 16px; border-radius: 999px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; transition: all 0.2s; white-space: nowrap; }
+    .ref-link:hover { background: rgba(61,217,232,0.14); border-color: rgba(61,217,232,0.35); }
+    .ref-link svg { width: 14px; height: 14px; }
+    .ref-soon { text-align: center; font-size: 12.5px; color: rgba(255,255,255,0.35); margin-top: 22px; }
+
+    /* ════════ CTA ════════ */
+    .cta { padding: clamp(80px,11vw,130px) 0; }
+    .cta-card { position: relative; max-width: 760px; margin: 0 auto; text-align: center; border-radius: 30px; padding: clamp(50px,7vw,84px) clamp(28px,5vw,64px); overflow: hidden;
+      background: linear-gradient(150deg, #0B1E24 0%, #0C0A1E 100%); border: 1px solid rgba(61,217,232,0.18); box-shadow: 0 50px 120px rgba(0,0,0,0.5); }
+    .cta-card::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(61,217,232,0.2), transparent 60%), radial-gradient(ellipse 60% 50% at 82% 100%, rgba(139,92,246,0.18), transparent 60%); }
+    .cta-card > * { position: relative; z-index: 1; }
+    .cta-card .lead { margin: 18px auto 0; max-width: 460px; }
+    .btn { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 700; padding: 16px 30px; border-radius: 999px; text-decoration: none; margin-top: 34px;
+      background: #fff; color: var(--teal); box-shadow: 0 16px 40px rgba(61,217,232,0.2); transition: transform 0.15s ease; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn svg { width: 15px; height: 15px; }
+
+    /* ── Footer ── */
     .footer { background: linear-gradient(180deg, #0D0820 0%, #060A0C 60%); padding: 56px 0 0; border-top: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden; }
     .footer-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 700px; height: 300px; background: radial-gradient(ellipse, rgba(11,82,90,0.25) 0%, transparent 70%); pointer-events: none; }
     .lf-grid { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
@@ -109,10 +288,41 @@
     .lf-links a, .lf-cookies { font-size: 12.5px; color: rgba(255,255,255,0.25); text-decoration: none; background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
     .lf-links a:hover, .lf-cookies:hover { color: rgba(255,255,255,0.5); }
 
-    @media (max-width: 680px) {
+    /* ════════ Responsive ════════ */
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .qual-wrap { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .flow { flex-wrap: wrap; gap: 22px 0; justify-content: center; }
+      .fstep { flex: 0 0 38%; }
+      .farrow { transform: rotate(90deg); padding: 0; }
+      .farrow:nth-of-type(2) { display: none; }
+      .jsteps { grid-template-columns: repeat(4, 1fr); gap: 28px 8px; }
+      .jline::before { display: none; }
+      .jstep .jc { box-shadow: 0 14px 30px rgba(0,0,0,0.45); }
+      .lib-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-inner { height: 76px; }
       .nav-links > li { display: none; }
       .nav-links > li.lang-toggle, .nav-links > li:has(> .nav-cta) { display: flex; }
-      .lf-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 120px 0 80px; }
+      .hviz-badge { left: 50%; transform: translateX(-50%); bottom: -16px; }
+      .compare { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr; }
+      .map-hd, .mrow { grid-template-columns: 1fr 34px 1fr; gap: 8px; padding-left: 14px; padding-right: 14px; }
+      .mrow .ms .msi { display: none; }
+      .flow { flex-direction: column; align-items: stretch; }
+      .fstep { flex: none; flex-direction: row; justify-content: flex-start; gap: 16px; text-align: left; }
+      .fstep .fn { max-width: none; }
+      .farrow { transform: rotate(90deg); width: 64px; justify-content: center; }
+      .jsteps { grid-template-columns: 1fr 1fr; gap: 26px 10px; }
+      .lib-grid { grid-template-columns: 1fr; }
+      .ref { grid-template-columns: 1fr; gap: 14px; }
+      .ref-idx { display: none; }
+      .lf-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+      .btn { width: 100%; justify-content: center; }
+      .hero-trust { gap: 16px; }
     }
   </style>
   <link rel="stylesheet" href="../mobile-nav.css" />
@@ -121,7 +331,7 @@
 <nav class="nav">
   <div class="nav-inner">
     <a href="../index.html" class="nav-logo">
-      <img src="../images/logo.png" alt="Lyvoo" style="height:58px;width:auto;display:block;" />
+      <img src="../images/logo.png" alt="Lyvoo" style="height:54px;width:auto;display:block;" />
     </a>
     <ul class="nav-links">
       <li><a href="how-it-works.html">How it works</a></li>
@@ -135,52 +345,380 @@
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-glow"></div>
+<!-- ════════ 1 · HERO ════════ -->
+<header class="sc hero">
+  <div class="glow"></div>
   <div class="container">
-    <span class="label" style="color:var(--cyan);border-color:rgba(61,217,232,0.25);">Scientific evidence</span>
-    <h1>Prevention works.<br/><span class="grad-text">The numbers prove it.</span></h1>
-    <p>Published clinical studies show that continuous preventive monitoring and telemedicine produce measurable, consistent results.</p>
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow fade"><span class="dot"></span>Scientific evidence</span>
+        <h1 class="fade fade-d1">Prevention works.<br/><span class="grad-text">The numbers prove it.</span></h1>
+        <p class="lead fade fade-d2">The Lyvoo model is built on the latest scientific evidence on preventive care, telemedicine, continuous monitoring and personalised interventions.</p>
+        <div class="hero-trust fade fade-d3">
+          <div class="ht"><span class="htv"><span class="sc-count" data-to="32" data-dec="0">32</span></span><span class="htl">Studies included</span></div>
+          <div class="sep"></div>
+          <div class="ht"><span class="htv"><span class="sc-count" data-to="17" data-dec="0">17</span></span><span class="htl">Randomised trials</span></div>
+          <div class="sep"></div>
+          <div class="ht"><span class="htv">2020–25</span><span class="htl">Study window</span></div>
+        </div>
+      </div>
+
+      <div class="hviz fade fade-d2">
+        <div class="hviz-card">
+          <svg class="hviz-dna" viewBox="0 0 100 100" fill="none" stroke="url(#dnaG)" stroke-width="2" stroke-linecap="round">
+            <defs><linearGradient id="dnaG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+            <path d="M30 5 Q70 30 30 55 Q70 80 30 100"/><path d="M70 5 Q30 30 70 55 Q30 80 70 100"/>
+            <path d="M34 18 H66M30 34 H70M34 50 H66M30 66 H70M34 82 H66" stroke-width="1.5" opacity="0.7"/>
+          </svg>
+          <div class="hviz-hd"><b>Longitudinal panel</b><span class="hviz-live">Monitoring</span></div>
+          <div class="hviz-row1">
+            <div class="hviz-score">
+              <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 60 60"><defs><linearGradient id="scoreG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3DD9E8"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+                  <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+                  <circle cx="30" cy="30" r="25" fill="none" stroke="url(#scoreG)" stroke-width="6" stroke-linecap="round" stroke-dasharray="137 157" transform="rotate(-90 30 30)"/>
+                </svg>
+                <span class="scv">87</span>
+              </div>
+              <span class="scl">Health score</span>
+            </div>
+            <div class="hviz-chart">
+              <span class="ct">Trend · 12 months</span>
+              <span class="cd">↑ +12 pts</span>
+              <svg viewBox="0 0 200 56" preserveAspectRatio="none">
+                <defs><linearGradient id="hl" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0D7A87"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient>
+                  <linearGradient id="hf" x1="0" y1="0" x2="0" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3DD9E8" stop-opacity="0.25"/><stop offset="100%" stop-color="#3DD9E8" stop-opacity="0"/></linearGradient></defs>
+                <path d="M2,46 C50,42 80,34 110,24 C140,14 170,9 198,5 L198,56 L2,56 Z" fill="url(#hf)"/>
+                <path d="M2,46 C50,42 80,34 110,24 C140,14 170,9 198,5" fill="none" stroke="url(#hl)" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="198" cy="5" r="3.5" fill="#8B5CF6"/>
+              </svg>
+            </div>
+          </div>
+          <div class="hviz-bios">
+            <div class="hbio"><span class="hd2" style="background:var(--green)"></span><span class="hn">LDL cholesterol</span><span class="hbar"><i style="width:78%;background:var(--green)"></i></span><span class="hv" style="color:var(--green)">Optimal</span></div>
+            <div class="hbio"><span class="hd2" style="background:var(--cyan)"></span><span class="hn">Systolic pressure</span><span class="hbar"><i style="width:64%;background:var(--cyan)"></i></span><span class="hv" style="color:var(--cyan)">Good</span></div>
+            <div class="hbio"><span class="hd2" style="background:var(--amber)"></span><span class="hn">HbA1c</span><span class="hbar"><i style="width:52%;background:var(--amber)"></i></span><span class="hv" style="color:var(--amber)">−0.45</span></div>
+          </div>
+        </div>
+        <div class="hviz-badge">
+          <span class="hbg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M19 9l-5 5-4-4-3 3"/></svg></span>
+          <div><div class="hbn">SMD <span class="sc-count" data-to="0.62" data-dec="2">0.62</span></div><div class="hbl">Effect favouring telemedicine</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ 2 · EVIDENCE QUALITY ════════ -->
+<section class="sc qual">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head fade">
+      <span class="eyebrow"><span class="dot"></span>The foundation</span>
+      <h2 class="big">High-quality <span class="grad-text">evidence.</span></h2>
+      <p class="lead narrow">Before the results, the source. The model rests on a systematic review and meta-analysis conducted with methodological rigour.</p>
+    </div>
+
+    <div class="qual-wrap">
+      <div class="qual-card glass fade fade-d2">
+        <h3>Systematic review and meta-analysis</h3>
+        <p class="qsub">Telemedicine and preventive care · 2020–2025</p>
+        <div class="badges">
+          <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 12h8M8 16h6"/></svg>Systematic review</span>
+          <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/></svg>Meta-analysis</span>
+          <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>PRISMA 2020 compliant</span>
+          <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>PROSPERO registered</span>
+          <span class="badge big-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg><b><span class="sc-count" data-to="32" data-dec="0">32</span></b> studies</span>
+          <span class="badge big-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg><b><span class="sc-count" data-to="17" data-dec="0">17</span></b> RCTs</span>
+        </div>
+      </div>
+
+      <div class="effect glass fade fade-d3">
+        <div class="el">Global effect size</div>
+        <div class="ev grad-text">SMD <span class="sc-count" data-to="0.62" data-dec="2">0.62</span></div>
+        <div class="ed">Moderate effect favouring telemedicine</div>
+        <div class="effect-row">
+          <div class="er"><div class="erv">95% CI</div><div class="erl">Confidence interval</div></div>
+          <div class="er"><div class="erv">p &lt; 0.001</div><div class="erl">Significance</div></div>
+        </div>
+        <span class="effect-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Global evidence favours telemedicine</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="ev-section">
+<!-- ════════ 3 · CLINICAL OUTCOMES ════════ -->
+<section class="sc out">
+  <div class="glow"></div>
   <div class="container">
+    <div class="sec-head center fade">
+      <span class="eyebrow"><span class="dot"></span>Clinical outcomes</span>
+      <h2 class="big">What changes, in numbers.</h2>
+      <p class="lead">Measurable outcomes of remote preventive care, versus usual care.</p>
+    </div>
 
-    <div class="ev-stats fade">
-      <div class="ev-stat">
-        <div class="ev-num">−18<span class="ev-unit">mg/dL</span></div>
-        <div class="ev-label">LDL reduction</div>
-        <div class="ev-sub">vs. −5.7 mg/dL with conventional care, in remote monitoring programmes</div>
+    <div class="metrics">
+      <div class="metric glass fade fade-d1">
+        <div class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M19 7l-6 6-3-3-4 4"/></svg></div>
+        <div class="mv">−<span class="sc-count" data-to="18" data-dec="0">18</span><span class="mu"> mg/dL</span></div>
+        <div class="ml">LDL reduction</div>
+        <div class="md">Remote preventive care improved lipid management versus usual care.</div>
       </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">−5.6<span class="ev-unit">mmHg</span></div>
-        <div class="ev-label">Systolic reduction</div>
-        <div class="ev-sub">at 6 and 12 months, in a review of 54 clinical trials combining telemonitoring and teleconsultations</div>
+      <div class="metric glass fade fade-d2">
+        <div class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z"/></svg></div>
+        <div class="mv">−<span class="sc-count" data-to="5.6" data-dec="1">5.6</span><span class="mu"> mmHg</span></div>
+        <div class="ml">Systolic pressure</div>
+        <div class="md">A clinically meaningful reduction for lowering cardiovascular risk.</div>
       </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">−0.45<span class="ev-unit">%</span></div>
-        <div class="ev-label">HbA1c reduction</div>
-        <div class="ev-sub">in people with type 2 diabetes followed remotely, with a direct impact on cardiovascular risk</div>
+      <div class="metric glass fade fade-d3">
+        <div class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+        <div class="mv">−<span class="sc-count" data-to="0.45" data-dec="2">0.45</span><span class="mu"> %</span></div>
+        <div class="ml">HbA1c reduction</div>
+        <div class="md">Sustained reductions improve type 2 diabetes outcomes.</div>
       </div>
-      <div class="ev-divider"></div>
-      <div class="ev-stat">
-        <div class="ev-num">84<span class="ev-unit">%</span></div>
-        <div class="ev-label">Patient satisfaction</div>
-        <div class="ev-sub">found the remote monitoring programme very useful, with higher reported treatment adherence</div>
+      <div class="metric glass fade fade-d4">
+        <div class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="mv"><span class="sc-count" data-to="84" data-dec="0">84</span><span class="mu"> %</span></div>
+        <div class="ml">Satisfaction</div>
+        <div class="md">Most preferred remote follow-up and reported high satisfaction.</div>
       </div>
     </div>
 
-    <div class="ev-conclusion fade fade-d2">
-      <div class="ev-conclusion-inner">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>The best results come from combining clinical monitoring with continuous tracking. Telemedicine turns episodic care into regular prevention, increasing adherence, risk-factor control and quality of life.</p>
-      </div>
-      <div class="ev-source">Sources: Digital Health Transformation Through Telemedicine (2020-2025): Barriers, Facilitators, and Clinical Outcomes - A Systematic Review and Meta-Analysis · DOI: https://doi.org/10.3390/encyclopedia5040206</div>
+    <div class="insight fade fade-d2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p>The best outcomes arise when telemedicine is combined with <b>continuous monitoring, regular follow-up and multidisciplinary care</b> — not from technology alone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 4 · WHY IT WORKS ════════ -->
+<section class="sc why">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head center fade">
+      <span class="eyebrow"><span class="dot"></span>The mechanism</span>
+      <h2 class="big">Why it works.</h2>
+      <p class="lead">The evidence isn't magic. It's a simple chain — each link reinforces the next.</p>
     </div>
 
+    <div class="flow fade fade-d2">
+      <div class="fstep">
+        <span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+        <span class="fn">Continuous monitoring</span>
+      </div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="fstep">
+        <span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <span class="fn">Higher adherence</span>
+      </div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="fstep">
+        <span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        <span class="fn">Earlier feedback</span>
+      </div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="fstep">
+        <span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+        <span class="fn">Earlier intervention</span>
+      </div>
+      <div class="farrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="fstep">
+        <span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span>
+        <span class="fn">Better outcomes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 5 · WHAT MAKES IT EFFECTIVE ════════ -->
+<section class="sc eff">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head center fade">
+      <span class="eyebrow"><span class="dot"></span>What sets it apart</span>
+      <h2 class="big">Not all telemedicine is equal.</h2>
+      <p class="lead">The difference between results and noise is method. Science clearly identifies what works.</p>
+    </div>
+
+    <div class="compare">
+      <div class="ccard good glass fade fade-d1">
+        <h3><span class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Factors linked to better outcomes</h3>
+        <div class="clist">
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Continuous monitoring</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Regular feedback</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Clear goals</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Frequent communication</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Longitudinal follow-up</div>
+        </div>
+      </div>
+      <div class="ccard bad glass fade fade-d2">
+        <h3><span class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Barriers to avoid</h3>
+        <div class="clist">
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Isolated consultations</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>No follow-up</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Poor adherence</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>No feedback</div>
+          <div class="cli"><span class="cmk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>Low digital literacy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 6 · HOW LYVOO APPLIES IT ════════ -->
+<section class="sc apply">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head center fade">
+      <span class="eyebrow"><span class="dot"></span>From science to product</span>
+      <h2 class="big">How Lyvoo applies the evidence.</h2>
+      <p class="lead">Every proven principle has a concrete translation in the Lyvoo experience.</p>
+    </div>
+
+    <div class="map">
+      <div class="map-hd fade"><span>Scientific evidence</span><span></span><span>Lyvoo implementation</span></div>
+
+      <div class="mrow fade fade-d1">
+        <div class="ms"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="mt">Continuous monitoring</span></div>
+        <div class="marrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ms me"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span><span class="mt">Longitudinal dashboard</span></div>
+      </div>
+
+      <div class="mrow fade fade-d1">
+        <div class="ms"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="mt">Regular feedback</span></div>
+        <div class="marrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ms me"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v9a5 5 0 0 0 10 0V2"/><path d="M7 7h10"/></svg></span><span class="mt">Personalised nutrition plan</span></div>
+      </div>
+
+      <div class="mrow fade fade-d2">
+        <div class="ms"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></span><span class="mt">Telemedicine</span></div>
+        <div class="marrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ms me"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="mt">Nutrition consultations</span></div>
+      </div>
+
+      <div class="mrow fade fade-d2">
+        <div class="ms"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="mt">Adherence</span></div>
+        <div class="marrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ms me"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></span><span class="mt">Continuous app follow-up</span></div>
+      </div>
+
+      <div class="mrow fade fade-d3">
+        <div class="ms"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.5 15"/></svg></span><span class="mt">Periodic reassessment</span></div>
+        <div class="marrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="ms me"><span class="msi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/></svg></span><span class="mt">Repeat biomarker testing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 7 · CARE JOURNEY ════════ -->
+<section class="sc journey">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head center fade">
+      <span class="eyebrow"><span class="dot"></span>The Lyvoo journey</span>
+      <h2 class="big">Science, from start to finish.</h2>
+      <p class="lead">Seven steps designed around the principles the evidence proves.</p>
+    </div>
+
+    <div class="jline fade fade-d2">
+      <div class="jsteps">
+        <div class="jstep"><span class="jc"><span class="jnum">1</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><span class="jt">Analysis</span></div>
+        <div class="jstep"><span class="jc"><span class="jnum">2</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 13l2.5 2.5L16 10"/></svg></span><span class="jt">Integrated report</span></div>
+        <div class="jstep"><span class="jc"><span class="jnum">3</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="jt">Nutrition consultation</span></div>
+        <div class="jstep"><span class="jc"><span class="jnum">4</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg></span><span class="jt">Personalised strategy</span></div>
+        <div class="jstep"><span class="jc"><span class="jnum">5</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="jt">Continuous monitoring</span></div>
+        <div class="jstep"><span class="jc"><span class="jnum">6</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/></svg></span><span class="jt">Repeat testing</span></div>
+        <div class="jstep"><span class="jc"><span class="jnum">7</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg></span><span class="jt">Continuous optimisation</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 8 · SCIENTIFIC LIBRARY ════════ -->
+<section class="sc lib">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head center fade">
+      <span class="eyebrow"><span class="dot"></span>Scientific library</span>
+      <h2 class="big">A growing <span class="grad-text">evidence base.</span></h2>
+      <p class="lead">We organise the science by topic. A living library, updated as new studies are published.</p>
+    </div>
+
+    <div class="lib-grid">
+      <div class="lcard glass fade fade-d1">
+        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></span><span class="lcount">In curation</span></div>
+        <h3>Telemedicine</h3>
+        <p>Remote follow-up produces clinical outcomes comparable to — and sometimes better than — in-person care.</p>
+        <span class="lexp">Explore evidence <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="lcard glass fade fade-d2">
+        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.65-9.5 9-9.5 9z"/><path d="M3.5 12h4l1.5-3 3 6 1.5-3h4"/></svg></span><span class="lcount">In curation</span></div>
+        <h3>Preventive cardiology</h3>
+        <p>Small, sustained reductions in LDL and blood pressure translate into lower long-term cardiovascular risk.</p>
+        <span class="lexp">Explore evidence <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="lcard glass fade fade-d3">
+        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v9a5 5 0 0 0 10 0V2"/><path d="M7 7h10"/></svg></span><span class="lcount">In curation</span></div>
+        <h3>Personalised nutrition</h3>
+        <p>Biomarker-guided interventions outperform generic recommendations in improving metabolic markers.</p>
+        <span class="lexp">Explore evidence <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="lcard glass fade fade-d1">
+        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><span class="lcount">In curation</span></div>
+        <h3>Biomarkers</h3>
+        <p>Comprehensive panels detect deviations early — when intervention is simpler and more effective.</p>
+        <span class="lexp">Explore evidence <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="lcard glass fade fade-d2">
+        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 2"/><path d="M22 2l-5 5"/></svg></span><span class="lcount">In curation</span></div>
+        <h3>Behaviour change</h3>
+        <p>Frequent feedback and clear goals are among the strongest predictors of adherence and lasting change.</p>
+        <span class="lexp">Explore evidence <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="lcard glass fade fade-d3">
+        <div class="lh"><span class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><span class="lcount">In curation</span></div>
+        <h3>Continuous monitoring</h3>
+        <p>Measuring regularly — not once a year — is what separates real prevention from late diagnosis.</p>
+        <span class="lexp">Explore evidence <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 9 · REFERENCES ════════ -->
+<section class="sc refs">
+  <div class="glow"></div>
+  <div class="container">
+    <div class="sec-head fade">
+      <span class="eyebrow"><span class="dot"></span>References</span>
+      <h2 class="big">The source, in full.</h2>
+      <p class="lead narrow">Full transparency. Explore the evidence behind the Lyvoo model.</p>
+    </div>
+
+    <div class="ref-list">
+      <div class="ref fade fade-d1">
+        <span class="ref-idx">01</span>
+        <div class="ref-main">
+          <span class="rtype"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/></svg>Systematic review &amp; meta-analysis</span>
+          <h4>Digital Health Transformation Through Telemedicine (2020–2025): Barriers, Facilitators, and Clinical Outcomes — A Systematic Review and Meta-Analysis</h4>
+          <div class="ref-meta"><span><b>Journal:</b> Encyclopedia (MDPI)</span><span><b>Year:</b> 2025</span><span><b>DOI:</b> 10.3390/encyclopedia5040206</span></div>
+        </div>
+        <a class="ref-link" href="https://doi.org/10.3390/encyclopedia5040206" target="_blank" rel="noopener noreferrer">View study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg></a>
+      </div>
+    </div>
+    <p class="ref-soon">More studies added as the library grows.</p>
+  </div>
+</section>
+
+<!-- ════════ 10 · CTA ════════ -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-card fade">
+      <h2 class="big">Science-based prevention.<br/><span class="grad-text">Results that make sense.</span></h2>
+      <p class="lead">Be among the first to transform how you care for your health.</p>
+      <a href="register.html" class="btn">Get started <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13 13 3M13 13V3H3"/></svg></a>
+    </div>
   </div>
 </section>
 
@@ -195,6 +733,7 @@
       <div class="lf-col"><h5>Product</h5><ul>
         <li><a href="how-it-works.html">How it works</a></li>
         <li><a href="index.html#atlas">What we test</a></li>
+        <li><a href="science.html">The science</a></li>
       </ul></div>
       <div class="lf-col"><h5>Company</h5><ul>
         <li><a href="index.html#equipa">Clinical team</a></li>
@@ -217,10 +756,36 @@
   </div>
 </footer>
 <script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DEC = '.';
+
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.sc-count').forEach(countUp);
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  function fmt(n, dec) { return n.toFixed(dec).replace('.', DEC); }
+  function countUp(el) {
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
+    const to = parseFloat(el.dataset.to);
+    const dec = parseInt(el.dataset.dec || '0', 10);
+    if (reduce) { el.textContent = fmt(to, dec); return; }
+    const dur = 1100, t0 = performance.now();
+    function tick(t) {
+      const p = Math.min((t - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(to * eased, dec);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = fmt(to, dec);
+    }
+    requestAnimationFrame(tick);
+  }
 </script>
 </body>
 </html>
