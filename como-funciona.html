@@ -31,9 +31,10 @@
       --violet: #8B5CF6; --purple: #9B6FD4; --bg: #FFFFFF; --surface: #F6F8F9;
       --border: #E3E8EA; --ink: #0B1215; --ink-2: #3A4A50; --ink-3: #7A8F96;
       --dark: #070B0D; --dark-2: #0B0A18;
+      --d0: #05080B; --d1: #070C12; --d2: #0A0A1A;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, var(--d0) 0%, var(--d1) 20%, var(--d2) 45%, var(--d1) 70%, var(--d0) 100%); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
     .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
@@ -61,20 +62,18 @@
     /* ── Shared section shells ── */
     .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
     .eyebrow .num { font-variant-numeric: tabular-nums; }
-    .sec { position: relative; overflow: hidden; }
-    .sec-dark { background: var(--dark); color: #fff; }
-    .sec-dark-2 { background: radial-gradient(ellipse 80% 70% at 50% 0%, #0D0A1E 0%, var(--dark) 60%); color: #fff; }
-    .sec-light { background: var(--bg); }
-    .sec-surface { background: var(--surface); }
+    .sec { position: relative; overflow: hidden; color: #fff; }
+    .sec > .container { position: relative; z-index: 1; }
     .pad { padding: clamp(88px, 13vw, 156px) 0; }
-    .glow-a { position: absolute; inset: 0; pointer-events: none; }
+    .glow-a, .glow-b { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .glow-a { background: radial-gradient(ellipse 70% 55% at 50% 0%, rgba(61,217,232,0.14) 0%, transparent 60%), radial-gradient(ellipse 50% 45% at 90% 100%, rgba(139,92,246,0.12) 0%, transparent 60%); }
+    .glow-b { background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(139,92,246,0.12) 0%, transparent 60%); }
 
-    h2.big { font-size: clamp(31px, 4.6vw, 54px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; }
-    .lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.7; color: var(--ink-2); }
-    .sec-dark .lead, .sec-dark-2 .lead { color: rgba(255,255,255,0.6); }
+    h2.big { font-size: clamp(31px, 4.6vw, 54px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; color: #fff; }
+    .lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.6); }
 
     /* ════════ HERO ════════ */
-    .hero { position: relative; background: linear-gradient(180deg, #0A1416 0%, #06141C 42%, #0B0820 100%); text-align: center; padding: 168px 0 96px; overflow: hidden; }
+    .hero { position: relative; text-align: center; padding: 168px 0 96px; overflow: hidden; }
     .hero-glow { position: absolute; inset: 0; pointer-events: none;
       background: radial-gradient(ellipse 70% 55% at 50% 8%, rgba(61,217,232,0.16) 0%, transparent 60%),
                   radial-gradient(ellipse 60% 50% at 18% 80%, rgba(139,92,246,0.14) 0%, transparent 62%),
@@ -107,8 +106,7 @@
     /* ════════ STEP shell ════════ */
     .step-head { max-width: 620px; }
     .step-head.center { margin: 0 auto; text-align: center; }
-    .step-head .eyebrow { margin-bottom: 20px; color: var(--teal-light); }
-    .sec-dark .step-head .eyebrow, .sec-dark-2 .step-head .eyebrow { color: var(--cyan); }
+    .step-head .eyebrow { margin-bottom: 20px; color: var(--cyan); }
     .step-head .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
     .step-head h2 { margin: 0 0 18px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 92px); align-items: center; }
@@ -117,10 +115,8 @@
     /* chips list */
     .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
     .chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; padding: 9px 15px; border-radius: 999px;
-      background: rgba(11,82,90,0.05); border: 1px solid rgba(11,82,90,0.12); color: var(--ink-2); }
-    .chip svg { width: 14px; height: 14px; color: var(--teal-light); flex-shrink: 0; }
-    .sec-dark .chip, .sec-dark-2 .chip { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.78); }
-    .sec-dark .chip svg, .sec-dark-2 .chip svg { color: var(--cyan); }
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.78); }
+    .chip svg { width: 14px; height: 14px; color: var(--cyan); flex-shrink: 0; }
 
     /* ── STEP 1 visual: welcome card (neutral, no kit branding) ── */
     .welcome-wrap { position: relative; display: flex; justify-content: center; }
@@ -371,6 +367,7 @@
 
 <!-- ════════ STEP 02 - Recolher ════════ -->
 <section class="sec sec-dark-2 pad">
+  <div class="glow-a"></div>
   <div class="container">
     <div class="step-head center fade">
       <span class="eyebrow"><span class="num">02</span><span class="dot"></span>Recolher</span>
@@ -460,6 +457,7 @@
 
 <!-- ════════ STEP 04 - Evoluir ════════ -->
 <section class="sec sec-dark pad">
+  <div class="glow-b"></div>
   <div class="container">
     <div class="step-head center fade">
       <span class="eyebrow"><span class="num">04</span><span class="dot"></span>Evoluir</span>

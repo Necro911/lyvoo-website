@@ -34,7 +34,7 @@
       --green: #4ADE80; --amber: #FBBF24; --red: #F87171;
     }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--d0); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(180deg, var(--d0) 0%, var(--d1) 20%, var(--d2) 45%, var(--d1) 70%, var(--d0) 100%); color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
     .grad-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--violet) 55%, var(--purple) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
@@ -124,7 +124,6 @@
     .hviz-badge .hbl { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600; }
 
     /* ════════ EVIDENCE QUALITY ════════ */
-    .qual { background: linear-gradient(180deg, var(--d0), var(--d1)); }
     .qual .glow { background: radial-gradient(ellipse 50% 50% at 80% 10%, rgba(61,217,232,0.1) 0%, transparent 60%); }
     .qual-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 4vw, 52px); align-items: stretch; margin-top: 48px; }
     .qual-card { padding: clamp(28px, 4vw, 40px); }
@@ -168,7 +167,6 @@
     .insight p b { color: #fff; }
 
     /* ════════ WHY IT WORKS ════════ */
-    .why { background: linear-gradient(180deg, var(--d1), var(--d0)); }
     .flow { display: flex; align-items: stretch; gap: 0; margin-top: 54px; }
     .fstep { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 0 8px; }
     .fstep .fi { width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; position: relative;
@@ -197,7 +195,6 @@
     .bad .cli .cmk { background: rgba(248,113,113,0.1); color: var(--red); }
 
     /* ════════ APPLY (mapping) ════════ */
-    .apply { background: linear-gradient(180deg, var(--d0), var(--d2)); }
     .apply .glow { background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(61,217,232,0.08) 0%, transparent 60%); }
     .map { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
     .map-hd { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 16px; align-items: center; padding: 0 clamp(18px,3vw,28px); margin-bottom: 4px; }
@@ -231,7 +228,6 @@
     .jstep .jt { font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,0.85); line-height: 1.3; max-width: 110px; }
 
     /* ════════ LIBRARY ════════ */
-    .lib { background: linear-gradient(180deg, var(--d2), var(--d0)); }
     .lib-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
     .lcard { padding: 26px 24px; display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(.22,.61,.36,1), border-color 0.3s, box-shadow 0.3s; }
     .lcard:hover { transform: translateY(-5px); border-color: rgba(61,217,232,0.28); box-shadow: 0 34px 64px rgba(0,0,0,0.5); }
