@@ -31,7 +31,8 @@
     .fade.in { opacity: 1; transform: translateY(0); }
     .fade-d1 { transition-delay: 0.08s; } .fade-d2 { transition-delay: 0.16s; } .fade-d3 { transition-delay: 0.24s; }
     .fade-d4 { transition-delay: 0.32s; } .fade-d5 { transition-delay: 0.4s; }
-    @media (prefers-reduced-motion: reduce) { .fade { transition: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+    @media (prefers-reduced-motion: reduce) { .fade { transition: none; opacity: 1; transform: none; } html { scroll-behavior: auto; }
+      .meth-step { transition: none; opacity: 1; transform: none; } .meth-rail-fill { transition: none; height: 100%; } }
 
     /* ── Section shells ── */
     .sc { position: relative; padding: clamp(80px, 11vw, 138px) 0; overflow: hidden; }
@@ -170,24 +171,36 @@
     .bad .cli { color: rgba(255,255,255,0.5); }
     .bad .cli .cmk { background: rgba(248,113,113,0.1); color: var(--red); }
 
-    /* ════════ APPLY (mapping) ════════ */
-    .apply .glow { background: radial-gradient(ellipse 50% 40% at 50% 50%, rgba(61,217,232,0.08) 0%, transparent 55%); }
-    .map { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; }
-    .map-hd { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 16px; align-items: center; padding: 0 clamp(18px,3vw,28px); margin-bottom: 4px; }
-    .map-hd span { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .map-hd span:last-child { color: var(--cyan); }
-    .mrow { display: grid; grid-template-columns: 1fr 56px 1fr; gap: 16px; align-items: center; padding: 18px clamp(18px,3vw,28px); border-radius: 16px;
-      background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); transition: border-color 0.25s, background 0.25s; }
-    .mrow:hover { background: rgba(255,255,255,0.045); border-color: rgba(61,217,232,0.2); }
-    .mrow .ms { display: flex; align-items: center; gap: 12px; }
-    .mrow .ms .msi { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
-    .mrow .ms .msi svg { width: 17px; height: 17px; color: rgba(255,255,255,0.7); }
-    .mrow .me .msi svg { color: var(--cyan); }
-    .mrow .me .msi { background: rgba(61,217,232,0.1); border-color: rgba(61,217,232,0.22); }
-    .mrow .mt { font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,0.85); line-height: 1.3; }
-    .mrow .me .mt { color: #fff; font-weight: 700; }
-    .marrow { display: flex; align-items: center; justify-content: center; color: rgba(61,217,232,0.5); }
-    .marrow svg { width: 22px; height: 22px; }
+    /* ════════ THE LYVOO METHOD ════════ */
+    .method .glow { background:
+      radial-gradient(ellipse 55% 45% at 15% 20%, rgba(61,217,232,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 45% at 85% 80%, rgba(139,92,246,0.1) 0%, transparent 60%); }
+    .meth-flow { position: relative; margin-top: 64px; }
+    .meth-rail { position: absolute; left: 31px; top: 6px; bottom: 6px; width: 2px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden; }
+    .meth-rail-fill { position: absolute; left: 0; top: 0; right: 0; height: 0%; background: linear-gradient(180deg, var(--cyan), var(--violet), var(--purple));
+      box-shadow: 0 0 16px rgba(61,217,232,0.5); transition: height 1.8s cubic-bezier(.22,.61,.36,1); }
+    .meth-flow.in .meth-rail-fill { height: 100%; }
+    .meth-steps { display: flex; flex-direction: column; gap: 22px; padding-left: 80px; }
+    .meth-step { position: relative; opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+      transition-delay: calc(var(--mi) * 0.12s); }
+    .meth-flow.in .meth-step { opacity: 1; transform: translateY(0); }
+    .meth-dot { position: absolute; left: -80px; top: 26px; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(circle at 30% 25%, rgba(61,217,232,0.2), rgba(11,10,28,0.95)); border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.45), 0 0 0 6px var(--d0); transition: box-shadow 0.4s ease, border-color 0.4s ease; }
+    .meth-dot svg { width: 26px; height: 26px; color: #fff; }
+    .meth-step.meth-active .meth-dot { border-color: rgba(61,217,232,0.5); box-shadow: 0 14px 30px rgba(0,0,0,0.45), 0 0 0 6px var(--d0), 0 0 32px rgba(61,217,232,0.45); }
+    .meth-card { padding: clamp(24px,3vw,34px) clamp(22px,3.4vw,38px); position: relative; transition: border-color 0.4s ease, box-shadow 0.4s ease; }
+    .meth-step.meth-active .meth-card { border-color: rgba(61,217,232,0.25); box-shadow: 0 30px 70px rgba(0,0,0,0.45), 0 0 50px rgba(61,217,232,0.08), inset 0 1px 0 rgba(255,255,255,0.06); }
+    .meth-num { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: var(--cyan); display: block; margin-bottom: 10px; }
+    .meth-title { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; color: #fff; margin-bottom: 10px; }
+    .meth-desc { font-size: 14.5px; line-height: 1.65; color: rgba(255,255,255,0.6); max-width: 560px; margin-bottom: 18px; }
+    .meth-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .meth-list li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.8); }
+    .meth-list li svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--cyan); }
+
+    .meth-close { margin-top: 56px; text-align: center; padding: clamp(40px,5.5vw,64px) clamp(24px,5vw,56px); }
+    .meth-close h3 { font-size: clamp(22px,2.8vw,32px); font-weight: 850; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 16px; }
+    .meth-close p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 620px; margin: 0 auto; }
 
     /* ════════ JOURNEY ════════ */
     .journey .glow { background: radial-gradient(ellipse 50% 35% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 55%); }
@@ -275,6 +288,7 @@
       .jline::before { display: none; }
       .jstep .jc { box-shadow: 0 14px 30px rgba(0,0,0,0.45); }
       .lib-grid { grid-template-columns: 1fr 1fr; }
+      .meth-list { flex-direction: row; flex-wrap: wrap; gap: 10px 18px; }
     }
     @media (max-width: 600px) {
       .nav-inner { height: 76px; }
@@ -284,8 +298,11 @@
       .hviz-badge { left: 50%; transform: translateX(-50%); bottom: -16px; }
       .compare { grid-template-columns: 1fr; }
       .metrics { grid-template-columns: 1fr; }
-      .map-hd, .mrow { grid-template-columns: 1fr 34px 1fr; gap: 8px; padding-left: 14px; padding-right: 14px; }
-      .mrow .ms .msi { display: none; }
+      .meth-rail { left: 23px; }
+      .meth-steps { padding-left: 60px; gap: 18px; }
+      .meth-dot { left: -60px; width: 48px; height: 48px; top: 22px; }
+      .meth-dot svg { width: 20px; height: 20px; }
+      .meth-list { flex-direction: column; }
       .flow { flex-direction: column; align-items: stretch; }
       .fstep { flex: none; flex-direction: row; justify-content: flex-start; gap: 16px; text-align: left; }
       .fstep .fn { max-width: none; }
