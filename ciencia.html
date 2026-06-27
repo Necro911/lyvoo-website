@@ -73,7 +73,7 @@
             <div class="er"><div class="erv">IC 95%</div><div class="erl">Intervalo de confiança</div></div>
             <div class="er"><div class="erv">p &lt; 0,001</div><div class="erl">Significância</div></div>
           </div>
-          <span class="effect-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A evidência global favorece a telemedicina</span>
+          <span class="effect-note">A evidência global favorece a telemedicina</span>
         </div>
       </div>
     </div>
@@ -202,6 +202,8 @@
 
     <div class="meth-flow fade fade-d2">
       <div class="meth-rail" aria-hidden="true"><span class="meth-rail-fill"></span></div>
+      <div class="meth-scroller" id="methScroller">
+      <div class="meth-track">
       <div class="meth-steps">
 
         <article class="meth-step" style="--mi:0">
@@ -250,6 +252,9 @@
         </article>
 
       </div>
+      </div>
+      </div>
+      <div class="meth-dots" id="methDots" aria-hidden="true"></div>
     </div>
   </div>
 </section>
@@ -376,6 +381,49 @@
     entries.forEach(e => e.target.classList.toggle('meth-active', e.isIntersecting));
   }, { threshold: 0, rootMargin: '-42% 0px -42% 0px' });
   document.querySelectorAll('.meth-step').forEach(el => methObs.observe(el));
+
+  // Method flow: swipeable carousel on mobile (mesmo padrão da secção "módulos" do index)
+  function initSwipeCarousel(scrollerId, dotsId, slideSelector, slideInClass, dotClass) {
+    const scroller = document.getElementById(scrollerId);
+    const dotsWrap = document.getElementById(dotsId);
+    if (!scroller || !dotsWrap) return;
+    const slides = Array.from(scroller.querySelectorAll(slideSelector));
+    if (!slides.length) return;
+    slides.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+
+    if (!dotsWrap.childElementCount) {
+      slides.forEach((_, i) => {
+        const d = document.createElement('span');
+        d.className = dotClass + (i === 0 ? ' active' : '');
+        dotsWrap.appendChild(d);
+      });
+    }
+    const dots = Array.from(dotsWrap.children);
+    const ratios = new Map();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        ratios.set(e.target, e.intersectionRatio);
+        if (e.intersectionRatio >= 0.55) e.target.classList.add(slideInClass);
+      });
+      let best = 0, bestR = -1;
+      slides.forEach((s, i) => {
+        const r = ratios.get(s) || 0;
+        if (r > bestR) { bestR = r; best = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === best));
+    }, { root: scroller, threshold: [0, 0.25, 0.55, 0.8, 1] });
+
+    slides.forEach(s => io.observe(s));
+    slides[0].classList.add(slideInClass);
+  }
+  initSwipeCarousel('methScroller', 'methDots', '.meth-step', 'meth-slide-in', 'meth-dot');
+
+  (function resetMethScroll() {
+    const reset = () => { const el = document.getElementById('methScroller'); if (el) el.scrollLeft = 0; };
+    reset();
+    window.addEventListener('pageshow', reset);
+  })();
 
   function fmt(n, dec) { return n.toFixed(dec).replace('.', DEC); }
   function countUp(el) {
