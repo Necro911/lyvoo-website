@@ -85,7 +85,31 @@
       .nav-links > li.lang-toggle,
       .nav-links > li:has(> .nav-cta) { display: flex; }
       .nav-cta { padding: 8px 14px !important; font-size: 13px !important; white-space: nowrap; }
-    }  </style>
+    }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .footer { padding: 64px 0 36px; position: relative; background: linear-gradient(180deg, #0A1415 0%, #051520 35%, #0D0820 68%, #060A0C 100%); }
+    .footer-logo { height:64px; width: auto; display: block; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+    .footer-brand-text { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 14px; max-width: 240px; line-height: 1.7; }
+    .footer-col h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-col a { text-decoration: none; font-size: 14px; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer-col a:hover { color: rgba(255,255,255,0.85); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(255,255,255,0.25); }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.6); }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+      .footer-grid > div:first-child, .footer-grid > div:last-child { grid-column: 1 / -1; }
+      .footer-grid > div:first-child { text-align: center; }
+      .footer-grid > div:first-child .footer-logo { margin: 0 auto; }
+      .footer-grid > div:first-child .footer-brand-text { margin-left: auto; margin-right: auto; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-bottom-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+    }
+  </style>
   <script src="../prelaunch.js" defer></script>
   <link rel="stylesheet" href="../mobile-nav.css" />
   <script src="../mobile-nav.js" defer></script>
@@ -128,13 +152,24 @@
   </div>
 </div>
 
-<footer style="background:#07090B;border-top:1px solid rgba(255,255,255,0.06);padding:24px 0;text-align:center;font-family:'Inter',sans-serif;">
-  <div style="max-width:1140px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-    <span style="font-size:13px;color:rgba(255,255,255,0.25);">© 2026 Lyvoo. All rights reserved.</span>
-    <div style="display:flex;gap:20px;">
-      <a href="contact.html" style="font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;">Contact</a>
-      <a href="privacy.html" style="font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;">Privacy</a>
-      <a href="terms.html" style="font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;">Terms</a>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="nav-logo" style="text-decoration:none"><img src="../images/logo.png" alt="Lyvoo" class="footer-logo"  loading="lazy" decoding="async" /></a>
+        <div class="footer-brand-text">Personalised health.</br>Intelligent prevention.</br>Real impact.</div>
+      </div>
+      <div class="footer-col"><h5>Product</h5><ul><li><a href="how-it-works.html">How it works</a></li><li><a href="index.html#atlas">What we test</a></li><li><a href="index.html#planos">Base Plan</a></li><li><a href="science.html">The science</a></li></ul></div>
+      <div class="footer-col"><h5>Company</h5><ul><li><a href="index.html#equipa">The team</a></li></ul></div>
+      <div class="footer-col"><h5>Support</h5><ul><li><a href="index.html#faq">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lyvoo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy policy</a>
+        <a href="terms.html">Terms of service</a>
+        <button class="lc-manage-btn" onclick="window.LyvooCookies&&window.LyvooCookies.abrirDefinicoes()">Manage cookies</button>
+      </div>
     </div>
   </div>
 </footer>
