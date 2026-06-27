@@ -214,15 +214,11 @@
     .ref-list { margin-top: 44px; display: flex; flex-direction: column; gap: 14px; }
     .ref { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; padding: 22px 26px; border-radius: 18px;
       background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); transition: border-color 0.25s, background 0.25s; }
-    .ref-main { min-width: 0; }
     .ref:hover { background: rgba(255,255,255,0.04); border-color: rgba(61,217,232,0.22); }
     .ref-idx { font-size: 13px; font-weight: 800; color: var(--cyan); width: 30px; }
     .ref-main .rtype { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); background: rgba(61,217,232,0.1); border: 1px solid rgba(61,217,232,0.2); border-radius: 999px; padding: 3px 9px; margin-bottom: 10px; }
-    .ref-cite { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.82); line-height: 1.6; letter-spacing: -0.005em;
-      white-space: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin; }
+    .ref-cite { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.82); line-height: 1.6; letter-spacing: -0.005em; }
     .ref-cite i { font-style: italic; color: rgba(255,255,255,0.95); }
-    .ref-cite::-webkit-scrollbar { height: 4px; }
-    .ref-cite::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
     .ref-link { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; color: #fff; padding: 10px 16px; border-radius: 999px;
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; transition: all 0.2s; white-space: nowrap; }
     .ref-link:hover { background: rgba(61,217,232,0.14); border-color: rgba(61,217,232,0.35); }
