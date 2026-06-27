@@ -221,9 +221,8 @@
     .ref:hover { background: rgba(255,255,255,0.04); border-color: rgba(61,217,232,0.22); }
     .ref-idx { font-size: 13px; font-weight: 800; color: var(--cyan); width: 30px; }
     .ref-main .rtype { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); background: rgba(61,217,232,0.1); border: 1px solid rgba(61,217,232,0.2); border-radius: 999px; padding: 3px 9px; margin-bottom: 10px; }
-    .ref-main h4 { font-size: 15.5px; font-weight: 700; color: #fff; line-height: 1.4; letter-spacing: -0.01em; }
-    .ref-meta { font-size: 12.5px; color: rgba(255,255,255,0.45); margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 16px; }
-    .ref-meta b { color: rgba(255,255,255,0.7); font-weight: 600; }
+    .ref-cite { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.82); line-height: 1.6; letter-spacing: -0.005em; }
+    .ref-cite i { font-style: italic; color: rgba(255,255,255,0.95); }
     .ref-link { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; color: #fff; padding: 10px 16px; border-radius: 999px;
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; transition: all 0.2s; white-space: nowrap; }
     .ref-link:hover { background: rgba(61,217,232,0.14); border-color: rgba(61,217,232,0.35); }
