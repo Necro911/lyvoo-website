@@ -236,6 +236,7 @@
     .cta-card::after { content: ''; position: absolute; inset: 0; pointer-events: none;
       background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(61,217,232,0.2), transparent 60%), radial-gradient(ellipse 60% 50% at 82% 100%, rgba(139,92,246,0.18), transparent 60%); }
     .cta-card > * { position: relative; z-index: 1; }
+    .cta-card h2.big { font-size: clamp(15px, 4.6vw, 34px); white-space: nowrap; }
     .cta-card .lead { margin: 18px auto 0; max-width: 460px; }
     .btn { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 700; padding: 16px 30px; border-radius: 999px; text-decoration: none; margin-top: 34px;
       background: #fff; color: var(--teal); box-shadow: 0 16px 40px rgba(61,217,232,0.2); transition: transform 0.15s ease; }
