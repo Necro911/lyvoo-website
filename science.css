@@ -180,10 +180,6 @@
     .meth-title { font-size: 16.5px; font-weight: 800; letter-spacing: -0.015em; color: #fff; margin-bottom: 8px; line-height: 1.25; }
     .meth-desc { font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,0.6); }
 
-    .meth-close { margin-top: 56px; text-align: center; padding: clamp(40px,5.5vw,64px) clamp(24px,5vw,56px); }
-    .meth-close h3 { font-size: clamp(22px,2.8vw,32px); font-weight: 850; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 16px; }
-    .meth-close p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 620px; margin: 0 auto; }
-
     /* ════════ JOURNEY ════════ */
     .journey .glow { background: radial-gradient(ellipse 50% 35% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 55%); }
     .jline { position: relative; margin-top: 56px; }
@@ -227,7 +223,6 @@
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; transition: all 0.2s; white-space: nowrap; }
     .ref-link:hover { background: rgba(61,217,232,0.14); border-color: rgba(61,217,232,0.35); }
     .ref-link svg { width: 14px; height: 14px; }
-    .ref-soon { text-align: center; font-size: 12.5px; color: rgba(255,255,255,0.35); margin-top: 22px; }
 
     /* ════════ CTA ════════ */
     .cta { padding: clamp(80px,11vw,130px) 0; }
