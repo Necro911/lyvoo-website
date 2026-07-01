@@ -69,6 +69,21 @@ test('users: owner NÃO escreve prioridades (field-lock, DA-05)', async () => {
     updateDoc(doc(alice(), 'users/alice'), { prioridades: [{ texto: 'x' }] })
   );
 });
+test('users: owner NÃO fabrica resultados/plano/suplementação/relatório (field-lock, DA-22)', async () => {
+  await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1 }));
+  await assertFails(
+    updateDoc(doc(alice(), 'users/alice'), { resultados: { biomarcadores: { metabolico: [{ nome: 'Glicose', valor: '999' }] } } })
+  );
+  await assertFails(
+    updateDoc(doc(alice(), 'users/alice'), { planoAlimentar: { objectivo: 'Hackeado' } })
+  );
+  await assertFails(
+    updateDoc(doc(alice(), 'users/alice'), { suplementacao: [{ nome: 'Falso', ativo: true }] })
+  );
+  await assertFails(
+    updateDoc(doc(alice(), 'users/alice'), { relatorio: { score: 100 } })
+  );
+});
 test('users: owner PODE editar campos de perfil', async () => {
   await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1, email: 'a@x.pt' }));
   await assertSucceeds(

@@ -30,10 +30,20 @@ service cloud.firestore {
     // `prioridades` (DA-05, roadmap) é conteúdo clínico gerado pelo admin/motor
     // de regras — bloqueado aqui pela mesma razão que estado/plano: sem isto,
     // um cliente podia fabricar as suas próprias "prioridades" via updateDoc.
+    //
+    // `resultados`/`planoAlimentar`/`suplementacao`/`relatorio` (DA-22) faltavam
+    // aqui — só o admin os deve escrever (biomarcadores, plano nutricional,
+    // suplementação, relatório médico). Sem isto, um cliente autenticado podia
+    // fazer updateDoc({resultados:{...}}) e fabricar os seus próprios resultados
+    // de análises, plano alimentar, suplementação ou relatório médico.
+    // Confirmado (2026-07-01): nenhum fluxo em dashboard.html escreve nestes
+    // campos como owner — só lê. O único setDoc do cliente (perfil, com
+    // merge:true) não os toca.
     function ownerKeepsLockedFields() {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
         'estado','estadoLabel','plano','planoNome','planoValidoAte',
-        'stripeSessionId','cicloAtual','clienteId','seq','arquivado','prioridades'
+        'stripeSessionId','cicloAtual','clienteId','seq','arquivado','prioridades',
+        'resultados','planoAlimentar','suplementacao','relatorio'
       ]);
     }
 
