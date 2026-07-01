@@ -212,6 +212,8 @@
     }
     .biox-chip .biox-chip-n { opacity:0.6; font-weight:700; margin-left:2px; }
     .biox-chip.active .biox-chip-n { opacity:0.7; }
+    .biox-rollup { display:flex; flex-wrap:wrap; gap:20px; align-items:center; padding:12px 16px; margin-bottom:16px; background:var(--panel); border:1px solid var(--line); border-radius:12px; font-size:12.5px; color:var(--txt-2); }
+    .biox-rollup-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; box-shadow:0 0 8px currentColor; vertical-align:middle; }
     .biox-list { display:flex; flex-direction:column; gap:12px; }
     .biox-empty { padding:48px 0; text-align:center; color:var(--txt-3); font-size:14px; }
 
@@ -1920,6 +1922,9 @@
       'bio.filtro.todos': 'Todos',
       'bio.vista.detalhado': 'Detalhado',
       'bio.vista.simplificado': 'Simplificado',
+      'bio.rollup.melhorou': 'melhoraram',
+      'bio.rollup.piorou': 'pioraram',
+      'bio.rollup.estavel': 'sem alteração',
       'bio.tabela.parametro': 'Parâmetro',
       'bio.tabela.valor': 'Valor',
       'bio.tabela.referencia': 'Referência',
@@ -2362,6 +2367,9 @@
       'bio.filtro.todos': 'All',
       'bio.vista.detalhado': 'Detailed',
       'bio.vista.simplificado': 'Simplified',
+      'bio.rollup.melhorou': 'improved',
+      'bio.rollup.piorou': 'worsened',
+      'bio.rollup.estavel': 'unchanged',
       'bio.tabela.parametro': 'Parameter',
       'bio.tabela.valor': 'Value',
       'bio.tabela.referencia': 'Reference',
@@ -4377,7 +4385,8 @@
       sel.appendChild(opt);
     });
     sel.addEventListener('change', () => {
-      renderBiomarcadores(historico[+sel.value]);
+      const i = +sel.value;
+      renderBiomarcadores(historico[i], historico[i + 1]);
     });
     wrap.appendChild(label);
     wrap.appendChild(sel);
@@ -4635,7 +4644,7 @@
     if (_bioLastResultados) renderBiomarcadores(_bioLastResultados);
   };
 
-  function renderBiomarcadores(resultados) {
+  function renderBiomarcadores(resultados, anterior) {
     normalizeResultados(resultados);
     const container = document.getElementById('bio-content');
     const sub = document.getElementById('bio-sub');
@@ -4644,6 +4653,14 @@
     if (resultados.dataAnalise) sub.textContent = t('sec.biomarcadores.sub') + ' · ' + resultados.dataAnalise;
     const bio = resultados.biomarcadores;
     const catLabel = Object.fromEntries(BIO_SYSTEMS.map(s => [s.key, bioSysLabel(s.key)]));
+
+    // Resumo "N melhoraram / N pioraram / N sem alteração" vs. análise anterior (DA-04)
+    const rollup = biomarkerRollup(bio, anterior?.biomarcadores);
+    const rollupHtml = rollup ? `<div class="biox-rollup">
+      <span><span class="biox-rollup-dot" style="color:var(--green)"></span><b style="color:var(--green)">${rollup.melhorou}</b> ${t('bio.rollup.melhorou')}</span>
+      <span><span class="biox-rollup-dot" style="color:var(--red)"></span><b style="color:var(--red)">${rollup.piorou}</b> ${t('bio.rollup.piorou')}</span>
+      <span><span class="biox-rollup-dot" style="color:var(--txt-3)"></span><b>${rollup.estavel}</b> ${t('bio.rollup.estavel')}</span>
+    </div>` : '';
 
     // Achatar todos os módulos, eliminar duplicados, anexar a componente biológica
     const rows = [];
@@ -4705,7 +4722,7 @@
         });
         lista += '</div></div>';
       });
-      container.innerHTML = topbar + lista;
+      container.innerHTML = rollupHtml + topbar + lista;
       const pdfBtnL = document.getElementById('bio-pdf-btn');
       if (pdfBtnL) pdfBtnL.style.display = 'inline-flex';
       return;
@@ -4751,7 +4768,7 @@
       </div>`;
     }).join('');
 
-    container.innerHTML = topbar + `<div class="biox-list">${cards}</div>`;
+    container.innerHTML = rollupHtml + topbar + `<div class="biox-list">${cards}</div>`;
     const pdfBtn = document.getElementById('bio-pdf-btn');
     if (pdfBtn) pdfBtn.style.display = 'inline-flex';
   }
@@ -5296,6 +5313,31 @@
     return best;
   }
 
+  // Quantos biomarcadores melhoraram/pioraram/mantiveram-se face à análise
+  // anterior, por MUDANÇA DE TAG (não pelo sinal do valor bruto — descer não
+  // é sempre "melhor": depende do marcador, ex. HDL/Vitamina D vs. LDL). Usa
+  // o mesmo ranking clínico do score (BODY_TAG_SCORE) para decidir a direção,
+  // por biomarcador comparado ao par com o mesmo nome na análise anterior (DA-04).
+  function biomarkerRollup(currentBio, prevBio) {
+    if (!currentBio || !prevBio) return null;
+    const prevByNome = {};
+    Object.values(prevBio).flat().forEach(r => { if (r?.nome) prevByNome[r.nome] = r; });
+    let melhorou = 0, piorou = 0, estavel = 0;
+    Object.values(currentBio).flat().forEach(r => {
+      if (!r || !r.valor) return;
+      const prev = prevByNome[r.nome];
+      if (!prev || !prev.valor) return;
+      const curScore = BODY_TAG_SCORE[autoTag(r)];
+      const prevScore = BODY_TAG_SCORE[autoTag(prev)];
+      if (!curScore || !prevScore) return;
+      if (curScore > prevScore) melhorou++;
+      else if (curScore < prevScore) piorou++;
+      else estavel++;
+    });
+    const total = melhorou + piorou + estavel;
+    return total ? { melhorou, piorou, estavel, total } : null;
+  }
+
   // ── Render: Secção Relatório médico ──────────────────────────────────
   function relCountUp(el, target, dur = 1100) {
     const start = performance.now();
@@ -5645,7 +5687,7 @@
         }
         if (d.resultados)   renderBodyMap(d.resultados);
         // Re-render com o histórico disponível para activar as sparklines
-        if (historico.length > 1 && d.resultados) renderBiomarcadores(d.resultados);
+        if (historico.length > 1 && d.resultados) renderBiomarcadores(d.resultados, historico[1]);
 
         // Preencher campos do perfil
         if (d.firstName) document.getElementById('pf-first').value = d.firstName;
