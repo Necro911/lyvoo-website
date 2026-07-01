@@ -774,6 +774,21 @@
     .panel-link { font-size: 13px; font-weight: 600; color: var(--cyan); }
     .panel-link:hover { text-decoration: underline; }
 
+    /* Prioridades da semana (DA-08) */
+    .wp-list { display: flex; flex-direction: column; gap: 16px; }
+    .wp-item { display: flex; align-items: flex-start; gap: 13px; }
+    .wp-icon { width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .wp-icon svg { width: 17px; height: 17px; }
+    .wp-icon.wp-cat-nutricao { background: rgba(74,222,128,0.12); color: var(--green); }
+    .wp-icon.wp-cat-suplementacao { background: rgba(139,92,246,0.12); color: var(--violet); }
+    .wp-icon.wp-cat-consulta { background: rgba(61,217,232,0.12); color: var(--cyan); }
+    .wp-icon.wp-cat-retest { background: rgba(251,191,36,0.12); color: var(--amber); }
+    .wp-icon.wp-cat-geral { background: rgba(255,255,255,0.06); color: var(--txt-2); }
+    .wp-body { flex: 1; padding-top: 2px; }
+    .wp-texto { font-size: 13.5px; font-weight: 600; color: var(--txt); line-height: 1.4; }
+    .wp-meta { font-size: 12px; color: var(--txt-3); margin-top: 3px; }
+    .wp-item.wp-alta .wp-meta { color: var(--amber); }
+
     /* circular ring */
     .ring-wrap { display: flex; align-items: center; gap: 26px; }
     .ring { position: relative; width: 132px; height: 132px; flex-shrink: 0; }
@@ -1507,6 +1522,12 @@
 
     </div>
 
+    <!-- Prioridades da semana (DA-08) -->
+    <div class="panel mb" id="wp-panel" style="display:none;">
+      <div class="panel-head"><h2 data-i18n="painel.prioridades.titulo">As suas prioridades esta semana</h2></div>
+      <div class="wp-list" id="wp-list"></div>
+    </div>
+
     <!-- ROW 2: feature cards -->
     <div class="grid row-4 mb">
 
@@ -2127,6 +2148,8 @@
       'painel.score.interp-down-generic': 'Desceu {delta} pontos desde a última avaliação.',
       'painel.score.primeira-analise': 'Esta é a sua primeira análise — a evolução do score aparece a partir da próxima.',
       'painel.score.confidence': 'Baseado em {scored} de {total} marcadores',
+      'painel.prioridades.titulo': 'As suas prioridades esta semana',
+      'painel.prioridades.ate': 'Até {data}',
 
       // ── Banners (estado da subscrição/consultas) ──
       'banner.reeval.label': 'Reavaliação dos 6 meses',
@@ -2563,6 +2586,8 @@
       'painel.score.interp-down-generic': 'Dropped {delta} points since your last assessment.',
       'painel.score.primeira-analise': 'This is your first analysis — score history will appear from your next one.',
       'painel.score.confidence': 'Based on {scored} of {total} markers',
+      'painel.prioridades.titulo': 'Your priorities this week',
+      'painel.prioridades.ate': 'By {data}',
 
       'banner.reeval.label': '6-month reassessment',
       'banner.reeval.titulo': 'Your reassessment is being prepared.',
@@ -5253,6 +5278,45 @@
   }
 
   // ── Render: Highlights biomarcadores no painel ────────────────────────
+  // ── Render: Prioridades da semana (DA-08) ────────────────────────────
+  // Ícones por categoria (traço Feather-style, consistente com o resto do painel).
+  const WP_ICONS = {
+    nutricao:      '<path d="M3 2v7c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3v7"/>',
+    suplementacao: '<rect x="4.5" y="4.5" width="15" height="15" rx="7.5" transform="rotate(45 12 12)"/><line x1="8.3" y1="8.3" x2="15.7" y2="15.7"/>',
+    consulta:      '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+    retest:        '<path d="M9 2v6.5L4 18a2 2 0 0 0 1.8 3h12.4a2 2 0 0 0 1.8-3l-5-9.5V2"/><path d="M9 2h6"/>',
+    geral:         '<circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.3 2.3L15.5 9.5"/>',
+  };
+  const WP_PRIORIDADE_ORDER = { alta: 3, media: 2, baixa: 1 };
+  function renderPrioridadesSemana(prioridades) {
+    const panel = document.getElementById('wp-panel');
+    const list  = document.getElementById('wp-list');
+    if (!panel || !list) return;
+    const itens = (prioridades || [])
+      .filter(p => p && p.texto && p.visivelCliente !== false)
+      .sort((a, b) => (WP_PRIORIDADE_ORDER[b.prioridade] || 0) - (WP_PRIORIDADE_ORDER[a.prioridade] || 0));
+    if (!itens.length) { panel.style.display = 'none'; return; }
+    panel.style.display = 'block';
+    list.innerHTML = itens.map(p => {
+      const cat = WP_ICONS[p.categoria] ? p.categoria : 'geral';
+      let metaHtml = '';
+      if (p.followUpData) {
+        let fmt = p.followUpData;
+        try {
+          fmt = new Date(p.followUpData + 'T00:00:00').toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long' });
+        } catch (e) {}
+        metaHtml = `<div class="wp-meta">${t('painel.prioridades.ate', { data: fmt })}</div>`;
+      }
+      return `<div class="wp-item wp-${p.prioridade || 'media'}">
+        <span class="wp-icon wp-cat-${cat}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${WP_ICONS[cat]}</svg></span>
+        <div class="wp-body">
+          <div class="wp-texto">${escapeHtml(p.texto)}</div>
+          ${metaHtml}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
   function renderBioHighlights(resultados) {
     normalizeResultados(resultados);
     const grid = document.querySelector('.bio-grid');
@@ -5657,6 +5721,7 @@
         }
         renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
+        renderPrioridadesSemana(d.prioridades);
 
         // Carregar histórico de análises (subcoleção) — feito antes do score
         // para podermos passar a análise anterior a renderScore() e mostrar
