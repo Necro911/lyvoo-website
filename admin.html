@@ -218,6 +218,8 @@
 
     /* Filtros de estado */
     .estado-filters { display:flex; gap:6px; flex-wrap:wrap; padding:10px 20px 12px; border-bottom:1px solid var(--line); }
+    .bulk-bar { align-items:center; gap:10px; flex-wrap:wrap; padding:8px 20px; border-bottom:1px solid var(--line); font-size:12px; color:var(--txt-2); background:rgba(139,92,246,0.04); }
+    .bulk-cb { flex-shrink:0; width:15px; height:15px; cursor:pointer; accent-color: var(--cyan); }
     .ef-btn { font-size:11px; font-weight:700; padding:4px 11px; border-radius:999px; border:1px solid var(--line-2); background:none; color:var(--txt-3); cursor:pointer; transition:all 0.15s; }
     .ef-btn:hover { color:var(--txt-2); border-color:rgba(255,255,255,0.18); }
     .ef-btn.active { background:rgba(61,217,232,0.1); border-color:rgba(61,217,232,0.3); color:var(--cyan); }
@@ -421,6 +423,12 @@
       <button class="ef-btn" data-e="6" onclick="setEstadoFilter(6)">6 Reav. Lab</button>
       <button class="ef-btn" data-e="7" onclick="setEstadoFilter(7)">7 Reav. Result.</button>
       <button class="ef-btn" data-e="arquivados" onclick="setEstadoFilter('arquivados')" style="color:var(--txt-3)">Arquivados</button>
+    </div>
+    <div class="bulk-bar" id="bulk-bar" style="display:none;">
+      <span id="bulk-count">0 selecionados</span>
+      <button type="button" class="ef-btn" onclick="selecionarTodosFiltrados()">Selecionar todos os filtrados</button>
+      <button type="button" class="ef-btn" onclick="limparSelecao()">Limpar seleção</button>
+      <button type="button" class="ef-btn" style="margin-left:auto;color:var(--violet);border-color:rgba(139,92,246,0.3)" onclick="bulkAvancarReavaliacao()">🔄 Avançar p/ reavaliação</button>
     </div>
     <div class="user-list" id="user-list"></div>
     <button id="load-more-users" onclick="loadMoreUsers()" style="display:none;width:calc(100% - 24px);margin:8px 12px;padding:8px;border-radius:8px;border:1px solid var(--line-2);background:var(--panel-2);color:var(--txt-2);font-family:inherit;font-size:12px;cursor:pointer;">Carregar mais clientes</button>
@@ -782,10 +790,19 @@
               </select>
             </div>
           </div>
+          <div class="form-row" style="align-items:flex-end;">
+            <div class="form-field" style="flex:0 0 auto;">
+              <label class="form-label">Hora sugerida</label>
+              <input class="form-input" type="time" id="convite-sugerir-hora" value="10:00" step="1800" style="width:110px;" />
+            </div>
+            <div class="form-field" style="flex:0 0 auto;">
+              <button type="button" class="ef-btn" onclick="sugerirProximosDias()">⚡ Sugerir próximos 3 dias úteis</button>
+            </div>
+          </div>
           <div class="form-row">
             <div class="form-field" style="flex:1;">
               <label class="form-label">Dias disponíveis</label>
-              <div style="font-size:12px;color:var(--txt-3);margin-bottom:8px;">Clique nos dias em que está disponível. Depois escolha as horas (de 30 em 30 min) de cada dia.</div>
+              <div style="font-size:12px;color:var(--txt-3);margin-bottom:8px;">Clique nos dias em que está disponível. Depois escolha as horas (de 30 em 30 min) de cada dia. O botão acima preenche automaticamente os 3 próximos dias úteis com a hora sugerida — revê antes de enviar.</div>
               <div class="cal-wrap" id="convite-cal"></div>
             </div>
           </div>
@@ -1044,6 +1061,9 @@
   let allUsers = [];
   let _lastUserDoc = null;      // cursor de paginação (último doc carregado)
   let _allUsersLoaded = false;  // true quando já não há mais páginas
+  // Seleção para ações em massa (DA-11) - uids marcados na lista, sobrevive a
+  // re-renders/filtros porque é aplicada de volta em renderList().
+  let selectedUids = new Set();
   const USERS_PAGE = 50;        // tamanho de página
   let _chatMeta = {};
   let _chatUnsubMsgs = null;
@@ -1646,13 +1666,91 @@
       const chatDot = temChatNaoLido(u.uid) ? `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cyan);margin-left:6px;flex-shrink:0;"></span>` : '';
       const emailFailDot = (u.emailFalhouEm && !u.notificadoEm) ? `<span title="Falha no email automático" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:6px;flex-shrink:0;"></span>` : '';
       const delBadge = (u.pedidoEliminacao?.estado === 'pendente') ? `<span title="Pedido de eliminação de conta (RGPD)" style="font-size:10px;color:var(--red);margin-left:6px;font-weight:700;">⌫ eliminar</span>` : '';
+      const bulkChecked = selectedUids.has(u.uid) ? 'checked' : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
+        <input type="checkbox" class="bulk-cb" data-uid="${u.uid}" ${bulkChecked} onclick="event.stopPropagation(); toggleBulkSelect('${u.uid}', this.checked)" title="Selecionar para ação em massa" />
         <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
         <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}${delBadge}</div><div class="u-email-sm">${u.clienteId||''} · ${u.email||'-'}</div></div>
         ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
   }
+
+  // ── Ações em massa (DA-11) ────────────────────────────────────────────
+  window.toggleBulkSelect = function(uid, checked) {
+    if (checked) selectedUids.add(uid); else selectedUids.delete(uid);
+    updateBulkBar();
+  };
+  window.limparSelecao = function() {
+    selectedUids.clear();
+    document.querySelectorAll('.bulk-cb').forEach(cb => cb.checked = false);
+    updateBulkBar();
+  };
+  window.selecionarTodosFiltrados = function() {
+    document.querySelectorAll('.bulk-cb').forEach(cb => { cb.checked = true; selectedUids.add(cb.dataset.uid); });
+    updateBulkBar();
+  };
+  function updateBulkBar() {
+    const bar = document.getElementById('bulk-bar');
+    const count = document.getElementById('bulk-count');
+    if (!bar || !count) return;
+    count.textContent = `${selectedUids.size} selecionado${selectedUids.size === 1 ? '' : 's'}`;
+    bar.style.display = selectedUids.size ? 'flex' : 'none';
+  }
+
+  // Avança para reavaliação todos os selecionados que estejam em estado 4 ou 7
+  // (resultados disponíveis) - os outros são ignorados com aviso, porque
+  // avançar um cliente a meio do laboratório/kit não faz sentido clínico.
+  // Reutiliza exatamente a mesma lógica do botão individual (iniciarReavaliacao):
+  // aplicarEfeitosDeTransicao() arquiva resultados e resolve consultas pendentes.
+  window.bulkAvancarReavaliacao = async function() {
+    if (!selectedUids.size) return;
+    const uids = [...selectedUids];
+    const elegiveis = [];
+    const inelegiveis = [];
+    for (const uid of uids) {
+      try {
+        const snap = await getDoc(doc(db, 'users', uid));
+        if (!snap.exists()) continue;
+        const u = { uid, ...snap.data() };
+        if (u.estado === 4 || u.estado === 7) elegiveis.push(u); else inelegiveis.push(u);
+      } catch (e) { console.error('Erro ao verificar cliente ' + uid, e); }
+    }
+    if (!elegiveis.length) {
+      alert('Nenhum dos clientes selecionados está em estado 4 (Resultados) ou 7 (Reav. Resultados) — só esses avançam para reavaliação.');
+      return;
+    }
+    const nomes = elegiveis.map(u => [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || u.uid);
+    const aviso = inelegiveis.length ? `\n\n(${inelegiveis.length} outro(s) selecionado(s) ignorado(s) — não estão em estado de resultados.)` : '';
+    if (!confirm(`Avançar ${elegiveis.length} cliente(s) para reavaliação?\n\nOs resultados atuais de cada um são arquivados no histórico.\n\n${nomes.join(', ')}${aviso}`)) return;
+
+    await auth.currentUser?.getIdToken(true);
+    let ok = 0;
+    const falhas = [];
+    for (const u of elegiveis) {
+      try {
+        const estadoAnterior = u.estado;
+        const ehRenovacaoAnual = estadoAnterior === 7;
+        const destino = ehRenovacaoAnual ? 2 : 5;
+        const extra = await aplicarEfeitosDeTransicao(u.uid, estadoAnterior, destino, u);
+        await updateDoc(doc(db, 'users', u.uid), {
+          estado: destino,
+          estadoLabel: ESTADO_LABELS[destino],
+          atualizadoEm: serverTimestamp(),
+          cicloReavaliacao: serverTimestamp(),
+          ...extra,
+        });
+        ok++;
+      } catch (e) {
+        console.error('Erro ao avançar ' + u.uid, e);
+        falhas.push([u.firstName, u.lastName].filter(Boolean).join(' ') || u.email || u.uid);
+      }
+    }
+
+    limparSelecao();
+    await loadUsers(); // refrescar lista + stats
+    alert(`${ok} cliente(s) avançado(s) para reavaliação.` + (falhas.length ? `\n\nFalhou para: ${falhas.join(', ')}` : ''));
+  };
 
   // ── Carregamento paginado de utilizadores (P1) ────────────────────────
   // Em vez de ler TODA a coleção, carrega por páginas (mais recentes primeiro)
@@ -2636,6 +2734,31 @@
       };
     });
   }
+
+  // Atalho (DA-12): preenche os 3 próximos dias úteis (seg-sex, a partir de
+  // amanhã) com a hora escolhida, em vez de navegar o calendário e clicar
+  // dia-a-dia. Não verifica conflitos com outras marcações (o calendário do
+  // admin já não o fazia antes disto) — o admin revê e ajusta antes de enviar.
+  window.sugerirProximosDias = function() {
+    const horaInput = document.getElementById('convite-sugerir-hora');
+    const [hh, mm] = (horaInput?.value || '10:00').split(':').map(Number);
+    const hora = `${String(hh).padStart(2,'0')}:${mm < 30 ? '00' : '30'}`;
+    if (!BK_HORAS.includes(hora)) { alert('Escolhe uma hora entre 08:00 e 20:00.'); return; }
+
+    const novosDias = [];
+    const d = new Date();
+    d.setDate(d.getDate() + 1); // começa amanhã
+    for (let tentativas = 0; tentativas < 30 && novosDias.length < 3; tentativas++) {
+      const dow = d.getDay(); // 0=domingo, 6=sábado
+      const iso = isoLocal(d);
+      if (dow !== 0 && dow !== 6 && !_conviteSlots.find(s => s.data === iso)) novosDias.push(iso);
+      d.setDate(d.getDate() + 1);
+    }
+    novosDias.forEach(iso => _conviteSlots.push({ data: iso, horas: [hora] }));
+    _conviteSlots.sort((a, b) => a.data.localeCompare(b.data));
+    renderConviteCal();
+    renderConviteSlotsList();
+  };
 
   async function loadConvite(uid) {
     _conviteUid = uid;
