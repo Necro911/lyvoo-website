@@ -8,6 +8,14 @@ Execute **top to bottom, one at a time**, same convention as the root `ROADMAP.m
 
 ---
 
+## Tier 0 — Security (found while implementing DA-05, not yet fixed)
+
+| ☐ | ID | Task | Effort | Risk | Value | Depends on | Files |
+|---|----|------|--------|------|-------|------------|-------|
+| ☐ | DA-22 | **Field-lock `resultados`, `planoAlimentar`, `suplementacao`, and `relatorio` on `users/{uid}`.** Discovered 2026-07-01 while adding the `prioridades` lock for DA-05: `ownerKeepsLockedFields()` only locks `estado`/`plano`/`stripeSessionId`/etc — these four clinical-content fields are NOT in that list, and `validProfileFields()` only validates specific known profile fields without rejecting unlisted ones. A client can currently call `updateDoc(doc(db,'users',uid), { resultados: {...} })` (or `planoAlimentar`/`suplementacao`/`relatorio`) directly from the browser and overwrite their own lab results, nutrition plan, supplements, or medical report with fabricated data. Fix: add these four keys to `ownerKeepsLockedFields()`'s `hasAny([...])` list, mirroring the `prioridades` fix; add matching `assertFails` tests in `test/firestore.rules.test.mjs`; verify with `npm run test:rules` (needs Java 21+, not available in this sandbox) before deploying — this is a `firestore.rules` change on a live production system, treat as security-sensitive. | Small | Medium | Critical | — | `firestore.rules`, `test/firestore.rules.test.mjs` |
+
+---
+
 ## Tier 1 — Pure wins (no new UI surface, reuse existing computed signals)
 
 | ☐ | ID | Task | Effort | Risk | Value | Depends on | Files |
@@ -21,7 +29,7 @@ Execute **top to bottom, one at a time**, same convention as the root `ROADMAP.m
 
 | ☐ | ID | Task | Effort | Risk | Value | Depends on | Files |
 |---|----|------|--------|------|-------|------------|-------|
-| ☐ | DA-05 | Data model: add `prioridades[]` (array to start; see DA-11 for subcollection migration) with fields `categoria`, `prioridade`, `texto`, `followUpData`, `metaValor`, `automatizado`, `visivelCliente`. | Medium | Low | High | DA-01, DA-02 | `firestore.rules`, `admin.html`, `dashboard.html` |
+| ☑ | DA-05 | Data model: add `prioridades[]` (array to start; see DA-11 for subcollection migration) with fields `categoria`, `prioridade`, `texto`, `followUpData`, `metaValor`, `automatizado`, `visivelCliente`. **Done 2026-07-01**: field reserved and locked in `firestore.rules` (`ownerKeepsLockedFields()` now includes `prioridades` — clients cannot self-author priorities), matching rules test added in `test/firestore.rules.test.mjs`, shape documented in `README.md`'s data model table. Scoped intentionally narrow — no admin/dashboard UI yet (that's DA-07/DA-08). **Not verified locally**: the rules emulator test suite needs Java 21+, unavailable in this environment; verify with `npm run test:rules` before merging. **Also found while in this file**: `resultados`, `planoAlimentar`, `suplementacao`, and `relatorio` are NOT in the locked-fields list today, meaning a client can currently forge their own lab results/nutrition plan/supplements/report via `updateDoc` — flagged as a separate security item, not fixed here (out of DA-05's scope, needs its own review). | Medium | Low | High | DA-01, DA-02 | `firestore.rules`, `test/firestore.rules.test.mjs`, `README.md` |
 | ☐ | DA-06 | Rule engine: auto-suggest priority items from existing data — `tag=critico` → "Repita este marcador em 6 semanas"; `tag=atencao` matched against nutrition keywords → dietary suggestion. Reuse the existing `INSIGHT_DEFS`/keyword-matching pattern already built for meal tags (`dashboard.html:4857-4873`). | Medium | Low | High | DA-05 | `admin.html` (or shared logic) |
 | ☐ | DA-07 | Admin: new "Prioridades" tab where clinician reviews rule-suggested cards (accept/edit/dismiss) and adds manual ones. Without this, Weekly Priorities has no clinical judgment behind the automation. | Medium | Medium | High | DA-05, DA-06 | `admin.html` |
 | ☐ | DA-08 | Dashboard: "As Suas Prioridades Esta Semana" section rendering `prioridades[]`, icon by `categoria`, one-line action text. | Medium | Low | High | DA-05 | `dashboard.html` |

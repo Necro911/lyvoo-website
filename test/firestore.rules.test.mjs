@@ -63,6 +63,12 @@ test('users: owner NÃO altera plano/stripeSessionId/clienteId/arquivado', async
   await assertFails(updateDoc(doc(alice(), 'users/alice'), { clienteId: 'C9999' }));
   await assertFails(updateDoc(doc(alice(), 'users/alice'), { arquivado: true }));
 });
+test('users: owner NÃO escreve prioridades (field-lock, DA-05)', async () => {
+  await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1 }));
+  await assertFails(
+    updateDoc(doc(alice(), 'users/alice'), { prioridades: [{ texto: 'x' }] })
+  );
+});
 test('users: owner PODE editar campos de perfil', async () => {
   await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1, email: 'a@x.pt' }));
   await assertSucceeds(

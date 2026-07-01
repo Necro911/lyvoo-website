@@ -27,10 +27,13 @@ service cloud.firestore {
     // ignora estas regras) e pelo admin (via isAdmin). Sem isto, um cliente
     // autenticado podia fazer updateDoc({estado:4}) no seu próprio doc e saltar
     // o pagamento / desbloquear a área de resultados. (Fix 1 — OWASP A01)
+    // `prioridades` (DA-05, roadmap) é conteúdo clínico gerado pelo admin/motor
+    // de regras — bloqueado aqui pela mesma razão que estado/plano: sem isto,
+    // um cliente podia fabricar as suas próprias "prioridades" via updateDoc.
     function ownerKeepsLockedFields() {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
         'estado','estadoLabel','plano','planoNome','planoValidoAte',
-        'stripeSessionId','cicloAtual','clienteId','seq','arquivado'
+        'stripeSessionId','cicloAtual','clienteId','seq','arquivado','prioridades'
       ]);
     }
 

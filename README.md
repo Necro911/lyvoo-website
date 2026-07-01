@@ -59,7 +59,7 @@ O frontend não tem processo de build — os ficheiros HTML são servidos direta
 
 | Coleção | Documento | O que guarda |
 |---------|-----------|--------------|
-| `users/{uid}` | Um doc por utilizador | Perfil (nome, email, telefone), `estado` (1-7), `estadoLabel`, `clienteId` (C0001…), `seq`, `plano`, `planoValidoAte`, `cicloAtual`, `stripeSessionId`, `arquivado`, timestamps. Contém subcoleção `analises/` (resultados de biomarcadores por ciclo). |
+| `users/{uid}` | Um doc por utilizador | Perfil (nome, email, telefone), `estado` (1-7), `estadoLabel`, `clienteId` (C0001…), `seq`, `plano`, `planoValidoAte`, `cicloAtual`, `stripeSessionId`, `arquivado`, timestamps. Contém subcoleção `analises/` (resultados de biomarcadores por ciclo, incluindo `score` desde DA-02). `prioridades` (array, reservado — DA-05): campos `categoria`, `prioridade`, `texto`, `followUpData`, `metaValor`, `automatizado`, `visivelCliente`; bloqueado por field-lock (só admin escreve); UI de edição chega em DA-07, render no dashboard em DA-08. |
 | `chats/{uid}` | Um doc por utilizador | Metadados do chat (lido/não lido, timestamp). Contém subcoleção `mensagens/` (cada mensagem do chat entre cliente e admin). |
 | `agendamentosNutri/{agId}` | Um doc por marcação | PII: nome, email, `uid`, `data`, `hora`, `tipo` (nutricao / reavaliacao), `estado` (agendada / confirmada / realizada / cancelada), link de videochamada. Legível apenas pelo próprio utilizador e por admins. |
 | `busySlots/{data}` | Um doc por data (ex.: `2026-06-17`) | `{ data, horas: [...] }` — espelho sem PII das horas ocupadas; atualizado pelo trigger `syncBusySlots`. Legível por qualquer utilizador autenticado (para mostrar disponibilidade no calendário). |
