@@ -794,6 +794,13 @@
     .hs-dist-bar > span { display:block; height:100%; border-radius:3px; width:0; transition:width 1.2s cubic-bezier(0.22,1,0.36,1); }
     .hs-dist-n { font-size:13px; font-weight:700; width:24px; text-align:right; flex-shrink:0; }
     .hs-dist-total { font-size:11.5px; color:var(--txt-3); margin-top:2px; }
+    .hs-trend-wrap { margin:12px 0 2px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06); }
+    .hs-trend { font-size:13px; font-weight:700; }
+    .hs-trend.up { color:var(--green); }
+    .hs-trend.down { color:var(--red); }
+    .hs-trend.flat { color:var(--txt-2); }
+    .hs-interpretation { font-size:12.5px; color:var(--txt-2); line-height:1.55; margin-top:5px; }
+    .hs-confidence { font-size:11px; color:var(--txt-3); margin-top:5px; }
 
     /* checklist */
     .checklist { flex: 1; display: flex; flex-direction: column; gap: 14px; }
@@ -1488,6 +1495,11 @@
             <div class="hs-dist-empty" data-i18n="painel.score.dist-empty">A distribuição dos seus biomarcadores aparece aqui após a primeira análise.</div>
           </div>
         </div>
+        <div class="hs-trend-wrap" id="hs-trend-wrap" style="display:none;">
+          <div class="hs-trend" id="hs-trend"></div>
+          <div class="hs-interpretation" id="hs-interpretation"></div>
+          <div class="hs-confidence" id="hs-confidence"></div>
+        </div>
         <a href="#" class="btn-ghost" onclick="navSection('relatorio');return false;" data-i18n="painel.score.ver-relatorio">Ver relatório</a>
       </div>
 
@@ -2102,6 +2114,14 @@
       'painel.score-class.bom': 'Bom',
       'painel.score-class.moderado': 'Moderado',
       'painel.score-class.atencao': 'Atenção',
+      'painel.score.trend': '{arrow} {delta} desde a última análise',
+      'painel.score.trend-flat': 'Sem alteração desde a última análise',
+      'painel.score.interp-up': 'Melhorou {delta} pontos desde a última avaliação, principalmente pela evolução em {categoria}.',
+      'painel.score.interp-down': 'Desceu {delta} pontos desde a última avaliação, principalmente pela evolução em {categoria}.',
+      'painel.score.interp-up-generic': 'Melhorou {delta} pontos desde a última avaliação.',
+      'painel.score.interp-down-generic': 'Desceu {delta} pontos desde a última avaliação.',
+      'painel.score.primeira-analise': 'Esta é a sua primeira análise — a evolução do score aparece a partir da próxima.',
+      'painel.score.confidence': 'Baseado em {scored} de {total} marcadores',
 
       // ── Banners (estado da subscrição/consultas) ──
       'banner.reeval.label': 'Reavaliação dos 6 meses',
@@ -2527,6 +2547,14 @@
       'painel.score-class.bom': 'Good',
       'painel.score-class.moderado': 'Moderate',
       'painel.score-class.atencao': 'Attention',
+      'painel.score.trend': '{arrow} {delta} since your last test',
+      'painel.score.trend-flat': 'No change since your last test',
+      'painel.score.interp-up': 'Improved {delta} points since your last assessment, mainly driven by {categoria}.',
+      'painel.score.interp-down': 'Dropped {delta} points since your last assessment, mainly driven by {categoria}.',
+      'painel.score.interp-up-generic': 'Improved {delta} points since your last assessment.',
+      'painel.score.interp-down-generic': 'Dropped {delta} points since your last assessment.',
+      'painel.score.primeira-analise': 'This is your first analysis — score history will appear from your next one.',
+      'painel.score.confidence': 'Based on {scored} of {total} markers',
 
       'banner.reeval.label': '6-month reassessment',
       'banner.reeval.titulo': 'Your reassessment is being prepared.',
@@ -5241,6 +5269,33 @@
     return score >= 85 ? t('painel.score-class.excelente') : score >= 70 ? t('painel.score-class.bom') : score >= 50 ? t('painel.score-class.moderado') : t('painel.score-class.atencao');
   }
 
+  // Quantos biomarcadores contribuíram para o score, dos que têm valor
+  // preenchido (confiança do score — DA-03).
+  function computeScoreConfidence(resultados) {
+    if (!resultados?.biomarcadores) return { scored: 0, total: 0 };
+    normalizeResultados(resultados);
+    const rows = Object.values(resultados.biomarcadores).flat().filter(r => r && r.valor);
+    const scored = rows.filter(r => BODY_TAG_SCORE[autoTag(r)]);
+    return { scored: scored.length, total: rows.length };
+  }
+
+  // Sistema do corpo cujo sub-score mudou mais entre duas análises, para dar
+  // ao cliente uma razão concreta ("principalmente pela evolução em X") em
+  // vez de um número sem contexto (DA-03).
+  function biggestCategoryMover(currentBio, prevBio) {
+    if (!currentBio || !prevBio) return null;
+    let best = null;
+    Object.keys(currentBio).forEach(key => {
+      if (!prevBio[key]) return;
+      const curScore  = bodyMapScore(currentBio[key]);
+      const prevScore = bodyMapScore(prevBio[key]);
+      if (curScore === null || prevScore === null) return;
+      const delta = curScore - prevScore;
+      if (delta !== 0 && (!best || Math.abs(delta) > Math.abs(best.delta))) best = { key, delta };
+    });
+    return best;
+  }
+
   // ── Render: Secção Relatório médico ──────────────────────────────────
   function relCountUp(el, target, dur = 1100) {
     const start = performance.now();
@@ -5345,7 +5400,10 @@
   }
 
   // ── Render: Score de saúde no painel ─────────────────────────────────
-  function renderScore(relatorio, resultados) {
+  // `anterior`, quando presente, é o snapshot de users/{uid}/analises/ da
+  // análise imediatamente anterior (não a que acabou de ser gravada) — usado
+  // para mostrar a tendência do score em vez de um número isolado (DA-03).
+  function renderScore(relatorio, resultados, anterior) {
     if (!relatorio?.score) return;
     const scoreVal = relatorio.score;
     const cls = relatorio.classificacao || t('painel.score-class.bom');
@@ -5385,6 +5443,47 @@
           `<div class="hs-dist-total">${t('painel.score.dist-total', { n: total })}</div>`;
         requestAnimationFrame(() => requestAnimationFrame(() =>
           dist.querySelectorAll('.hs-dist-bar > span').forEach(b => b.style.width = b.dataset.w + '%')));
+      }
+    }
+
+    // Tendência vs. análise anterior + confiança do score (DA-03)
+    const trendWrap = document.getElementById('hs-trend-wrap');
+    const trendEl    = document.getElementById('hs-trend');
+    const interpEl   = document.getElementById('hs-interpretation');
+    const confEl     = document.getElementById('hs-confidence');
+    if (trendWrap) {
+      trendWrap.style.display = 'block';
+      let scoreAnterior = anterior?.score;
+      if (scoreAnterior == null && anterior?.biomarcadores) {
+        scoreAnterior = computeBioScore({ biomarcadores: anterior.biomarcadores });
+      }
+      if (scoreAnterior != null) {
+        const delta = scoreVal - scoreAnterior;
+        if (trendEl) {
+          const dir = delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat';
+          trendEl.className = 'hs-trend ' + dir;
+          trendEl.textContent = delta === 0
+            ? t('painel.score.trend-flat')
+            : t('painel.score.trend', { arrow: delta > 0 ? '↑' : '↓', delta: Math.abs(delta) });
+        }
+        if (interpEl) {
+          if (delta === 0) {
+            interpEl.textContent = '';
+          } else {
+            const mover = biggestCategoryMover(resultados?.biomarcadores, anterior?.biomarcadores);
+            const key = mover
+              ? (delta > 0 ? 'painel.score.interp-up' : 'painel.score.interp-down')
+              : (delta > 0 ? 'painel.score.interp-up-generic' : 'painel.score.interp-down-generic');
+            interpEl.textContent = t(key, { delta: Math.abs(delta), categoria: mover ? bioSysLabel(mover.key) : '' });
+          }
+        }
+      } else {
+        if (trendEl) { trendEl.className = 'hs-trend flat'; trendEl.textContent = ''; }
+        if (interpEl) interpEl.textContent = t('painel.score.primeira-analise');
+      }
+      if (confEl) {
+        const { scored, total } = computeScoreConfidence(resultados);
+        confEl.textContent = total ? t('painel.score.confidence', { scored, total }) : '';
       }
     }
 
@@ -5516,29 +5615,37 @@
         }
         renderConsultas(consultasFinal);
         if (d.resultados)     renderBioHighlights(d.resultados);
-        if (d.relatorio || d.resultados?.biomarcadores) {
-          const rel = Object.assign({}, d.relatorio);
-          const calc = computeBioScore(d.resultados);
-          if (calc !== null) { rel.score = calc; rel.classificacao = scoreClassLabel(calc); }
-          renderScore(rel, d.resultados); renderRelatorio(rel, d.resultados);
-        }
-        if (d.resultados)   renderBodyMap(d.resultados);
 
-        // Carregar histórico de análises (subcoleção)
+        // Carregar histórico de análises (subcoleção) — feito antes do score
+        // para podermos passar a análise anterior a renderScore() e mostrar
+        // a tendência no hero do Painel em vez de um número isolado (DA-03).
+        let historico = [];
         try {
           const snaps = await getDocs(query(
             collection(db, 'users', user.uid, 'analises'),
             orderBy('criadoEm', 'desc')
           ));
-          const historico = snaps.docs.map(s => ({ id: s.id, ...s.data() }));
+          historico = snaps.docs.map(s => ({ id: s.id, ...s.data() }));
           if (historico.length > 1) {
             historico.forEach(h => normalizeResultados(h));
             window._bioHistorico = historico;
             renderHistoricoSelector(historico);
-            // Re-render com o histórico disponível para activar as sparklines
-            if (d.resultados) renderBiomarcadores(d.resultados);
           }
         } catch(e) { /* subcoleção ainda não existe */ }
+
+        if (d.relatorio || d.resultados?.biomarcadores) {
+          const rel = Object.assign({}, d.relatorio);
+          const calc = computeBioScore(d.resultados);
+          if (calc !== null) { rel.score = calc; rel.classificacao = scoreClassLabel(calc); }
+          // historico[0] é tipicamente o mesmo snapshot que acabou de ser
+          // gravado pelo admin junto com os dados atuais; o "anterior" real
+          // para efeitos de tendência é o índice seguinte.
+          const anterior = historico.length > 1 ? historico[1] : null;
+          renderScore(rel, d.resultados, anterior); renderRelatorio(rel, d.resultados);
+        }
+        if (d.resultados)   renderBodyMap(d.resultados);
+        // Re-render com o histórico disponível para activar as sparklines
+        if (historico.length > 1 && d.resultados) renderBiomarcadores(d.resultados);
 
         // Preencher campos do perfil
         if (d.firstName) document.getElementById('pf-first').value = d.firstName;
