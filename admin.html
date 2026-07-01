@@ -143,6 +143,10 @@
     .bio-tbl td.bio-ref-pair input { font-size:11.5px; padding:5px 8px; }
     .btn-del-row { background:rgba(248,113,113,0.06); border:1px solid rgba(248,113,113,0.15); color:var(--red); border-radius:6px; padding:4px 8px; font-size:12px; cursor:pointer; transition:background 0.15s; }
     .btn-del-row:hover { background:rgba(248,113,113,0.14); }
+    .btn-recalc-delta { flex:none; background:rgba(61,217,232,0.06); border:1px solid rgba(61,217,232,0.18); color:var(--cyan); border-radius:6px; padding:4px 7px; font-size:12px; line-height:1; cursor:pointer; transition:background 0.15s; }
+    .btn-recalc-delta:hover { background:rgba(61,217,232,0.14); }
+    .bio-delta-cell { display:flex; gap:4px; align-items:center; }
+    .bio-delta-cell input { width:100%; }
 
     /* Suplementação / Consultas editor */
     .cards-editor { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
@@ -1396,6 +1400,8 @@
   };
   let currentTimestamps = {};
   let pendingTab = null; // tab para onde o utilizador quer ir
+  // Valores da última análise (nome -> valor), para auto-calcular o delta (DA-01).
+  let currentPrevBiomarcadores = {};
 
   // Executa efectivamente a mudança de tab (sem verificação de dirty)
   function doSwitchTab(name) {
@@ -1678,9 +1684,22 @@
       document.getElementById('detail-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    const snap = await getDoc(doc(db,'users',uid));
+    const [snap, ultimaAnaliseSnap] = await Promise.all([
+      getDoc(doc(db,'users',uid)),
+      getDocs(query(collection(db,'users',uid,'analises'), orderBy('criadoEm','desc'), limit(1)))
+        .catch(e => { console.error('Erro ao carregar histórico de biomarcadores:', e); return { empty: true, docs: [] }; })
+    ]);
     const d = snap.exists() ? snap.data() : {};
     const nome = [d.firstName,d.lastName].filter(Boolean).join(' ') || d.email?.split('@')[0] || '-';
+
+    // Mapa nome -> valor da última análise guardada, para auto-calcular o delta (DA-01).
+    currentPrevBiomarcadores = {};
+    if (!ultimaAnaliseSnap.empty) {
+      const prevBio = ultimaAnaliseSnap.docs[0].data().biomarcadores || {};
+      Object.values(prevBio).forEach(rows => (rows||[]).forEach(row => {
+        if (row?.nome) currentPrevBiomarcadores[row.nome] = row.valor;
+      }));
+    }
 
     document.getElementById('dh-ava').textContent = iniciais(nome);
     document.getElementById('dh-name').textContent = nome;
@@ -1846,7 +1865,7 @@
           <button class="btn-add-row" onclick="addBioRow('${catKey}')">+ Linha</button>
         </div>
         <div class="bio-tbl-wrap"><table class="bio-tbl">
-          <colgroup><col style="width:150px"><col style="width:70px"><col style="width:80px"><col style="width:140px"><col style="width:140px"><col style="width:140px"><col style="width:140px"><col style="width:90px"><col style="width:80px"><col style="width:50px"><col style="width:36px"></colgroup>
+          <colgroup><col style="width:150px"><col style="width:70px"><col style="width:80px"><col style="width:140px"><col style="width:140px"><col style="width:140px"><col style="width:140px"><col style="width:90px"><col style="width:112px"><col style="width:50px"><col style="width:36px"></colgroup>
           <thead><tr>
             <th>Biomarcador</th><th>Valor</th><th>Unidade</th>
             <th title="Referência populacional: intervalo observado em pessoas saudáveis, por sexo (♀/♂)">Referência pop. ♀/♂</th>
@@ -1861,9 +1880,55 @@
         </table></div>`;
       container.appendChild(div);
     });
-    // Atualizar preview após renderização
-    requestAnimationFrame(updateDestaquePreview);
+    // Atualizar preview e pré-preencher deltas em falta após renderização
+    requestAnimationFrame(() => { updateDestaquePreview(); autoFillDeltas(); });
   }
+
+  // Calcula a variação entre o valor anterior e o atual, no mesmo formato que o
+  // campo já usava quando escrito à mão (sinal + número, ex: "-15" ou "+8").
+  // Devolve null quando não é possível calcular (valores não numéricos).
+  function computeDelta(prevValor, valorAtual) {
+    const p = parseFloat(String(prevValor).replace(',', '.'));
+    const c = parseFloat(String(valorAtual).replace(',', '.'));
+    if (!isFinite(p) || !isFinite(c)) return null;
+    const diff = c - p;
+    if (diff === 0) return '0';
+    const casas = Math.max(
+      (String(valorAtual).split('.')[1] || '').length,
+      (String(prevValor).split('.')[1] || '').length
+    );
+    const arred = casas > 0 ? diff.toFixed(Math.min(casas, 2)) : String(Math.round(diff));
+    return (diff > 0 ? '+' : '') + arred;
+  }
+
+  // Pré-preenche o delta de qualquer linha que ainda não tenha um valor manual,
+  // desde que exista histórico (analises/) para o mesmo nome de biomarcador (DA-01).
+  function autoFillDeltas() {
+    document.querySelectorAll('#bio-categories tbody tr').forEach(tr => {
+      const deltaInput = tr.querySelector('.f-delta');
+      if (!deltaInput || deltaInput.value) return; // não sobrescrever delta já preenchido
+      const nome = tr.querySelector('.f-nome')?.value.trim();
+      const valorAtual = tr.querySelector('.f-valor')?.value.trim();
+      if (!nome || !valorAtual || !(nome in currentPrevBiomarcadores)) return;
+      const calc = computeDelta(currentPrevBiomarcadores[nome], valorAtual);
+      if (calc !== null) deltaInput.value = calc;
+    });
+  }
+
+  // Botão ↻ por linha: recalcula sempre, mesmo que já haja um valor (permite
+  // atualizar depois de editar "Valor", ou substituir um delta escrito à mão).
+  window.recalcDeltaRow = function(btn) {
+    const tr = btn.closest('tr');
+    const deltaInput = tr.querySelector('.f-delta');
+    const nome = tr.querySelector('.f-nome')?.value.trim();
+    const valorAtual = tr.querySelector('.f-valor')?.value.trim();
+    if (!nome || !valorAtual || !(nome in currentPrevBiomarcadores)) {
+      deltaInput.placeholder = 'sem teste anterior para comparar';
+      return;
+    }
+    const calc = computeDelta(currentPrevBiomarcadores[nome], valorAtual);
+    if (calc !== null) deltaInput.value = calc;
+  };
 
   // Valores de referência podem ser uma string única (legado/unissex) ou
   // um objeto { f, m } com valores diferentes por sexo.
@@ -1903,7 +1968,10 @@
         <option value="atencao" ${r.tag==='atencao'?'selected':''}>Atenção</option>
         <option value="critico" ${r.tag==='critico'?'selected':''}>Crítico</option>
       </select></td>
-      <td><input type="text" class="f-delta" value="${r.delta||''}" placeholder="ex: -15 ou +8" /></td>
+      <td class="bio-delta-cell">
+        <input type="text" class="f-delta" value="${r.delta||''}" placeholder="ex: -15 ou +8" />
+        <button type="button" class="btn-recalc-delta" onclick="recalcDeltaRow(this)" title="Calcular a partir do teste anterior">↻</button>
+      </td>
       <td class="destaque-cell"><input type="checkbox" class="destaque-cb" title="Mostrar no painel" ${r.destaque?'checked':''} /></td>
       <td><button class="btn-del-row" onclick="this.closest('tr').remove()" title="Remover">×</button></td>
     </tr>`;

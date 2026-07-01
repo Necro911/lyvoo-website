@@ -249,4 +249,6 @@ firebase emulators:exec --only firestore,auth \
 ## Reference docs in-repo
 - `README.md` — architecture deep-dive (data model, Stripe flow, security, CI/CD).
 - `ROADMAP.md` — production roadmap and explicitly deferred debt.
+- `docs/audits/` — dated, versioned point-in-time product/UX/architecture audits. Never edit an existing audit file after the fact; add a new dated file if scope changes materially.
+- `docs/roadmap/` — living, editable backlogs derived from the audits above (e.g. `dashboard-admin-backlog.md` from the 2026-07-01 dashboard↔admin holistic review). Update checkboxes/status here, not in the source audit.
 - Session memory: `C:\Users\AGENT47\.claude\projects\E--Claude\memory\` (auth/App Check, prelaunch pricing, mobile testing, dashboard i18n).
