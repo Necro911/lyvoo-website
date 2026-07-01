@@ -2980,6 +2980,66 @@
     return Math.round(total / scored.length);
   }
 
+  // ── DA-06: motor de regras — sugestões automáticas de prioridades ────
+  // Gera candidatos a partir dos biomarcadores já preenchidos nesta tabela
+  // (tag crítico/atenção). NÃO escreve em Firestore — devolve só sugestões,
+  // no formato do array `prioridades` reservado em DA-05 (categoria,
+  // prioridade, texto, followUpData, metaValor, automatizado, visivelCliente).
+  // Rever/aceitar/editar/persistir é responsabilidade do separador de admin
+  // ainda por construir (DA-07); isto é deliberadamente só o motor.
+  //
+  // Cópia fiel dos padrões de deteção de INSIGHT_DEFS em dashboard.html
+  // (linhas ~4902-4908, usados lá para etiquetar refeições) — mesma lógica,
+  // aplicada aqui a biomarcadores para gerar o texto da sugestão nutricional.
+  const PRIORITY_INSIGHT_DEFS = [
+    { re:/glic|insulin|a[çc][úu]c|diabet|hba1c/i,                       label:'controlo glicémico' },
+    { re:/colesterol|ldl|hdl|lip[ií]d|triglic|apob|cardiovasc|satura/i, label:'gestão lipídica' },
+    { re:/inflama|[óo]mega|antioxidant|polifen/i,                       label:'perfil anti-inflamatório' },
+    { re:/intestin|fibra|microbi|digest|fermenta/i,                     label:'saúde intestinal' },
+    { re:/energia|fadiga|ferro|b12|folato|vitamina d/i,                 label:'energia & vitalidade' },
+  ];
+  function priorityInsightFor(nome) {
+    const found = PRIORITY_INSIGHT_DEFS.find(d => d.re.test(nome || ''));
+    return found ? found.label : null;
+  }
+  function addWeeksISO(n) {
+    const d = new Date();
+    d.setDate(d.getDate() + n * 7);
+    return d.toISOString().slice(0, 10);
+  }
+  function suggestPriorities(biomarcadores, genero) {
+    const rows = Object.values(biomarcadores || {}).flat().filter(r => r && r.valor && r.nome);
+    const suggestions = [];
+    rows.forEach(r => {
+      const tag = scoreAutoTag(r, genero);
+      if (tag === 'critico') {
+        suggestions.push({
+          categoria: 'retest',
+          prioridade: 'alta',
+          texto: `Repetir ${r.nome} em 6 semanas para confirmar evolução.`,
+          followUpData: addWeeksISO(6),
+          metaValor: scorePickRef(r.refOtima, genero) || scorePickRef(r.referencia, genero) || '',
+          automatizado: true,
+          visivelCliente: true,
+        });
+      } else if (tag === 'atencao') {
+        const insight = priorityInsightFor(r.nome);
+        if (insight) {
+          suggestions.push({
+            categoria: 'nutricao',
+            prioridade: 'media',
+            texto: `Reforce ${insight} — ${r.nome} está fora do intervalo ótimo.`,
+            followUpData: '',
+            metaValor: scorePickRef(r.refOtima, genero) || '',
+            automatizado: true,
+            visivelCliente: true,
+          });
+        }
+      }
+    });
+    return suggestions;
+  }
+
   window.saveBiomarcadores = async function() {
     const dataAnalise   = document.getElementById('bio-data').value.trim();
     const biomarcadores = collectBioData();
