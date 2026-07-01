@@ -346,7 +346,7 @@
 <div id="inbox-overlay" class="unsaved-modal-overlay" style="z-index:600;">
   <div class="unsaved-modal" style="max-width:560px;width:92%;max-height:80vh;display:flex;flex-direction:column;">
     <h3 style="margin:0 0 4px;">Caixa de entrada</h3>
-    <p style="font-size:12.5px;color:var(--txt-3);margin:0 0 14px;">Confirmações de consultas, pedidos de reagendamento e mensagens de clientes.</p>
+    <p style="font-size:12.5px;color:var(--txt-3);margin:0 0 14px;">Confirmações de consultas, pedidos de reagendamento, mensagens de clientes e falhas de envio de email.</p>
     <div id="inbox-list" style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:8px;">A carregar…</div>
     <div class="save-bar" style="margin-top:14px;">
       <button class="ef-btn" onclick="closeInbox()">Fechar</button>
@@ -1148,10 +1148,12 @@
   let _inboxRespUnsub = null;
   let _inboxCancUnsub = null;
   let _inboxKitUnsub = null;
+  let _inboxEmailUnsub = null;
+  let _inboxEmailFalhas = [];
   const _inboxNomeCache = {};
 
   function initInboxListeners() {
-    if (_inboxRespUnsub && _inboxCancUnsub && _inboxKitUnsub) return;
+    if (_inboxRespUnsub && _inboxCancUnsub && _inboxKitUnsub && _inboxEmailUnsub) return;
     _inboxRespUnsub = onSnapshot(query(collection(db,'users'), where('respostaCliente.visto','==',false)), (snap) => {
       _inboxRespostas = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
       updateInboxBadge();
@@ -1167,6 +1169,14 @@
       updateInboxBadge();
       if (document.getElementById('inbox-overlay').classList.contains('show')) renderInbox();
     }, (err) => console.error('Listener de confirmações de kit falhou:', err));
+    // Falhas de email automático (DA-13) — já existia um pontinho vermelho
+    // discreto por cliente na lista (linha ~1626); isto agrega-as no Inbox
+    // para o admin não ter de reparar cliente a cliente.
+    _inboxEmailUnsub = onSnapshot(query(collection(db,'users'), where('emailFalhouEm','!=',null)), (snap) => {
+      _inboxEmailFalhas = snap.docs.map(d => ({ uid: d.id, ...d.data() })).filter(u => !u.notificadoEm);
+      updateInboxBadge();
+      if (document.getElementById('inbox-overlay').classList.contains('show')) renderInbox();
+    }, (err) => console.error('Listener de falhas de email falhou:', err));
   }
 
   function countUnreadChats() {
@@ -1174,7 +1184,7 @@
   }
 
   function updateInboxBadge() {
-    const total = _inboxRespostas.length + _inboxCanceladas.length + _inboxKits.length + countUnreadChats();
+    const total = _inboxRespostas.length + _inboxCanceladas.length + _inboxKits.length + _inboxEmailFalhas.length + countUnreadChats();
     const badge = document.getElementById('inbox-badge');
     if (!badge) return;
     badge.textContent = total > 99 ? '99+' : String(total);
@@ -1243,6 +1253,17 @@
         texto: `confirmou a devolução do kit${ciclo} - pronto para avançar de estado`,
         tab: 'geral',
         marcarVisto: () => updateDoc(doc(db,'users',u.uid), { 'kitDevolvido.visto': true }),
+      });
+    }
+    for (const u of _inboxEmailFalhas) {
+      items.push({
+        ts: tsMillis(u.emailFalhouEm),
+        uid: u.uid,
+        icon: '✉',
+        color: 'var(--red)',
+        texto: 'falhou o envio automático do email de notificação — reenviar manualmente',
+        tab: 'geral',
+        marcarVisto: null, // só desaparece quando o reenvio tiver sucesso (emailFalhouEm limpo)
       });
     }
     for (const uid of Object.keys(_chatMeta)) {
@@ -1823,7 +1844,7 @@
     buildRefeicaoEditor(pa.refeicoes||[]);
 
     // Suplementação
-    buildSuppEditor(d.suplementacao || []);
+    buildSuppEditor(d.suplementacao || [], d.resultados?.biomarcadores);
 
     // Consultas
     loadAgendamentos(uid);
@@ -2200,7 +2221,17 @@
   };
 
   // ── Suplementação editor ──────────────────────────────────────────────
-  function buildSuppEditor(list) {
+  // Nomes de biomarcadores do cliente atual, para o picker de ligação
+  // suplemento↔biomarcador (DA-10). Recalculado sempre que o editor de
+  // suplementos é (re)construído para este cliente.
+  let currentBiomarkerNames = [];
+  function extractBiomarkerNames(biomarcadores) {
+    return [...new Set(Object.values(biomarcadores || {}).flat().filter(r => r && r.nome).map(r => r.nome))]
+      .sort((a, b) => a.localeCompare(b, 'pt'));
+  }
+
+  function buildSuppEditor(list, biomarcadores) {
+    currentBiomarkerNames = extractBiomarkerNames(biomarcadores);
     const container = document.getElementById('supp-list');
     container.innerHTML = '';
     list.forEach((s, i) => addSuppCard(s, i));
@@ -2211,6 +2242,8 @@
     const div = document.createElement('div');
     div.className = 'card-editor';
     const idx = container.children.length;
+    const bioOptions = currentBiomarkerNames.map(n =>
+      `<option value="${n}" ${s.biomarcadorRelacionado===n?'selected':''}>${n}</option>`).join('');
     div.innerHTML = `
       <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
       <div class="form-row">
@@ -2220,6 +2253,12 @@
       <div class="form-row">
         <div class="form-field"><label class="form-label">Dose</label><input class="form-input" type="text" name="s-dose" value="${s.dose||''}" placeholder="Ex: 2000 UI/dia" /></div>
         <div class="form-field"><label class="form-label">Momento de toma</label><input class="form-input" type="text" name="s-momento" value="${s.momento||''}" placeholder="Ex: Com a refeição principal" /></div>
+      </div>
+      <div class="form-field"><label class="form-label">Biomarcador relacionado (opcional)</label>
+        <select class="form-select" name="s-biomarcador">
+          <option value="">— Nenhum —</option>
+          ${bioOptions}
+        </select>
       </div>
       <div class="form-field"><label class="form-label">Justificação clínica</label><textarea class="form-textarea" name="s-razao" style="min-height:60px">${s.razao||''}</textarea></div>
       <div class="form-field"><label class="form-label">Estado</label>
@@ -2473,6 +2512,7 @@
       sigla:    card.querySelector('[name=s-sigla]').value.trim().toUpperCase(),
       dose:     card.querySelector('[name=s-dose]').value.trim(),
       momento:  card.querySelector('[name=s-momento]').value.trim(),
+      biomarcadorRelacionado: card.querySelector('[name=s-biomarcador]')?.value || '',
       razao:    card.querySelector('[name=s-razao]').value.trim(),
       ativo:    card.querySelector('[name=s-ativo]').value === 'ativo',
     })).filter(s => s.nome);
