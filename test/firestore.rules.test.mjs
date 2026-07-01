@@ -169,3 +169,12 @@ test('counters/webhookErrors/eliminacoesRGPD: cliente sem acesso, admin lê', as
   await assertSucceeds(getDoc(doc(admin(), 'webhookErrors/w1')));
   await assertSucceeds(getDoc(doc(admin(), 'eliminacoesRGPD/u1')));
 });
+
+// ── biomarkerTemplates: só admin lê e escreve (DA-09) ─────────────────────
+test('biomarkerTemplates: admin lê e escreve; cliente sem acesso', async () => {
+  await seed((db) => setDoc(doc(db, 'biomarkerTemplates/t1'), { nome: 'Painel Metabólico Standard' }));
+  await assertFails(getDoc(doc(alice(), 'biomarkerTemplates/t1')));
+  await assertFails(setDoc(doc(alice(), 'biomarkerTemplates/t2'), { nome: 'Falso' }));
+  await assertSucceeds(getDoc(doc(admin(), 'biomarkerTemplates/t1')));
+  await assertSucceeds(setDoc(doc(admin(), 'biomarkerTemplates/t2'), { nome: 'Painel Cardiovascular' }));
+});

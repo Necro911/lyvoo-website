@@ -650,6 +650,24 @@
         </div>
 
         <div class="form-section">
+          <div class="form-section-title">Modelos de referência</div>
+          <p style="margin:0 0 12px;font-size:12px;color:var(--txt-3)">Aplica um painel de intervalos de referência guardado (nome + unidade + faixas) — não mexe em valores, tags ou destaques já preenchidos. Também podes guardar os biomarcadores atuais como um novo modelo reutilizável.</p>
+          <div class="form-row" style="align-items:flex-end;">
+            <div class="form-field" style="flex:1;">
+              <label class="form-label">Modelo guardado</label>
+              <select class="form-select" id="bio-template-select"><option value="">— Sem modelos guardados —</option></select>
+            </div>
+            <div class="form-field" style="flex:0 0 auto;">
+              <button type="button" class="ef-btn" onclick="aplicarModeloBiomarcadores()">Aplicar modelo</button>
+            </div>
+            <div class="form-field" style="flex:0 0 auto;">
+              <button type="button" class="ef-btn" onclick="guardarModeloBiomarcadores()">💾 Guardar atual como modelo</button>
+            </div>
+          </div>
+          <span class="save-msg" id="msg-bio-template"></span>
+        </div>
+
+        <div class="form-section">
           <div class="form-section-title">Data da análise</div>
           <div class="form-row">
             <div class="form-field">
@@ -1420,6 +1438,8 @@
   let pendingTab = null; // tab para onde o utilizador quer ir
   // Valores da última análise (nome -> valor), para auto-calcular o delta (DA-01).
   let currentPrevBiomarcadores = {};
+  // Modelos de painéis de biomarcadores guardados (DA-09), carregados uma vez no login.
+  let bioTemplates = [];
 
   // Executa efectivamente a mudança de tab (sem verificação de dirty)
   function doSwitchTab(name) {
@@ -2088,6 +2108,96 @@
     });
     return result;
   }
+
+  // ── Modelos de painéis de biomarcadores (DA-09) ───────────────────────
+  // Carregados uma vez no login (onAuthStateChanged); guardam só nome/unidade/
+  // intervalos de referência — nunca valor/tag/delta/destaque, que são
+  // sempre específicos de um cliente e de um teste.
+  async function loadBioTemplates() {
+    try {
+      const snap = await getDocs(collection(db, 'biomarkerTemplates'));
+      bioTemplates = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (a.nome || '').localeCompare(b.nome || '', 'pt'));
+      const sel = document.getElementById('bio-template-select');
+      if (sel) {
+        sel.innerHTML = bioTemplates.length
+          ? bioTemplates.map(t => `<option value="${t.id}">${escapeHtml(t.nome || '(sem nome)')}</option>`).join('')
+          : '<option value="">— Sem modelos guardados —</option>';
+      }
+    } catch (e) {
+      console.error('Erro ao carregar modelos de biomarcadores:', e);
+    }
+  }
+
+  // Aplica o modelo selecionado à tabela atual: para cada biomarcador do
+  // modelo, atualiza a linha existente (por nome) ou cria uma nova - só mexe
+  // em unidade/intervalos, nunca em valor/tag/delta/destaque já preenchidos.
+  window.aplicarModeloBiomarcadores = function() {
+    const id = document.getElementById('bio-template-select')?.value;
+    const tpl = bioTemplates.find(t => t.id === id);
+    if (!tpl) { showMsg('msg-bio-template', 'Escolhe um modelo primeiro.', true); return; }
+    let atualizados = 0, criados = 0;
+    Object.entries(tpl.biomarcadores || {}).forEach(([catKey, rows]) => {
+      const tbody = document.getElementById('biotbody-' + catKey);
+      if (!tbody) return;
+      (rows || []).forEach(r => {
+        if (!r.nome) return;
+        let tr = [...tbody.querySelectorAll('tr')].find(row => row.querySelector('.f-nome')?.value.trim() === r.nome);
+        if (!tr) {
+          tr = document.createElement('tr');
+          tr.innerHTML = bioRow({ nome: r.nome });
+          tbody.appendChild(tr);
+          criados++;
+        } else {
+          atualizados++;
+        }
+        const ref = refField(r.referencia), ot = refField(r.refOtima), risco = refField(r.refRisco), acao = refField(r.refAcao);
+        const set = (cls, val) => { const el = tr.querySelector('.' + cls); if (el) el.value = val || ''; };
+        set('f-unidade', r.unidade);
+        set('f-ref-f', ref.f);     set('f-ref-m', ref.m);
+        set('f-ot-f', ot.f);       set('f-ot-m', ot.m);
+        set('f-risco-f', risco.f); set('f-risco-m', risco.m);
+        set('f-acao-f', acao.f);   set('f-acao-m', acao.m);
+      });
+    });
+    updateDestaquePreview();
+    markDirty();
+    showMsg('msg-bio-template', `Modelo aplicado: ${criados} linha(s) nova(s), ${atualizados} atualizada(s). Revê e guarda.`, false);
+  };
+
+  // Guarda os biomarcadores tal como estão preenchidos AGORA (só as linhas com
+  // pelo menos um intervalo de referência) como um novo modelo reutilizável.
+  window.guardarModeloBiomarcadores = async function() {
+    const nome = prompt('Nome do modelo (ex: "Painel Metabólico Standard"):');
+    if (!nome || !nome.trim()) return;
+    const dados = collectBioData();
+    const limpo = {};
+    Object.entries(dados).forEach(([catKey, rows]) => {
+      const temRef = r => r.referencia?.f || r.referencia?.m || r.refOtima?.f || r.refOtima?.m
+        || r.refRisco?.f || r.refRisco?.m || r.refAcao?.f || r.refAcao?.m;
+      const filtrado = (rows || [])
+        .filter(r => r.nome && temRef(r))
+        .map(r => ({ nome: r.nome, unidade: r.unidade, referencia: r.referencia, refOtima: r.refOtima, refRisco: r.refRisco, refAcao: r.refAcao }));
+      if (filtrado.length) limpo[catKey] = filtrado;
+    });
+    if (!Object.keys(limpo).length) {
+      showMsg('msg-bio-template', 'Nada para guardar — preenche pelo menos um intervalo de referência.', true);
+      return;
+    }
+    try {
+      await auth.currentUser?.getIdToken(true);
+      await addDoc(collection(db, 'biomarkerTemplates'), {
+        nome: nome.trim(),
+        biomarcadores: limpo,
+        criadoEm: serverTimestamp(),
+        criadoPor: auth.currentUser?.email || 'admin',
+      });
+      showMsg('msg-bio-template', `Modelo "${nome.trim()}" guardado.`, false);
+      await loadBioTemplates();
+    } catch (e) {
+      showMsg('msg-bio-template', 'Erro ao guardar modelo: ' + e.message, true);
+    }
+  };
 
   // ── Suplementação editor ──────────────────────────────────────────────
   function buildSuppEditor(list) {
@@ -3573,6 +3683,7 @@
     initChatsMetaListener();
     initInboxListeners();
     await loadUsers();
+    loadBioTemplates();
   });
 
   document.getElementById('btn-logout').addEventListener('click', async () => {

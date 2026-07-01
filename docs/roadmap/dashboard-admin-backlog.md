@@ -38,7 +38,7 @@ Execute **top to bottom, one at a time**, same convention as the root `ROADMAP.m
 
 | ☐ | ID | Task | Effort | Risk | Value | Depends on | Files |
 |---|----|------|--------|------|-------|------------|-------|
-| ☐ | DA-09 | Reference-range template library: save a named biomarker panel (e.g. "Painel Metabólico Standard") once, apply to any client, override per-client only where needed. | Medium | Low | Medium | — | `admin.html`, new Firestore collection e.g. `biomarkerTemplates/` |
+| ☑ | DA-09 | Reference-range template library: save a named biomarker panel (e.g. "Painel Metabólico Standard") once, apply to any client, override per-client only where needed. **Done 2026-07-01**: new `biomarkerTemplates/{id}` collection (admin-only read/write, with a matching rules test), a "Modelos de referência" section in the admin Biomarcadores tab, `guardarModeloBiomarcadores()` (saves current ref-ranges — filtered to rows that actually have at least one range filled — as a named template) and `aplicarModeloBiomarcadores()` (finds-or-creates rows by name, updates only unidade/reference-range fields, never touches an existing row's valor/tag/delta/destaque). Filter predicate unit-tested; UI visually verified via DOMParser injection. Not verified against the rules emulator locally (needs Java 21+). | Medium | Low | Medium | — | `admin.html`, `firestore.rules`, `test/firestore.rules.test.mjs` |
 | ☐ | DA-10 | Supplement↔biomarker linkage: change `suplementacao[].razao` from plain textarea to textarea + optional biomarker-name picker sourced from that client's current `resultados.biomarcadores` keys. | Small | Low | Medium | — | `admin.html` |
 | ☐ | DA-11 | Bulk cohort state-transition action — e.g. "advance all `estado=4` clients with `planoValidoAte` >6 months old to `estado=5`" as one confirmed batch action instead of per-client card clicks. | Medium | Medium | Medium | — | `admin.html` |
 | ☐ | DA-12 | Consultation slot-suggestion shortcuts — "propose next 3 available Tue/Thu 10am–12pm slots" instead of manual month-grid click-through. | Small | Low | Low-Medium | — | `admin.html` |
@@ -77,7 +77,7 @@ Source: `docs/audits/2026-07-01-2026-vision-gap-analysis.md`. Two further items 
 ☐ DA-06  Rule engine for suggestions   → automation core
 ☐ DA-07  Admin "Prioridades" tab       → clinician control surface
 ☑ DA-08  Dashboard Weekly Priorities   → user-facing payoff (done 2026-07-01)
-☐ DA-09  Reference-range templates     → biggest remaining manual-typing win
+☑ DA-09  Reference-range templates     → biggest remaining manual-typing win (done 2026-07-01)
 ☐ DA-10  Supplement↔biomarker link     → small, low-risk
 ☐ DA-13  Surface emailFalhouEm alerts  → cheap, prevents silent failures
 ☐ DA-11  Bulk cohort transitions       → matters once cohort size grows

@@ -149,6 +149,15 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ── Modelos de painéis de biomarcadores (DA-09) ──
+    // Configuração clínica reutilizável (nome + intervalos de referência de um
+    // painel-tipo, ex. "Painel Metabólico Standard") para o admin aplicar a
+    // qualquer cliente sem re-digitar os intervalos de cada vez. Nunca contém
+    // dados de um cliente específico (sem valor/tag/delta) — só admin acede.
+    match /biomarkerTemplates/{templateId} {
+      allow read, write: if isAdmin();
+    }
+
     // ── Lista de espera (formulário público em contacto.html) ──
     // Submetida por visitantes (sem auth) via setDoc com id derivado do email,
     // por isso create+update têm de continuar abertos — MAS validados: forma de
