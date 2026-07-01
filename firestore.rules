@@ -67,10 +67,21 @@ service cloud.firestore {
     // ── Perfis de cliente (registar/dashboard) + gestão clínica (admin) ──
     match /users/{uid} {
       // Registo: só o próprio, e o doc só pode nascer em estado 1 (sem pagamento).
+      // O create tem de trancar o MESMO conjunto de campos clínicos/financeiros que
+      // o update (ownerKeepsLockedFields), senão um cliente podia semear
+      // resultados/planoAlimentar/suplementacao/relatorio/prioridades (ou os campos
+      // de pagamento) já no momento da criação — fabricando dados clínicos e
+      // alimentando o XSS armazenado que o admin renderiza (auditoria 2026-07-01, H2).
+      // `estado` fica de fora da lista porque TEM de estar presente e == 1;
+      // `plano/planoNome/estadoLabel` continuam permitidos: são rótulos fixos que o
+      // registar.html grava, sem efeito de segurança (o gate real é estado+field-lock).
       allow create: if isAdmin() || (
         isOwner(uid)
         && request.resource.data.estado == 1
-        && !request.resource.data.keys().hasAny(['stripeSessionId','planoValidoAte','cicloAtual','clienteId','seq'])
+        && !request.resource.data.keys().hasAny([
+             'stripeSessionId','planoValidoAte','cicloAtual','clienteId','seq','arquivado',
+             'prioridades','resultados','planoAlimentar','suplementacao','relatorio'
+           ])
         && validProfileFields(request.resource.data)
       );
       // Update: o admin pode tudo; o dono só se NÃO mexer nos campos bloqueados

@@ -50,6 +50,39 @@ test('users: owner NÃO cria com stripeSessionId/clienteId', async () => {
 test('users: não-owner NÃO cria o doc de outro', async () => {
   await assertFails(setDoc(doc(bob(), 'users/alice'), { estado: 1 }));
 });
+test('users: owner NÃO semeia campos clínicos/financeiros no CREATE (H2)', async () => {
+  // O create tem de trancar o mesmo conjunto que o update — senão o cliente
+  // fabrica resultados/plano/prioridades/arquivado já ao criar o doc.
+  await assertFails(
+    setDoc(doc(alice(), 'users/alice'), {
+      estado: 1,
+      email: 'a@x.pt',
+      resultados: { biomarcadores: { metabolico: [{ nome: '<img src=x>', valor: '999' }] } },
+    })
+  );
+  await assertFails(
+    setDoc(doc(alice(), 'users/alice'), { estado: 1, prioridades: [{ texto: 'x' }] })
+  );
+  await assertFails(
+    setDoc(doc(alice(), 'users/alice'), { estado: 1, planoAlimentar: { objectivo: 'Hack' } })
+  );
+  await assertFails(setDoc(doc(alice(), 'users/alice'), { estado: 1, arquivado: false }));
+});
+test('users: create legítimo do registar.html continua a passar', async () => {
+  // Espelha exatamente o que registar.html grava (plano/planoNome/estadoLabel ok).
+  await assertSucceeds(
+    setDoc(doc(alice(), 'users/alice'), {
+      estado: 1,
+      estadoLabel: 'Sem plano ativo',
+      email: 'a@x.pt',
+      firstName: 'Alice',
+      lastName: 'Silva',
+      plano: 'lyvoo',
+      planoNome: 'Lyvoo',
+      marketingConsent: true,
+    })
+  );
+});
 
 // ── users: field-lock (CRÍTICO — anti auto-escalação de pagamento) ─────────
 test('users: owner NÃO auto-escala estado (field-lock)', async () => {
@@ -65,14 +98,14 @@ test('users: owner NÃO altera plano/stripeSessionId/clienteId/arquivado', async
 });
 test('users: owner NÃO escreve prioridades (field-lock, DA-05)', async () => {
   await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1 }));
-  await assertFails(
-    updateDoc(doc(alice(), 'users/alice'), { prioridades: [{ texto: 'x' }] })
-  );
+  await assertFails(updateDoc(doc(alice(), 'users/alice'), { prioridades: [{ texto: 'x' }] }));
 });
 test('users: owner NÃO fabrica resultados/plano/suplementação/relatório (field-lock, DA-22)', async () => {
   await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1 }));
   await assertFails(
-    updateDoc(doc(alice(), 'users/alice'), { resultados: { biomarcadores: { metabolico: [{ nome: 'Glicose', valor: '999' }] } } })
+    updateDoc(doc(alice(), 'users/alice'), {
+      resultados: { biomarcadores: { metabolico: [{ nome: 'Glicose', valor: '999' }] } },
+    })
   );
   await assertFails(
     updateDoc(doc(alice(), 'users/alice'), { planoAlimentar: { objectivo: 'Hackeado' } })
@@ -80,9 +113,7 @@ test('users: owner NÃO fabrica resultados/plano/suplementação/relatório (fie
   await assertFails(
     updateDoc(doc(alice(), 'users/alice'), { suplementacao: [{ nome: 'Falso', ativo: true }] })
   );
-  await assertFails(
-    updateDoc(doc(alice(), 'users/alice'), { relatorio: { score: 100 } })
-  );
+  await assertFails(updateDoc(doc(alice(), 'users/alice'), { relatorio: { score: 100 } }));
 });
 test('users: owner PODE editar campos de perfil', async () => {
   await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1, email: 'a@x.pt' }));
@@ -172,9 +203,13 @@ test('counters/webhookErrors/eliminacoesRGPD: cliente sem acesso, admin lê', as
 
 // ── biomarkerTemplates: só admin lê e escreve (DA-09) ─────────────────────
 test('biomarkerTemplates: admin lê e escreve; cliente sem acesso', async () => {
-  await seed((db) => setDoc(doc(db, 'biomarkerTemplates/t1'), { nome: 'Painel Metabólico Standard' }));
+  await seed((db) =>
+    setDoc(doc(db, 'biomarkerTemplates/t1'), { nome: 'Painel Metabólico Standard' })
+  );
   await assertFails(getDoc(doc(alice(), 'biomarkerTemplates/t1')));
   await assertFails(setDoc(doc(alice(), 'biomarkerTemplates/t2'), { nome: 'Falso' }));
   await assertSucceeds(getDoc(doc(admin(), 'biomarkerTemplates/t1')));
-  await assertSucceeds(setDoc(doc(admin(), 'biomarkerTemplates/t2'), { nome: 'Painel Cardiovascular' }));
+  await assertSucceeds(
+    setDoc(doc(admin(), 'biomarkerTemplates/t2'), { nome: 'Painel Cardiovascular' })
+  );
 });
