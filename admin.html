@@ -1311,8 +1311,8 @@
       <div class="inbox-item" data-idx="${i}" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--line-2);border-radius:10px;background:var(--panel-2);cursor:pointer;">
         <span style="font-size:15px;color:${it.color};flex-shrink:0;">${it.icon}</span>
         <div style="flex:1;min-width:0;">
-          <div style="font-size:13.5px;font-weight:600;">${nomes[i]}</div>
-          <div style="font-size:12.5px;color:var(--txt-2);margin-top:2px;">${it.texto}</div>
+          <div style="font-size:13.5px;font-weight:600;">${escapeHtml(nomes[i])}</div>
+          <div style="font-size:12.5px;color:var(--txt-2);margin-top:2px;">${escapeHtml(it.texto)}</div>
         </div>
       </div>`).join('');
     list.querySelectorAll('.inbox-item').forEach(el => {
@@ -1379,7 +1379,7 @@
   function addTagPill(wrap, val) {
     const pill = document.createElement('span');
     pill.className = 'tag-pill';
-    pill.innerHTML = `${val}<button type="button" onclick="this.parentElement.remove()">×</button>`;
+    pill.innerHTML = `${escapeHtml(val)}<button type="button" onclick="this.parentElement.remove()">×</button>`;
     wrap.insertBefore(pill, wrap.querySelector('.tag-input-inline'));
   }
   function getTagValues(wrapId) {
@@ -1669,8 +1669,8 @@
       const bulkChecked = selectedUids.has(u.uid) ? 'checked' : '';
       return `<div class="user-item ${currentUID===u.uid?'active':''}" data-uid="${u.uid}" onclick="openUser('${u.uid}')">
         <input type="checkbox" class="bulk-cb" data-uid="${u.uid}" ${bulkChecked} onclick="event.stopPropagation(); toggleBulkSelect('${u.uid}', this.checked)" title="Selecionar para ação em massa" />
-        <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${iniciais(nome)}</div>
-        <div class="u-body"><div class="u-name">${nome}${arquivadoBadge}${chatDot}${emailFailDot}${delBadge}</div><div class="u-email-sm">${u.clienteId||''} · ${u.email||'-'}</div></div>
+        <div class="u-ava" style="${u.arquivado?'opacity:0.45':''}">${escapeHtml(iniciais(nome))}</div>
+        <div class="u-body"><div class="u-name">${escapeHtml(nome)}${arquivadoBadge}${chatDot}${emailFailDot}${delBadge}</div><div class="u-email-sm">${escapeHtml(u.clienteId||'')} · ${escapeHtml(u.email||'-')}</div></div>
         ${u.arquivado ? '' : `<span class="u-estado e${e}">${e}</span>`}
       </div>`;
     }).join('');
@@ -2192,8 +2192,8 @@
       const tagCls = r.tag === 'otimo' ? 'good' : r.tag === 'atencao' ? 'warn' : r.tag === 'critico' ? 'crit' : '';
       const tagLbl = r.tag === 'otimo' ? 'Ótimo' : r.tag === 'atencao' ? 'Atenção' : r.tag === 'critico' ? 'Crítico' : '';
       return `<div class="destaque-card-prev">
-        <div class="destaque-card-prev-name" title="${r.nome}">${r.nome}</div>
-        <div class="destaque-card-prev-val">${r.valor || '-'} <span class="destaque-card-prev-unit">${r.unidade || ''}</span></div>
+        <div class="destaque-card-prev-name" title="${escapeHtml(r.nome)}">${escapeHtml(r.nome)}</div>
+        <div class="destaque-card-prev-val">${escapeHtml(r.valor || '-')} <span class="destaque-card-prev-unit">${escapeHtml(r.unidade || '')}</span></div>
         ${tagLbl ? `<div class="destaque-card-prev-tag ${tagCls}">${tagLbl}</div>` : ''}
       </div>`;
     }).join('');
@@ -2548,7 +2548,7 @@
         </div>
         <div class="form-field" style="max-width:140px">
           <label class="form-label">Hora</label>
-          <input class="form-input" type="time" name="dr-hora" value="${r.hora||''}" />
+          <input class="form-input" type="time" name="dr-hora" value="${escapeHtml(r.hora||'')}" />
         </div>
         <div class="form-field" style="max-width:160px">
           <label class="form-label">Casa ou Fora</label>
@@ -2562,7 +2562,7 @@
       </div>
       <div class="form-field">
         <label class="form-label">Descrição</label>
-        <textarea class="form-textarea" name="dr-desc" rows="2">${r.descricao||''}</textarea>
+        <textarea class="form-textarea" name="dr-desc" rows="2">${escapeHtml(r.descricao||'')}</textarea>
       </div>`;
     container.appendChild(div);
   }
@@ -3011,8 +3011,8 @@
         const cancelada = a.estado === 'cancelada';
         row.innerHTML = `
           <div style="flex:1;min-width:180px;">
-            <div style="font-size:13px;font-weight:600;">${AG_TIPO_LABEL[a.tipo]||a.titulo||'Consulta'}</div>
-            <div style="font-size:12px;color:var(--txt-3)">${fmtDate(a.data)} · ${a.hora||'-'}</div>
+            <div style="font-size:13px;font-weight:600;">${escapeHtml(AG_TIPO_LABEL[a.tipo]||a.titulo||'Consulta')}</div>
+            <div style="font-size:12px;color:var(--txt-3)">${fmtDate(a.data)} · ${escapeHtml(a.hora||'-')}</div>
             ${canceladaPeloCliente ? `<div style="font-size:11.5px;color:var(--red);font-weight:700;margin-top:4px;">⚠ Cancelada pelo cliente</div>` : ''}
             ${cancelada && !canceladaPeloCliente ? `<div style="font-size:11.5px;color:var(--red);font-weight:700;margin-top:4px;">⚠ Cancelada</div>` : ''}
           </div>
@@ -3601,7 +3601,7 @@
         <div style="width:32px;height:32px;border-radius:50%;background:rgba(61,217,232,0.1);border:1px solid rgba(61,217,232,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </div>
-        <div class="wl-email">${w.email||'-'}</div>
+        <div class="wl-email">${escapeHtml(w.email||'-')}</div>
         <div class="wl-date">${d}</div>
       </div>`;
     }).join('');
@@ -3614,8 +3614,15 @@
 
   window.exportWaitlist = function() {
     if (!allWaitlist.length) return;
+    // Neutraliza injeção de fórmulas (CSV/formula injection, auditoria 2026-07-01, M2):
+    // um email tipo `=HYPERLINK(...)` executaria ao abrir o ficheiro no Excel/Sheets.
+    const csvCell = v => {
+      let s = String(v == null ? '' : v);
+      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;   // apóstrofo à cabeça desarma a fórmula
+      return `"${s.replace(/"/g, '""')}"`;         // escapa aspas duplas
+    };
     const rows = [['Email','Data inscrição'], ...allWaitlist.map(w => [w.email||'', w.criadoEm ? fmtDate(w.criadoEm) : ''])];
-    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+    const csv = rows.map(r => r.map(csvCell).join(',')).join('\n');
     const blob = new Blob([csv], {type:'text/csv'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lyvoo-waitlist.csv'; a.click();
   };
@@ -3639,8 +3646,8 @@
       const tab = TAB_LABELS_LOG[e.tab] || e.tab;
       return `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;background:var(--panel-2);font-size:12px;">
         <span style="color:var(--txt-3);flex-shrink:0">${dt}</span>
-        <span style="flex:1;color:var(--txt-2)">${tab}</span>
-        <span style="color:var(--txt-3);font-size:11px">${e.por}</span>
+        <span style="flex:1;color:var(--txt-2)">${escapeHtml(tab)}</span>
+        <span style="color:var(--txt-3);font-size:11px">${escapeHtml(e.por)}</span>
       </div>`;
     }).join('');
   }

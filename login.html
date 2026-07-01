@@ -290,7 +290,18 @@
   } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
   import { auth } from './lyvoo-firebase.js';
 
-  const nextPage = new URLSearchParams(window.location.search).get('next') || null;
+  // Só aceitamos como destino pós-login um caminho relativo INTERNO do próprio
+  // site. Sem isto, ?next=https://evil.com (ou next=javascript:…) permitia um
+  // open-redirect / possível XSS ao atribuir a location (auditoria 2026-07-01, M1).
+  function safeNext(raw) {
+    if (!raw) return null;
+    if (raw.includes('..')) return null;                       // sem path traversal
+    if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) return null;          // rejeita http:, javascript:, data:, …
+    if (raw.startsWith('/') || raw.startsWith('\\')) return null; // rejeita //host e caminhos absolutos
+    if (!/^[\w./-]+\.html(?:[?#].*)?$/i.test(raw)) return null;   // só páginas .html internas
+    return raw;
+  }
+  const nextPage = safeNext(new URLSearchParams(window.location.search).get('next'));
   // Em telemóvel, os pop-ups são frequentemente bloqueados (Safari iOS, browsers
   // in-app). Usamos o fluxo de redirect, mais fiável nestes contextos.
   const isMobile = /Android|iPhone|iPad|iPod|Mobile|Silk/i.test(navigator.userAgent);

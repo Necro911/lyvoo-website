@@ -3071,9 +3071,9 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </div>
         <div class="bell-notif-body">
-          <div class="bell-notif-title">${n.titulo}</div>
-          <div class="bell-notif-sub">${n.sub}</div>
-          <div class="bell-notif-time">${n.data}</div>
+          <div class="bell-notif-title">${escapeHtml(n.titulo)}</div>
+          <div class="bell-notif-sub">${escapeHtml(n.sub)}</div>
+          <div class="bell-notif-time">${escapeHtml(n.data)}</div>
         </div>
       </div>`).join('');
   }
@@ -3439,8 +3439,8 @@
 
     let rows = '';
     if (d) rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.data')}</span><span class="cd-value">${d.getDate()} ${mesAbrev(d.getMonth())} ${d.getFullYear()}</span></div>`;
-    if (c.hora) rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.hora')}</span><span class="cd-value">${c.hora}</span></div>`;
-    rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.com')}</span><span class="cd-value">${c.medico || t('consultas.detail.nutricionista-fallback')}</span></div>`;
+    if (c.hora) rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.hora')}</span><span class="cd-value">${escapeHtml(c.hora)}</span></div>`;
+    rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.com')}</span><span class="cd-value">${escapeHtml(c.medico || t('consultas.detail.nutricionista-fallback'))}</span></div>`;
     rows += `<div class="cd-row"><span class="cd-label">${t('consultas.detail.estado')}</span><span class="cd-value">${c.estado === 'confirmada' ? t('consultas.tag.confirmada') : t('consultas.tag.agendada')}</span></div>`;
     if (c.link) {
       const linkValue = podeEntrar(c)
@@ -4617,7 +4617,7 @@
   function bioDelta(r) {
     if (!r.delta) return '<div class="biox-delta flat">-</div>';
     const down = /^[-↓]/.test(String(r.delta).trim());
-    return `<div class="biox-delta ${down ? 'down' : 'up'}">${down ? '↓' : '↑'} ${String(r.delta).replace(/^[↑↓]\s?/, '')}</div>`;
+    return `<div class="biox-delta ${down ? 'down' : 'up'}">${down ? '↓' : '↑'} ${escapeHtml(String(r.delta).replace(/^[↑↓]\s?/, ''))}</div>`;
   }
   // Barra de posição (valor vs. referência + zona ótima)
   function bioBar(r) {
@@ -4645,7 +4645,7 @@
     ].filter(x => x.v);
     if (!rows.length) return '';
     return `<div class="biox-ladder">${rows.map(x =>
-      `<div class="biox-ladder-row${r.tag === x.cls ? ' hit' : ''}"><span class="biox-ladder-k"><span class="dot" style="background:${x.c}"></span>${x.k}</span><span class="biox-ladder-v">${x.v}${r.unidade ? ' ' + r.unidade : ''}</span></div>`
+      `<div class="biox-ladder-row${r.tag === x.cls ? ' hit' : ''}"><span class="biox-ladder-k"><span class="dot" style="background:${x.c}"></span>${x.k}</span><span class="biox-ladder-v">${escapeHtml(x.v)}${r.unidade ? ' ' + escapeHtml(r.unidade) : ''}</span></div>`
     ).join('')}</div>`;
   }
 
@@ -4733,13 +4733,13 @@
           const rowCls = r.tag === 'atencao' ? 'row-warn' : r.tag === 'critico' ? 'row-crit' : '';
           const delta = r.delta
             ? (/^[-↓]/.test(String(r.delta).trim())
-                ? `<span class="bio-delta down">${r.delta}</span>`
-                : `<span class="bio-delta up">${r.delta}</span>`)
+                ? `<span class="bio-delta down">${escapeHtml(r.delta)}</span>`
+                : `<span class="bio-delta up">${escapeHtml(r.delta)}</span>`)
             : '<span class="bio-delta" style="color:var(--txt-3)">-</span>';
           lista += `<div class="bio-row ${rowCls}">
-            <span class="bio-name">${bioNomeLabel(r.nome)}</span>
-            <span class="bio-val">${r.valor} <small>${r.unidade || ''}</small></span>
-            <span class="bio-range">${r.referencia || ''}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${r.refOtima}</small>` : ''}</span>
+            <span class="bio-name">${escapeHtml(bioNomeLabel(r.nome))}</span>
+            <span class="bio-val">${escapeHtml(r.valor)} <small>${escapeHtml(r.unidade || '')}</small></span>
+            <span class="bio-range">${escapeHtml(r.referencia || '')}${r.refOtima ? `<br><small style="color:var(--green);opacity:0.85">Ótimo: ${escapeHtml(r.refOtima)}</small>` : ''}</span>
             ${sysRangeBar(r, tagColor(r.tag))}
             <span class="bio-tag ${tagCls}">${r.tag ? bioxLabel(r.tag) : '-'}</span>
             ${delta}
@@ -4766,13 +4766,13 @@
         <button class="biox-head" onclick="bioxToggle(this)" aria-expanded="false">
           <span class="biox-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span>
           <span class="biox-mid">
-            <span class="biox-interp">${bioInterp(r)}</span>
+            <span class="biox-interp">${escapeHtml(bioInterp(r))}</span>
             <span class="biox-meta">${catLabel[r._cat] || bioSysLabel('outros')}</span>
           </span>
           <span class="biox-side">
             ${spark}
             <span class="biox-valblock">
-              <span class="biox-val">${r.valor}<small>${r.unidade || ''}</small></span>
+              <span class="biox-val">${escapeHtml(r.valor)}<small>${escapeHtml(r.unidade || '')}</small></span>
               ${bioDelta(r)}
             </span>
             <span class="biox-badge ${BIOX_CLS[r.tag]}">${bioxLabel(r.tag)}</span>
@@ -4781,9 +4781,9 @@
         </button>
         <div class="biox-detail"><div class="biox-detail-inner"><div class="biox-detail-pad">
           <div class="biox-stats">
-            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.resultado-atual')}</div><div class="biox-stat-v">${r.valor} ${r.unidade || ''}</div></div>
-            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.intervalo-otimo')}</div><div class="biox-stat-v opt">${r.refOtima || '-'}</div></div>
-            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.referencia')}</div><div class="biox-stat-v">${r.referencia || '-'}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.resultado-atual')}</div><div class="biox-stat-v">${escapeHtml(r.valor)} ${escapeHtml(r.unidade || '')}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.intervalo-otimo')}</div><div class="biox-stat-v opt">${escapeHtml(r.refOtima || '-')}</div></div>
+            <div class="biox-stat"><div class="biox-stat-l">${t('bio.detail.referencia')}</div><div class="biox-stat-v">${escapeHtml(r.referencia || '-')}</div></div>
           </div>
           ${bar}
           ${ladder}
@@ -4902,11 +4902,11 @@
         ${c.rows.map(r => {
           const rc = tagColor(r.tag);
           return `<div class="sys-detail-row">
-            <span class="sys-detail-name">${bioNomeLabel(r.nome)}</span>
-            <span class="sys-detail-val" style="border-left:2px solid ${rc};padding-left:8px;">${r.valor} <small>${r.unidade||''}</small></span>
+            <span class="sys-detail-name">${escapeHtml(bioNomeLabel(r.nome))}</span>
+            <span class="sys-detail-val" style="border-left:2px solid ${rc};padding-left:8px;">${escapeHtml(r.valor)} <small>${escapeHtml(r.unidade||'')}</small></span>
             <span style="display:flex;flex-direction:column;gap:4px;align-items:stretch;">
               ${sysRangeBar(r, rc)}
-              <span class="sys-range-ref">${r.refOtima ? 'Ótimo ' + r.refOtima : (r.referencia||'')}</span>
+              <span class="sys-range-ref">${r.refOtima ? 'Ótimo ' + escapeHtml(r.refOtima) : escapeHtml(r.referencia||'')}</span>
             </span>
           </div>`;
         }).join('')}
@@ -5000,8 +5000,8 @@
     if (dlBtn) dlBtn.style.display = 'inline-flex';
     const prot = pa.proteina||0, gord = pa.gordura||0, hidr = pa.hidratos||0;
     const protG = pa.proteinaG||0, gordG = pa.gorduraG||0, hidrG = pa.hidratosG||0, aguaL = (pa.agua||'').trim();
-    const prTags = (pa.priorizar||[]).map(t=>`<span>${t}</span>`).join('');
-    const rdTags = (pa.reduzir||[]).map(t=>`<span>${t}</span>`).join('');
+    const prTags = (pa.priorizar||[]).map(x=>`<span>${escapeHtml(x)}</span>`).join('');
+    const rdTags = (pa.reduzir||[]).map(x=>`<span>${escapeHtml(x)}</span>`).join('');
 
     // Refeições - paleta + ícones SVG por tipo
     const MEAL_META = {
@@ -5055,17 +5055,17 @@
         const ops = (r.opcoes && r.opcoes.length) ? r.opcoes : (r.desc ? [r.desc] : []);
         const off = _mealSwapIdx[i] || 0;
         const activeOp = ops.length ? ops[off % ops.length] : null;
-        const opsHtml = activeOp ? `<div class="meal-desc" data-meal="${i}">${activeOp}</div>` : '';
+        const opsHtml = activeOp ? `<div class="meal-desc" data-meal="${i}">${escapeHtml(activeOp)}</div>` : '';
 
         // Insights clínicos, macros (só se reais) e rationale
         const insights = deriveMealInsights(r, planFocus);
         const tagsHtml = insights.length ? `<div class="meal-tags">${insights.map(t => `<span class="meal-tag" style="color:rgb(${t.rgba});background:rgba(${t.rgba},0.1);border-color:rgba(${t.rgba},0.28)">${t.label}</span>`).join('')}</div>` : '';
         const macrosHtml = (r.macros && (r.macros.p!=null||r.macros.c!=null||r.macros.f!=null)) ? `<div class="meal-macros">
-          ${r.macros.p!=null?`<span class="meal-macro">${t('plano.macro.p')} <b>${r.macros.p}g</b></span>`:''}
-          ${r.macros.c!=null?`<span class="meal-macro">${t('plano.macro.hc')} <b>${r.macros.c}g</b></span>`:''}
-          ${r.macros.f!=null?`<span class="meal-macro">${t('plano.macro.g')} <b>${r.macros.f}g</b></span>`:''}
+          ${r.macros.p!=null?`<span class="meal-macro">${t('plano.macro.p')} <b>${escapeHtml(r.macros.p)}g</b></span>`:''}
+          ${r.macros.c!=null?`<span class="meal-macro">${t('plano.macro.hc')} <b>${escapeHtml(r.macros.c)}g</b></span>`:''}
+          ${r.macros.f!=null?`<span class="meal-macro">${t('plano.macro.g')} <b>${escapeHtml(r.macros.f)}g</b></span>`:''}
         </div>` : '';
-        const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${r.rationale}</span></div>` : '';
+        const ratHtml = r.rationale ? `<div class="meal-rationale"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg><span>${escapeHtml(r.rationale)}</span></div>` : '';
 
         const swapDis = ops.length < 2;
         const altBtn = !swapDis ? `<button class="meal-act" onclick="mealSwap(${i})" title="${t('meal.alternativa.title')}" aria-label="${t('meal.alternativa.title')}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/><path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/><path d="m13.378 9.633 4.096 1.098 1.097-4.096"/></svg>${t('meal.alternativa')}</button>` : '';
@@ -5076,14 +5076,14 @@
             <div class="meal-thumb" style="background:radial-gradient(circle at 34% 28%, rgba(${m.rgba},0.34), rgba(${m.rgba},0.10) 62%, var(--panel-2));border-color:rgba(${m.rgba},0.28);color:${m.color}">${m.icon}</div>
             <div class="meal-body">
               <div class="meal-name-row">
-                <span class="meal-name">${mealNameLabel(r.nome)}</span>
+                <span class="meal-name">${escapeHtml(mealNameLabel(r.nome))}</span>
               </div>
               ${opsHtml}
               ${(ratHtml||tagsHtml||macrosHtml) ? `<div class="meal-meta">${ratHtml}${tagsHtml}${macrosHtml}</div>` : ''}
               ${actionsHtml}
             </div>
             <div class="meal-side">
-              ${r.hora ? `<div class="meal-time" style="color:${m.color}">${r.hora}</div>` : ''}
+              ${r.hora ? `<div class="meal-time" style="color:${m.color}">${escapeHtml(r.hora)}</div>` : ''}
             </div>
           </div>
         </div>`;
@@ -5117,8 +5117,8 @@
       <div class="plano-hero">
         <div class="plano-hero-info">
           ${pa.objectivo ? `<div class="plano-hero-label">${t('plano.hero.objectivo-label')}</div>
-          <div class="plano-hero-title">${pa.objectivo}</div>
-          ${pa.objectivoDesc ? `<div class="plano-hero-desc">${pa.objectivoDesc}</div>` : ''}` : `<div class="plano-hero-label">${t('plano.hero.distribuicao-label')}</div>
+          <div class="plano-hero-title">${escapeHtml(pa.objectivo)}</div>
+          ${pa.objectivoDesc ? `<div class="plano-hero-desc">${escapeHtml(pa.objectivoDesc)}</div>` : ''}` : `<div class="plano-hero-label">${t('plano.hero.distribuicao-label')}</div>
           <div class="plano-hero-title">${t('plano.hero.macros-titulo')}</div>`}
         </div>
         ${donut}
@@ -5170,7 +5170,7 @@
         ${rdTags ? `<div class="plano-tag-card plano-tag-card--bad"><div class="sec-list-title" style="color:var(--red)">${t('plano.tags.reduzir')}</div><div class="sec-tags">${rdTags}</div></div>` : ''}
       </div>` : '';
 
-    const obsCard = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">${t('plano.observacoes')}</div><div class="plano-note">${pa.obs}</div></div>` : '';
+    const obsCard = pa.obs ? `<div class="sec-list-section"><div class="sec-list-title" style="color:var(--txt-2)">${t('plano.observacoes')}</div><div class="plano-note">${escapeHtml(pa.obs)}</div></div>` : '';
 
     container.innerHTML = `
       ${heroRow}
@@ -5205,13 +5205,13 @@
     container.innerHTML = ativos.map((s, i) => {
       const p = SUPP_PALETTE[i % SUPP_PALETTE.length];
       return `<div class="supp-card">
-        <div class="supp-icon" style="background:rgba(${p.rgba},0.12);color:${p.color};box-shadow:0 0 20px rgba(${p.rgba},0.20)">${s.sigla||'•'}</div>
+        <div class="supp-icon" style="background:rgba(${p.rgba},0.12);color:${p.color};box-shadow:0 0 20px rgba(${p.rgba},0.20)">${escapeHtml(s.sigla||'•')}</div>
         <div class="supp-body">
-          <div class="supp-name">${s.nome}</div>
-          ${s.razao ? `<div class="supp-reason">${s.razao}</div>` : ''}
+          <div class="supp-name">${escapeHtml(s.nome)}</div>
+          ${s.razao ? `<div class="supp-reason">${escapeHtml(s.razao)}</div>` : ''}
         </div>
         <div class="supp-right">
-          ${s.dose ? `<span class="supp-dose" style="background:rgba(${p.rgba},0.12);color:${p.color};border:1px solid rgba(${p.rgba},0.25)">${s.dose}${s.momento?' · '+s.momento:''}</span>` : ''}
+          ${s.dose ? `<span class="supp-dose" style="background:rgba(${p.rgba},0.12);color:${p.color};border:1px solid rgba(${p.rgba},0.25)">${escapeHtml(s.dose)}${s.momento?' · '+escapeHtml(s.momento):''}</span>` : ''}
           <span class="supp-badge" style="background:rgba(74,222,128,0.10);color:var(--green);border:1px solid rgba(74,222,128,0.2)">${t('sec.perfil.active-badge')}</span>
         </div>
       </div>`;
@@ -5251,13 +5251,13 @@
       const mon = d ? mesAbrev(d.getMonth()) : '-';
       const tagLbl = isPast ? t('consultas.tag.realizada') : (c.estado==='confirmada' ? t('consultas.tag.confirmada') : t('consultas.tag.agendada'));
       const metaLine = [
-        c.medico || t('consultas.medico-fallback'),
-        c.notas || ''
+        escapeHtml(c.medico || t('consultas.medico-fallback')),
+        escapeHtml(c.notas || '')
       ].filter(Boolean).join(' · ');
       const rightBlock = isPast
         ? `<div class="consult-right"><span class="consult-tag">${tagLbl}</span></div>`
         : `<div class="consult-right">
-            ${c.hora ? `<div class="consult-hour">${c.hora}</div>` : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
+            ${c.hora ? `<div class="consult-hour">${escapeHtml(c.hora)}</div>` : `<span class="consult-tag upcoming-tag">${tagLbl}</span>`}
             ${c.link && podeEntrar(c)
               ? `<a href="${normLink(c.link)}" target="_blank" rel="noopener" class="consult-enter" onclick="event.stopPropagation()">${t('consultas.entrar')} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>`
               : c.link
@@ -5269,7 +5269,7 @@
       return `<div class="consult-row ${isPast ? '' : 'upcoming'}"${clickAttr}>
         <div class="consult-date"><div class="consult-day">${day}</div><div class="consult-month">${mon}</div></div>
         <div class="consult-info">
-          <div class="consult-title">${c.titulo}</div>
+          <div class="consult-title">${escapeHtml(c.titulo)}</div>
           <div class="consult-meta">${metaLine}</div>
         </div>
         ${rightBlock}
@@ -5305,7 +5305,7 @@
         try {
           fmt = new Date(p.followUpData + 'T00:00:00').toLocaleDateString(_lang === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long' });
         } catch (e) {}
-        metaHtml = `<div class="wp-meta">${t('painel.prioridades.ate', { data: fmt })}</div>`;
+        metaHtml = `<div class="wp-meta">${t('painel.prioridades.ate', { data: escapeHtml(fmt) })}</div>`;
       }
       return `<div class="wp-item wp-${p.prioridade || 'media'}">
         <span class="wp-icon wp-cat-${cat}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${WP_ICONS[cat]}</svg></span>
@@ -5331,9 +5331,9 @@
       const tagLbl = r.tag==='otimo'?t('painel.bio.tag.otimo'):r.tag==='atencao'?t('painel.bio.tag.atencao'):t('painel.bio.tag.critico');
       const deltaDir = r.delta && (r.delta.startsWith('-')||r.delta.startsWith('↓')) ? 'down' : 'up';
       return `<div class="bio-card">
-        <div class="bio-top"><span class="bio-name">${bioNomeLabel(r.nome)}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span></div>
-        <div class="bio-val">${r.valor} <small>${r.unidade||''}</small></div>
-        ${r.delta?`<div class="bio-trend ${deltaDir}">${r.delta}</div>`:'<div class="bio-trend">-</div>'}
+        <div class="bio-top"><span class="bio-name">${escapeHtml(bioNomeLabel(r.nome))}</span><span class="bio-tag ${tagCls}">${r.tag?tagLbl:'-'}</span></div>
+        <div class="bio-val">${escapeHtml(r.valor)} <small>${escapeHtml(r.unidade||'')}</small></div>
+        ${r.delta?`<div class="bio-trend ${deltaDir}">${escapeHtml(r.delta)}</div>`:'<div class="bio-trend">-</div>'}
       </div>`;
     }).join('');
   }
