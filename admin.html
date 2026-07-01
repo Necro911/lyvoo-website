@@ -2909,16 +2909,92 @@
     }
   };
 
+  // ── Cálculo do Health Score (DA-02) ───────────────────────────────────
+  // Cópia fiel da lógica de dashboard.html (parseRefRange…autoTag, linhas
+  // ~4363-4444) para poder calcular e persistir o score no momento em que o
+  // admin grava os biomarcadores — antes disso o score só existia calculado
+  // ao vivo no dashboard e nunca era guardado, por isso não havia histórico
+  // para uma tendência. Manter em sincronia se a lógica em dashboard.html mudar.
+  function scoreParseRefRange(str) {
+    const ref = String(str || '').replace(/,/g, '.');
+    const nums = ref.match(/\d+(\.\d+)?/g);
+    if (!nums || !nums.length) return null;
+    if (nums.length >= 2)      return { min: +nums[0], max: +nums[1] };
+    if (/[<≤]/.test(ref))      return { min: null, max: +nums[0] };
+    if (/[>≥]/.test(ref))      return { min: +nums[0], max: null };
+    return null;
+  }
+  function scoreInRange(val, rg) {
+    return (rg.min === null || val >= rg.min) && (rg.max === null || val <= rg.max);
+  }
+  function scoreOutsideSeverity(val, rg) {
+    const span = (rg.min !== null && rg.max !== null) ? (rg.max - rg.min) : Math.abs(rg.max ?? rg.min) || 1;
+    const tol  = Math.abs(span) * 0.15 || 1;
+    const desvio = Math.max(rg.min !== null ? rg.min - val : -Infinity,
+                            rg.max !== null ? val - rg.max : -Infinity);
+    return desvio <= tol ? 'atencao' : 'critico';
+  }
+  function scoreParseRefRanges(str) {
+    return String(str || '').split(/\bou\b/i).map(s => scoreParseRefRange(s)).filter(Boolean);
+  }
+  function scoreInAnyRange(val, ranges) {
+    return ranges.some(rg => scoreInRange(val, rg));
+  }
+  function scorePickRef(v, genero) {
+    if (v && typeof v === 'object') return (genero === 'masculino' ? v.m : v.f) || v.f || v.m || '';
+    return v || '';
+  }
+  function scoreAutoTag(r, genero) {
+    if (r.tag === 'otimo' || r.tag === 'atencao' || r.tag === 'critico') return r.tag;
+    const val = parseFloat(String(r.valor ?? '').replace(',', '.'));
+    if (isNaN(val)) return '';
+    const acao  = scoreParseRefRanges(scorePickRef(r.refAcao, genero));
+    const risco = scoreParseRefRanges(scorePickRef(r.refRisco, genero));
+    const otima = scoreParseRefRanges(scorePickRef(r.refOtima, genero));
+    if (acao.length || risco.length || otima.length) {
+      if (scoreInAnyRange(val, acao))  return 'critico';
+      if (scoreInAnyRange(val, risco)) return 'atencao';
+      if (scoreInAnyRange(val, otima)) return 'otimo';
+      const rf = scoreParseRefRange(scorePickRef(r.referencia, genero));
+      if (rf) return scoreInRange(val, rf) ? 'atencao' : 'critico';
+      return 'atencao';
+    }
+    const ot = scoreParseRefRange(scorePickRef(r.refOtima, genero));
+    const rf = scoreParseRefRange(scorePickRef(r.referencia, genero));
+    if (ot) {
+      if (scoreInRange(val, ot)) return 'otimo';
+      if (rf) return scoreInRange(val, rf) ? 'atencao' : scoreOutsideSeverity(val, rf);
+      return scoreOutsideSeverity(val, ot);
+    }
+    if (!rf) return '';
+    if (scoreInRange(val, rf)) return 'otimo';
+    return scoreOutsideSeverity(val, rf);
+  }
+  const SCORE_BODY_TAG_SCORE = { otimo: 100, atencao: 60, critico: 25 };
+  // Devolve null quando não há marcadores avaliáveis (nenhum valor preenchido).
+  function computeHealthScore(biomarcadores, genero) {
+    const rows = Object.values(biomarcadores || {}).flat().filter(r => r && r.valor);
+    const scored = rows.filter(r => SCORE_BODY_TAG_SCORE[scoreAutoTag(r, genero)]);
+    if (!scored.length) return null;
+    const total = scored.reduce((sum, r) => sum + SCORE_BODY_TAG_SCORE[scoreAutoTag(r, genero)], 0);
+    return Math.round(total / scored.length);
+  }
+
   window.saveBiomarcadores = async function() {
     const dataAnalise   = document.getElementById('bio-data').value.trim();
     const biomarcadores = collectBioData();
+    const genero        = document.getElementById('g-genero').value;
+    const score          = computeHealthScore(biomarcadores, genero);
     // 1. Atualizar documento principal (retrocompatibilidade com dashboard)
     await saveDoc({ resultados: { dataAnalise, biomarcadores } }, 'msg-bio');
-    // 2. Guardar snapshot na subcoleção analises/ (histórico)
+    // 2. Guardar snapshot na subcoleção analises/ (histórico), incluindo o
+    //    score calculado neste momento — sem isto, o score do dashboard nunca
+    //    ficava guardado e não era possível mostrar uma tendência (DA-02).
     try {
       await addDoc(collection(db, 'users', currentUID, 'analises'), {
         dataAnalise,
         biomarcadores,
+        score,
         criadoEm: serverTimestamp(),
       });
     } catch(e) {

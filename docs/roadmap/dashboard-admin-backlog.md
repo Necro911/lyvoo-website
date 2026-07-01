@@ -13,7 +13,7 @@ Execute **top to bottom, one at a time**, same convention as the root `ROADMAP.m
 | ☐ | ID | Task | Effort | Risk | Value | Depends on | Files |
 |---|----|------|--------|------|-------|------------|-------|
 | ☑ | DA-01 | Auto-compute biomarker `delta` from `users/{uid}/analises/` history at admin save time, instead of clinician typing it. Diff current value vs. most recent snapshot for the same biomarker `nome`. Keep a manual-override toggle. **Done 2026-07-01**: `openUser` now parallel-fetches the latest `analises/` doc into `currentPrevBiomarcadores`; empty `delta` fields auto-fill on load via `autoFillDeltas()`, and each row got a `↻` button (`recalcDeltaRow`) to recompute or override at any time. No data-model change — `delta` stays a plain string, unchanged on save. | Small | Low | Critical | — | `admin.html` |
-| ☐ | DA-02 | Persist health score into each `analises/{id}` snapshot at save time (mirror dashboard's `computeBioScore` server/admin-side, or store the client-computed read-back). This is the prerequisite for any score trend UI. | Small | Low | High | — | `admin.html`, `dashboard.html` |
+| ☑ | DA-02 | Persist health score into each `analises/{id}` snapshot at save time (mirror dashboard's `computeBioScore` server/admin-side, or store the client-computed read-back). This is the prerequisite for any score trend UI. **Done 2026-07-01**: `admin.html` now carries a faithful port of dashboard.html's scoring pipeline (`parseRefRange`→`autoTag`, `BODY_TAG_SCORE`, gender-aware `pickRef`) as `computeHealthScore()`, run on `saveBiomarcadores()` and written as `score` on the `analises/{id}` snapshot. Unit-verified against hand-checked sample data (4-tier ranges, manual tag override, no-value exclusion, empty-biomarker null case). | Small | Low | High | — | `admin.html`, `dashboard.html` |
 | ☐ | DA-03 | Health Score hero redesign: previous score, delta arrow + %, one-line auto-generated interpretation, confidence note ("baseado em N de M marcadores") using already-computed `scored.length`. | Medium | Low | High | DA-02 | `dashboard.html` |
 | ☐ | DA-04 | Biomarcadores section: add "N improved / N worsened / N stable" roll-up card above the list/card view, computed from the now-automatic deltas. | Small | Low | Medium | DA-01 | `dashboard.html` |
 
@@ -62,7 +62,7 @@ Source: `docs/audits/2026-07-01-2026-vision-gap-analysis.md`. Two further items 
 
 ```
 ☑ DA-01  Auto-delta                    → kills daily manual typing (done 2026-07-01)
-☐ DA-02  Persist score history         → unlocks all trend UI
+☑ DA-02  Persist score history         → unlocks all trend UI (done 2026-07-01)
 ☐ DA-03  Health Score hero             → visible win #1
 ☐ DA-04  Biomarker roll-up card        → visible win #2
 ☐ DA-05  prioridades[] data model      → foundation for Weekly Priorities
