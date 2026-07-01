@@ -42,6 +42,16 @@
     .glow-a { background: radial-gradient(ellipse 45% 35% at 30% 40%, rgba(61,217,232,0.12) 0%, transparent 50%), radial-gradient(ellipse 40% 35% at 80% 60%, rgba(139,92,246,0.1) 0%, transparent 50%); }
     .glow-b { background: radial-gradient(ellipse 50% 35% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 50%); }
 
+    /* ── Light section variants (alternate with dark) ── */
+    .sec-light, .sec-surface { color: var(--ink); }
+    .sec-light { background: var(--bg); }
+    .sec-surface { background: var(--surface); }
+    .sec-light h2.big, .sec-surface h2.big { color: var(--ink); }
+    .sec-light .lead, .sec-surface .lead { color: var(--ink-2); }
+    .sec-light .step-head .eyebrow, .sec-surface .step-head .eyebrow { color: var(--teal-light); }
+    .sec-light .chip, .sec-surface .chip { background: rgba(11,82,90,0.05); border-color: rgba(11,82,90,0.14); color: var(--ink-2); }
+    .sec-light .chip svg, .sec-surface .chip svg { color: var(--teal-light); }
+
     h2.big { font-size: clamp(31px, 4.6vw, 54px); font-weight: 850; letter-spacing: -0.045em; line-height: 1.08; color: #fff; }
     .lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.6); }
 
