@@ -157,6 +157,7 @@
     .card-move-btn { background:none; border:none; color:var(--txt-3); cursor:pointer; font-size:14px; line-height:1; padding:2px 6px; border-radius:6px; transition:all 0.15s; }
     .card-move-btn:hover { background:var(--panel-2); color:var(--txt); }
     .btn-add-card { width:100%; padding:11px; border-radius:10px; border:1px dashed rgba(61,217,232,0.25); background:rgba(61,217,232,0.03); color:var(--cyan); font-size:13.5px; font-weight:600; cursor:pointer; transition:all 0.18s; }
+    .prio-auto-badge { position:absolute; top:12px; right:44px; font-size:10px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--violet); background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25); padding:3px 9px; border-radius:999px; }
     .btn-add-card:hover { background:rgba(61,217,232,0.07); border-color:rgba(61,217,232,0.4); }
     /* Opções de refeição */
     .opcoes-list { display:flex; flex-direction:column; gap:8px; margin-bottom:8px; }
@@ -448,6 +449,7 @@
         <button class="tab active" onclick="switchTab('geral')">Geral</button>
         <button class="tab" onclick="switchTab('anamnese')">Anamnese</button>
         <button class="tab" onclick="switchTab('biomarcadores')">Biomarcadores</button>
+        <button class="tab" onclick="switchTab('prioridades')">Prioridades</button>
         <button class="tab" onclick="switchTab('plano')">Plano alimentar</button>
         <button class="tab" onclick="switchTab('suplementacao')">Suplementação</button>
         <button class="tab" onclick="switchTab('consultas')">Consultas</button>
@@ -660,6 +662,21 @@
         <div class="save-bar">
           <button class="btn-save" onclick="clinicalConfirm('biomarcadores','Guardar biomarcadores','Estás prestes a sobrescrever os biomarcadores e resultados de análise deste cliente.')">Guardar biomarcadores</button>
           <span class="save-msg" id="msg-bio"></span>
+        </div>
+      </div>
+
+      <!-- ── TAB: PRIORIDADES (DA-07) ── -->
+      <div class="tab-content" id="tab-prioridades">
+        <div class="form-section">
+          <div class="form-section-title">Sugestões automáticas</div>
+          <p style="margin:0 0 12px;font-size:12px;color:var(--txt-3)">Gera sugestões a partir dos biomarcadores atuais (marcadores críticos → repetir análise; marcadores em atenção → foco nutricional). Revê, edita ou remove antes de guardar — nada é enviado ao cliente sem confirmares.</p>
+          <button type="button" class="btn-add-card" style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.04);color:var(--violet)" onclick="gerarSugestoesPrioridades()">🔎 Gerar sugestões a partir dos biomarcadores</button>
+        </div>
+        <div class="cards-editor" id="prioridades-list" style="margin-top:16px"></div>
+        <button class="btn-add-card" onclick="addPrioridade()">+ Adicionar prioridade manual</button>
+        <div class="save-bar" style="margin-top:20px">
+          <button class="btn-save" onclick="clinicalConfirm('prioridades','Guardar prioridades','Estás prestes a sobrescrever as prioridades mostradas ao cliente.')">Guardar prioridades</button>
+          <span class="save-msg" id="msg-prioridades"></span>
         </div>
       </div>
 
@@ -1352,6 +1369,7 @@
     geral: () => saveGeral(),
     anamnese: () => saveAnamnese(),
     biomarcadores: () => saveBiomarcadores(),
+    prioridades: () => savePrioridades(),
     plano: () => savePlano(),
     suplementacao: () => saveSupp(),
     relatorio: () => saveRelatorio(),
@@ -1395,8 +1413,8 @@
 
   // ── Tab switching ─────────────────────────────────────────────────────
   const TAB_TS_KEYS = {
-    geral:'tsGeral', anamnese:'tsAnamnese', biomarcadores:'tsBio', plano:'tsPlano',
-    suplementacao:'tsSupp', relatorio:'tsRelatorio'
+    geral:'tsGeral', anamnese:'tsAnamnese', biomarcadores:'tsBio', prioridades:'tsPrioridades',
+    plano:'tsPlano', suplementacao:'tsSupp', relatorio:'tsRelatorio'
   };
   let currentTimestamps = {};
   let pendingTab = null; // tab para onde o utilizador quer ir
@@ -1406,7 +1424,7 @@
   // Executa efectivamente a mudança de tab (sem verificação de dirty)
   function doSwitchTab(name) {
     currentTab = name;
-    const tabs = ['geral','anamnese','biomarcadores','plano','suplementacao','consultas','relatorio','chat'];
+    const tabs = ['geral','anamnese','biomarcadores','prioridades','plano','suplementacao','consultas','relatorio','chat'];
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabs[i] === name));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
@@ -1766,6 +1784,9 @@
     document.getElementById('bio-data').value = d.resultados?.dataAnalise || '';
     buildBioEditor(d.resultados?.biomarcadores || {});
 
+    // Prioridades (DA-07)
+    buildPrioridadesEditor(d.prioridades || []);
+
     // Plano alimentar
     const pa = d.planoAlimentar || {};
     document.getElementById('pa-obj').value       = pa.objectivo||'';
@@ -1801,7 +1822,7 @@
     document.getElementById('rel-resumo').value = rel.resumo||'';
 
     // Limpar mensagens
-    ['msg-geral','msg-anamnese','msg-bio','msg-plano','msg-supp','msg-rel'].forEach(id => {
+    ['msg-geral','msg-anamnese','msg-bio','msg-prioridades','msg-plano','msg-supp','msg-rel'].forEach(id => {
       document.getElementById(id).textContent = '';
     });
 
@@ -2101,6 +2122,85 @@
   }
 
   window.addSupp = function() { addSuppCard({}, document.getElementById('supp-list').children.length); };
+
+  // ── Prioridades editor (DA-07) ────────────────────────────────────────
+  const PRIO_CATEGORIAS = [
+    { v:'nutricao',       l:'Nutrição' },
+    { v:'suplementacao',  l:'Suplementação' },
+    { v:'consulta',       l:'Consulta' },
+    { v:'retest',         l:'Repetir análise' },
+    { v:'geral',          l:'Geral' },
+  ];
+  function buildPrioridadesEditor(list) {
+    const container = document.getElementById('prioridades-list');
+    container.innerHTML = '';
+    (list || []).forEach(p => addPrioridadeCard(p));
+  }
+  function addPrioridadeCard(p) {
+    const container = document.getElementById('prioridades-list');
+    const div = document.createElement('div');
+    div.className = 'card-editor';
+    div.dataset.automatizado = p.automatizado ? '1' : '0';
+    const catOptions = PRIO_CATEGORIAS.map(c => `<option value="${c.v}" ${p.categoria===c.v?'selected':''}>${c.l}</option>`).join('');
+    div.innerHTML = `
+      <button class="card-editor-del" onclick="this.closest('.card-editor').remove()" title="Remover">×</button>
+      ${p.automatizado ? '<span class="prio-auto-badge">Automático</span>' : ''}
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Categoria</label>
+          <select class="form-select" name="p-categoria">${catOptions}</select>
+        </div>
+        <div class="form-field"><label class="form-label">Prioridade</label>
+          <select class="form-select" name="p-prioridade">
+            <option value="alta" ${p.prioridade==='alta'?'selected':''}>Alta</option>
+            <option value="media" ${(!p.prioridade||p.prioridade==='media')?'selected':''}>Média</option>
+            <option value="baixa" ${p.prioridade==='baixa'?'selected':''}>Baixa</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field"><label class="form-label">Texto (mostrado ao cliente)</label><textarea class="form-textarea" name="p-texto" style="min-height:50px">${p.texto||''}</textarea></div>
+      <div class="form-row">
+        <div class="form-field"><label class="form-label">Data de seguimento (opcional)</label><input class="form-input" type="date" name="p-followup" value="${p.followUpData||''}" /></div>
+        <div class="form-field"><label class="form-label">Valor-alvo (opcional)</label><input class="form-input" type="text" name="p-meta" value="${p.metaValor||''}" placeholder="Ex: 70-100 mg/dL" /></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--txt-2);margin-top:8px;cursor:pointer;">
+        <input type="checkbox" name="p-visivel" ${p.visivelCliente!==false?'checked':''} /> Visível no dashboard do cliente
+      </label>`;
+    container.appendChild(div);
+  }
+  window.addPrioridade = function() { addPrioridadeCard({}); };
+
+  function collectPrioridadeData() {
+    return [...document.getElementById('prioridades-list').querySelectorAll('.card-editor')].map(card => ({
+      categoria:      card.querySelector('[name=p-categoria]').value,
+      prioridade:     card.querySelector('[name=p-prioridade]').value,
+      texto:          card.querySelector('[name=p-texto]').value.trim(),
+      followUpData:   card.querySelector('[name=p-followup]').value,
+      metaValor:      card.querySelector('[name=p-meta]').value.trim(),
+      automatizado:   card.dataset.automatizado === '1',
+      visivelCliente: card.querySelector('[name=p-visivel]').checked,
+    })).filter(p => p.texto);
+  }
+
+  // Gera sugestões (DA-06) a partir dos biomarcadores tal como estão
+  // preenchidos na tabela AGORA (antes mesmo de guardar), e acrescenta-as
+  // como novos cartões editáveis — nunca escreve nada sozinho.
+  window.gerarSugestoesPrioridades = function() {
+    const genero = document.getElementById('g-genero').value;
+    const sugestoes = suggestPriorities(collectBioData(), genero);
+    const jaExistentes = new Set(
+      [...document.getElementById('prioridades-list').querySelectorAll('[name=p-texto]')]
+        .map(el => el.value.trim().toLowerCase())
+    );
+    let added = 0;
+    sugestoes.forEach(s => {
+      if (jaExistentes.has(s.texto.trim().toLowerCase())) return;
+      addPrioridadeCard(s);
+      added++;
+    });
+    showMsg('msg-prioridades', added
+      ? `${added} sugestão(ões) adicionada(s) — revê e guarda.`
+      : 'Sem novas sugestões (sem marcadores críticos/atenção detetáveis, ou já sugeridas).', false);
+  };
 
   // ── Refeições editor ─────────────────────────────────────────────────
   const REFEICAO_NOMES = [
@@ -2764,7 +2864,7 @@
     } catch(e) {
       showMsg(msgId, 'Erro: ' + e.message, true);
     }
-    if (btn) { btn.disabled = false; btn.textContent = 'Guardar' + (msgId.includes('bio')?' biomarcadores':msgId.includes('plano')?' plano':msgId.includes('supp')?' suplementação':msgId.includes('consult')?' consultas':msgId.includes('rel')?' relatório':''); }
+    if (btn) { btn.disabled = false; btn.textContent = 'Guardar' + (msgId.includes('bio')?' biomarcadores':msgId.includes('prioridades')?' prioridades':msgId.includes('plano')?' plano':msgId.includes('supp')?' suplementação':msgId.includes('consult')?' consultas':msgId.includes('rel')?' relatório':''); }
   }
 
   // ── Efeitos de transição de estado ──────────────────────────────────────
@@ -3085,6 +3185,10 @@
     saveDoc({ suplementacao: collectSuppData() }, 'msg-supp');
   };
 
+  window.savePrioridades = function() {
+    saveDoc({ prioridades: collectPrioridadeData() }, 'msg-prioridades');
+  };
+
   window.saveAnamnese = function() {
     saveDoc({
       anamnese: {
@@ -3280,6 +3384,7 @@
   const CLINICAL_SAVE_FN = {
     anamnese:      () => saveAnamnese(),
     biomarcadores: () => saveBiomarcadores(),
+    prioridades:   () => savePrioridades(),
     plano:         () => savePlano(),
     supp:          () => saveSupp(),
     relatorio:     () => saveRelatorio(),
