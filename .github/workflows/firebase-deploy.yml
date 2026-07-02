@@ -106,28 +106,24 @@ jobs:
     environment: production   # exige aprovação manual se tiver "Required reviewers"
     steps:
       - uses: actions/checkout@v4
+      # Node FIXADO em 22.23.1 (não "22" flutuante) — esta é a causa real das
+      # falhas de deploy, diagnosticada com `firebase deploy --debug` local:
+      # a correção de segurança do Node de 2026-06 (CVE-2026-48931, "http: fix
+      # response queue poisoning") partiu a reutilização de sockets keep-alive
+      # em Node 22.23.0 e 24.17.0, provocando ERR_STREAM_PREMATURE_CLOSE na troca
+      # de token STS dentro do firebase-tools. O firebase-tools engole esse erro
+      # e mostra o genérico "Failed to authenticate, have you run firebase login?"
+      # — daí termos perseguido o secret/CLI/token em vão. Corrigido em Node
+      # 22.23.1 / 24.18.0. https://github.com/firebase/firebase-tools/issues/10726
+      # (O runner resolvia "22" para o 22.23.0 pré-instalado, que é o partido.)
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.23.1
           cache: npm
           cache-dependency-path: functions/package-lock.json
       - name: Install function deps
         working-directory: functions
         run: npm ci
-      # Histórico de auth deste job (ambas as tentativas anteriores falharam):
-      #   1. google-github-actions/auth + FIREBASE_SERVICE_ACCOUNT (GOOGLE_APPLICATION_
-      #      CREDENTIALS) → "Failed to authenticate, have you run firebase login?"
-      #      mesmo com o passo de auth verde (testado com firebase-tools@15 flutuante
-      #      E fixado em 15.22.1 — mesmo erro nos dois).
-      #   2. --token via `firebase login:ci` (FIREBASE_TOKEN) → "Your credentials are
-      #      no longer valid" quase de imediato após gerar o token — este método está
-      #      OFICIALMENTE deprecado (a própria CLI avisa disso) e a Google tem vindo a
-      #      restringir o fluxo OAuth "out-of-band" em que assenta.
-      # A documentação oficial atual recomenda service-account + GOOGLE_APPLICATION_
-      # CREDENTIALS (voltámos a essa via aqui) — a mensagem genérica de erro da (1)
-      # não diz a causa real (pode ser IAM insuficiente na SA, não necessariamente o
-      # bug do issue #10716). Se voltar a falhar, diagnosticar com --debug LOCALMENTE
-      # (ver nota no topo do ficheiro) — nunca neste workflow, que é público.
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
