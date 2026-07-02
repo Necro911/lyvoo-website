@@ -7,25 +7,17 @@ name: Firebase deploy
 # é servido pelo GitHub Pages e NÃO é tocado por este workflow.
 #
 # ─── Setup necessário (uma vez), do lado do repositório/GCP ───────────────────
-# 1. Service account de CI (least privilege) com os papéis para deploy:
-#      - Firebase Rules Admin            (roles/firebaserules.admin)
-#      - Cloud Datastore Index Admin     (roles/datastore.indexAdmin)
-#      - Cloud Functions Admin           (roles/cloudfunctions.admin)
-#      - Service Account User            (roles/iam.serviceAccountUser)
-#      - Cloud Build Editor              (roles/cloudbuild.builds.editor)
-#      - Artifact Registry Writer        (roles/artifactregistry.writer)
-#      - Secret Manager Secret Accessor  (roles/secretmanager.secretAccessor)
-#    Gera uma chave JSON dessa SA.
-# 2. GitHub → Settings → Secrets and variables → Actions → New secret:
-#      FIREBASE_SERVICE_ACCOUNT = (conteúdo do JSON da SA)
-# 2b. firebase-tools tem um bug conhecido em CI onde não apanha as credenciais
-#     ADC do passo "Authenticate to Google Cloud" acima (issue #10716) — por isso
-#     o deploy real usa --token, não a SA JSON. Gerar uma vez, localmente:
-#       npx firebase-tools login:ci
-#     (abre o browser; autenticar com a conta Google dona do projeto lyvoo-9d54b)
-#     e guardar o token impresso em GitHub → Secrets → Actions → New secret:
-#       FIREBASE_TOKEN = (o token impresso)
-# 3. GitHub → Settings → Environments → New environment "production" →
+# 1. Autenticação do deploy: token de CI da própria Firebase (não uma service
+#    account JSON — firebase-tools tem um bug conhecido em CI onde não apanha
+#    credenciais ADC de google-github-actions/auth, issue #10716). Gerar uma
+#    vez, localmente:
+#      npx firebase-tools login:ci
+#    (abre o browser; autenticar com a conta Google dona do projeto lyvoo-9d54b,
+#    que precisa de acesso de Editor/Owner ao projeto para o deploy ter
+#    permissões suficientes) e guardar o token impresso em:
+#    GitHub → Settings → Secrets and variables → Actions → New secret:
+#      FIREBASE_TOKEN = (o token impresso)
+# 2. GitHub → Settings → Environments → New environment "production" →
 #    "Required reviewers" = tu. (É isto que cria o passo de aprovação manual.)
 # Depois disto, qualquer push ao master que mexa em rules/functions valida e
 # fica à espera da tua aprovação para ir a produção. Podes também correr à mão
@@ -105,25 +97,23 @@ jobs:
       - name: Install function deps
         working-directory: functions
         run: npm ci
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
       # Sem --force: um deploy normal (sem remoções) passa em modo não-interativo;
       # uma operação destrutiva (apagar função/índice) FALHA em vez de a executar
       # às cegas — força tratamento humano.
       #
-      # --token em vez de depender só da autenticação ADC (google-github-actions/auth):
+      # Autenticação via --token (não google-github-actions/auth + FIREBASE_SERVICE_ACCOUNT):
       # confirmámos em produção que firebase-tools falha com "Failed to authenticate,
       # have you run firebase login?" mesmo com credenciais ADC válidas (tentado com
       # firebase-tools@15 flutuante E fixado em 15.22.1 — mesmo erro nos dois).
       # https://github.com/firebase/firebase-tools/issues/10716
-      # O --token usa o mecanismo de autenticação CI dedicado e documentado da própria
-      # Firebase (gerado uma vez, localmente, com `npx firebase-tools login:ci`),
-      # que não depende da deteção de GOOGLE_APPLICATION_CREDENTIALS pelo firebase-tools
-      # — contorna este bug por completo. Guardado em Secrets → FIREBASE_TOKEN.
-      # O passo "Authenticate to Google Cloud" acima fica por segurança/futuro uso
-      # (ex. se algum dia precisarmos de gcloud direto), mas já não é o que autentica
-      # este deploy.
+      # Removido também o passo "Authenticate to Google Cloud": nada neste job
+      # depende dele além do deploy (que já usa --token), e mantê-lo como
+      # "por precaução" só criava um ponto de falha extra — se o secret
+      # FIREBASE_SERVICE_ACCOUNT ficasse inválido outra vez, esse passo abortava
+      # o job ANTES de chegar ao deploy real, mesmo sendo desnecessário.
+      # O --token usa o mecanismo de autenticação CI dedicado e documentado da
+      # própria Firebase (gerado uma vez, localmente, com `npx firebase-tools
+      # login:ci`), que não depende da deteção de GOOGLE_APPLICATION_CREDENTIALS
+      # pelo firebase-tools — contorna este bug por completo. Secret: FIREBASE_TOKEN.
       - name: Deploy rules, indexes and functions
         run: npx -y firebase-tools@15 deploy --only firestore,functions --project lyvoo-9d54b --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
