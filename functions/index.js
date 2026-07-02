@@ -72,6 +72,21 @@ exports.stripeWebhook = onRequest(
         return;
       }
 
+      // Só avançamos quando o pagamento está efetivamente liquidado. Para métodos
+      // de pagamento assíncronos/atrasados o Stripe emite checkout.session.completed
+      // com payment_status != 'paid' (seguido de async_payment_succeeded); avançar
+      // aqui entregaria o kit sem a cobrança estar confirmada. (auditoria 2026-07-01, L4)
+      if (session.payment_status !== 'paid') {
+        logger.info('[stripe-webhook] checkout ainda não pago — ignorado', {
+          uid,
+          sessionId: session.id,
+          eventId: event.id,
+          payment_status: session.payment_status || null,
+        });
+        res.status(200).send('ok (nao pago)');
+        return;
+      }
+
       try {
         const userRef = db.collection('users').doc(uid);
 

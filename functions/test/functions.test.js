@@ -37,10 +37,10 @@ function webhookReq(eventObj) {
   const sig = stripe.webhooks.generateTestHeaderString({ payload, secret: 'whsec_test_secret' });
   return { rawBody: Buffer.from(payload), headers: { 'stripe-signature': sig } };
 }
-const checkoutEvent = (uid, sessionId = 'cs_1', id = 'evt_1') => ({
+const checkoutEvent = (uid, sessionId = 'cs_1', id = 'evt_1', payment_status = 'paid') => ({
   id,
   type: 'checkout.session.completed',
-  data: { object: { id: sessionId, client_reference_id: uid } },
+  data: { object: { id: sessionId, client_reference_id: uid, payment_status } },
 });
 
 test.after(() => fft.cleanup());
@@ -75,6 +75,16 @@ test('webhook: assinatura inválida → 400', async () => {
     res
   );
   assert.strictEqual(res.statusCode, 400);
+});
+
+test('webhook: checkout não pago (payment_status != paid) NÃO avança o estado', async () => {
+  const uid = 'wh_unpaid_' + Date.now();
+  await db.collection('users').doc(uid).set({ estado: 1, email: 'a@x.pt' });
+  const res = mockRes();
+  await fns.stripeWebhook(webhookReq(checkoutEvent(uid, 'cs_u', 'evt_u', 'unpaid')), res);
+  assert.strictEqual(res.statusCode, 200);
+  const snap = await db.collection('users').doc(uid).get();
+  assert.strictEqual(snap.data().estado, 1); // continua 1 — não avança sem pagamento confirmado
 });
 
 // ── eliminarUtilizadorRGPD ───────────────────────────────────────────────────
