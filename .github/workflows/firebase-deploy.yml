@@ -18,6 +18,13 @@ name: Firebase deploy
 #    Gera uma chave JSON dessa SA.
 # 2. GitHub → Settings → Secrets and variables → Actions → New secret:
 #      FIREBASE_SERVICE_ACCOUNT = (conteúdo do JSON da SA)
+# 2b. firebase-tools tem um bug conhecido em CI onde não apanha as credenciais
+#     ADC do passo "Authenticate to Google Cloud" acima (issue #10716) — por isso
+#     o deploy real usa --token, não a SA JSON. Gerar uma vez, localmente:
+#       npx firebase-tools login:ci
+#     (abre o browser; autenticar com a conta Google dona do projeto lyvoo-9d54b)
+#     e guardar o token impresso em GitHub → Secrets → Actions → New secret:
+#       FIREBASE_TOKEN = (o token impresso)
 # 3. GitHub → Settings → Environments → New environment "production" →
 #    "Required reviewers" = tu. (É isto que cria o passo de aprovação manual.)
 # Depois disto, qualquer push ao master que mexa em rules/functions valida e
@@ -106,10 +113,17 @@ jobs:
       # uma operação destrutiva (apagar função/índice) FALHA em vez de a executar
       # às cegas — força tratamento humano.
       #
-      # Versão fixada em 15.22.1 (não "@15" flutuante): regressão confirmada em
-      # 15.22.2+ onde autoAuth() não apanha as credenciais definidas pelo
-      # google-github-actions/auth (GOOGLE_APPLICATION_CREDENTIALS) e falha com
-      # "Failed to authenticate, have you run firebase login?" mesmo com um JSON
-      # de service account válido. https://github.com/firebase/firebase-tools/issues/10716
+      # --token em vez de depender só da autenticação ADC (google-github-actions/auth):
+      # confirmámos em produção que firebase-tools falha com "Failed to authenticate,
+      # have you run firebase login?" mesmo com credenciais ADC válidas (tentado com
+      # firebase-tools@15 flutuante E fixado em 15.22.1 — mesmo erro nos dois).
+      # https://github.com/firebase/firebase-tools/issues/10716
+      # O --token usa o mecanismo de autenticação CI dedicado e documentado da própria
+      # Firebase (gerado uma vez, localmente, com `npx firebase-tools login:ci`),
+      # que não depende da deteção de GOOGLE_APPLICATION_CREDENTIALS pelo firebase-tools
+      # — contorna este bug por completo. Guardado em Secrets → FIREBASE_TOKEN.
+      # O passo "Authenticate to Google Cloud" acima fica por segurança/futuro uso
+      # (ex. se algum dia precisarmos de gcloud direto), mas já não é o que autentica
+      # este deploy.
       - name: Deploy rules, indexes and functions
-        run: npx -y firebase-tools@15.22.1 deploy --only firestore,functions --project lyvoo-9d54b --non-interactive
+        run: npx -y firebase-tools@15 deploy --only firestore,functions --project lyvoo-9d54b --non-interactive --token "${{ secrets.FIREBASE_TOKEN }}"
