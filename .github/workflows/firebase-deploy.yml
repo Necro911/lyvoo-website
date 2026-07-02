@@ -105,5 +105,11 @@ jobs:
       # Sem --force: um deploy normal (sem remoções) passa em modo não-interativo;
       # uma operação destrutiva (apagar função/índice) FALHA em vez de a executar
       # às cegas — força tratamento humano.
+      #
+      # Versão fixada em 15.22.1 (não "@15" flutuante): regressão confirmada em
+      # 15.22.2+ onde autoAuth() não apanha as credenciais definidas pelo
+      # google-github-actions/auth (GOOGLE_APPLICATION_CREDENTIALS) e falha com
+      # "Failed to authenticate, have you run firebase login?" mesmo com um JSON
+      # de service account válido. https://github.com/firebase/firebase-tools/issues/10716
       - name: Deploy rules, indexes and functions
-        run: npx -y firebase-tools@15 deploy --only firestore,functions --project lyvoo-9d54b --non-interactive
+        run: npx -y firebase-tools@15.22.1 deploy --only firestore,functions --project lyvoo-9d54b --non-interactive
