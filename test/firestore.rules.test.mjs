@@ -115,6 +115,25 @@ test('users: owner NÃO fabrica resultados/plano/suplementação/relatório (fie
   );
   await assertFails(updateDoc(doc(alice(), 'users/alice'), { relatorio: { score: 100 } }));
 });
+test('users: owner NÃO escreve anamnese/notasAdmin (field-lock, Fase 2)', async () => {
+  await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1 }));
+  await assertFails(
+    updateDoc(doc(alice(), 'users/alice'), {
+      anamnese: { diario: [{ descricao: '<img src=x onerror=alert(1)>' }] },
+    })
+  );
+  await assertFails(updateDoc(doc(alice(), 'users/alice'), { notasAdmin: 'nota fabricada' }));
+});
+test('users: owner NÃO semeia anamnese/notasAdmin no CREATE (Fase 2)', async () => {
+  await assertFails(setDoc(doc(alice(), 'users/alice'), { estado: 1, anamnese: { peso: '80' } }));
+  await assertFails(setDoc(doc(alice(), 'users/alice'), { estado: 1, notasAdmin: 'x' }));
+});
+test('users: admin PODE escrever anamnese/notasAdmin', async () => {
+  await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1 }));
+  await assertSucceeds(
+    updateDoc(doc(admin(), 'users/alice'), { anamnese: { peso: '80' }, notasAdmin: 'ok' })
+  );
+});
 test('users: owner PODE editar campos de perfil', async () => {
   await seed((db) => setDoc(doc(db, 'users/alice'), { estado: 1, email: 'a@x.pt' }));
   await assertSucceeds(
@@ -178,6 +197,20 @@ test('waitlist: criação válida passa; inválida falha', async () => {
       criadoEm: new Date(),
       mensagem: 'x'.repeat(2001),
     })
+  );
+});
+test('waitlist: email com HTML / forma inválida é rejeitado (C1/L2)', async () => {
+  await assertFails(
+    setDoc(doc(anon(), 'waitlist/x1'), {
+      email: '<img src=x onerror=alert(1)>',
+      criadoEm: new Date(),
+    })
+  );
+  await assertFails(
+    setDoc(doc(anon(), 'waitlist/x2'), { email: 'a"><b>@x.pt', criadoEm: new Date() })
+  );
+  await assertSucceeds(
+    setDoc(doc(anon(), 'waitlist/x3'), { email: 'real.user@lyvoo.pt', criadoEm: new Date() })
   );
 });
 test('waitlist: leitura só admin', async () => {

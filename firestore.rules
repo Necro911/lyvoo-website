@@ -39,11 +39,17 @@ service cloud.firestore {
     // Confirmado (2026-07-01): nenhum fluxo em dashboard.html escreve nestes
     // campos como owner — só lê. O único setDoc do cliente (perfil, com
     // merge:true) não os toca.
+    // `anamnese`/`notasAdmin` (auditoria 2026-07-01, Fase 2) são conteúdo clínico
+    // e notas internas escritos SÓ pelo admin — o dashboard nunca os escreve como
+    // owner (confirmado: dashboard.html não referencia nenhum dos dois). Sem este
+    // lock, um cliente podia fabricar a sua própria anamnese/diário alimentar ou
+    // notas internas via updateDoc (e o diário alimentar é renderizado no admin).
     function ownerKeepsLockedFields() {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
         'estado','estadoLabel','plano','planoNome','planoValidoAte',
         'stripeSessionId','cicloAtual','clienteId','seq','arquivado','prioridades',
-        'resultados','planoAlimentar','suplementacao','relatorio'
+        'resultados','planoAlimentar','suplementacao','relatorio',
+        'anamnese','notasAdmin'
       ]);
     }
 
@@ -80,7 +86,8 @@ service cloud.firestore {
         && request.resource.data.estado == 1
         && !request.resource.data.keys().hasAny([
              'stripeSessionId','planoValidoAte','cicloAtual','clienteId','seq','arquivado',
-             'prioridades','resultados','planoAlimentar','suplementacao','relatorio'
+             'prioridades','resultados','planoAlimentar','suplementacao','relatorio',
+             'anamnese','notasAdmin'
            ])
         && validProfileFields(request.resource.data)
       );
@@ -180,6 +187,10 @@ service cloud.firestore {
         return request.resource.data.email is string
           && request.resource.data.email.size() > 3
           && request.resource.data.email.size() < 200
+          // Forma de email básica que exclui '<' '>' e espaços — defesa em
+          // profundidade sobre o escape no admin (auditoria 2026-07-01, C1/L2):
+          // impede guardar um payload HTML no campo `email`. Emails reais passam.
+          && request.resource.data.email.matches('^[^<>@ ]+@[^<>@ ]+[.][^<>@ ]+$')
           && request.resource.data.keys().hasAll(['email','criadoEm'])
           && request.resource.data.size() <= 10
           && (!('mensagem' in request.resource.data)
